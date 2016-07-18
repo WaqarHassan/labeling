@@ -9,7 +9,7 @@ common: &common
   # Downcased and trimmed app name for namespaces.
   # Safest to start with a letter rather than a number.
   # See locales/en.yml for setting your app's user facing brand name.
-  app_name: 'starterkit'
+  app_name: 'labeling'
 
   social:
     facebook: 'https://www.facebook.com/simple10'
@@ -22,7 +22,7 @@ common: &common
     phone: '555-555-5555'
 
   session:
-    key: '_starterkit_session'
+    key: '_labeling_session'
     expire_after: <%= 30.days %>
 
   rack:
@@ -43,7 +43,7 @@ default_env: &default_env
 
   # Host used to determine direct requests vs CDN.
   # See RobotsController.
-  CANONICAL_HOST: 'rails4-starterkit.herokuapp.com'
+  CANONICAL_HOST: 'rails4-labeling.herokuapp.com'
 
   AUTH_FACEBOOK_KEY: '201539556694091'
   AUTH_FACEBOOK_SECRET: '80ae1dc93961b7f9a79265af0eeca698'

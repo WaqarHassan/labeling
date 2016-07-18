@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  after_create :send_welcome_emails
+  #after_create :send_welcome_emails
 
   def display_name
     first_name.presence || email.split('@')[0]

@@ -21,16 +21,16 @@
 
 
 #
-# TODO: Replace instances of 'StarterKit' in this file with your app brand name.
+# TODO: Replace instances of 'Labeling' in this file with your app brand name.
 #
 
 en:
   brand:
-    name: 'StarterKit'
+    name: 'Labeling'
 
   emails:
     welcome:
-      subject: 'Welcome to StarterKit'
+      subject: 'Welcome to Labeling'
 
   auth:
     login:
@@ -68,7 +68,7 @@ en:
       prompt: 'Disconnect this social account?'
       tooltip: 'Disconnect social account and remove related data'
       warning: ''
-      notice: 'Your social account will be disconnected form your StarterKit account. You can reconnect the social account at any time.'
+      notice: 'Your social account will be disconnected form your Labeling account. You can reconnect the social account at any time.'
       submit: 'Yes, disconnect the account'
       cancel: 'Cancel'
     reconnect:

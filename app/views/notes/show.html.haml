@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Id:
+  = @note.id
+%p
+  %b Ecr:
+  = @note.ecr_id
+%p
+  %b Created by:
+  = @note.created_by
+%p
+  %b Updated by:
+  = @note.updated_by
+%p
+  %b Description:
+  = @note.description
+
+= link_to 'Edit', edit_note_path(@note)
+\|
+= link_to 'Back', notes_path

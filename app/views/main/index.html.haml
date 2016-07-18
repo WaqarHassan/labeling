@@ -1,0 +1,79 @@
+%script{:src => "http://code.jquery.com/jquery-migrate-1.0.0.js"}
+%table.table
+  %thead
+    %tr.main_heading
+      %th IA Approval
+      %th{:colspan => "3", :style => "text-align:center"} Translation
+      %th{:colspan => "2", :style => "text-align:center"}  ECR
+      %th{:colspan => "4", :style => "text-align:center"}  Collaboration
+    %tr.sub_heading
+      %th IA Approved
+      %th Inbox
+      %th Sent
+      %th Received
+      %th Inbox  
+      %th Complete  
+      %th Sent to Collab.  
+      %th Back from Coll.  
+      %th Sent to Legal  
+      %th Back from Legal 
+      %th 
+  %tbody
+    %tr
+      %td 5/9/2016  10:10:41 AM
+      %td 
+      %td 
+      %td 
+      %td 5/11/2016  10:10:41 AM
+      %td 
+      %td 
+      %td 
+      %td
+      %td
+      %td
+
+    %tr
+      %td
+      %td 
+      %td 
+      %td 
+      %td
+      %td 5/11/2016  10:33:00 AM
+      %td 5/19/2016  1:18:00 PM
+      %td 5/19/2016  1:18:00 PM
+      %td MM/DD hh:mm
+      %td MM/DD hh:mm
+      %td MM/DD hh:mm
+
+    %tr
+      %td
+      %td 
+      %td 
+      %td 
+      %td
+      %td 5/11/2016  10:33:00 AM
+      %td 5/19/2016  1:18:00 PM
+      %td 5/19/2016  1:18:00 PM
+      %td
+      %td
+      %td MM/DD hh:mm
+
+=link_to 'Open modal', open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_window'}    
+
+#modal_window.modal.hide.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog"}
+
+
+:css
+  .main_heading th, .sub_heading th {
+      border-left: 2px solid #ccc;
+      border-right: 2px solid #ccc;
+      border-top: medium none !important;
+  }
+
+  .main_heading th {
+      border-bottom: medium none !important;
+  }
+
+  .sub_heading th {
+      border-top: medium none !important;
+  }

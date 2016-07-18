@@ -1,0 +1,15 @@
+= simple_form_for(@ecr) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :id
+    = f.input :name
+    = f.input :user_id
+    = f.input :status
+    = f.input :note
+    = f.input :station_id
+    = f.input :status_start
+    = f.input :rework_of
+
+  .form-actions
+    = f.button :submit

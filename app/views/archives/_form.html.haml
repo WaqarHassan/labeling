@@ -1,0 +1,14 @@
+= simple_form_for(@archive) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :id
+    = f.input :ecr_id
+    = f.input :stored_on
+    = f.input :user_id
+    = f.input :number_of_component
+    = f.input :updated_by
+    = f.input :orignal_value
+
+  .form-actions
+    = f.button :submit

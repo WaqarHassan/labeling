@@ -1,0 +1,12 @@
+= simple_form_for(@note) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :id
+    = f.input :ecr_id
+    = f.input :created_by
+    = f.input :updated_by
+    = f.input :description
+
+  .form-actions
+    = f.button :submit

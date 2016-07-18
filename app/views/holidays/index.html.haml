@@ -1,0 +1,23 @@
+%h1 Listing holidays
+
+%table
+  %thead
+    %tr
+      %th Id
+      %th Holiday date
+      %th
+      %th
+      %th
+
+  %tbody
+    - @holidays.each do |holiday|
+      %tr
+        %td= holiday.id
+        %td= holiday.holiday_date
+        %td= link_to 'Show', holiday
+        %td= link_to 'Edit', edit_holiday_path(holiday)
+        %td= link_to 'Destroy', holiday, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Holiday', new_holiday_path

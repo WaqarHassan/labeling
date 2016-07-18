@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Id:
+  = @ium.id
+%p
+  %b Name:
+  = @ium.name
+%p
+  %b Translation:
+  = @ium.translation
+%p
+  %b Horw:
+  = @ium.horw
+%p
+  %b Requested date:
+  = @ium.requested_date
+%p
+  %b To be approved by:
+  = @ium.to_be_approved_by
+
+= link_to 'Edit', edit_ium_path(@ium)
+\|
+= link_to 'Back', ia_path

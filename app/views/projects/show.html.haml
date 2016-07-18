@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Id:
+  = @project.id
+%p
+  %b Name:
+  = @project.name
+%p
+  %b Description:
+  = @project.description
+%p
+  %b Created by:
+  = @project.created_by
+%p
+  %b Updated by:
+  = @project.updated_by
+
+= link_to 'Edit', edit_project_path(@project)
+\|
+= link_to 'Back', projects_path

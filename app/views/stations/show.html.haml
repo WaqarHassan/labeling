@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Id:
+  = @station.id
+%p
+  %b Name:
+  = @station.name
+
+= link_to 'Edit', edit_station_path(@station)
+\|
+= link_to 'Back', stations_path

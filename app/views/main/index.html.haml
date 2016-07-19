@@ -1,4 +1,3 @@
-%script{:src => "http://code.jquery.com/jquery-migrate-1.0.0.js"}
 %table.table
   %thead
     %tr.main_heading
@@ -58,9 +57,8 @@
       %td
       %td MM/DD hh:mm
 
-=link_to 'Open modal', open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal_window'}    
+=link_to 'Open modal', open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#additional_info'} 
 
-#modal_window.modal.hide.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog"}
 
 
 :css

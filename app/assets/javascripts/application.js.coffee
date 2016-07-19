@@ -10,6 +10,7 @@
 # Read Sprockets README (https:#github.com/sstephenson/sprockets#sprockets-directives) for details
 # about supported directives.
 #
+#= require jquery
 #= require jquery_2
 #= require jquery_ujs
 #= require bootstrap
@@ -19,7 +20,6 @@
 #= require nprogress-turbolinks
 #= require rails_confirm_dialog
 #= require jquery.scrollto
-#= require bootstrap-modal
 
 # Add error class to .avatar images if they fail to load
 # See avatar.scss and _avatar.html.haml

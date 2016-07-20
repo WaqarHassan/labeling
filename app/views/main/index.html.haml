@@ -18,44 +18,25 @@
       %th Back from Legal 
       %th 
   %tbody
-    %tr
-      %td 5/9/2016  10:10:41 AM
-      %td 
-      %td 
-      %td 
-      %td 5/11/2016  10:10:41 AM
-      %td 
-      %td 
-      %td
-      %td
-      %td
-      %td
-
-    %tr
-      %td
-      %td 
-      %td 
-      %td 
-      %td
-      %td 5/11/2016  10:33:00 AM
-      %td 5/19/2016  1:18:00 PM
-      %td 5/19/2016  1:18:00 PM
-      %td MM/DD hh:mm
-      %td MM/DD hh:mm
-      %td MM/DD hh:mm
-
-    %tr
-      %td
-      %td 
-      %td 
-      %td 
-      %td
-      %td 5/11/2016  10:33:00 AM
-      %td 5/19/2016  1:18:00 PM
-      %td 5/19/2016  1:18:00 PM
-      %td
-      %td
-      %td MM/DD hh:mm
+    - @projects.each do |project|
+      - project.ias.each do |ia|
+        -ia_approved = ia.to_be_approved_by
+        - ia.ecrs.each do |ecr|
+          %tr
+            %td
+              = ia_approved
+            %td 
+            %td 
+            %td 
+            %td
+              = ecr.status_start
+            %td 
+              = ecr.status_start
+            %td 5/19/2016  1:18:00 PM
+            %td 5/19/2016  1:18:00 PM
+            %td MM/DD hh:mm
+            %td MM/DD hh:mm
+            %td MM/DD hh:mm
 
 =link_to 'Open modal', open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#additional_info'} 
 

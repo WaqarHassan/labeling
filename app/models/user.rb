@@ -11,6 +11,9 @@ class User < ActiveRecord::Base
     end
   end
 
+  has_many :projects, dependent: :destroy
+  has_many :notes, dependent: :destroy
+
   #after_create :send_welcome_emails
 
   def display_name

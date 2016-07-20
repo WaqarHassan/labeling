@@ -6,6 +6,7 @@ class MainController < ApplicationController
 	end
 
    def open_modal
+    @info_modal = 'additional_info'
     respond_to do |format|
       format.html
       format.js

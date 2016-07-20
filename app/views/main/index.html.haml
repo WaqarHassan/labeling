@@ -24,21 +24,21 @@
         - ia.ecrs.each do |ecr|
           %tr
             %td
-              = ia_approved
+              = link_to ia_approved, open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'}
             %td 
             %td 
             %td 
             %td
-              = ecr.status_start
+              = ecr.status_start.strftime("%Y-%m-%d %I:%M %p")
             %td 
-              = ecr.status_start
+              = ecr.status_start.strftime("%Y-%m-%d %I:%M %p")
             %td 5/19/2016  1:18:00 PM
             %td 5/19/2016  1:18:00 PM
             %td MM/DD hh:mm
             %td MM/DD hh:mm
             %td MM/DD hh:mm
 
-=link_to 'Open modal', open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#additional_info'} 
+=link_to 'Open modal', open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} 
 
 
 

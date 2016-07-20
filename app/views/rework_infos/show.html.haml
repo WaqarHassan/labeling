@@ -1,0 +1,30 @@
+%p#notice= notice
+
+%p
+  %b Collab name:
+  = @rework_info.collab_name
+%p
+  %b Time stamp:
+  = @rework_info.time_stamp
+%p
+  %b User:
+  = @rework_info.user_id
+%p
+  %b Station:
+  = @rework_info.station_id
+%p
+  %b Reason:
+  = @rework_info.reason
+%p
+  %b Comp number:
+  = @rework_info.comp_number
+%p
+  %b Type:
+  = @rework_info.type
+%p
+  %b Ecr:
+  = @rework_info.ecr_id
+
+= link_to 'Edit', edit_rework_info_path(@rework_info)
+\|
+= link_to 'Back', rework_infos_path

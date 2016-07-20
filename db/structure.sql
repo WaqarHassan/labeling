@@ -72,11 +72,17 @@ CREATE TABLE `ecrs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
+  `comp_number` int(11) DEFAULT NULL,
+  `comp_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `note` text COLLATE utf8_unicode_ci,
   `station_id` int(11) DEFAULT NULL,
-  `status_start` datetime DEFAULT NULL,
-  `rework_of` int(11) DEFAULT NULL,
+  `inbox` datetime DEFAULT NULL,
+  `completed` datetime DEFAULT NULL,
+  `sent_to_collab` datetime DEFAULT NULL,
+  `received_frm_collab` datetime DEFAULT NULL,
+  `sent_to_legal` datetime DEFAULT NULL,
+  `received_frm_legal` datetime DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `ia_id` int(11) DEFAULT NULL,
@@ -112,8 +118,9 @@ CREATE TABLE `ia` (
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `translation` tinyint(1) DEFAULT NULL,
   `horw` tinyint(1) DEFAULT NULL,
-  `requested_date` date DEFAULT NULL,
-  `to_be_approved_by` date DEFAULT NULL,
+  `inbox_date` date DEFAULT NULL,
+  `sent_date` date DEFAULT NULL,
+  `received_date` date DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `project_id` int(11) DEFAULT NULL,
@@ -131,8 +138,7 @@ DROP TABLE IF EXISTS `notes`;
 CREATE TABLE `notes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ecr_id` int(11) DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
   `description` text COLLATE utf8_unicode_ci,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
@@ -166,8 +172,30 @@ CREATE TABLE `projects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `description` text COLLATE utf8_unicode_ci,
-  `created_by` int(11) DEFAULT NULL,
-  `updated_by` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `rework_infos`
+--
+
+DROP TABLE IF EXISTS `rework_infos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rework_infos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `collab_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `time_stamp` datetime DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `station_id` int(11) DEFAULT NULL,
+  `reason` text COLLATE utf8_unicode_ci,
+  `comp_number` int(11) DEFAULT NULL,
+  `type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ecr_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -239,7 +267,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `index_users_on_reset_password_token` (`reset_password_token`),
   UNIQUE KEY `index_users_on_confirmation_token` (`confirmation_token`),
   UNIQUE KEY `index_users_on_unlock_token` (`unlock_token`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -251,7 +279,7 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-07-15 16:42:31
+-- Dump completed on 2016-07-20 15:09:33
 INSERT INTO schema_migrations (version) VALUES ('20130909170542');
 
 INSERT INTO schema_migrations (version) VALUES ('20130909194719');
@@ -281,4 +309,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160715100319');
 INSERT INTO schema_migrations (version) VALUES ('20160715113622');
 
 INSERT INTO schema_migrations (version) VALUES ('20160715113650');
+
+INSERT INTO schema_migrations (version) VALUES ('20160720082646');
 

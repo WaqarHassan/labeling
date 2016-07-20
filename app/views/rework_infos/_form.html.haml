@@ -1,0 +1,15 @@
+= simple_form_for(@rework_info) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :collab_name
+    = f.input :time_stamp
+    = f.input :user_id
+    = f.input :station_id
+    = f.input :reason
+    = f.input :comp_number
+    = f.input :type
+    = f.input :ecr_id
+
+  .form-actions
+    = f.button :submit

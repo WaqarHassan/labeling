@@ -1,0 +1,35 @@
+%h1 Listing rework_infos
+
+%table
+  %thead
+    %tr
+      %th Collab name
+      %th Time stamp
+      %th User
+      %th Station
+      %th Reason
+      %th Comp number
+      %th Type
+      %th Ecr
+      %th
+      %th
+      %th
+
+  %tbody
+    - @rework_infos.each do |rework_info|
+      %tr
+        %td= rework_info.collab_name
+        %td= rework_info.time_stamp
+        %td= rework_info.user_id
+        %td= rework_info.station_id
+        %td= rework_info.reason
+        %td= rework_info.comp_number
+        %td= rework_info.type
+        %td= rework_info.ecr_id
+        %td= link_to 'Show', rework_info
+        %td= link_to 'Edit', edit_rework_info_path(rework_info)
+        %td= link_to 'Destroy', rework_info, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Rework info', new_rework_info_path

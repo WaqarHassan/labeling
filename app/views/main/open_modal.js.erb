@@ -1,1 +1,7 @@
-$("#additional_info").html("<%= escape_javascript(render 'main/open_modal') %>");
+<% if @info_modal == 'additional_info' %>
+	$("#info_modal_popup").html("<%= escape_javascript(render 'main/additional_info_modal') %>");
+<% elsif @info_modal == 'rework_info' %>
+	$("#info_modal_popup").html("<%= escape_javascript(render 'main/rework_info_modal') %>");
+<% else %>
+	$("#info_modal_popup").html("<%= escape_javascript(render 'main/collab_modal') %>");
+<% end %>

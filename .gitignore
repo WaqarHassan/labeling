@@ -18,7 +18,11 @@
 /coverage
 .zeus.sock
 .env
+.DS_Store
+app/.DS_Store
 
 # Ignore Sublime Text workspace files
 /*.sublime-workspace
+db/structure.sql
+config/database.yml
 

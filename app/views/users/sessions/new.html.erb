@@ -1,28 +1,26 @@
-- resource.email = params[:email] unless resource.email.present?
+<h2>Log in</h2>
 
-.auth__form
-  / - signup_link = link_to I18n.t('auth.signup.link'), new_user_registration_path
-  / %h3.title= I18n.t('auth.login.title', signup_link: signup_link).html_safe
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true %>
+  </div>
 
-  / = render 'authentications/providers', flow: 'login', icons: true, color: true
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "off" %>
+  </div>
 
-  / .auth__or
-  /   %hr/
-  /   %span or
+  <% if devise_mapping.rememberable? -%>
+    <div class="field">
+      <%= f.check_box :remember_me %>
+      <%= f.label :remember_me %>
+    </div>
+  <% end -%>
 
-  = simple_form_for resource, as: resource_name, url: session_path(resource_name) do |f|
-    - if devise_mapping.rememberable?
-      = f.input :remember_me, as: :hidden, input_html: {value: true}
-    = f.input :email, autofocus: true, required: true
+  <div class="actions">
+    <%= f.submit "Log in" %>
+  </div>
+<% end %>
 
-    %div{class: resource.email.blank? ? 'in fade' : 'in'}
-      = f.input :password, required: true do |input|
-        - if devise_mapping.recoverable?
-          //= link_to I18n.t('auth.forgot.prompt'), new_password_path(resource_name), class: 'pull-right small'
-        = f.input_field :password, required: true, autocomplete: 'off'
-      = f.button :submit, I18n.t('auth.login.link'), class: 'btn-primary'
-
-  / = render 'users/shared/links', disable_signup: true
-
-- content_for :on_ready do
-  $('input[name="user[email]"]').on('click keydown', function(){$(this).closest('form').find('.collapse').addClass('in')});
+<%= render "devise/shared/links" %>

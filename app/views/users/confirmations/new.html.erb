@@ -1,10 +1,16 @@
-<div class="auth__form">
-  <h2>
-    <%= I18n.t 'auth.confirm.link' %>
-  </h2>
-  <%= simple_form_for resource, as: resource_name, url: confirmation_path(resource_name), method: :post do |f| %>
-    <%= f.input :email, autofocus: true, required: true, disabled: (user_signed_in? and resource.email.present?) %>
-    <%= f.button :submit, I18n.t('auth.confirm.submit'), class: 'btn-primary' %>
-  <% end %>
-  <%= render "users/shared/links" %>
-</div>
+<h2>Resend confirmation instructions</h2>
+
+<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Resend confirmation instructions" %>
+  </div>
+<% end %>
+
+<%= render "devise/shared/links" %>

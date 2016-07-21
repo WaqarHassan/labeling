@@ -1,3 +1,20 @@
+#projectDetail.collapse
+  %table.table
+    %thead
+      %tr.sub_heading
+        %th IA Approved
+        %th Inbox
+        %th Sent
+        %th Received
+        %th Inbox  
+    %tbody
+      %tr
+        %td Hussain
+        %td Hussain
+        %td Hussain
+        %td Hussain
+        %td Hussain
+
 %table.table
   %thead
     %tr.main_heading
@@ -20,7 +37,7 @@
   %tbody
     - @projects.each do |project|
       - project.ias.each do |ia|
-        -ia_approved = ia.to_be_approved_by
+        -ia_approved = ia.inbox_date
         - ia.ecrs.each do |ecr|
           %tr
             %td
@@ -29,9 +46,9 @@
             %td 
             %td 
             %td
-              = ecr.status_start.strftime("%Y-%m-%d %I:%M %p")
+              = ecr.created_at.strftime("%Y-%m-%d %I:%M %p")
             %td 
-              = ecr.status_start.strftime("%Y-%m-%d %I:%M %p")
+              = ecr.created_at.strftime("%Y-%m-%d %I:%M %p")
             %td 5/19/2016  1:18:00 PM
             %td 5/19/2016  1:18:00 PM
             %td MM/DD hh:mm

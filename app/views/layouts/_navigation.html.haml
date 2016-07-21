@@ -6,6 +6,9 @@
       %span.icon-bar
       %span.icon-bar
     = link_to I18n.t('brand.name'), root_path, class: 'navbar-brand'
+    %button.btn.btn-primary{"aria-controls" => "projectDetail", "aria-expanded" => "false", "data-target" => "#projectDetail", "data-toggle" => "collapse", :type => "button"}
+      EX/CO
+
 
     / %ul.nav.navbar-nav.navbar-left
     /   - if user_signed_in?

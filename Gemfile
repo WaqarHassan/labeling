@@ -30,6 +30,7 @@ gem 'dalli'                     # memcached
 # Assets
 gem 'sass-rails'
 gem 'simple_form'
+gem "haml-rails"
 gem 'uglifier'
 gem 'headjs-rails'
 

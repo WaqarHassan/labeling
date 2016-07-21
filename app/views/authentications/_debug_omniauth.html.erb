@@ -1,11 +1,14 @@
-%p
-  %strong
+<p>
+  <strong>
     Origin:
-  %a{href: request.env['omniauth.origin']}
-    = request.env['omniauth.origin']
-
-%h2
+  </strong>
+  <a href="<%= request.env['omniauth.origin'] %>">
+    <%= request.env['omniauth.origin'] %>
+  </a>
+</p>
+<h2>
   OAuth Response:
-
-%p
-  != ap request.env['omniauth.auth']
+</h2>
+<p>
+  <%= raw(ap request.env['omniauth.auth']) %>
+</p>

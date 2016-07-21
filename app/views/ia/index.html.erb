@@ -1,31 +1,51 @@
-%h1 Listing ia
-
-%table
-  %thead
-    %tr
-      %th Id
-      %th Name
-      %th Translation
-      %th Horw
-      %th Requested date
-      %th To be approved by
-      %th
-      %th
-      %th
-
-  %tbody
-    - @ia.each do |ium|
-      %tr
-        %td= ium.id
-        %td= ium.name
-        %td= ium.translation
-        %td= ium.horw
-        %td= ium.requested_date
-        %td= ium.to_be_approved_by
-        %td= link_to 'Show', ium
-        %td= link_to 'Edit', edit_ium_path(ium)
-        %td= link_to 'Destroy', ium, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Ium', new_ium_path
+<h1>Listing ia</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Translation</th>
+      <th>Horw</th>
+      <th>Requested date</th>
+      <th>To be approved by</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @ia.each do |ium| %>
+      <tr>
+        <td>
+          <%= ium.id %>
+        </td>
+        <td>
+          <%= ium.name %>
+        </td>
+        <td>
+          <%= ium.translation %>
+        </td>
+        <td>
+          <%= ium.horw %>
+        </td>
+        <td>
+          <%= ium.requested_date %>
+        </td>
+        <td>
+          <%= ium.to_be_approved_by %>
+        </td>
+        <td>
+          <%= link_to 'Show', ium %>
+        </td>
+        <td>
+          <%= link_to 'Edit', edit_ium_path(ium) %>
+        </td>
+        <td>
+          <%= link_to 'Destroy', ium, :method => :delete, :data => { :confirm => 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br/>
+<%= link_to 'New Ium', new_ium_path %>

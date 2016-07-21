@@ -1,13 +1,16 @@
-%h2 Mmm...
-
-- if @failed == 'no_account' && @provider
-  %p
+<h2>Mmm...</h2>
+<% if @failed == 'no_account' && @provider %>
+  <p>
     You don't have an account connected to #{Authentication.provider_name(@provider)}.
-
-- else
-  %p
+  </p>
+<% else %>
+  <p>
     Something went wrong
-    - if @provider
+    <% if @provider %>
       with #{Authentication.provider_name(@provider)}
-  %p
+    <% end %>
+  </p>
+  <p>
     Please try again.
+  </p>
+<% end %>

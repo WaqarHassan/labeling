@@ -1,27 +1,34 @@
-%p#notice= notice
-
-%p
-  %b Id:
-  = @archive.id
-%p
-  %b Ecr:
-  = @archive.ecr_id
-%p
-  %b Stored on:
-  = @archive.stored_on
-%p
-  %b User:
-  = @archive.user_id
-%p
-  %b Number of component:
-  = @archive.number_of_component
-%p
-  %b Updated by:
-  = @archive.updated_by
-%p
-  %b Orignal value:
-  = @archive.orignal_value
-
-= link_to 'Edit', edit_archive_path(@archive)
+<p id="notice">
+  <%= notice %>
+</p>
+<p>
+  <b>Id:</b>
+  <%= @archive.id %>
+</p>
+<p>
+  <b>Ecr:</b>
+  <%= @archive.ecr_id %>
+</p>
+<p>
+  <b>Stored on:</b>
+  <%= @archive.stored_on %>
+</p>
+<p>
+  <b>User:</b>
+  <%= @archive.user_id %>
+</p>
+<p>
+  <b>Number of component:</b>
+  <%= @archive.number_of_component %>
+</p>
+<p>
+  <b>Updated by:</b>
+  <%= @archive.updated_by %>
+</p>
+<p>
+  <b>Orignal value:</b>
+  <%= @archive.orignal_value %>
+</p>
+<%= link_to 'Edit', edit_archive_path(@archive) %>
 \|
-= link_to 'Back', archives_path
+<%= link_to 'Back', archives_path %>

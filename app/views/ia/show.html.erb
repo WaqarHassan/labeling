@@ -1,24 +1,30 @@
-%p#notice= notice
-
-%p
-  %b Id:
-  = @ium.id
-%p
-  %b Name:
-  = @ium.name
-%p
-  %b Translation:
-  = @ium.translation
-%p
-  %b Horw:
-  = @ium.horw
-%p
-  %b Requested date:
-  = @ium.requested_date
-%p
-  %b To be approved by:
-  = @ium.to_be_approved_by
-
-= link_to 'Edit', edit_ium_path(@ium)
+<p id="notice">
+  <%= notice %>
+</p>
+<p>
+  <b>Id:</b>
+  <%= @ium.id %>
+</p>
+<p>
+  <b>Name:</b>
+  <%= @ium.name %>
+</p>
+<p>
+  <b>Translation:</b>
+  <%= @ium.translation %>
+</p>
+<p>
+  <b>Horw:</b>
+  <%= @ium.horw %>
+</p>
+<p>
+  <b>Requested date:</b>
+  <%= @ium.requested_date %>
+</p>
+<p>
+  <b>To be approved by:</b>
+  <%= @ium.to_be_approved_by %>
+</p>
+<%= link_to 'Edit', edit_ium_path(@ium) %>
 \|
-= link_to 'Back', ia_path
+<%= link_to 'Back', ia_path %>

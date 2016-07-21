@@ -1,30 +1,38 @@
-%p#notice= notice
-
-%p
-  %b Collab name:
-  = @rework_info.collab_name
-%p
-  %b Time stamp:
-  = @rework_info.time_stamp
-%p
-  %b User:
-  = @rework_info.user_id
-%p
-  %b Station:
-  = @rework_info.station_id
-%p
-  %b Reason:
-  = @rework_info.reason
-%p
-  %b Comp number:
-  = @rework_info.comp_number
-%p
-  %b Type:
-  = @rework_info.type
-%p
-  %b Ecr:
-  = @rework_info.ecr_id
-
-= link_to 'Edit', edit_rework_info_path(@rework_info)
+<p id="notice">
+  <%= notice %>
+</p>
+<p>
+  <b>Collab name:</b>
+  <%= @rework_info.collab_name %>
+</p>
+<p>
+  <b>Time stamp:</b>
+  <%= @rework_info.time_stamp %>
+</p>
+<p>
+  <b>User:</b>
+  <%= @rework_info.user_id %>
+</p>
+<p>
+  <b>Station:</b>
+  <%= @rework_info.station_id %>
+</p>
+<p>
+  <b>Reason:</b>
+  <%= @rework_info.reason %>
+</p>
+<p>
+  <b>Comp number:</b>
+  <%= @rework_info.comp_number %>
+</p>
+<p>
+  <b>Type:</b>
+  <%= @rework_info.type %>
+</p>
+<p>
+  <b>Ecr:</b>
+  <%= @rework_info.ecr_id %>
+</p>
+<%= link_to 'Edit', edit_rework_info_path(@rework_info) %>
 \|
-= link_to 'Back', rework_infos_path
+<%= link_to 'Back', rework_infos_path %>

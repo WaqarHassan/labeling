@@ -1,21 +1,26 @@
-%p#notice= notice
-
-%p
-  %b Id:
-  = @note.id
-%p
-  %b Ecr:
-  = @note.ecr_id
-%p
-  %b Created by:
-  = @note.created_by
-%p
-  %b Updated by:
-  = @note.updated_by
-%p
-  %b Description:
-  = @note.description
-
-= link_to 'Edit', edit_note_path(@note)
+<p id="notice">
+  <%= notice %>
+</p>
+<p>
+  <b>Id:</b>
+  <%= @note.id %>
+</p>
+<p>
+  <b>Ecr:</b>
+  <%= @note.ecr_id %>
+</p>
+<p>
+  <b>Created by:</b>
+  <%= @note.created_by %>
+</p>
+<p>
+  <b>Updated by:</b>
+  <%= @note.updated_by %>
+</p>
+<p>
+  <b>Description:</b>
+  <%= @note.description %>
+</p>
+<%= link_to 'Edit', edit_note_path(@note) %>
 \|
-= link_to 'Back', notes_path
+<%= link_to 'Back', notes_path %>

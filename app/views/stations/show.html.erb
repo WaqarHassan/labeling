@@ -1,12 +1,14 @@
-%p#notice= notice
-
-%p
-  %b Id:
-  = @station.id
-%p
-  %b Name:
-  = @station.name
-
-= link_to 'Edit', edit_station_path(@station)
+<p id="notice">
+  <%= notice %>
+</p>
+<p>
+  <b>Id:</b>
+  <%= @station.id %>
+</p>
+<p>
+  <b>Name:</b>
+  <%= @station.name %>
+</p>
+<%= link_to 'Edit', edit_station_path(@station) %>
 \|
-= link_to 'Back', stations_path
+<%= link_to 'Back', stations_path %>

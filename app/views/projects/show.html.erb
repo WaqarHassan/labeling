@@ -1,21 +1,26 @@
-%p#notice= notice
-
-%p
-  %b Id:
-  = @project.id
-%p
-  %b Name:
-  = @project.name
-%p
-  %b Description:
-  = @project.description
-%p
-  %b Created by:
-  = @project.created_by
-%p
-  %b Updated by:
-  = @project.updated_by
-
-= link_to 'Edit', edit_project_path(@project)
+<p id="notice">
+  <%= notice %>
+</p>
+<p>
+  <b>Id:</b>
+  <%= @project.id %>
+</p>
+<p>
+  <b>Name:</b>
+  <%= @project.name %>
+</p>
+<p>
+  <b>Description:</b>
+  <%= @project.description %>
+</p>
+<p>
+  <b>Created by:</b>
+  <%= @project.created_by %>
+</p>
+<p>
+  <b>Updated by:</b>
+  <%= @project.updated_by %>
+</p>
+<%= link_to 'Edit', edit_project_path(@project) %>
 \|
-= link_to 'Back', projects_path
+<%= link_to 'Back', projects_path %>

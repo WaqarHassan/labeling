@@ -1,33 +1,55 @@
-%h1 Listing archives
-
-%table
-  %thead
-    %tr
-      %th Id
-      %th Ecr
-      %th Stored on
-      %th User
-      %th Number of component
-      %th Updated by
-      %th Orignal value
-      %th
-      %th
-      %th
-
-  %tbody
-    - @archives.each do |archive|
-      %tr
-        %td= archive.id
-        %td= archive.ecr_id
-        %td= archive.stored_on
-        %td= archive.user_id
-        %td= archive.number_of_component
-        %td= archive.updated_by
-        %td= archive.orignal_value
-        %td= link_to 'Show', archive
-        %td= link_to 'Edit', edit_archive_path(archive)
-        %td= link_to 'Destroy', archive, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Archive', new_archive_path
+<h1>Listing archives</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Ecr</th>
+      <th>Stored on</th>
+      <th>User</th>
+      <th>Number of component</th>
+      <th>Updated by</th>
+      <th>Orignal value</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @archives.each do |archive| %>
+      <tr>
+        <td>
+          <%= archive.id %>
+        </td>
+        <td>
+          <%= archive.ecr_id %>
+        </td>
+        <td>
+          <%= archive.stored_on %>
+        </td>
+        <td>
+          <%= archive.user_id %>
+        </td>
+        <td>
+          <%= archive.number_of_component %>
+        </td>
+        <td>
+          <%= archive.updated_by %>
+        </td>
+        <td>
+          <%= archive.orignal_value %>
+        </td>
+        <td>
+          <%= link_to 'Show', archive %>
+        </td>
+        <td>
+          <%= link_to 'Edit', edit_archive_path(archive) %>
+        </td>
+        <td>
+          <%= link_to 'Destroy', archive, :method => :delete, :data => { :confirm => 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br/>
+<%= link_to 'New Archive', new_archive_path %>

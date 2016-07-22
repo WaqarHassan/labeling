@@ -12,7 +12,7 @@ timeout 30
 
 # Set up socket location
 listen "#{shared_dir}/tmp/sockets/unicorn.sock", :backlog => 64
-listen  3004 ,  :TCP_NOPUSH  =>  true
+listen  3000 ,  :TCP_NOPUSH  =>  true
 
 # Logging
 stderr_path "#{shared_dir}/log/unicorn.stderr.log"

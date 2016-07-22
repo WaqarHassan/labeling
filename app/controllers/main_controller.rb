@@ -6,11 +6,13 @@ class MainController < ApplicationController
 	end
 
    def open_modal
-    @info_modal = 'additional_info'
+    @info_modal = 'rework_info'
     respond_to do |format|
       format.html
       format.js
     end
    end
+   
+
 
 end

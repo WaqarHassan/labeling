@@ -49,7 +49,7 @@
         <% ia.ecrs.each do |ecr| %>
           <tr>
             <td>
-              <%= link_to ia_approved, open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+              <%= link_to '05/09/2016 10:10:41', open_modal_path, {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
             </td>
             <td></td>
             <td></td>
@@ -60,7 +60,9 @@
             <td>
               <%= ecr.created_at.strftime("%Y-%m-%d %I:%M %p") %>
             </td>
-            <td>5/19/2016  1:18:00 PM</td>
+            <td>
+                 <%= link_to '5/19/2016  1:18:00 PM', open_modal_path, {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+           </td>  
             <td>5/19/2016  1:18:00 PM</td>
             <td>MM/DD hh:mm</td>
             <td>MM/DD hh:mm</td>
@@ -86,6 +88,10 @@
 
   .sub_heading th {
       border-top: medium none !important;
+  }
+
+  .rework {
+    width: 700px;
   }
 
 </style>

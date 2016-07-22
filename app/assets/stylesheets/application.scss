@@ -42,3 +42,32 @@ body {
   bottom: 15px;
   top: auto;
 }
+
+  .main_heading th, .sub_heading th {
+      border-left: 2px solid #ccc;
+      border-right: 2px solid #ccc;
+      border-top: medium none !important;
+  }
+
+.sub_heading > th {
+    border-bottom-width: 2px !important;
+}
+
+  .main_heading th {
+      border-bottom: medium none !important;
+  }
+
+  .sub_heading th {
+      border-top: medium none !important;
+  }
+
+.data-main { margin-top:10px; padding:20px;}
+.table-bordered th { font-size:12px; font-weight:normal; padding:5px !important;}
+.project-data { width:40%; float:left; position:relative;}
+.approval-data {width:60%; float:right; position:relative;}
+.collapsed-icon { display:block; width:20px; height:21px; position:absolute; top:-21px; right:0px; z-index:999;}
+.project-data.collapsed { width:15%;}
+.project-data.collapsed .collapsed-icon { background:url(/assets/plus.png) no-repeat;}
+.project-data .collapsed-icon { background:url(/assets/minus.png) no-repeat;}
+.tspend {width: 85% !important;}
+.no-brd { border-right:none !important;}

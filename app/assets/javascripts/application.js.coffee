@@ -25,3 +25,4 @@
 # See avatar.scss and _avatar.html.haml
 #= require imagesloaded
 #= require avatar.errors
+#= require mains

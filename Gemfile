@@ -77,6 +77,16 @@ gem 'sinatra', require: false
 gem 'addressable'
 gem 'settingslogic'
 
+
+# Capistrano
+gem 'capistrano'
+gem 'capistrano-rails', '~> 1.1'
+gem 'rvm1-capistrano3', require: false
+gem 'capistrano3-unicorn'
+gem 'capistrano-service'
+gem 'capistrano-bundler', '~> 1.1.2'
+gem 'capistrano-sidekiq'
+
 group :development do
   # Docs
   gem 'sdoc', require: false    # bundle exec rake doc:rails

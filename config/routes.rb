@@ -46,6 +46,7 @@ Rails.application.routes.draw do
   end
 
   get '/main/open_modal' => 'main#open_modal', as: 'open_modal'
+   get '/main/rework_modal' => 'main#rework_modal', as: 'rework_modal'
   resources :main
   get '/main' => 'main#index', as: 'main_home'
 

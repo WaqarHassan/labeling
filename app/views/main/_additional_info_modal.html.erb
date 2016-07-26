@@ -5,42 +5,32 @@
       <h1 class="h1-heading-popup">Additional Info</h1>
     </div>
     <div class='modal-body'>
-       
+       <form class="form-horizontal">
 
         <div class="form-group">
-        <div class="row">
-         <div class="col-lg-4">
-            <label class="echo_patinet">Status</label>
-         </div>
-            <div class="col-lg-6">
-              <select id="source" class="form-control" name="source">
-                <option value="">Active</option>
-                <option value="Echo Alert In-Patient">In-Active</option>
-             </select>
-            </div>
-            </div>
+         <label class="col-lg-4 control-label">Status </label>
+          <div class="col-lg-6">
+            <select id="source" class="form-control" name="source">
+              <option value="">Active</option>
+              <option value="Echo Alert In-Patient">In-Active</option>
+           </select>
+          </div>
         </div>
 
      <div class="form-group">
-       <div class="row">
-           <div class="col-lg-4">
-              <label class="echo_patinet">Station</label>
-           </div>
-              <div class="col-lg-6">
-               
-                <select id="source" class="form-control" name="source">
-                  <option value="">Station_1</option>
-                  <option value="Echo Alert In-Patient">Station_2</option>
-               </select>
-               </div>
+         <label class="col-lg-4 control-label">Station </label>
+          <div class="col-lg-6">
+           
+            <select id="source" class="form-control" name="source">
+              <option value="">Station_1</option>
+              <option value="Echo Alert In-Patient">Station_2</option>
+           </select>
           </div>
      </div>
 
-    <div class="row">
-         <div class="col-lg-4">
-            <label class="echo_patinet">Date/Time:</label>
-         </div>
-         <div class="col-lg-4">
+    <div class="form-group">
+         <label class="col-lg-4 control-label">Date/Time </label>
+         <div class="col-lg-5">
            <input type="text" class="datepicker form-control" id="datetimepicker" name="dob" required="" value="07/12/2016" aria-required="true">
          </div>
          <div class="col-lg-3 pull-left">
@@ -50,32 +40,24 @@
      </div>
 
       <div class="form-group">
-       <div class="row">
-               <div class="col-lg-4">
-                  <label class="echo_patinet">Notes</label>
-               </div>
-                <div class="col-lg-6 ">
-                  <textarea class="form-control" col='50' id='notes_' row='12' ></textarea>
-                </div>
-          </div>
-
+         <label class="col-lg-4 control-label">Note </label>
+          <div class="col-lg-6 ">
+            <textarea class="form-control" col='50' id='notes' row='12' ></textarea>
+        </div>
      </div>
     
       <span>
         <div class="form-group">
-       <div class="row">
-               <div class="col-lg-4">
-                  <label class="echo_patinet">Archive</label>
-               </div>
-                <div class="col-lg-6 ">
-                  <textarea class="form-control" col='50' id='notes_' row='12' ></textarea>
-                </div>
-          </div>
-
-     </div>    </div>
+           <label class="col-lg-4 control-label">Archive </label>
+            <div class="col-lg-6 ">
+              <textarea class="form-control" col='50' id='notes' row='12' ></textarea>
+            </div>
+        </div> 
+   </form>
+    </div>
     <div class='modal-footer'>
-      <button class='btn btn-success' type='button'>Save</button>
-      <button class='btn btn-default' data-dismiss='modal' type='button'>Cancel</button>
+      <button class='btn btn-danger' data-dismiss='modal' type='button'>Close</button>
+      <button class='btn save-print-update-edit-btn' type='submit'>Save</button>
     </div>
   </div>
 </div>

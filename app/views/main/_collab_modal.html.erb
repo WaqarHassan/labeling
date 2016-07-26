@@ -1,48 +1,42 @@
 
-<div class='modal-dialog'>
+<div class='modal-dialog' style="width:450px">
   <div class='modal-content'>
    <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">×</button>
      <h1 class="h1-heading-popup">Collab Modal</h1>
   </div>
     <div class='modal-body'>
-
-      <div class="row">
-         <div class="col-lg-6">
-            <label class="echo_patinet">Project: </label>
+      <form class="form-horizontal">
+          <div class="form-group">
+             <label class="col-lg-4 control-label">Project </label>
+             <div class="col-lg-8">
+                <span id="" name="">This is a testing Project </span>
+             </div>
+          </div>
+      
+         <div class="form-group">
+           <label class="col-lg-4 control-label">IA </label>
+           <div class="col-lg-8">
+              <span id="" name="">IA-00000000A34 </span>
+           </div>
          </div>
-         <div class="col-lg-4">
-            <span id="" name="">Project name: </span>
-         </div>
-     </div>
-     <div class="row">
-         <div class="col-lg-6">
-            <label class="echo_patinet">IA:</label>
-         </div>
-         <div class="col-lg-4">
-            <span id="" name="">IA-00000000A34 </span>
-         </div>
-     </div>
-     <div class="row">
-         <div class="col-lg-6">
-            <label class="echo_patinet">Ecr:</label>
-         </div>
-         <div class="col-lg-4">
-            <span id="" name="">ECR-00000000A34 </span>
-         </div>
-     </div>
-      <div class="row">
-         <div class="col-lg-6">
-            <label class="echo_patinet">Date/Time:</label>
-         </div>
-         <div class="col-lg-4">
-           <input type="text" class="form-control" id="datetimepicker" name="dob" required="" value="07/12/2016" aria-required="true">
-         </div>
-     </div>
+          <div class="form-group">
+             <label class="col-lg-4 control-label">ECR </label>
+             <div class="col-lg-8">
+              <span id="" name="">ECR-00000000A34 </span>
+            </div>
+          </div>  
+           <div class="form-group">
+             <label class="col-lg-4 control-label">Project </label>
+             <div class="col-lg-8">
+              <input type="text" class="form-control" id="datetimepicker" name="dob" required="" value="07/12/2016" aria-required="true">
+             </div> 
+          </div>
+     </form>
     </div>
     <div class='modal-footer'>
-      <button class='btn btn-primary' type='button'>Update</button>
-      <button class='btn btn-default' data-dismiss='modal' type='button'>Close</button>
+      <button class='btn btn-danger' data-dismiss='modal' type='button'>Close</button>
+      <button class='btn save-print-update-edit-btn' type='submit'>Update</button>
     </div>
   </div>
 </div>

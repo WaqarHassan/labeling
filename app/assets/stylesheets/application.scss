@@ -20,7 +20,6 @@
 @import 'nprogress';
 @import 'nprogress-bootstrap';
 
-
 @font-face {
 font-family: 'Glyphicons Halflings';
 src:font-url('glyphicons-halflings-regular.eot');
@@ -82,10 +81,10 @@ body {
 }
 .project-data { width:40%; float:left; position:relative;}
 .approval-data {width:40%; float:left; position:relative;}
-.collapsed-icon { display:block; width:20px; height:21px; position:absolute; top:-30px; right:0px; z-index:999;}
+.collapsed-icon { display:block; width:20px; height:21px; position:absolute; top:-17px; right:0px; z-index:999;}
 .project-data.collapsed { width:7% ;}
-.project-data.collapsed .collapsed-icon { background:url(/assets/plus.png) no-repeat;}
-.project-data .collapsed-icon { background:url(/assets/minus.png) no-repeat;}
+.project-data.collapsed .collapsed-icon { background:image-url("col_exp.png") no-repeat; opacity: 0.62;}
+.project-data .collapsed-icon { background:image-url("col_exp.png") no-repeat; opacity: 0.62;}
 .tspend {width: 60% !important;}
 
 .no-brd { border-right:none !important;}
@@ -101,4 +100,143 @@ body {
 
 .container {
     width: 1560px !important;
+}
+
+// main.scss
+
+::selection { background-color: #E13300; color: white; }
+::-moz-selection { background-color: #E13300; color: white; }
+
+body {
+        background-color: #ffffff;
+        font: 13px/20px Droid Sans;
+        color: #4F5155;
+        letter-spacing: 0pt;
+}
+
+a {
+
+    color: rgb(152, 46, 47);
+    background-color: transparent;
+    font-weight: bold;
+}
+
+a strong{
+    text-transform: uppercase;
+}
+a:hover, a:focus{
+    cursor: pointer;
+  
+}
+h1 {
+        color: #444;
+        background-color: transparent;
+        border-bottom: 1px solid #D0D0D0;
+        font-size: 19px;
+        font-weight: normal;
+        margin: 0 0 14px 0;
+        padding: 14px 15px 10px 15px;
+}
+
+.clearfix{
+    clear: both;
+}
+
+.li-clr.li-mrgn-top {
+    text-transform: capitalize;
+}
+
+.push{
+    margin-top: 5px;
+}
+
+.h1-heading-popup {
+    background-color: transparent;
+    border-bottom: medium none;
+    color: rgb(80, 87, 89);
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    float: left;
+}
+
+.modal-header {
+    border-bottom: 0 none;
+    min-height: 0;
+    padding: 10px 27px 0 17px;
+}
+
+.btn, .btn:hover{
+    -moz-user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 1.42857;
+    margin-bottom: 0;
+    outline: medium none !important;
+    padding: 3px 6px;
+    text-align: center;
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: nowrap;
+    color: #fff;
+}
+
+.btn-danger, .btn-danger:hover {
+    background-color: #b7b09c;
+    border-color: #94896b;
+    color: #fff;
+    text-align: center;
+    width: 55px !important;
+}
+
+.save-print-update-edit-btn {
+    background-color: #611d4b !important;
+    margin-top: 3px;
+    outline: medium none !important;
+    text-align: center;
+}
+
+.form-control {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #fff;
+    background-image: none;
+    border-color: -moz-use-text-color -moz-use-text-color #ccc;
+    border-image: none;
+    border-radius: 0;
+    border-style: none none solid;
+    border-width: medium medium 1px;
+    box-shadow: none;
+    color: #555;
+    display: block;
+    font-size: 11px;
+    height: auto;
+    line-height: 1.42857;
+    padding: 3px 6px;
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 4px;
+}
+label{
+  font-weight: normal;
+}
+
+.form-horizontal .control-label{
+  padding-top: 0px;
+}
+
+.pull-left{
+  margin-left: -6px;
 }

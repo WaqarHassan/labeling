@@ -12,7 +12,6 @@
     = headjs_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
     = yield :head
-    = render 'layouts/airbrake'
   %body{class: "controller__#{controller_name} action__#{action_name}"}
     - if user_signed_in?
       = render 'layouts/navigation'
@@ -27,5 +26,4 @@
             = yield :footer
           - else
             = render 'layouts/footer'
-    = render 'layouts/analytics'
     = render 'layouts/javascripts'

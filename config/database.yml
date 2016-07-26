@@ -21,7 +21,7 @@ development:
   pool: 5
   host: 127.0.0.1
   username: root 
-  password: test
+  password: waqar123
   timeout: 5000
 
   # Connect on a TCP socket. Omitted by default since the client uses a
@@ -52,7 +52,7 @@ test:
   pool: 5
   host: 127.0.0.1
   username: root
-  password: test
+  password: waqar123
   timeout: 5000
 
 production:

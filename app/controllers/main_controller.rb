@@ -13,7 +13,6 @@ class MainController < ApplicationController
     # elsif params[:popup] == 'collab'
     #   @info_modal = 'collaboration'
     # end
-
     respond_to do |format|
       format.html
       format.js
@@ -21,6 +20,25 @@ class MainController < ApplicationController
 
    end
    
+   def open_modal4
+    # render :layout => false
+       @project = Project.new
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+   end
+   def open_modal5
+
+        @ium = Ium.new
+     respond_to do |format|
+      format.html
+      format.js
+    end
+
+   end
+
    def open_modal2
     respond_to do |format|
       format.html

@@ -48,6 +48,8 @@ Rails.application.routes.draw do
   get '/main/open_modal' => 'main#open_modal', as: 'open_modal'
   get '/main/open_modal2' => 'main#open_modal2', as: 'open_modal2'
   get '/main/open_modal3' => 'main#open_modal3', as: 'open_modal3'
+  get '/main/open_modal4' => 'main#open_modal4', as: 'open_modal4'
+  get '/main/open_modal5' => 'main#open_modal5', as: 'open_modal5' 
 
   resources :main
   get '/main' => 'main#index', as: 'main_home'

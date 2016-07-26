@@ -37,7 +37,12 @@ font-style:normal;
 
 // Padding to clear fixed nav
 body {
-  padding-top: 55px;
+        background-color: rgb(229, 230, 230);
+        font: 13px/20px Droid Sans;
+        color: #4F5155;
+        padding-top: 55px;
+        letter-spacing: 0pt;
+         margin: 34px;
 }
 
 // Make sure alerts are nicely formatted
@@ -98,21 +103,11 @@ body {
 .ia-list li { text-decoration:underline;}
 .ia-list li:first-child { margin-left:-15px;}
 
-.container {
-    width: 1560px !important;
-}
-
 // main.scss
 
 ::selection { background-color: #E13300; color: white; }
 ::-moz-selection { background-color: #E13300; color: white; }
 
-body {
-        background-color: #ffffff;
-        font: 13px/20px Droid Sans;
-        color: #4F5155;
-        letter-spacing: 0pt;
-}
 
 a {
 
@@ -246,9 +241,37 @@ label{
 }
 
 th {
-    height: 46px;
+    height: 62px;
 }
 
 td {
     height: 73px;
+}
+
+.auth-login-form {
+    padding-top: 55px;
+}
+.auth-subheading {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.auth-login-btn {
+    float: right;
+    outline: medium none !important;
+    padding-right: 3px;
+}
+
+.auth-logo {
+    padding-top: 12px;
+    text-align: center;
+}
+
+.auth-logo img {
+    width: 30%;
+}
+
+navbar-default {
+    background-color: #fff !important;
+    border-color: #e7e7e7;
 }

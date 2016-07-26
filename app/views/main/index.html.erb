@@ -78,7 +78,9 @@
             </div>
         </div>
         <div class="project-btmcnt">
-          <div><a href="#"><img src="/assets/cross-btn.png" width="20"></a> Show only incomplete</div>
+          <div><%= link_to "#" do %>
+              <%= image_tag("cross-btn.png") %>
+             <% end %> Show only incomplete</div>
             <div><a href="#">Show All</a></div>
             <div class="project-data-list">
               <ul class="ia-list">
@@ -212,10 +214,15 @@
  </div> 
 </div>
 
-
 <style>
   .rework {
     width: 700px;
   }
-
+.container {
+    width: 1560px;
+    background-color: #fff;
+}
+.navbar-default{
+   background-color: #fff;
+}
 </style>

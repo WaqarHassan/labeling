@@ -9,18 +9,24 @@
   / .auth__or
   /   %hr/
   /   %span or
+  .auth-logo
+    =image_tag('labeling_logo.png')
+  .auth-login-form
+    %p.auth-subheading Please login with your email/username and password below.
+    = simple_form_for resource, as: resource_name, url: session_path(resource_name) do |f|
+      - if devise_mapping.rememberable?
+        = f.input :remember_me, as: :hidden, input_html: {value: true}
+      %p  
+        = f.input :email, autofocus: true, required: true, label: false
 
-  = simple_form_for resource, as: resource_name, url: session_path(resource_name) do |f|
-    - if devise_mapping.rememberable?
-      = f.input :remember_me, as: :hidden, input_html: {value: true}
-    = f.input :email, autofocus: true, required: true
-
-    %div{class: resource.email.blank? ? 'in fade' : 'in'}
-      = f.input :password, required: true do |input|
-        - if devise_mapping.recoverable?
-          //= link_to I18n.t('auth.forgot.prompt'), new_password_path(resource_name), class: 'pull-right small'
-        = f.input_field :password, required: true, autocomplete: 'off'
-      = f.button :submit, I18n.t('auth.login.link'), class: 'btn-primary'
+      %div{class: resource.email.blank? ? 'in fade' : 'in'}
+        %p
+          = f.input :password, required: true, label: false do |input|
+            - if devise_mapping.recoverable?
+              //= link_to I18n.t('auth.forgot.prompt'), new_password_path(resource_name), class: 'pull-right small'
+            = f.input_field :password, required: true, autocomplete: 'off', label: false
+          %span.auth-login-btn  
+            = f.button :submit, I18n.t('auth.login.link'), class: 'btn save-print-update-edit-btn'
 
   / = render 'users/shared/links', disable_signup: true
 

@@ -11,6 +11,7 @@
     = javascript_include_tag 'head', 'data-turbolinks-track' => true
     = headjs_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
+    %link{:href => "https://fonts.googleapis.com/css?family=Droid+Sans", :rel => "stylesheet", :type => "text/css"}/
     = yield :head
   %body{class: "controller__#{controller_name} action__#{action_name}"}
     - if user_signed_in?

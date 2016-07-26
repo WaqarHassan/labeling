@@ -82,7 +82,7 @@ body {
 .project-data { width:40%; float:left; position:relative;}
 .approval-data {width:40%; float:left; position:relative;}
 .collapsed-icon { display:block; width:20px; height:21px; position:absolute; top:-17px; right:0px; z-index:999;}
-.project-data.collapsed { width:7% ;}
+.project-data.collapsed { width:11.5% ;}
 .project-data.collapsed .collapsed-icon { background:image-url("col_exp.png") no-repeat; opacity: 0.62;}
 .project-data .collapsed-icon { background:image-url("col_exp.png") no-repeat; opacity: 0.62;}
 .tspend {width: 60% !important;}
@@ -239,4 +239,16 @@ label{
 
 .pull-left{
   margin-left: -6px;
+}
+
+.glyphicon{
+  color: darkred;
+}
+
+th {
+    height: 46px;
+}
+
+td {
+    height: 73px;
 }

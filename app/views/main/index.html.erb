@@ -7,60 +7,157 @@
   <a href="#" class="col-sm-4"> ECR </a>
  </div>
 <div class='data-main'>
-  <div class="project-data collapsed" id="projectbox">
-  <a href="#" class="collapsed-icon"onclick="messagebox(); return false;"></a>
- 
-  <div style="overflow:hidden;">
-    <table class="table table-bordered">
-        <tr class="main_heading" style="height: 27px;">
-          <th> </th>
-          <th> </th>
-          <th> </th>
-          <th> </th>
-          <th> </th>
-          <th> </th>
-          <th> </th>
-        </tr>
-        <tr class="sub_heading">
-          <th>IA</th>
-          <th>ECR</th>
-          <th>Status</th>
-          <th>BU</th>
-          <th>Comp</th>
-          <th>Lang</th>
-          <th class="no-brd">Comp Type</th>
-        </tr>
-        <tr>
-          <td>IA-0000213</td>
-          <td></td>
-          <td>Active</td>
-          <td>THV</td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            <%= link_to 'ECR-0001223', open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
-          <td>Active</td>
-          <td></td>
-          <td>50</td>
-          <td>10</td>
-          <td class="no-brd">Multi-Lingual IFUs</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            <%= link_to 'ECR-0034874', open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
-          <td>OnHold</td>
-          <td></td>
-          <td>50</td>
-          <td>10</td>
-          <td class="no-brd">CGL</td>
-        </tr>
-      </table>
-  </div>
+
+  <div class="project-data project-formset collapsed" id="projectform">
+  <a href="#" class="collapsed-icon" onclick="messageform(); return false;"></a>
+    <div style="overflow:hidden;">
+      <div class="project-form">
+          <div class="project-fields">
+              <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-5">
+                  Like (wildcard)
+                </div>
+                <div class="col-lg-5">
+                  Exact
+                </div>
+              </div>
+          </div>
+          <div class="project-fields">
+              <div class="row">
+                <div class="col-lg-2">
+                  BU:
+                </div>
+                  <div class="col-lg-5">
+                    <input type="text" class="form-control">
+                  </div>
+                  <div class="col-lg-5">
+                    <input type="text" class="form-control">
+                  </div>
+                </div>
+            </div>
+            <div class="project-fields">
+              <div class="row">
+                <div class="col-lg-2">
+                  Project:
+                </div>
+                  <div class="col-lg-10">
+                      <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="project-fields">
+              <div class="row">
+                <div class="col-lg-2">
+                  IA:
+                </div>
+                  <div class="col-lg-5">
+                      <input type="text" class="form-control">
+                    </div>
+                    <div class="col-lg-5">
+                      <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="project-fields">
+              <div class="row">
+                <div class="col-lg-2">
+                  ECR:
+                </div>
+                  <div class="col-lg-5">
+                      <input type="text" class="form-control">
+                    </div>
+                    <div class="col-lg-5">
+                      <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="project-fields">
+              <div class="row">
+                <div class="col-lg-2">
+                </div>
+                  <div class="col-lg-5">
+                      <input type="sibmit" value="Search" class="btn btn-success">
+                    </div>
+                    <div class="col-lg-5">
+                      <input type="reset" value="Clear" class="btn btn-danger">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="project-btmcnt">
+          <div><a href="#"><img src="/assets/cross-btn.png" width="20"></a> Show only incomplete</div>
+            <div><a href="#">Show All</a></div>
+            <div class="project-data-list">
+              <ul class="ia-list">
+                  <li>IA-0012139</li>
+                    <li>ECR-0034871</li>
+                    <li>ECR-0034874</li>
+                    <li>ECR-0034885</li>
+                </ul>
+                <ul class="ia-list">
+                  <li>IA-0000213</li>
+                    <li>ECR-0001223</li>
+                    <li>ECR-0034874</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <div class="project-data projectcall collapsed" id="projectbox">
+  <a href="#" class="collapsed-icon" onclick="messagebox(); return false;"></a>
+    <div style="overflow:hidden;">
+      <table class="table table-bordered">
+          <tr class="main_heading" style="height: 27px;">
+            <th> </th>
+            <th> </th>
+            <th> </th>
+            <th> </th>
+            <th> </th>
+            <th> </th>
+            <th> </th>
+          </tr>
+          <tr class="sub_heading">
+            <th>IA</th>
+            <th>ECR</th>
+            <th>Status</th>
+            <th>BU</th>
+            <th>Comp</th>
+            <th>Lang</th>
+            <th class="no-brd">Comp Type</th>
+          </tr>
+          <tr>
+            <td>IA-0000213</td>
+            <td></td>
+            <td>Active</td>
+            <td>THV</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <%= link_to 'ECR-0001223', open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
+            <td>Active</td>
+            <td></td>
+            <td>50</td>
+            <td>10</td>
+            <td class="no-brd">Multi-Lingual IFUs</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <%= link_to 'ECR-0034874', open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
+            <td>OnHold</td>
+            <td></td>
+            <td>50</td>
+            <td>10</td>
+            <td class="no-brd">CGL</td>
+          </tr>
+        </table>
+    </div>
 </div>
 
 <div class="approval-data tspend" id="ghzanfer">
@@ -130,21 +227,3 @@
   }
 
 </style>
-
-<script type="text/javascript">
-
-function messagebox()
-{
-     var className = $('.project-data').attr('class');
-   console.log(className);
-      if (className=='project-data collapsed'){
-     $('#projectbox').removeClass('collapsed');
-     $('#ghzanfer').removeClass('tspend');
-    }else{  
-     $('#projectbox').addClass('collapsed');
-     $('#ghzanfer').addClass('tspend');   
-    }
-    
-   
-}
-</script>

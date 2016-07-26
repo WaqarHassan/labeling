@@ -14,13 +14,23 @@
 @import "cards";
 @import "footer";
 @import "hacks";
-@import "mains";
+@import "bootstrap-datetimepicker";
 
 // Plugins
 @import 'nprogress';
 @import 'nprogress-bootstrap';
 
 
+@font-face {
+font-family: 'Glyphicons Halflings';
+src:font-url('glyphicons-halflings-regular.eot');
+src:font-url('glyphicons-halflings-regular.svg'),
+    font-url('glyphicons-halflings-regular.ttf'),
+    font-url('glyphicons-halflings-regular.woff'),
+    font-url('glyphicons-halflings-regular.woff2');
+font-weight:normal;
+font-style:normal;
+}
 
 //
 // Minor Tweaks
@@ -64,11 +74,31 @@ body {
 
 .data-main { margin-top:10px; padding:20px;}
 .table-bordered th { font-size:12px; font-weight:normal; padding:5px !important;}
+.project-formset {
+    width: 20% !important;
+}
+.project-formset.collapsed {
+    width: 0 !important;
+}
 .project-data { width:40%; float:left; position:relative;}
-.approval-data {width:60%; float:right; position:relative;}
-.collapsed-icon { display:block; width:20px; height:21px; position:absolute; top:-21px; right:0px; z-index:999;}
-.project-data.collapsed { width:15%;}
+.approval-data {width:40%; float:left; position:relative;}
+.collapsed-icon { display:block; width:20px; height:21px; position:absolute; top:-30px; right:0px; z-index:999;}
+.project-data.collapsed { width:7% ;}
 .project-data.collapsed .collapsed-icon { background:url(/assets/plus.png) no-repeat;}
 .project-data .collapsed-icon { background:url(/assets/minus.png) no-repeat;}
-.tspend {width: 85% !important;}
+.tspend {width: 60% !important;}
+
 .no-brd { border-right:none !important;}
+.project-fields { margin-top:10px;}
+.project-form {
+    padding-right: 10px;
+}
+.project-fields input { width:100%;}
+.project-btmcnt { margin-top:10px;}
+.ia-list { list-style:none;}
+.ia-list li { text-decoration:underline;}
+.ia-list li:first-child { margin-left:-15px;}
+
+.container {
+    width: 1560px !important;
+}

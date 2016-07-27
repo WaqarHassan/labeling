@@ -13,9 +13,16 @@ function messageform()
 
 		 $('#projectform').removeClass('collapsed');
 		 $('#detail_data').removeClass('tspend');
+
+		 var classNameIadiv = $('.project_ia').attr('class');
+		 if (classNameIadiv=='project-data project_ia collapsed'){
+		 	$('#project_ia').addClass('project_serach_noDetail');
+		 }
+
 	  }else{
 	  	 $('#labeling_body').removeClass('labeling_body_detail_search');
       	 $('#labeling_container').removeClass('labeling_container_detail_search');
+      	 $('#project_ia').removeClass('project_serach_noDetail');
 
       	 $('#labeling_body').addClass('labeling_body_detail_search');
       	 $('#labeling_container').addClass('labeling_container_detail_search');

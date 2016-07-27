@@ -1,10 +1,15 @@
  <div class="pull-right">
   <span class="col-sm-4">
-   <%= link_to 'Project', open_modal4_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#project_modal_popup4'} %>
+   <%= link_to 'Project', add_project_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#add_project_modal'} %>
    </span>
 
-  <a href="#" class="col-sm-4"> I.A </a>
-  <a href="#" class="col-sm-4"> ECR </a>
+   <span class="col-sm-4">
+   <%= link_to 'Add Ecr', add_ecr_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#add_ecr_modal'} %>
+   </span>
+    <span class="col-sm-4">
+   <%= link_to 'Add IA', add_ia_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#add_ia_modal'} %>
+   </span>
+
  </div>
 <div class='data-main'>
 

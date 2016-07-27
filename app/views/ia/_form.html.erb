@@ -1,12 +1,81 @@
 <%= simple_form_for(@ium) do |f| %>
   <%= f.error_notification %>
   <div class="form-inputs">
-    <%= f.input :id %>
-    <%= f.input :name %>
-    <%= f.input :translation %>
-    <%= f.input :horw %>
-    <%= f.input :requested_date %>
-    <%= f.input :to_be_approved_by %>
+
+
+
+
+       <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ia_name" class=" form-group echo_patinet control-label">NAME:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :name ,:label => false %>
+            </div>
+     </div>
+  </div>
+   <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ia_translation" class=" form-group echo_patinet control-label">TRANSLATION:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :translation ,:label => false %>
+            </div>
+     </div>
+  </div>
+   <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ia_horw" class=" form-group echo_patinet control-label">HORW:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :horw ,:label => false %>
+            </div>
+     </div>
+  </div>
+   <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ia_inbox_date" class=" form-group echo_patinet control-label">INBOX DATE:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :inbox_date ,:label => false %>
+            </div>
+     </div>
+  </div>
+   <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ia_sent_date" class=" form-group echo_patinet control-label">SENT DATE:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :sent_date ,:label => false %>
+            </div>
+     </div>
+  </div>
+   <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ia_received_date" class=" form-group echo_patinet control-label">RECEIVED DATE:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :received_date ,:label => false %>
+            </div>
+     </div>
+  </div>
+  <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ia_project_id" class=" form-group echo_patinet control-label">PROJECT ID:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :project_id ,:label => false %>
+            </div>
+     </div>
+  </div>
+
   </div>
   <div class="form-actions">
     <%= f.button :submit %>

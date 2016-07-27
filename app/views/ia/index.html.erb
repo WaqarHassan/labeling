@@ -2,12 +2,13 @@
 <table>
   <thead>
     <tr>
-      <th>Id</th>
       <th>Name</th>
       <th>Translation</th>
       <th>Horw</th>
-      <th>Requested date</th>
-      <th>To be approved by</th>
+      <th>Inbox date</th>
+      <th>Sent date</th>
+      <th>Received date</th>
+      <th>Project</th>
       <th></th>
       <th></th>
       <th></th>
@@ -16,9 +17,6 @@
   <tbody>
     <% @ia.each do |ium| %>
       <tr>
-        <td>
-          <%= ium.id %>
-        </td>
         <td>
           <%= ium.name %>
         </td>
@@ -29,10 +27,16 @@
           <%= ium.horw %>
         </td>
         <td>
-          <%= ium.requested_date %>
+          <%= ium.inbox_date %>
         </td>
         <td>
-          <%= ium.to_be_approved_by %>
+          <%= ium.sent_date %>
+        </td>
+        <td>
+          <%= ium.received_date %>
+        </td>
+        <td>
+          <%= ium.project_id %>
         </td>
         <td>
           <%= link_to 'Show', ium %>

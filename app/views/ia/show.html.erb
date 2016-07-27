@@ -2,10 +2,6 @@
   <%= notice %>
 </p>
 <p>
-  <b>Id:</b>
-  <%= @ium.id %>
-</p>
-<p>
   <b>Name:</b>
   <%= @ium.name %>
 </p>
@@ -18,12 +14,20 @@
   <%= @ium.horw %>
 </p>
 <p>
-  <b>Requested date:</b>
-  <%= @ium.requested_date %>
+  <b>Inbox date:</b>
+  <%= @ium.inbox_date %>
 </p>
 <p>
-  <b>To be approved by:</b>
-  <%= @ium.to_be_approved_by %>
+  <b>Sent date:</b>
+  <%= @ium.sent_date %>
+</p>
+<p>
+  <b>Received date:</b>
+  <%= @ium.received_date %>
+</p>
+<p>
+  <b>Project:</b>
+  <%= @ium.project_id %>
 </p>
 <%= link_to 'Edit', edit_ium_path(@ium) %>
 \|

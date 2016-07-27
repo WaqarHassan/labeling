@@ -53,6 +53,6 @@ class IaController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def ium_params
-      params.require(:ium).permit(:id, :name, :translation, :horw, :requested_date, :to_be_approved_by)
+      params.require(:ium).permit(:name, :translation, :horw, :inbox_date, :sent_date, :received_date, :project_id)
     end
 end

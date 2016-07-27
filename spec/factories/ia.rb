@@ -1,10 +1,11 @@
 FactoryGirl.define do
   factory :ium do
-    id 1
     name "MyString"
     translation false
     horw false
-    requested_date "2016-07-15"
-    to_be_approved_by "2016-07-15"
+    inbox_date "2016-07-27"
+    sent_date "2016-07-27"
+    received_date "2016-07-27"
+    project_id 1
   end
 end

@@ -1,15 +1,69 @@
-= simple_form_for(@ecr) do |f|
-  = f.error_notification
+<%= simple_form_for(@ecr) do |f| %>
+  <%= f.error_notification %>
+  <div class="form-inputs">
+    <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ecr_id" class=" form-group echo_patinet control-label">ID:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :id ,:label => false %>
+            </div>
+     </div>
+  </div>
+  <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ecr_name" class=" form-group echo_patinet control-label">NAME:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :name ,:label => false %>
+            </div>
+     </div>
+  </div>
+  <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ecr_user_id" class=" form-group echo_patinet control-label">USER ID:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :user_id ,:label => false %>
+            </div>
+     </div>
+  </div>
+  <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ecr_status" class=" form-group echo_patinet control-label">STATUS:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :status ,:label => false %>
+            </div>
+     </div>
+  </div>
+  <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ecr_note" class=" form-group echo_patinet control-label">NOTE:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :note ,:label => false %>
+            </div>
+     </div>
+  </div>
+  <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ecr_station_id" class=" form-group echo_patinet control-label">STATION ID:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :station_id ,:label => false %>
+            </div>
+     </div>
+  </div>
 
-  .form-inputs
-    = f.input :id
-    = f.input :name
-    = f.input :user_id
-    = f.input :status
-    = f.input :note
-    = f.input :station_id
-    = f.input :status_start
-    = f.input :rework_of
-
-  .form-actions
-    = f.button :submit
+  </div>
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

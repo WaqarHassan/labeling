@@ -1,30 +1,38 @@
-%p#notice= notice
-
-%p
-  %b Id:
-  = @ecr.id
-%p
-  %b Name:
-  = @ecr.name
-%p
-  %b User:
-  = @ecr.user_id
-%p
-  %b Status:
-  = @ecr.status
-%p
-  %b Note:
-  = @ecr.note
-%p
-  %b Station:
-  = @ecr.station_id
-%p
-  %b Status start:
-  = @ecr.status_start
-%p
-  %b Rework of:
-  = @ecr.rework_of
-
-= link_to 'Edit', edit_ecr_path(@ecr)
+<p id="notice">
+  <%= notice %>
+</p>
+<p>
+  <b>Id:</b>
+  <%= @ecr.id %>
+</p>
+<p>
+  <b>Name:</b>
+  <%= @ecr.name %>
+</p>
+<p>
+  <b>User:</b>
+  <%= @ecr.user_id %>
+</p>
+<p>
+  <b>Status:</b>
+  <%= @ecr.status %>
+</p>
+<p>
+  <b>Note:</b>
+  <%= @ecr.note %>
+</p>
+<p>
+  <b>Station:</b>
+  <%= @ecr.station_id %>
+</p>
+<p>
+  <b>Status start:</b>
+  <%= @ecr.status_start %>
+</p>
+<p>
+  <b>Rework of:</b>
+  <%= @ecr.rework_of %>
+</p>
+<%= link_to 'Edit', edit_ecr_path(@ecr) %>
 \|
-= link_to 'Back', ecrs_path
+<%= link_to 'Back', ecrs_path %>

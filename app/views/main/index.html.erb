@@ -1,7 +1,7 @@
 <div class='data-main'>
 
   <div class="project-data project-formset collapsed" id="projectform">
-  <a href="#" class="collapsed-icon" title="Search form show/hide" onclick="messageform(); return false;"></a>
+   <a href="#" class="collapsed-icon" title="Search form show/hide" onclick="messageform(); return false;"></a>
     <div style="overflow:hidden;">
       <div class="project-form">
           <div class="project-fields">
@@ -97,10 +97,10 @@
             </div>
         </div>
     </div>
-</div>
+  </div>
 
-  <div class="project-data projectcall collapsed" id="projectbox">
-  <a href="#" class="collapsed-icon" title="Detail" onclick="messagebox(); return false;"></a>
+  <div class="project-data project_ia collapsed" id="project_ia">
+   <a href="#" class="collapsed-icon" title="Detail" onclick="messagebox(); return false;"></a>
     <div style="overflow:hidden;">
       <table class="table table-bordered">
           <tr class="main_heading" style="height: 27px;">
@@ -152,9 +152,9 @@
           </tr>
         </table>
     </div>
-</div>
+  </div>
 
-<div class="approval-data tspend" id="ghzanfer">
+<div class="approval-data tspend" id="detail_data">
 <a href="#" class="minus-icon"></a>
   <table class="table table-bordered">
     <thead>
@@ -187,9 +187,9 @@
               <td>
                 <%= link_to ia_approved, open_modal2_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
               </td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>5/19/2016  1:18:00 PM</td>
+              <td>5/19/2016  1:18:00 PM</td>
+              <td>5/19/2016  1:18:00 PM</td>
               <td>
                 <%= link_to ecr.created_at.strftime("%Y-%m-%d %I:%M %p"), open_modal2_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
               </td>
@@ -219,7 +219,7 @@
     width: 700px;
   }
 .container {
-    width: 1560px;
+    /*width: 1560px;*/
     background-color: #fff;
 }
 .navbar-default{

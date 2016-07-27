@@ -13,10 +13,10 @@
     = csrf_meta_tags
     %link{:href => "https://fonts.googleapis.com/css?family=Droid+Sans", :rel => "stylesheet", :type => "text/css"}/
     = yield :head
-  %body{class: "controller__#{controller_name} action__#{action_name}"}
+  %body{class: "controller__#{controller_name} action__#{action_name}", id: "labeling_body"}
     - if user_signed_in?
       = render 'layouts/navigation'
-    .container
+    .container#labeling_container
       .errors__container
         = render 'layouts/messages'
       = yield

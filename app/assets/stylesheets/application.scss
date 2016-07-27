@@ -84,10 +84,10 @@ body {
 .project-formset.collapsed {
     width: 0 !important;
 }
-.project-data { width:40%; float:left; position:relative;}
-.approval-data {width:40%; float:left; position:relative;}
+.project-data { width:33%; float:left; position:relative;}
+.approval-data {width:33%; float:left; position:relative;}
 .collapsed-icon { display:block; width:20px; height:21px; position:absolute; top:-17px; right:0px; z-index:999;}
-.project-data.collapsed { width:11.5% ;}
+.project-data.collapsed { width:16.64% ;}
 .project-data.collapsed .collapsed-icon { background:image-url("col_exp.png") no-repeat; opacity: 0.62;}
 .project-data .collapsed-icon { background:image-url("col_exp.png") no-repeat; opacity: 0.62;}
 .tspend {width: 60% !important;}
@@ -274,4 +274,25 @@ td {
 navbar-default {
     background-color: #fff !important;
     border-color: #e7e7e7;
+}
+
+
+.labeling_body_detail{
+     width: 1620px  !important;
+}
+.labeling_container_detail{
+    margin-right: 40px;
+    width: 1560px  !important;
+}
+
+.labeling_body_detail_search{
+     width: 1920px  !important;
+}
+.labeling_container_detail_search{
+    margin-right: 40px;
+    width: 1870px !important;
+}
+
+.project_serach_noDetail{
+    width: 10.1% !important;
 }

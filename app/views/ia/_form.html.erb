@@ -1,14 +1,74 @@
-<%= simple_form_for(@ium) do |f| %>
+<%= simple_form_for @ium , remote: true , :html => { :id => "add_ia_form"}  do |f| %>
   <%= f.error_notification %>
   <div class="form-inputs">
-    <%= f.input :id %>
-    <%= f.input :name %>
-    <%= f.input :translation %>
-    <%= f.input :horw %>
-    <%= f.input :requested_date %>
-    <%= f.input :to_be_approved_by %>
+
+       <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ia_name" class="echo_patinet pull-right control-label">NAME:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :name ,:label => false %>
+            </div>
+     </div>
   </div>
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 
+          </div>
+            <div class="col-lg-6">
+                <div class= "col-lg-5">
+               
+                    <%= f.input :translation  %> 
+                
+                  </div>
+                  <div class= "col-lg-5">
+                       
+                         <%= f.input :horw %>
+                      
+                  </div>
+            </div>
+     </div>
+  </div>
+<div class="form-group">
+  <div class="row">
+         <label for ="datepicker"  class="col-lg-4 control-label" >INBOX DATE:</label>
+         <div class="col-lg-6">
+           <input type="text" class="datepicker form-control" id="datepicker" name="dob" required="" value="07/12/2016" aria-required="true">
+         </div>
+        </div>
+     </div>
+
+     <div class="form-group">
+     <div class="row">
+         <label for ="datepicker2" class="col-lg-4 control-label">SENT DATE:</label>
+         <div class="col-lg-6">
+           <input type="text" class="datepicker form-control" id="datepicker2" name="dob" required="" value="07/12/2016" aria-required="true">
+         </div>
+        </div>
+     </div>
+
+     <div class="form-group">
+     <div class="row">
+         <label  for ="datepicker3" class="col-lg-4 control-label">RECEIVED DATE:</label>
+         <div class="col-lg-6">
+           <input type="text" class="datepicker form-control" id="datepicker3" name="dob" required="" value="07/12/2016" aria-required="true">
+         </div>
+        </div>
+     </div>
+  <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ia_project_id" class=" echo_patinet pull-right control-label">PROJECT ID:</label>
+          </div>
+            <div class="col-lg-6">
+           <select  id = "ia_project_id" class= "form-control">
+             <option>Project_1</option>
+           </select>
+            </div>
+     </div>
+  </div>
+
   </div>
 <% end %>

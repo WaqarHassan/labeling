@@ -1,6 +1,27 @@
 
 console.log('main js working........');
 
+function addProjectSubmit() {
+	$("form#add_project_form").submit();
+}
+function addEcrSubmit() {
+	$("form#add_ecr_form").submit();
+}
+function addIaSubmit() {
+	$("form#add_ia_form").submit();
+}
+
+$(document).ready(function() {
+  return $("#new_article").on("ajax:success", function(e, data, status, xhr) {
+  	console.log("pkpk");
+  	//$('add_project_modal').hide();
+    return $("#new_article").append(xhr.responseText);
+  }).on("ajax:error", function(e, xhr, status, error) {
+    return $("#new_article").append("<p>ERROR</p>");
+  });
+});
+
+
 function messageform()
 {
      var className = $('.project-formset').attr('class');

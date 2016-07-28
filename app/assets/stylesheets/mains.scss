@@ -14,7 +14,10 @@ a {
     background-color: transparent;
     font-weight: bold;
 }
-
+#project_modal_popup4{
+    
+    
+}
 a strong{
     text-transform: uppercase;
 }
@@ -89,10 +92,82 @@ h1 {
     width: 55px !important;
 }
 
+
 .save-print-update-edit-btn {
     background-color: #611d4b !important;
     margin-top: 3px;
     outline: medium none !important;
     text-align: center;
     width: 55px !important;
+}
+/*      end color  */
+
+.nav-tabs {
+     border-bottom: none; 
+}
+.alert-danger , .alert-success , .alert-info , .alert-warning {
+    
+    background-color: rgba(206, 184, 136, .30) !important;
+    border-color : rgba(206, 184, 136, .30) !important;
+}
+.funnel li .digits{
+    color: rgba(152,46,47,1);
+}
+.li-clr li{
+    color: rgba(152,46,47,1);
+}
+.btn-success-clr{
+    background-color: rgba(97,29,75,.6);
+}
+.btn-success-clr:hover , .btn-success-clr:focus, .btn-success-clr:active{
+    background-color: rgba(97,29,75,.6);
+}
+/* .funnel li:nth-child(4){padding-top: 5px;} */
+.string.optional.control-label {
+    float: right;
+    padding-right: 0;
+    font-size: 11px;
+    font-weight: normal;
+    letter-spacing: 0.7pt;
+    margin-bottom: 0;
+    overflow: hidden;
+    padding-top: 0;
+    text-align: right;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+.integer.optional.control-label {
+    
+     float: right;
+    padding-right: 0;
+    font-size: 11px;
+    font-weight: normal;
+    letter-spacing: 0.7pt;
+    margin-bottom: 0;
+    overflow: hidden;
+    padding-top: 0;
+    text-align: right;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+.text.optional.control-label {
+    
+     float: right;
+    padding-right: 0;
+    font-size: 11px;
+    font-weight: normal;
+    letter-spacing: 0.7pt;
+    margin-bottom: 0;
+    overflow: hidden;
+    padding-top: 0;
+    text-align: right;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+}
+.form-group .control-label {
+    text-align: right;
 }

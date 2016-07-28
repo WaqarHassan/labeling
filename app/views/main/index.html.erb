@@ -1,3 +1,13 @@
+ <div >
+  
+    <span class="col-sm-4 pull-right">
+     <%= link_to 'Add Ecr', add_ecr_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#add_ecr_modal'} %>
+     <%= link_to 'Add Project', add_project_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#add_project_modal'} %>
+   <%= link_to 'Add IA', add_ia_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#add_ia_modal'} %>
+   </span>
+
+ </div>
+<div class='clearfix'></div> 
 <div class='data-main'>
 
   <div class="project-data project-formset collapsed" id="projectform">

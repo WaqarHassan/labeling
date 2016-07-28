@@ -1,8 +1,9 @@
 # Route prefixes use a single letter to allow for vanity urls of two or more characters
 Rails.application.routes.draw do
+  resources :ia
+  resources :ia
   resources :rework_infos
   resources :archives
-  resources :ia
   resources :notes
   resources :stations
   resources :ecrs
@@ -48,6 +49,10 @@ Rails.application.routes.draw do
   get '/main/open_modal' => 'main#open_modal', as: 'open_modal'
   get '/main/open_modal2' => 'main#open_modal2', as: 'open_modal2'
   get '/main/open_modal3' => 'main#open_modal3', as: 'open_modal3'
+  get '/main/open_modal4' => 'main#open_modal4', as: 'open_modal4'
+  get '/main/add_project_modal' => 'main#add_project_modal', as: 'add_project_modal' 
+  get '/main/add_ecr_modal' => 'main#add_ecr_modal', as: 'add_ecr_modal'
+  get '/main/add_ia_modal' => 'main#add_ia_modal', as: 'add_ia_modal'
 
   resources :main
   get '/main' => 'main#index', as: 'main_home'

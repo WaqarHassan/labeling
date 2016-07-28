@@ -1,6 +1,6 @@
 class IaController < ApplicationController
   before_action :set_ium, only: [:show, :edit, :update, :destroy]
-
+  skip_authorization_check only: :create
   # GET /ia
   def index
     @ia = Ium.all
@@ -24,7 +24,7 @@ class IaController < ApplicationController
     @ium = Ium.new(ium_params)
 
     if @ium.save
-      redirect_to @ium, notice: 'Ium was successfully created.'
+      redirect_to main_index_path, notice: 'Ium was successfully created.'
     else
       render :new
     end
@@ -53,6 +53,6 @@ class IaController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def ium_params
-      params.require(:ium).permit(:id, :name, :translation, :horw, :requested_date, :to_be_approved_by)
+      params.require(:ium).permit(:name, :translation, :horw, :inbox_date, :sent_date, :received_date, :project_id)
     end
 end

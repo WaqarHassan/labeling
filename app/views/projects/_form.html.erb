@@ -1,13 +1,24 @@
-<%= simple_form_for(@project) do |f| %>
+<%= simple_form_for @project , remote: true , :html => { :id => "add_project_form"} do |f| %>
   <%= f.error_notification %>
-  <div class="form-inputs">
-    <%= f.input :id %>
-    <%= f.input :name %>
-    <%= f.input :description %>
-    <%= f.input :created_by %>
-    <%= f.input :updated_by %>
+  <div class="form-inputs"> 
+
+	   <div class="row">
+	         <div class="col-lg-4">
+	               <label for= "project_name" class="pull-right echo_patinet form-group"> Name:  </label>
+	         </div>
+	            <div class="col-lg-6">
+	             	 <%= f.input :name,:label => false  %>
+	            </div>
+	   </div>
+	    <div class="row">
+	         <div class="col-lg-4">
+	               <label for="project_description" class="pull-right echo_patinet form-group"> Description:  </label>
+	         </div>
+	            <div class="col-lg-6">
+	             	 <%= f.input :description,:label => false  %>
+	            </div>
+	   </div>
+   
   </div>
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
+ 
 <% end %>

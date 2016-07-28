@@ -1,35 +1,59 @@
-%h1 Listing ecrs
-
-%table
-  %thead
-    %tr
-      %th Id
-      %th Name
-      %th User
-      %th Status
-      %th Note
-      %th Station
-      %th Status start
-      %th Rework of
-      %th
-      %th
-      %th
-
-  %tbody
-    - @ecrs.each do |ecr|
-      %tr
-        %td= ecr.id
-        %td= ecr.name
-        %td= ecr.user_id
-        %td= ecr.status
-        %td= ecr.note
-        %td= ecr.station_id
-        %td= ecr.status_start
-        %td= ecr.rework_of
-        %td= link_to 'Show', ecr
-        %td= link_to 'Edit', edit_ecr_path(ecr)
-        %td= link_to 'Destroy', ecr, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Ecr', new_ecr_path
+<h1>Listing ecrs</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>User</th>
+      <th>Status</th>
+      <th>Note</th>
+      <th>Station</th>
+      <th>Status start</th>
+      <th>Rework of</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @ecrs.each do |ecr| %>
+      <tr>
+        <td>
+          <%= ecr.id %>
+        </td>
+        <td>
+          <%= ecr.name %>
+        </td>
+        <td>
+          <%= ecr.user_id %>
+        </td>
+        <td>
+          <%= ecr.status %>
+        </td>
+        <td>
+          <%= ecr.note %>
+        </td>
+        <td>
+          <%= ecr.station_id %>
+        </td>
+        <td>
+          <%= ecr.status_start %>
+        </td>
+        <td>
+          <%= ecr.rework_of %>
+        </td>
+        <td>
+          <%= link_to 'Show', ecr %>
+        </td>
+        <td>
+          <%= link_to 'Edit', edit_ecr_path(ecr) %>
+        </td>
+        <td>
+          <%= link_to 'Destroy', ecr, :method => :delete, :data => { :confirm => 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br/>
+<%= link_to 'New Ecr', new_ecr_path %>

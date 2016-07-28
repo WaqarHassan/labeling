@@ -1,15 +1,53 @@
-= simple_form_for(@ecr) do |f|
-  = f.error_notification
+<%= simple_form_for @ecr , remote: true , :html => { :id =>  "add_ecr_form"} do |f| %>
+  
+  <%= f.error_notification %>
+  <div class="form-inputs">
+  <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ecr_name" class="pull-right form-group echo_patinet control-label">NAME:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :name ,:label => false %>
+            </div>
+     </div>
+  </div>
+  <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ecr_status" class="pull-right form-group echo_patinet control-label">STATUS:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :status ,:label => false %>
+            </div>
+     </div>
+  </div>
+  <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ecr_note" class="pull-right form-group echo_patinet control-label">NOTE:</label>
+          </div>
+            <div class="col-lg-6">
+            <%= f.input :note ,:label => false %>
+            </div>
+     </div>
+  </div>
+  <div class= "form-group">
+    <div class="row">
+           <div class="col-lg-4">
+                 <label for = "ecr_station_id" class="pull-right form-group echo_patinet control-label">STATION ID:</label>
+          </div>
+            <div class="col-lg-6">
+            <select id = "ecr_station_id" class = "form-control">
+              <option value = "1">Station_1</option>
+              <option value = "2">Station_2</option>
+              <option value = "3">Station_3</option>
 
-  .form-inputs
-    = f.input :id
-    = f.input :name
-    = f.input :user_id
-    = f.input :status
-    = f.input :note
-    = f.input :station_id
-    = f.input :status_start
-    = f.input :rework_of
+            </select>
+           
+            </div>
+     </div>
+  </div>
 
-  .form-actions
-    = f.button :submit
+  </div>
+<% end %>

@@ -125,7 +125,8 @@
         </thead>
         <tbody>
             <tr>
-              <td>IA-0000213</td>
+              <td>
+              <%= link_to 'IA-0000213', open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
               <td></td>
               <td class="collapse_table_data collapse_table">Active</td>
               <td class="collapse_table_data collapse_table">THV</td>
@@ -192,24 +193,24 @@
               <td>
                 <%= link_to ia_approved, open_modal2_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
               </td>
-              <td>5/19/2016  1:18:00 PM</td>
-              <td>5/19/2016  1:18:00 PM</td>
-              <td>5/19/2016  1:18:00 PM</td>
+              <td>5/19/2016  10:18 PM</td>
+              <td>5/19/2016  10:18 PM</td>
+              <td>5/19/2016  10:18 PM</td>
               <td>
-                <%= link_to ecr.created_at.strftime("%Y-%m-%d %I:%M %p"), open_modal2_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
+                <%= link_to ecr.created_at.strftime("%m/%d/%Y %I:%M %p"), open_modal2_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
               </td>
               <td>
-                <%= link_to ecr.created_at.strftime("%Y-%m-%d %I:%M %p"), open_modal2_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
+                <%= link_to ecr.created_at.strftime("%m/%d/%Y %I:%M %p"), open_modal2_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
               </td>
               <td>
-                <%= link_to '5/19/2016  1:18:00 PM', open_modal3_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
+                <%= link_to '5/19/2016  1:18 PM', open_modal3_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
                 </td>
               <td>
-                <%= link_to '5/19/2016  1:18:00 PM', open_modal3_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
+                <%= link_to '5/19/2016  1:18 PM', open_modal3_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
               </td>
-              <td>5/19/2016  1:18:00 PM</td>
-              <td>5/19/2016  1:18:00 PM</td>
-              <td>5/19/2016  1:18:00 PM</td>
+              <td>5/19/2016  10:18 PM</td>
+              <td>5/19/2016  10:18 PM</td>
+              <td>5/19/2016  10:18 PM</td>
             </tr>
           <% end %>
         <% end %>

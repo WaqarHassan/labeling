@@ -1,6 +1,10 @@
 
 console.log('main js working........');
 
+function set_current_timestamp(){
+	$('#datetimepicker_info').val(moment().format('MM/DD/YYYY hh:mm A'));
+}
+
 function messageform()
 {
      var className = $('.project-formset').attr('class');

@@ -166,6 +166,7 @@ h1 {
     border-bottom: 0 none;
     min-height: 0;
     padding: 10px 27px 0 17px;
+    cursor: move;
 }
 
 .btn, .btn:hover{
@@ -310,7 +311,7 @@ navbar-default {
 }
 
 th {
-  height:52px;
+  height:46px;
   width:77px;
 }
 
@@ -324,6 +325,10 @@ td {
 
 .labeling_body_detail_search .project-data.project_ia{
     width:30%;
+}
+
+.form-horizontal .col-lg-8, .form-horizontal  .col-lg-6 {
+    text-align: left;
 }
 
 

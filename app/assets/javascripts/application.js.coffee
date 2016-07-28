@@ -13,6 +13,7 @@
 #= require jquery
 #= require jquery_2
 #= require jquery_ujs
+#= require jquery-ui
 #= require bootstrap
 #= require jquery.turbolinks
 #= require turbolinks

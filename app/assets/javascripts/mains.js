@@ -22,6 +22,11 @@ $(document).ready(function() {
 });
 
 
+function set_current_timestamp(){
+	$('#datetimepicker_info').val(moment().format('MM/DD/YYYY hh:mm A'));
+}
+
+
 function messageform()
 {
      var className = $('.project-formset').attr('class');
@@ -33,10 +38,17 @@ function messageform()
       	 $('#labeling_container').addClass('labeling_container_detail_search');
 
 		 $('#projectform').removeClass('collapsed');
-		 $('#detail_data').removeClass('tspend');
+		 $('#detail_data').removeClass('tspend_initial');
+
+		 var classNameIadiv = $('.project_ia').attr('class');
+		 if (classNameIadiv=='project-data project_ia collapsed'){
+		 	$('#project_ia').addClass('project_serach_noDetail');
+		 }
+
 	  }else{
 	  	 $('#labeling_body').removeClass('labeling_body_detail_search');
       	 $('#labeling_container').removeClass('labeling_container_detail_search');
+      	 $('#project_ia').removeClass('project_serach_noDetail');
 
       	 $('#labeling_body').addClass('labeling_body_detail_search');
       	 $('#labeling_container').addClass('labeling_container_detail_search');
@@ -52,6 +64,7 @@ function messageform()
 		  	 $('#labeling_body').removeClass('labeling_body_detail_search');
 	      	 $('#labeling_container').removeClass('labeling_container_detail_search');
 	      	 $('#project_ia').removeClass('project_serach_noDetail');
+	      	 $('#detail_data').addClass('tspend_initial');
 		 }	  
 	  }
 
@@ -68,11 +81,16 @@ function messagebox()
       	 $('#labeling_body').addClass('labeling_body_detail');
       	 $('#labeling_container').addClass('labeling_container_detail');
 		 $('#project_ia').removeClass('collapsed');
+		 $('.collapse_table_data').removeClass('collapse_table');
+		 $('.collapse_table_data').removeClass('collapse_table');
 		 $('#detail_data').removeClass('tspend');
 		 $('#project_ia').removeClass('project_serach_noDetail');
+		 $('#detail_data').removeClass('tspend_initial');
 	  }else{	
 	  	 $('#labeling_body').removeClass('labeling_body_detail');	
 	  	 $('#labeling_container').removeClass('labeling_container_detail');
+	  	 $('.collapse_table_data').addClass('collapse_table');
+		 $('.collapse_table_data').addClass('collapse_table');
 		 $('#project_ia').addClass('collapsed');
 		 $('#detail_data').addClass('tspend');
 
@@ -90,6 +108,7 @@ function messagebox()
 		  	 $('#labeling_body').removeClass('labeling_body_detail_search');
 		  	 $('#labeling_container').removeClass('labeling_container_detail_search');
 		  	 $('#project_ia').removeClass('project_serach_noDetail');
+		  	 $('#detail_data').addClass('tspend_initial');
 		 }
 
 	  }

@@ -55,12 +55,16 @@ function messagebox()
       	 $('#labeling_body').addClass('labeling_body_detail');
       	 $('#labeling_container').addClass('labeling_container_detail');
 		 $('#project_ia').removeClass('collapsed');
+		 $('.collapse_table_data').removeClass('collapse_table');
+		 $('.collapse_table_data').removeClass('collapse_table');
 		 $('#detail_data').removeClass('tspend');
 		 $('#project_ia').removeClass('project_serach_noDetail');
 		 $('#detail_data').removeClass('tspend_initial');
 	  }else{	
 	  	 $('#labeling_body').removeClass('labeling_body_detail');	
 	  	 $('#labeling_container').removeClass('labeling_container_detail');
+	  	 $('.collapse_table_data').addClass('collapse_table');
+		 $('.collapse_table_data').addClass('collapse_table');
 		 $('#project_ia').addClass('collapsed');
 		 $('#detail_data').addClass('tspend');
 

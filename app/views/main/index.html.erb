@@ -192,6 +192,9 @@
     </thead>
     <tbody>
       <% @projects.each do |project| %>
+          <tr>
+             <td colspan="11" class="project"></td>
+          </tr>  
         <% project.ias.each do |ia| %>
           <%
             if ia.inbox_date.present?
@@ -200,11 +203,24 @@
               ia_approved = '';
              end 
               %>
-          <% ia.ecrs.each do |ecr| %>
             <tr>
               <td>
                 <%= link_to ia_approved, open_modal2_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
               </td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            <tr>    
+          <% ia.ecrs.each do |ecr| %>
+            <tr>
+              <td></td>
               <td>5/19/2016  10:18 PM</td>
               <td>5/19/2016  10:18 PM</td>
               <td>5/19/2016  10:18 PM</td>

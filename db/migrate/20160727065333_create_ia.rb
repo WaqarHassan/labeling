@@ -4,10 +4,9 @@ class CreateIa < ActiveRecord::Migration
       t.string :name
       t.boolean :translation
       t.boolean :horw
-      t.date :inbox_date
-      t.date :sent_date
-      t.date :received_date
-      t.integer :project_id
+      t.datetime :inbox_date
+      t.datetime :sent_date
+      t.datetime :received_date
 
       t.timestamps null: false
     end

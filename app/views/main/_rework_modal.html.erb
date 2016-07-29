@@ -10,7 +10,7 @@
         <div class="form-group">
            <label class="col-lg-4 control-label">Project </label>
            <div class="col-lg-6">
-              <span id="" name="">Testing project </span>
+              <span id="" name="">NanoClip Suture Fastening System FMR 2 Carton</span>
            </div>
        </div>
      <div class="form-group">
@@ -20,7 +20,7 @@
          </div>
      </div>
      <div class="form-group">
-         <label class="col-lg-4 control-label">Ecr</label>
+         <label class="col-lg-4 control-label">ECR</label>
          <div class="col-lg-6">
             <span id="" name="">ECR-00000000A34 </span>
          </div>
@@ -47,8 +47,9 @@
         <label class="col-lg-4 control-label">Station Initiating the rework</label>
         <div class="col-lg-6">
           <select id="source" class="form-control" name="source">
-            <option value="">Station_1</option>
-            <option value="Echo Alert In-Patient">Station_2</option>
+                <% Station.all.each do |station| %>
+                  <option value=""><%= station.name %></option>
+                <% end %> 
          </select>
          </div>
      </div>

@@ -114,10 +114,7 @@ body {
 
 
 a {
-
-    color: rgb(152, 46, 47);
     background-color: transparent;
-    font-weight: bold;
 }
 
 a strong{
@@ -335,6 +332,26 @@ td {
     text-align: left;
 }
 
+.show_all_result {
+    margin-top: 11px;
+}
+
+.project-data-list ul li {
+    margin-top: 8px;
+}
+
+.project{
+    color: #337ab7;
+    text-decoration: none;
+}
+
+.future_date a{
+    color: #000000;
+}
+
+.past_date a{
+    color: red;
+}
 
 
 

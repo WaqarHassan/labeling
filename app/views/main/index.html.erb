@@ -126,43 +126,40 @@
           </tr>
         </thead>
         <tbody>
-            <tr>
-              <td colspan="6" class="project">NanoClip Suture Fastening System FMR 2 Carton </td>
-  
-            </tr>    
-            <tr>
-              <td></td>
-              <td>
-              <%= link_to 'IA-0000213', open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
-              <td></td>
-              <td class="collapse_table_data collapse_table">Active</td>
-              <td class="collapse_table_data collapse_table">THV</td>
-              <td class="collapse_table_data collapse_table"></td>
-              <td class="collapse_table_data collapse_table"></td>
-              <td class="collapse_table_data collapse_table"></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td>
-                <%= link_to 'ECR-0001223', open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
-              <td class="collapse_table_data collapse_table">Active</td>
-              <td class="collapse_table_data collapse_table">HVT/MISC/EPC</td>
-              <td class="collapse_table_data collapse_table">50</td>
-              <td class="collapse_table_data collapse_table">10</td>
-              <td class="collapse_table_data collapse_table no-brd">Multi-Lingual IFUs</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td>
-                <%= link_to 'ECR-0034874', open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
-              <td class="collapse_table_data collapse_table">OnHold</td>
-              <td class="collapse_table_data collapse_table"></td>
-              <td class="collapse_table_data collapse_table">50</td>
-              <td class="collapse_table_data collapse_table">10</td>
-              <td  class="collapse_table_data collapse_table no-brd">CGL</td>
-            </tr>
+
+            <% @projects.each do |project| %>
+              <tr>
+                <td colspan="6" class="project"><%=project.name%></td>
+              </tr>  
+
+              <% project.ias.each do |ia| %>
+                <tr>
+                  <td></td>
+                  <td>
+                  <%= link_to ia.name, open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
+                  <td></td>
+                  <td class="collapse_table_data collapse_table">Active</td>
+                  <td class="collapse_table_data collapse_table">THV</td>
+                  <td class="collapse_table_data collapse_table"></td>
+                  <td class="collapse_table_data collapse_table"></td>
+                  <td class="collapse_table_data collapse_table"></td>
+                </tr>
+                <% ia.ecrs.each do |ecr| %>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                      <%= link_to ecr.name, open_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
+                    <td class="collapse_table_data collapse_table">Active</td>
+                    <td class="collapse_table_data collapse_table">HVT/MISC/EPC</td>
+                    <td class="collapse_table_data collapse_table">50</td>
+                    <td class="collapse_table_data collapse_table">10</td>
+                    <td class="collapse_table_data collapse_table no-brd">Multi-Lingual IFUs</td>
+                  </tr>
+                <% end %>  
+              <% end %>  
+            <% end %>  
+
         </tbody>
         </table>
     </div>
@@ -253,7 +250,7 @@
                <% else %>
                   <td></td>
                <% end %> 
-               
+
               <td>5/19/2016  10:18 PM</td>
             </tr>
           <% end %>

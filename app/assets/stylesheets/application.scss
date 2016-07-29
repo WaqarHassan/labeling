@@ -36,6 +36,10 @@ font-style:normal;
 // Minor Tweaks
 //
 
+.container{
+    width: 1220px;    
+}
+
 // Padding to clear fixed nav
 body {
         background-color: rgb(229, 230, 230);
@@ -43,7 +47,7 @@ body {
         color: #4F5155;
         padding-top: 55px;
         letter-spacing: 0pt;
-         margin: 34px;
+        margin: 24px;
 }
 
 // Make sure alerts are nicely formatted
@@ -80,20 +84,20 @@ body {
 .data-main { margin-top:10px; padding:20px;}
 .table-bordered th { font-size:12px; font-weight:normal; padding:5px !important;}
 .project-formset {
-    width: 20% !important;
+    width: 15% !important;
 }
 .project-formset.collapsed {
     width: 0 !important;
 }
-.project-data { width:33%; float:left; position:relative;}
-.approval-data {width:33%; float:left; position:relative;}
+.project-data { width:40%; float:left; position:relative;}
+.approval-data {width:60%; float:left; position:relative;}
 .collapsed-icon { display:block; width:20px; height:21px; position:absolute; top:-17px; right:0px; z-index:999;}
 .project-data.collapsed { width:16.64% ;}
 .project-data.collapsed .collapsed-icon { background:image-url("col_exp.png") no-repeat; opacity: 0.62;}
 .project-data .collapsed-icon { background:image-url("col_exp.png") no-repeat; opacity: 0.62;}
 .tspend {width: 60% !important;}
 
-.no-brd { border-right:none !important;}
+.no-brd { border-right:none !important; width: 95px}
 .project-fields { margin-top:10px;}
 .project-form {
     padding-right: 10px;
@@ -163,6 +167,7 @@ h1 {
     border-bottom: 0 none;
     min-height: 0;
     padding: 10px 27px 0 17px;
+    cursor: move;
 }
 
 .btn, .btn:hover{
@@ -279,21 +284,55 @@ navbar-default {
 
 
 .labeling_body_detail{
-     width: 1620px  !important;
+     width: 1700px  !important;
 }
 .labeling_container_detail{
     margin-right: 40px;
-    width: 1560px  !important;
+    width: 1670px  !important;
 }
 
 .labeling_body_detail_search{
-     width: 1920px  !important;
+     width: 2120px  !important;
 }
 .labeling_container_detail_search{
     margin-right: 40px;
-    width: 1870px !important;
+    width: 2070px !important;
 }
 
 .project_serach_noDetail{
     width: 10.1% !important;
 }
+
+.tspend_initial {
+    width: 83% !important;
+}
+
+.collapse_table{
+    display: none;
+}
+
+th {
+  height:46px;
+  width:77px;
+}
+
+td {
+  height:55px;
+}
+
+.labeling_body_detail_search .approval-data{
+    width:55% !important;
+}
+
+.labeling_body_detail_search .project-data.project_ia{
+    width:30%;
+}
+
+.form-horizontal .col-lg-8, .form-horizontal  .col-lg-6 {
+    text-align: left;
+}
+
+
+
+
+

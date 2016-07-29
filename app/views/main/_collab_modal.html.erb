@@ -3,7 +3,7 @@
   <div class='modal-content'>
    <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">×</button>
-     <h1 class="h1-heading-popup">Collab Modal</h1>
+     <h1 class="h1-heading-popup">Task Confirmation</h1>
   </div>
     <div class='modal-body'>
       <form class="form-horizontal">
@@ -25,11 +25,23 @@
              <div class="col-lg-8">
               <span id="" name="">ECR-00000000A34 </span>
             </div>
-          </div>  
-           <div class="form-group">
-             <label class="col-lg-4 control-label">Project </label>
+          </div> 
+          
+          <div class="form-group">
+             <label class="col-lg-4 control-label">Collaboration – Sent</label>
              <div class="col-lg-8">
-              <input type="text" class="form-control" id="datetimepicker" name="dob" required="" value="07/12/2016" aria-required="true">
+               <select id="source" class="form-control" name="source">
+                <% Station.all.each do |station| %>
+                  <option value=""><%= station.name %></option>
+                <% end %> 
+               </select>
+             </div> 
+          </div>
+
+           <div class="form-group">
+             <label class="col-lg-4 control-label">Timestamp </label>
+             <div class="col-lg-8">
+              <input type="text" class="form-control" id="datetimepicker" name="dob" required="" value="<%=Time.now.strftime("%m/%d/%Y %I:%M %p")%>"  aria-required="true">
              </div> 
           </div>
      </form>

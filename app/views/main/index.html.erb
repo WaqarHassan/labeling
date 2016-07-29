@@ -196,7 +196,13 @@
     <tbody>
       <% @projects.each do |project| %>
         <% project.ias.each do |ia| %>
-          <% ia_approved = ia.inbox_date.strftime("%m/%d/%Y %I:%M %p") %>
+          <%
+            if ia.inbox_date.present?
+              ia_approved = ia.inbox_date.strftime("%m/%d/%Y %I:%M %p") 
+             else
+              ia_approved = '';
+             end 
+              %>
           <% ia.ecrs.each do |ecr| %>
             <tr>
               <td>
@@ -206,23 +212,48 @@
               <td>5/19/2016  10:18 PM</td>
               <td>5/19/2016  10:18 PM</td>
               <td>
-                <%= link_to ecr.inbox.strftime("%m/%d/%Y %I:%M %p"), open_modal2_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
+                <% if ecr.inbox.present? %>
+                  <%= link_to ecr.inbox.strftime("%m/%d/%Y %I:%M %p"), open_modal2_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
+                <% end %>
               </td>
               <td>
-                <%= link_to ecr.completed.strftime("%m/%d/%Y %I:%M %p"), open_modal2_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
+                <% if ecr.completed.present? %>
+                  <%= link_to ecr.completed.strftime("%m/%d/%Y %I:%M %p"), open_modal2_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
+                <% end %>  
               </td>
-              <td class= <%= ecr.sent_to_collab.future? == true ? 'future_date' : 'past_date' %> >
-                <%= link_to ecr.sent_to_collab.strftime("%m/%d/%Y %I:%M %p"), open_modal3_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
-                </td>
-              <td class= <%= ecr.received_frm_collab.future? == true ? 'future_date' : 'past_date' %> >
-                <%= link_to ecr.received_frm_collab.strftime("%m/%d/%Y %I:%M %p"), open_modal3_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
-              </td>
-              <td class= <%= ecr.sent_to_legal.future? == true ? 'future_date' : 'past_date' %> >
-                <%= link_to ecr.sent_to_legal.strftime("%m/%d/%Y %I:%M %p"), open_modal3_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
-              </td>
-              <td class= <%= ecr.received_frm_legal.future? == true ? 'future_date' : 'past_date' %> >
-                <%= link_to ecr.received_frm_legal.strftime("%m/%d/%Y %I:%M %p"), open_modal3_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
-              </td>
+
+              <% if ecr.sent_to_collab.present? %>
+                  <td class= <%= ecr.sent_to_collab.future? == true ? 'future_date' : 'past_date' %> >
+                  <%= link_to ecr.sent_to_collab.strftime("%m/%d/%Y %I:%M %p"), open_modal3_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
+                  </td>
+               <% else %>
+                  <td></td>
+               <% end %> 
+
+               <% if ecr.received_frm_collab.present? %>
+                  <td class= <%= ecr.received_frm_collab.future? == true ? 'future_date' : 'past_date' %> >
+                    <%= link_to ecr.received_frm_collab.strftime("%m/%d/%Y %I:%M %p"), open_modal3_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
+                  </td>
+              <% else %>
+                  <td></td>
+               <% end %> 
+
+               <% if ecr.sent_to_legal.present? %>
+                  <td class= <%= ecr.sent_to_legal.future? == true ? 'future_date' : 'past_date' %> >
+                    <%= link_to ecr.sent_to_legal.strftime("%m/%d/%Y %I:%M %p"), open_modal3_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
+                  </td>
+              <% else %>
+                  <td></td>
+               <% end %>
+
+               <% if ecr.received_frm_legal.present? %> 
+                  <td class= <%= ecr.received_frm_legal.future? == true ? 'future_date' : 'past_date' %> >
+                    <%= link_to ecr.received_frm_legal.strftime("%m/%d/%Y %I:%M %p"), open_modal3_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
+                  </td>
+               <% else %>
+                  <td></td>
+               <% end %> 
+               
               <td>5/19/2016  10:18 PM</td>
             </tr>
           <% end %>

@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
-  skip_authorization_check only: :create
+  skip_authorization_check
   # GET /projects
   def index
     @projects = Project.all
@@ -13,10 +13,15 @@ class ProjectsController < ApplicationController
   # GET /projects/new
   def new
     @project = Project.new
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /projects/1/edit
   def edit
+
   end
 
 
@@ -25,7 +30,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
 
     if @project.save
-      redirect_to main_index_path, notice: 'Project was successfully created.'
+      redirect_to root_path, notice: 'Project was successfully created.'
     else
       render :new
     end

@@ -1,6 +1,6 @@
 class IaController < ApplicationController
   before_action :set_ium, only: [:show, :edit, :update, :destroy]
-  skip_authorization_check only: :create
+  skip_authorization_check 
   # GET /ia
   def index
     @ia = Ium.all
@@ -13,6 +13,10 @@ class IaController < ApplicationController
   # GET /ia/new
   def new
     @ium = Ium.new
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /ia/1/edit
@@ -24,7 +28,7 @@ class IaController < ApplicationController
     @ium = Ium.new(ium_params)
 
     if @ium.save
-      redirect_to main_index_path, notice: 'Ium was successfully created.'
+      redirect_to root_path, notice: 'Ium was successfully created.'
     else
       render :new
     end

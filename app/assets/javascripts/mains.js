@@ -4,6 +4,8 @@ console.log('main js working........');
 
 function addProjectSubmit() {
 	$("form#add_project_form").submit();
+	$('#modal').modal('toggle');
+	
 }
 function addEcrSubmit() {
 	$("form#add_ecr_form").submit();

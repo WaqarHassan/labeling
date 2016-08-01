@@ -1,6 +1,6 @@
 class EcrsController < ApplicationController
   before_action :set_ecr, only: [:show, :edit, :update, :destroy]
-   skip_authorization_check only: :create
+   skip_authorization_check 
   # GET /ecrs
   def index
     @ecrs = Ecr.all
@@ -24,7 +24,7 @@ class EcrsController < ApplicationController
     @ecr = Ecr.new(ecr_params)
 
     if @ecr.save
-      redirect_to main_index_path, notice: 'Ecr was successfully created.'
+      redirect_to root_path, notice: 'Ecr was successfully created.'
     else
       render :new
     end

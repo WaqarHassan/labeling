@@ -22,18 +22,6 @@ class MainController < ApplicationController
       format.js
       end
   end
-  def add_project_modal
-     @project = Project.new
-
-    respond_to do |format|
-      format.html
-      format.js
-      end
-  end
-
-
-
-
 
    def open_modal
     # if params[:popup] == 'add_info'

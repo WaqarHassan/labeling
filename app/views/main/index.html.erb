@@ -202,7 +202,7 @@
             if ia.inbox_date.present?
               ia_approved = ia.inbox_date.strftime("%m/%d/%Y %I:%M %p") 
              else
-              ia_approved = '';
+              ia_approved = 'N/A';
              end 
               %>
             <tr>
@@ -229,12 +229,16 @@
               <td>
                 <% if ecr.inbox.present? %>
                   <%= link_to ecr.inbox.strftime("%m/%d/%Y %I:%M %p"), open_modal2_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
+                <% else %>
+                  N/A
                 <% end %>
               </td>
               <td>
                 <% if ecr.completed.present? %>
                   <%= link_to ecr.completed.strftime("%m/%d/%Y %I:%M %p"), open_modal2_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
-                <% end %>  
+                <% else %>
+                  N/A
+                <% end %>
               </td>
 
               <% if ecr.sent_to_collab.present? %>
@@ -242,7 +246,7 @@
                   <%= link_to ecr.sent_to_collab.strftime("%m/%d/%Y %I:%M %p"), open_modal3_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
                   </td>
                <% else %>
-                  <td></td>
+                  <td>N/A</td>
                <% end %> 
 
                <% if ecr.received_frm_collab.present? %>
@@ -250,7 +254,7 @@
                     <%= link_to ecr.received_frm_collab.strftime("%m/%d/%Y %I:%M %p"), open_modal3_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
                   </td>
               <% else %>
-                  <td></td>
+                  <td>N/A</td>
                <% end %> 
 
                <% if ecr.sent_to_legal.present? %>
@@ -258,7 +262,7 @@
                     <%= link_to ecr.sent_to_legal.strftime("%m/%d/%Y %I:%M %p"), open_modal3_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
                   </td>
               <% else %>
-                  <td></td>
+                  <td>N/A</td>
                <% end %>
 
                <% if ecr.received_frm_legal.present? %> 
@@ -266,7 +270,7 @@
                     <%= link_to ecr.received_frm_legal.strftime("%m/%d/%Y %I:%M %p"), open_modal3_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
                   </td>
                <% else %>
-                  <td></td>
+                  <td>N/A</td>
                <% end %> 
 
               <td>5/19/2016  10:18 PM</td>

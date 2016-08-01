@@ -9,6 +9,9 @@
 
   .collapse.navbar-collapse
     %ul.nav.navbar-nav.navbar-right
+      %li= link_to '+Add Project', new_project_path,  {:remote => true, 'data-toggle' =>  "modal",class: 'navbar-brand', 'data-target' => '#add_project_modal'} 
+      %li= link_to '+Add IA', new_ium_path,  {:remote => true,class: 'navbar-brand', 'data-toggle' =>  "modal", 'data-target' => '#add_ia_modal'}
+      %li= link_to '+Add Ecr', new_ecr_path,  {:remote => true,class: 'navbar-brand', 'data-toggle' =>  "modal", 'data-target' => '#add_ecr_modal'} 
       - if user_signed_in?
         %li.dropdown
           %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}

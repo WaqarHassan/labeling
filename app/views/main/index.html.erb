@@ -207,7 +207,11 @@
               %>
             <tr>
               <td>
-                <%= link_to ia_approved, open_modal2_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
+                <% if ia.inbox_date.present? %>
+                  <%= link_to ia.inbox_date.strftime("%m/%d/%Y %I:%M %p") , open_modal2_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
+                <% else %>
+                  N/A
+                <% end %> 
               </td>
               <td></td>
               <td></td>

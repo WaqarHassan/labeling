@@ -7,6 +7,7 @@ class CreateIa < ActiveRecord::Migration
       t.datetime :inbox_date
       t.datetime :sent_date
       t.datetime :received_date
+      t.integer  :project_id
 
       t.timestamps null: false
     end

@@ -35,15 +35,11 @@
   <div class= "form-group">
     <div class="row">
            <div class="col-lg-4">
-                 <label for = "ecr_station_id" class="pull-right form-group echo_patinet control-label">STATION ID:</label>
+                 <label for = "ecr_station_id" class="pull-right form-group echo_patinet control-label">IA:</label>
           </div>
             <div class="col-lg-6">
-            <select id = "ecr_station_id" class = "form-control">
-              <option value = "1">Station_1</option>
-              <option value = "2">Station_2</option>
-              <option value = "3">Station_3</option>
 
-            </select>
+             <%= f.select :ia_id, options_from_collection_for_select(@ium, 'id', 'name'),{include_blank: false}, :class=>'form-control'%>
            
             </div>
      </div>

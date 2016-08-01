@@ -1,7 +1,7 @@
 <%= simple_form_for @project , remote: true , :html => { :id => "add_project_form"} do |f| %>
   <%= f.error_notification %>
   <div class="form-inputs"> 
-
+  		<%= f.hidden_field :user_id, :value=> current_user.id %>
 	   <div class="row">
 	         <div class="col-lg-4">
 	               <label for= "project_name" class="pull-right echo_patinet form-group"> Name:  </label>

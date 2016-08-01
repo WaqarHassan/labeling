@@ -12,6 +12,8 @@ class IaController < ApplicationController
 
   # GET /ia/new
   def new
+    @project = current_user.projects.all 
+
     @ium = Ium.new
     respond_to do |format|
       format.html

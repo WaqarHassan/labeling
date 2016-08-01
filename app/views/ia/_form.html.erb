@@ -1,7 +1,6 @@
 <%= simple_form_for @ium , remote: true , :html => { :id => "add_ia_form"}  do |f| %>
   <%= f.error_notification %>
   <div class="form-inputs">
-
        <div class= "form-group">
     <div class="row">
            <div class="col-lg-4">
@@ -60,12 +59,15 @@
   <div class= "form-group">
     <div class="row">
            <div class="col-lg-4">
-                 <label for = "ia_project_id" class=" echo_patinet pull-right control-label">PROJECT ID:</label>
+                 <label for = "ia_project_id" class=" echo_patinet pull-right control-label">PROJECT:</label>
           </div>
+
+
             <div class="col-lg-6">
-           <select  id = "ia_project_id" class= "form-control">
-             <option>Project_1</option>
-           </select>
+
+            <%= f.select :project_id, options_from_collection_for_select(@project, 'id', 'name'),{include_blank: false}, :class=>'form-control pnd-reqst pull-left'%>
+
+
             </div>
      </div>
   </div>

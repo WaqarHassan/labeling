@@ -5,24 +5,6 @@ class MainController < ApplicationController
 		@projects = current_user.projects
 	end
 
-  def add_ecr_modal
-
-     @ecr = Ecr.new
-    respond_to do |format|
-      format.html
-      format.js
-      end
-  end
-
-  def add_ia_modal
-    @ium = Ium.new
-
-    respond_to do |format|
-      format.html
-      format.js
-      end
-  end
-
    def open_modal
     # if params[:popup] == 'add_info'
     #   @info_modal = 'additional_info'

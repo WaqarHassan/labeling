@@ -12,7 +12,14 @@ class EcrsController < ApplicationController
 
   # GET /ecrs/new
   def new
+        @ium = Ia.all
+
+
     @ecr = Ecr.new
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /ecrs/1/edit
@@ -53,6 +60,6 @@ class EcrsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def ecr_params
-      params.require(:ecr).permit(:id, :name, :user_id, :status, :note, :station_id, :status_start, :rework_of)
+      params.require(:ecr).permit(:id, :name, :status, :note, :ia_id, :status_start, :rework_of)
     end
 end

@@ -1,4 +1,4 @@
-<%= simple_form_for @ium , remote: true , :html => { :id => "add_ia_form"}  do |f| %>
+<%= simple_form_for @ia, :url => '/ia', :method => :post , remote: true , :html => { :id => "add_ia_form"}  do |f| %>
   <%= f.error_notification %>
   <div class="form-inputs">
        <div class= "form-group">

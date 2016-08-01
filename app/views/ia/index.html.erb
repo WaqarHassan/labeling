@@ -15,41 +15,41 @@
     </tr>
   </thead>
   <tbody>
-    <% @ia.each do |ium| %>
+    <% @ia.each do |ia| %>
       <tr>
         <td>
-          <%= ium.name %>
+          <%= ia.name %>
         </td>
         <td>
-          <%= ium.translation %>
+          <%= ia.translation %>
         </td>
         <td>
-          <%= ium.horw %>
+          <%= ia.horw %>
         </td>
         <td>
-          <%= ium.inbox_date %>
+          <%= ia.inbox_date %>
         </td>
         <td>
-          <%= ium.sent_date %>
+          <%= ia.sent_date %>
         </td>
         <td>
-          <%= ium.received_date %>
+          <%= ia.received_date %>
         </td>
         <td>
-          <%= ium.project_id %>
+          <%= ia.project_id %>
         </td>
         <td>
-          <%= link_to 'Show', ium %>
+          <%= link_to 'Show', ia %>
         </td>
         <td>
-          <%= link_to 'Edit', edit_ium_path(ium) %>
+          <%= link_to 'Edit', edit_ia_path(ia) %>
         </td>
         <td>
-          <%= link_to 'Destroy', ium, :method => :delete, :data => { :confirm => 'Are you sure?' } %>
+          <%= link_to 'Destroy', ia, :method => :delete, :data => { :confirm => 'Are you sure?' } %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 <br/>
-<%= link_to 'New Ium', new_ium_path %>
+<%= link_to 'New Ia', new_ia_path %>

@@ -12,7 +12,9 @@ class EcrsController < ApplicationController
 
   # GET /ecrs/new
   def new
-        @ium = Ia.all
+        @ia = Ia.all
+        comp_attribute = Attribute.find_by_label('Component Type')
+        @components = comp_attribute.attribute_values
 
 
     @ecr = Ecr.new
@@ -60,6 +62,6 @@ class EcrsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def ecr_params
-      params.require(:ecr).permit(:id, :name, :status, :note, :ia_id, :status_start, :rework_of)
+      params.require(:ecr).permit(:id, :name, :status, :note, :ia_id,:comp_count,:comp_type)
     end
 end

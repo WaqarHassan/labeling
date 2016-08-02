@@ -17,7 +17,6 @@ class MainController < ApplicationController
       format.html
       format.js
     end
-
    end
 
    def project_status_popup
@@ -26,11 +25,7 @@ class MainController < ApplicationController
       format.html
       format.js
     end
-
-
    end
-
-
 
    def open_modal2
     respond_to do |format|

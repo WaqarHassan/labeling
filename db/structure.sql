@@ -116,7 +116,7 @@ CREATE TABLE `ecrs` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,8 +154,9 @@ CREATE TABLE `ia` (
   `to_be_approved_by` datetime DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
+  `translation` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -229,7 +230,7 @@ CREATE TABLE `projects` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -378,7 +379,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `index_users_on_reset_password_token` (`reset_password_token`),
   UNIQUE KEY `index_users_on_confirmation_token` (`confirmation_token`),
   UNIQUE KEY `index_users_on_unlock_token` (`unlock_token`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -428,7 +429,7 @@ CREATE TABLE `workflow_attributes` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-08-02 15:08:14
+-- Dump completed on 2016-08-02 16:53:54
 INSERT INTO schema_migrations (version) VALUES ('20130909170542');
 
 INSERT INTO schema_migrations (version) VALUES ('20130909194719');
@@ -472,4 +473,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160802093954');
 INSERT INTO schema_migrations (version) VALUES ('20160802094105');
 
 INSERT INTO schema_migrations (version) VALUES ('20160802094405');
+
+INSERT INTO schema_migrations (version) VALUES ('20160802115226');
 

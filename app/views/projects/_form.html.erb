@@ -1,10 +1,23 @@
 <%= simple_form_for @project , remote: true , :html => { :id => "add_project_form"} do |f| %>
   <%= f.error_notification %>
   <div class="form-inputs"> 
-  		<%= f.hidden_field :user_id, :value=> current_user.id %>
+
+  		<div class="row">
+	         <div class="col-lg-4">
+	               <label for= "workflow_dropdown" class="pull-right echo_patinet form-group"> Workflow:  </label>
+	         </div>
+	            <div class="col-lg-6" id="workflow_dropdown">
+	             	<select class="form-control">
+	             		<option>Workflow_1</option>
+	             		<option>workflow_2</option>
+	             	</select>
+	            </div>
+	   </div>
+
+
 	   <div class="row">
 	         <div class="col-lg-4">
-	               <label for= "project_name" class="pull-right echo_patinet form-group"> Name:  </label>
+	               <label for= "project_name" class="pull-right echo_patinet form-group"> Project:  </label>
 	         </div>
 	            <div class="col-lg-6">
 	             	 <%= f.input :name,:label => false  %>
@@ -16,6 +29,15 @@
 	         </div>
 	            <div class="col-lg-6">
 	             	 <%= f.input :description,:label => false  %>
+	            </div>
+	   </div>
+	  <div class="row">
+	         <div class="col-lg-4">
+	               <label for="Active" class="pull-right echo_patinet form-group"> Active:  </label>
+	         </div>
+	            <div class="col-lg-6">
+	            <input class="boolean optional pull-left" id = "Active" type="checkbox" id="ium_translation" checked>
+
 	            </div>
 	   </div>
    

@@ -12,6 +12,8 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
+    #@workflow  = Workflows.all
+
     @project = Project.new
     respond_to do |format|
       format.html

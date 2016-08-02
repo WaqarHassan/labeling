@@ -5,7 +5,7 @@ class MainController < ApplicationController
 		@projects = current_user.projects
 	end
 
-   def open_modal
+   def open_info_modal
     # if params[:popup] == 'add_info'
     #   @info_modal = 'additional_info'
     # elsif params[:popup] == 'rework'
@@ -20,21 +20,21 @@ class MainController < ApplicationController
    end
 
    def project_status_popup
-      
       respond_to do |format|
       format.html
       format.js
     end
    end
 
-   def open_modal2
+
+   def open_rework_modal
     respond_to do |format|
       format.html
       format.js
     end
    end
     
-  def open_modal3
+  def open_confirm_modal
       respond_to do |format|
       format.html
       format.js

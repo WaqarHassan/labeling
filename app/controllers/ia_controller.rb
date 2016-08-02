@@ -1,9 +1,9 @@
 class IaController < ApplicationController
-  before_action :set_ium, only: [:show, :edit, :update, :destroy]
+  before_action :set_ia, only: [:show, :edit, :update, :destroy]
   skip_authorization_check 
   # GET /ia
   def index
-    @ia = Ium.all
+    @ia = Ia.all
   end
 
   # GET /ia/1
@@ -14,7 +14,7 @@ class IaController < ApplicationController
   def new
     @project = current_user.projects.all 
 
-    @ium = Ium.new
+    @ia = Ia.new
     respond_to do |format|
       format.html
       format.js
@@ -27,10 +27,10 @@ class IaController < ApplicationController
 
   # POST /ia
   def create
-    @ium = Ium.new(ium_params)
+    @ia = Ia.new(ia_params)
 
-    if @ium.save
-      redirect_to root_path, notice: 'Ium was successfully created.'
+    if @ia.save
+      redirect_to root_path, notice: 'Ia was successfully created.'
     else
       render :new
     end
@@ -38,8 +38,8 @@ class IaController < ApplicationController
 
   # PATCH/PUT /ia/1
   def update
-    if @ium.update(ium_params)
-      redirect_to @ium, notice: 'Ium was successfully updated.'
+    if @ia.update(ia_params)
+      redirect_to @ia, notice: 'Ia was successfully updated.'
     else
       render :edit
     end
@@ -47,18 +47,18 @@ class IaController < ApplicationController
 
   # DELETE /ia/1
   def destroy
-    @ium.destroy
-    redirect_to ia_url, notice: 'Ium was successfully destroyed.'
+    @ia.destroy
+    redirect_to ia_url, notice: 'Ia was successfully destroyed.'
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_ium
-      @ium = Ium.find(params[:id])
+    def set_ia
+      @ia = Ia.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
-    def ium_params
-      params.require(:ium).permit(:name, :translation, :horw, :inbox_date, :sent_date, :received_date, :project_id)
+    def ia_params
+      params.require(:ia).permit(:name, :translation, :horw, :inbox_date, :sent_date, :received_date, :project_id)
     end
 end

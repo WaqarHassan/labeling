@@ -1,4 +1,4 @@
-<%= simple_form_for @ium , remote: true , :html => { :id => "add_ia_form"}  do |f| %>
+<%= simple_form_for @ia, :url => '/ia', :method => :post , remote: true , :html => { :id => "add_ia_form"}  do |f| %>
   <%= f.error_notification %>
   <div class="form-inputs">
        <div class= "form-group">
@@ -34,7 +34,7 @@
   <div class="row">
          <label for ="datepicker"  class="col-lg-4 control-label" >INBOX DATE:</label>
          <div class="col-lg-6">
-           <input type="text" class="datepicker form-control" id="datepicker" name="dob" required="" value="07/12/2016" aria-required="true">
+           <input type="text" class="datetimepicker_ia form-control" id="datetimepicker_ia" name="dob" required="" value="<%=Time.now.strftime("%m/%d/%Y %I:%M %p")%>" aria-required="true">
          </div>
         </div>
      </div>
@@ -43,7 +43,7 @@
      <div class="row">
          <label for ="datepicker2" class="col-lg-4 control-label">SENT DATE:</label>
          <div class="col-lg-6">
-           <input type="text" class="datepicker form-control" id="datepicker2" name="dob" required="" value="07/12/2016" aria-required="true">
+           <input type="text" class="datetimepicker_ia form-control" id="datepicker2" name="dob" required="" value="<%=Time.now.strftime("%m/%d/%Y %I:%M %p")%>"  aria-required="true">
          </div>
         </div>
      </div>
@@ -52,7 +52,7 @@
      <div class="row">
          <label  for ="datepicker3" class="col-lg-4 control-label">RECEIVED DATE:</label>
          <div class="col-lg-6">
-           <input type="text" class="datepicker form-control" id="datepicker3" name="dob" required="" value="07/12/2016" aria-required="true">
+           <input type="text" class="datetimepicker_ia form-control" id="datepicker3" name="dob" required="" value="<%=Time.now.strftime("%m/%d/%Y %I:%M %p")%>"  aria-required="true">
          </div>
         </div>
      </div>

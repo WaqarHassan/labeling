@@ -2,18 +2,14 @@ class CreateEcrs < ActiveRecord::Migration
   def change
     create_table :ecrs do |t|
       t.string :name
-      t.integer :user_id
-      t.integer :comp_number
+      t.integer :comp_count
       t.string :comp_type
-      t.string :status
-      t.text :note
-      t.integer :station_id
-      t.datetime :inbox
-      t.datetime :completed
-      t.datetime :sent_to_collab
-      t.datetime :received_frm_collab
-      t.datetime :sent_to_legal
-      t.datetime :received_frm_legal
+      t.integer :language_count
+      t.integer :is_active
+      t.text :notes
+      t.integer :ia_id
+      t.integer :user_id
+      t.integer :modified_by_user_id
 
       t.timestamps null: false
     end

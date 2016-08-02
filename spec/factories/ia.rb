@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :ium do
+  factory :ia do
     name "MyString"
     translation false
     horw false

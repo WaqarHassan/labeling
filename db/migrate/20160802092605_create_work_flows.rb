@@ -1,8 +1,8 @@
-class CreateStations < ActiveRecord::Migration
+class CreateWorkFlows < ActiveRecord::Migration
   def change
-    create_table :stations do |t|
+    create_table :work_flows do |t|
       t.string :name
-      t.integer :sequence
+      t.text :description
       t.boolean :is_visible
 
       t.timestamps null: false

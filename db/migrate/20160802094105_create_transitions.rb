@@ -3,7 +3,7 @@ class CreateTransitions < ActiveRecord::Migration
     create_table :transitions do |t|
       t.integer :step_id
       t.integer :previous_step_id
-      t.integer :duration
+      t.float :duration
 
       t.timestamps null: false
     end

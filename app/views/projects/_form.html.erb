@@ -4,13 +4,10 @@
   		<%= f.hidden_field :user_id, :value=> current_user.id %>
   		<div class="row">
 	         <div class="col-lg-4">
-	               <label for= "workflow_dropdown" class="pull-right echo_patinet form-group"> Workflow:  </label>
+	               <label for= "workflow_dropdown" class="pull-right echo_patinet form-group"> Workflow </label>
 	         </div>
 	            <div class="col-lg-6" id="workflow_dropdown">
-	             	<select class="form-control">
-	             		<option>Workflow_1</option>
-	             		<option>workflow_2</option>
-	             	</select>
+            		<%= f.select :work_flow_id, options_from_collection_for_select(@workflow, 'id', 'name'),{include_blank: false}, :class=>'form-control pnd-reqst pull-left'%>
 	            </div>
 	   </div>
 
@@ -36,8 +33,7 @@
 	               <label for="Active" class="pull-right echo_patinet form-group"> Active:  </label>
 	         </div>
 	            <div class="col-lg-6">
-	            <input class="boolean optional pull-left" id = "Active" type="checkbox" id="ium_translation" checked>
-
+	         	<%= f.check_box :is_active ,:checked => true, :class => "pull-left control-label"  %>
 	            </div>
 	   </div>
    

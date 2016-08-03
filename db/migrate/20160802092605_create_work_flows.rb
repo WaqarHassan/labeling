@@ -3,7 +3,7 @@ class CreateWorkFlows < ActiveRecord::Migration
     create_table :work_flows do |t|
       t.string :name
       t.text :description
-      t.boolean :is_visible
+      t.boolean :is_active
 
       t.timestamps null: false
     end

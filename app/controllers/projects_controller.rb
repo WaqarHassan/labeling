@@ -12,7 +12,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
-    #@workflow  = Workflows.all
+    @workflow  = WorkFlow.where(is_active: true)
 
     @project = Project.new
     respond_to do |format|
@@ -32,6 +32,14 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
 
     if @project.save
+      if @project.work_flow_id.present?
+        templates = Template.where(work_flow_id: @project.work_flow_id)
+
+        templates.each do |temp|
+          WorkflowStep.create(step_id: temp.step_id, is_active: temp.is_active)
+        end
+
+      end
       redirect_to root_path, notice: 'Project was successfully created.'
     else
       render :new
@@ -61,6 +69,6 @@ class ProjectsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def project_params
-      params.require(:project).permit(:id, :name, :description, :user_id)
+      params.require(:project).permit(:id, :name, :description, :user_id, :work_flow_id, :is_active)
     end
 end

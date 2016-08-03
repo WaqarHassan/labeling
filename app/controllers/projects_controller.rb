@@ -8,6 +8,8 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1
   def show
+
+
   end
 
   # GET /projects/new
@@ -41,7 +43,7 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1
   def update
     if @project.update(project_params)
-      redirect_to @project, notice: 'Project was successfully updated.'
+      redirect_to root_path, notice: 'Project was successfully updated.'
     else
       render :edit
     end

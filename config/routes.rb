@@ -52,7 +52,7 @@ Rails.application.routes.draw do
   get '/main/add_project_modal' => 'main#add_project_modal', as: 'add_project_modal' 
   get '/main/add_ecr_modal' => 'main#add_ecr_modal', as: 'add_ecr_modal'
   get '/main/add_ia_modal' => 'main#add_ia_modal', as: 'add_ia_modal'
-  get '/main/project_status_popup' => 'main#project_status_popup', as: 'project_status_popup'
+  get '/main/project_status_popup/:id' => 'main#project_status_popup', as: 'project_status_popup'
 
   resources :main
   get '/main' => 'main#index', as: 'main_home'

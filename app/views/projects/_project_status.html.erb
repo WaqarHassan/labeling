@@ -1,10 +1,13 @@
+<%= simple_form_for @project , remote: true , :html => { :id => "add_project_form"} do |f| %>
+  <%= f.error_notification %>
+
 <div class="form-inputs"> 
   		<div class="row">
 	         <div class="col-lg-4">
 	               <label for= "project_name" class="pull-right echo_patinet form-group"> Project:  </label>
 	         </div>
 	            <div class="col-lg-6 ">
-	             	<span class= "pull-left">Sapien 3 Extended </span>
+	             	<span class= "pull-left"> <%= @project.name %> </span>
 	            </div>
 	   </div>
 
@@ -14,12 +17,13 @@
 	               <label for= "workflow_dropdown" class="pull-right echo_patinet form-group"> Status:  </label>
 	         </div>
 	            <div class="col-lg-6">
-	            	<select class = "form-control " id = "workflow_dropdown">
-	            		<option>Active</option>
-	      				<option>In-Active</option>
-	            	</select>
+
+	            <%= f.select :is_active ,options_for_select(['Active','InActive']),{},:class => "form-control"  %>
+
+	            	
 
 	            </div>
 	   </div>
    
   </div>
+  <% end %>

@@ -132,7 +132,7 @@
             <% @projects.each do |project| %>
               <tr>
                 <td colspan="8" class="project">
-                <%=  link_to project.name, project_status_popup_path, {:remote => true, 'data-toggle' => "modal", 'data-target' => '#project_status_popup'} %>
+                <%=  link_to project.name, project_status_popup_path(project), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#project_status_popup'} %>
 
                </td>
               </tr>  

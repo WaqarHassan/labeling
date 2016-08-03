@@ -26,5 +26,7 @@
 /*.sublime-workspace
 ../db/structure.sql
 database.yml
-
+../.DS_Store
+../app/.DS_Store
+../.idea/*
 

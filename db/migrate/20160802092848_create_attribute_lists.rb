@@ -1,6 +1,6 @@
-class CreateAttributes < ActiveRecord::Migration
+class CreateAttributeLists < ActiveRecord::Migration
   def change
-    create_table :attributes do |t|
+    create_table :attribute_lists do |t|
       t.string :label
       t.string :short_label
 

@@ -45,7 +45,7 @@
                  <label for = "ecr_station_id" class="pull-right form-group echo_patinet control-label">Component Type:</label>
           </div>
             <div class="col-lg-6">
-                   <%= f.select :comp_types, options_from_collection_for_select(@components, 'value', 'value'),{include_blank: false}, :class=>'form-control'%>       
+                   <%= f.select :comp_type, options_from_collection_for_select(@components, 'value', 'value'),{include_blank: false}, :class=>'form-control'%>       
             </div>
      </div>
   </div>

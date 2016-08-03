@@ -233,19 +233,32 @@
               <td>5/19/2016  10:18 PM</td>
               <td>5/19/2016  10:18 PM</td>
               <td>
-               
+                  <%= link_to 'N/A', open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
+
               </td>
               <td>
-                
+                  <%= link_to 'N/A', open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
               </td>
 
-             <td></td>
+                  <td class= <%= true == true ? 'future_date' : 'past_date' %> >
+                  <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
+                  </td>
 
-              <td></td>
 
-              <td></td>
+                  <td class= <%= true == true ? 'future_date' : 'past_date' %> >
+                    <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
+                  </td>
 
-               <td></td>
+
+                  <td class= <%= true == true ? 'future_date' : 'past_date' %> >
+                    <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
+                  </td>
+
+
+                  <td class= <%= true == true ? 'future_date' : 'past_date' %> >
+                    <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
+                  </td>
+
 
               <td>5/19/2016  10:18 PM</td>
             </tr>

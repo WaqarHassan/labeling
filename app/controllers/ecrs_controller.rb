@@ -13,8 +13,8 @@ class EcrsController < ApplicationController
   # GET /ecrs/new
   def new
         @ia = Ia.all
-        comp_attribute = Attribute.find_by_label('Component Type')
-        @components = comp_attribute.attribute_values
+        comp_attribute = AttributeList.find_by_label('Component Type')
+        @components = comp_attribute.attribute_list_values
 
 
     @ecr = Ecr.new

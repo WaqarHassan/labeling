@@ -3,26 +3,20 @@
   <div class="form-inputs">
  
 
-
   <div class= "form-group">
     <div class="row">
            <div class="col-lg-4">
                  <label for = "ia_project_id" class=" echo_patinet pull-right control-label">PROJECT:</label>
           </div>
-
-
             <div class="col-lg-6">
-
             <%= f.select :project_id, options_from_collection_for_select(@project, 'id', 'name'),{include_blank: false}, :class=>'form-control pnd-reqst pull-left'%>
-
-
             </div>
      </div>
   </div>
    <div class= "form-group">
     <div class="row">
            <div class="col-lg-4">
-                 <label for = "ia_name" class="echo_patinet pull-right control-label">IA NAME:</label>
+                 <label for = "ia_name" class="echo_patinet pull-right control-label">IA NAME:</labe>
           </div>
             <div class="col-lg-6">
             <%= f.input :name ,:label => false %>
@@ -35,7 +29,6 @@
            <label for = "ia_name" class="echo_patinet pull-right control-label">Translation:</label>
            </div>
             <div class="col-lg-6">
-
             <%= f.check_box :translation ,:checked => true, :class => "pull-left control-label"  %>
             </div>
      </div>
@@ -48,10 +41,7 @@
  
           </div>
           <div class="col-lg-6">
-
-
           <%= f.datetime_field :requested_date,:value => Time.now.strftime("%m/%d/%Y %I:%M %p"), :label => false , :class => "datetimepicker_ia form-control"%>
-        
           </div>
           
      </div>

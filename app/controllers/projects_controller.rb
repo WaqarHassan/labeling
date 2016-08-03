@@ -25,6 +25,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1/edit
   def edit
+     @workflow  = WorkFlow.where(is_active: true)
      respond_to do |format|
       format.html
       format.js

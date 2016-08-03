@@ -26,5 +26,5 @@
 /*.sublime-workspace
 ../db/structure.sql
 database.yml
-database.yml.example
+
 

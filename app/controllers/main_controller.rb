@@ -20,6 +20,9 @@ class MainController < ApplicationController
    end
 
    def project_status_popup
+
+      @project = Project.find(params[:id])
+      
       respond_to do |format|
       format.html
       format.js

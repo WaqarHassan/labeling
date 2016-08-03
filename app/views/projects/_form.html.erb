@@ -33,7 +33,9 @@
 	               <label for="Active" class="pull-right echo_patinet form-group"> Active:  </label>
 	         </div>
 	            <div class="col-lg-6">
-	         	<%= f.check_box :is_active ,:checked => true, :class => "pull-left control-label"  %>
+
+	            <%= f.check_box :is_active, :label => false  , :class => "pull-left boolean"%>
+
 	            </div>
 	   </div>
    

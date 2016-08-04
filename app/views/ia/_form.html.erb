@@ -1,4 +1,15 @@
-<%= simple_form_for @ia, :url => '/ia', :method => :post , remote: true , :html => { :id => "add_ia_form"}  do |f| %>
+  <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+           <button type='button' class='close' data-dismiss='modal'>×</button>
+              <h1 class='h1-heading-popup'>Add IA </h1>
+         </div>
+        <div class='modal-body' id="add_ia_modal_body">
+
+
+
+
+            <%= simple_form_for @ia, :url => '/ia', :method => :post , remote: true , :html => { :id => "add_ia_form"}  do |f| %>
   <%= f.error_notification %>
   <div class="form-inputs">
  
@@ -9,7 +20,11 @@
                  <label for = "ia_project_id" class=" echo_patinet pull-right control-label">PROJECT:</label>
           </div>
             <div class="col-lg-6">
-            <%= f.select :project_id, options_from_collection_for_select(@project, 'id', 'name'),{include_blank: false}, :class=>'form-control pnd-reqst pull-left'%>
+            <% if @show_projects == 'dropdown' %>
+              <%= f.select :project_id, options_from_collection_for_select(@project, 'id', 'name'),{include_blank: false}, :class=>'form-control pnd-reqst pull-left'%>
+            <% else %>
+              <%= @project.name %>
+            <% end %> sss
             </div>
      </div>
   </div>
@@ -50,3 +65,15 @@
 
   </div>
 <% end %>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
+        <button class="btn save-print-update-edit-btn" name="submit" onclick="addIaSubmit();" type="submit">Accept</button>
+         <button class="btn reject-btn" data-dismiss="modal" type="button">Reject</button>
+    </div>
+      </div>
+  </div>
+</div>  
+
+
+

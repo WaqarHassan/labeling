@@ -7,6 +7,10 @@ function addProjectSubmit() {
 	$('#modal').modal('toggle');
 	
 }
+function updateprojectstatusSubmit(){
+	$("form#update_project_status_form").submit();
+	$('#modal').modal('toggle');
+}
 function addEcrSubmit() {
 	$("form#add_ecr_form").submit();
 }

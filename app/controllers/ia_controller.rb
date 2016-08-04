@@ -11,15 +11,29 @@ class IaController < ApplicationController
   end
 
   # GET /ia/new
+  def add_nested_ia
+    
+    @project = Project.find(params[:project_id])
+    @show_projects = 'readonly';
+    @ia = Ia.new
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+
+  # GET /ia/new
   def new
     @project = current_user.projects.all 
-
+    @show_projects = 'dropdown';
     @ia = Ia.new
     respond_to do |format|
       format.html
       format.js
     end
   end
+
 
   # GET /ia/1/edit
   def edit

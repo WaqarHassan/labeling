@@ -1,6 +1,6 @@
 class CreateWorkflowSteps < ActiveRecord::Migration
   def change
-    create_table :live_steps do |t|
+    create_table :workflow_steps do |t|
       t.integer :step_id
       t.integer :object_id
       t.string :object_type

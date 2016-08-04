@@ -45,7 +45,7 @@ Rails.application.routes.draw do
     resources :authentications, path: 'accounts'
   end
 
-  get '/main/open_info_modal' => 'main#open_info_modal', as: 'open_info_modal'
+  get '/main/open_info_modals' => 'main#open_info_modal', as: 'open_info_modal'
   get '/main/open_rework_modal' => 'main#open_rework_modal', as: 'open_rework_modal'
   get '/main/open_confirm_modal' => 'main#open_confirm_modal', as: 'open_confirm_modal'
   get '/main/open_modal4' => 'main#open_modal4', as: 'open_modal4'

@@ -5,7 +5,7 @@ class CreateWorkflowAttributes < ActiveRecord::Migration
       t.string :label1_attributes
       t.string :label2_name
       t.string :label2_attributes
-      t.integer :workflow_id
+      t.integer :work_flow_id
 
       t.timestamps null: false
     end

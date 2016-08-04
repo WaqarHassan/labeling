@@ -30,6 +30,19 @@ class IaController < ApplicationController
     @ia = Ia.new(ia_params)
 
     if @ia.save
+      if @ia.project.work_flow_id.present?
+        templates = Template.joins(:step).where("templates.work_flow_id= #{@ia.project.work_flow_id} and steps.recording_level='IA'")
+        templates.each do |temp|
+          transition = Transition.find_by_step_id_and_previous_step_id(temp.step_id, (temp.step_id - 1))
+          if transition.present?
+            duration = Time.now + transition.duration.hours
+          else
+            duration = Time.now  
+          end
+          WorkflowStep.create(step_id: temp.step_id, object_id: @ia.id, object_type: temp.step.recording_level, is_active: temp.is_active, eta: Time.now, project_id: @ia.project.id)
+        end
+      end
+
       redirect_to root_path, notice: 'Ia was successfully created.'
     else
       render :new

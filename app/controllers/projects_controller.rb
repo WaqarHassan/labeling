@@ -40,14 +40,6 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
 
     if @project.save
-      if @project.work_flow_id.present?
-        templates = Template.where(work_flow_id: @project.work_flow_id)
-
-        templates.each do |temp|
-          WorkflowStep.create(step_id: temp.step_id, is_active: temp.is_active)
-        end
-
-      end
       redirect_to root_path, notice: 'Project was successfully created.'
     else
       render :new

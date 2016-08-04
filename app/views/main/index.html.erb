@@ -200,15 +200,15 @@
              <td colspan="11" class="project"></td>
           </tr>  
         <% project.ias.each do |ia| 
-           work_flow_ia_steps =  WorkflowStep.find_by_object_id_and_object_type(ia.id, 'IA')
+           work_flow_ia_steps =  WorkflowStep.where(object_id: ia.id, object_type: 'IA')
           %>
 
             <tr>
               <td>
-                <% if work_flow_ia_steps.present? 
-                    if work_flow_ia_steps.step_id = 1
-                      if work_flow_ia_steps.eta.present? %>
-                        <%= link_to work_flow_ia_steps.eta.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
+                <% if work_flow_ia_steps.first.present? 
+                    if work_flow_ia_steps.first.step_id == 1
+                      if work_flow_ia_steps.first.eta.present? %>
+                        <%= link_to work_flow_ia_steps.first.eta.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
                     <% end 
                     end 
                 else %>
@@ -216,10 +216,10 @@
                 <% end %> 
               </td>
               <td>
-                <% if work_flow_ia_steps.present? 
-                    if work_flow_ia_steps.step_id = 2
-                      if work_flow_ia_steps.eta.present? %>
-                        <%= link_to work_flow_ia_steps.eta.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
+                <% if work_flow_ia_steps.second.present? 
+                    if work_flow_ia_steps.second.step_id == 2
+                      if work_flow_ia_steps.second.eta.present? %>
+                        <%= link_to work_flow_ia_steps.second.eta.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
                     <% end 
                     end 
                 else %>
@@ -227,10 +227,10 @@
                 <% end %> 
               </td>
               <td>
-                <% if work_flow_ia_steps.present? 
-                    if work_flow_ia_steps.step_id = 3
-                      if work_flow_ia_steps.eta.present? %>
-                        <%= link_to work_flow_ia_steps.eta.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
+                <% if work_flow_ia_steps.third.present? 
+                    if work_flow_ia_steps.third.step_id == 3
+                      if work_flow_ia_steps.third.eta.present? %>
+                        <%= link_to work_flow_ia_steps.third.eta.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
                     <% end 
                     end 
                 else %>
@@ -238,10 +238,10 @@
                 <% end %> 
               </td>
               <td>
-                 <% if work_flow_ia_steps.present? 
-                    if work_flow_ia_steps.step_id = 4
-                      if work_flow_ia_steps.eta.present? %>
-                        <%= link_to work_flow_ia_steps.eta.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
+                 <% if work_flow_ia_steps.fourth.present? 
+                    if work_flow_ia_steps.fourth.step_id == 4
+                      if work_flow_ia_steps.fourth.eta.present? %>
+                        <%= link_to work_flow_ia_steps.fourth.eta.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
                     <% end 
                     end 
                 else %>

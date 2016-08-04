@@ -34,6 +34,7 @@ module Labeling
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     # config.time_zone = 'Central Time (US & Canada)'
+    config.time_zone = 'America/Los_Angeles'
 
     # Disable I18n locale deprecation warning caused by newrelic gem
     # http://stackoverflow.com/questions/20361428/rails-i18n-validation-deprecation-warning

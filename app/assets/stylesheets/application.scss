@@ -116,7 +116,8 @@ body {
 
 a {
     background-color: transparent;
-}
+    font-weight: normal;
+   }
 
 a strong{
     text-transform: uppercase;
@@ -318,7 +319,8 @@ th {
 }
 
 td {
-  height:50px;
+    height: 45px;
+    padding: 6px !important;
 }
 
 .labeling_body_detail_search .approval-data{
@@ -341,17 +343,17 @@ td {
     margin-top: 8px;
 }
 
-.project{
+.project a{
     color: #337ab7;
     text-decoration: none;
 }
 
 .future_date a{
-    color: #000000;
+    color: #000000 !important
 }
 
 .past_date a{
-    color: red;
+    color: red !important
 }
 
 .add_links{
@@ -371,6 +373,11 @@ td {
     background-color: #898d8d !important;
     text-align: center;
     width: 55px !important;
+}
+
+#project_ia td a, #detail_data td a {
+    color: #337ab7;
+    text-decoration: none;
 }
 
 

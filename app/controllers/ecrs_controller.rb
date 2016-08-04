@@ -46,8 +46,9 @@ class EcrsController < ApplicationController
     comp_attribute = AttributeList.find_by_label('Component Type')
     @components = comp_attribute.attribute_list_values
 
+    @ecr = Ecr.new
     @show_projects = 'dropdown'
-      @ecr = Ecr.find(params[:ecr_id])
+      @ia_find = Ia.find(params[:ecr_id])
       respond_to do |format|
         format.html
         format.js

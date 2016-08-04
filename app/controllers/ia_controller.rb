@@ -53,7 +53,7 @@ class IaController < ApplicationController
           else
             duration = Time.now  
           end
-          WorkflowStep.create(step_id: temp.step_id, object_id: @ia.id, object_type: temp.step.recording_level, is_active: temp.is_active, eta: Time.now, project_id: @ia.project.id)
+          WorkflowStep.create(step_id: temp.step_id, object_id: @ia.id, object_type: temp.step.recording_level, is_active: temp.is_active, eta: duration, project_id: @ia.project.id)
         end
       end
 

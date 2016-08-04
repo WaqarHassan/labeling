@@ -49,11 +49,11 @@ class IaController < ApplicationController
         templates.each do |temp|
           transition = Transition.find_by_step_id_and_previous_step_id(temp.step_id, (temp.step_id - 1))
           if transition.present?
-            duration = Time.now + transition.duration.hours
+            stpduration = Time.now + transition.duration.hours
           else
-            duration = Time.now  
+            stpduration = Time.now  
           end
-          WorkflowStep.create(step_id: temp.step_id, object_id: @ia.id, object_type: temp.step.recording_level, is_active: temp.is_active, eta: duration, project_id: @ia.project.id)
+          WorkflowStep.create(step_id: temp.step_id, object_id: @ia.id, object_type: temp.step.recording_level, is_active: temp.is_active, eta: stpduration, project_id: @ia.project.id)
         end
       end
 

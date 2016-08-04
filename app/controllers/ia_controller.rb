@@ -13,10 +13,9 @@ class IaController < ApplicationController
   # GET /ia/new
   def add_nested_ia
     
-    @project = Project.find(params[:project_id])
-    @show_projects = 'readonly';
-    @ia = Ia.new
-
+    @ia = Ia.find(params[:ia_id])
+    @project = current_user.projects.all
+    @show_projects = 'dropdown';
     respond_to do |format|
       format.html
       format.js
@@ -66,7 +65,7 @@ class IaController < ApplicationController
   # PATCH/PUT /ia/1
   def update
     if @ia.update(ia_params)
-      redirect_to @ia, notice: 'Ia was successfully updated.'
+      redirect_to root_path, notice: 'Ia was successfully updated.'
     else
       render :edit
     end

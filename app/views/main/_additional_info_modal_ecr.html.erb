@@ -8,10 +8,10 @@
        <form class="form-horizontal">
 
         <div class="form-group">
-         <label class="col-lg-4 control-label">IA:  </label>
+         <label class="col-lg-4 control-label">ECR:  </label>
           <div class="col-lg-6">
            
-               <%=  link_to @ia.name, add_nested_ia_path(@ia.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#ia_update_popup' , "data-dismiss" => "modal"} %>
+          <%=  link_to @ecr.name, add_nested_ecr_path(@ecr.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#ecr_update_popup' , "data-dismiss" => "modal"} %>
 
           </div>
         </div>
@@ -63,8 +63,6 @@
    </form>
     </div>
     <div class='modal-footer'>
-
-       <%=  link_to 'Add ECR', add_nested_ecr_path(@ia.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_ecr_modal',"data-dismiss" => "modal", :class => 'btn save-print-update-edit-btn pull-left'} %>
 
       <button class='btn btn-danger' data-dismiss='modal' type='button'>Close</button>
       <button class='btn save-print-update-edit-btn' type='submit'>Save</button>

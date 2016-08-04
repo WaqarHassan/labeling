@@ -23,8 +23,11 @@
             <% if @show_projects == 'dropdown' %>
               <%= f.select :project_id, options_from_collection_for_select(@project, 'id', 'name'),{include_blank: false}, :class=>'form-control pnd-reqst pull-left'%>
             <% else %>
+            <%= f.hidden_field :project_id, :value => @project.id %>
+            <span class='pull-left'>
               <%= @project.name %>
-            <% end %> sss
+              </span>
+            <% end %> 
             </div>
      </div>
   </div>

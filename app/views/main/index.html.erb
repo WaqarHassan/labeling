@@ -140,7 +140,7 @@
                 <tr>
                   <td></td>
                   <td>
-                  <%= link_to ia.name, open_info_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
+                  <%= link_to ia.name, open_info_modal_path(ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
                   <td></td>
                   <td class="collapse_table_data collapse_table">Active</td>
                   <td class="collapse_table_data collapse_table">THV</td>
@@ -153,7 +153,7 @@
                     <td></td>
                     <td></td>
                     <td>
-                      <%= link_to ecr.name, open_info_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
+                      <%= link_to ecr.name, open_info_modal_ecr_path(ecr.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
                     <td class="collapse_table_data collapse_table">Active</td>
                     <td class="collapse_table_data collapse_table">HVT/MISC/EPC</td>
                     <td class="collapse_table_data collapse_table">50</td>

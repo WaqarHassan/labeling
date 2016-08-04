@@ -1,4 +1,12 @@
-<%= simple_form_for @ecr , remote: true , :html => { :id =>  "add_ecr_form"} do |f| %>
+<div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+           <button type='button' class='close' data-dismiss='modal'>×</button>
+              <h1 class='h1-heading-popup'>Add ECR </h1>
+         </div>
+        <div class='modal-body' id="add_ecr_modal_body">
+
+        <%= simple_form_for @ecr , remote: true , :html => { :id =>  "add_ecr_form"} do |f| %>
   
   <%= f.error_notification %>
   <div class="form-inputs">
@@ -12,7 +20,14 @@
           </div>
             <div class="col-lg-6">
 
-             <%= f.select :ia_id, options_from_collection_for_select(@ia, 'id', 'name'),{prompt: 'Please Select IA'}, :class=>'form-control'%>
+           <% if @show_projects == 'dropdown' %>
+                <%= f.select :ia_id, options_from_collection_for_select(@ia, 'id', 'name'),{prompt: 'Please Select IA'}, :class=>'form-control'%>
+            <% else %>
+            
+            <span class= "pull-left">
+              <%= @ia.name %>
+              </span>
+            <% end %> 
            
             </div>
      </div>
@@ -56,3 +71,20 @@
 
   </div>
 <% end %>
+
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
+        <button class="btn save-print-update-edit-btn" type="submit" onclick="addEcrSubmit();" >Save</button>
+    </div>
+      </div>
+  </div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,7 @@
+$("#info_modal_popup").html("<%= escape_javascript(render 'main/additional_info_modal_ecr') %>");
+
+$('#datetimepicker_info').datetimepicker();
+
+$('.modal-dialog').draggable({
+    handle: ".modal-header"
+});

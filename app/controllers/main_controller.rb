@@ -7,7 +7,7 @@ class MainController < ApplicationController
 
    def open_info_modal
 
-    #@ia = Ia.find(params[:id])
+    @ia = Ia.find(params[:ia_id])
 
     # if params[:popup] == 'add_info'
     #   @info_modal = 'additional_info'
@@ -16,6 +16,16 @@ class MainController < ApplicationController
     # elsif params[:popup] == 'collab'
     #   @info_modal = 'collaboration'
     # end
+    respond_to do |format|
+      format.html
+      format.js
+    end
+   end
+
+   def open_info_modal_ecr
+
+    @ecr = Ecr.find(params[:ecr_id])
+
     respond_to do |format|
       format.html
       format.js

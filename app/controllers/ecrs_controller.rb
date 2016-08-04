@@ -12,16 +12,16 @@ class EcrsController < ApplicationController
 
   # GET /ecrs/new
   def new
-        @ia = Ia.all
-        comp_attribute = AttributeList.find_by_label('Component Type')
-        @components = comp_attribute.attribute_list_values
+    @ia = Ia.all
+    comp_attribute = AttributeList.find_by_label('Component Type')
+    @components = comp_attribute.attribute_list_values
 
-
-    @ecr = Ecr.new
-    respond_to do |format|
-      format.html
-      format.js
-    end
+    @show_projects = 'dropdown'
+      @ecr = Ecr.new
+      respond_to do |format|
+        format.html
+        format.js
+      end
   end
 
   # GET /ecrs/1/edit
@@ -39,10 +39,26 @@ class EcrsController < ApplicationController
     end
   end
 
+  
+   # GET /ecrs/new
+  def add_nested_ecr
+    @ia = Ia.all
+    comp_attribute = AttributeList.find_by_label('Component Type')
+    @components = comp_attribute.attribute_list_values
+
+    @show_projects = 'dropdown'
+      @ecr = Ecr.find(params[:ecr_id])
+      respond_to do |format|
+        format.html
+        format.js
+      end
+  end
+
+
   # PATCH/PUT /ecrs/1
   def update
     if @ecr.update(ecr_params)
-      redirect_to @ecr, notice: 'Ecr was successfully updated.'
+      redirect_to root_path, notice: 'Ecr was successfully updated.'
     else
       render :edit
     end

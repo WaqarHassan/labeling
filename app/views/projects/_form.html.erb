@@ -7,7 +7,7 @@
 	               <label for= "workflow_dropdown" class="pull-right echo_patinet form-group"> Workflow </label>
 	         </div>
 	            <div class="col-lg-6" id="workflow_dropdown">
-            		<%= f.select :work_flow_id, options_from_collection_for_select(@workflow, 'id', 'name'),{include_blank: false}, :class=>'form-control pnd-reqst pull-left'%>
+            		<%= f.select :work_flow_id, options_from_collection_for_select(@workflow, 'id', 'name'),{prompt: 'please select workflow'}, :class=>'form-control pnd-reqst pull-left'%>
 	            </div>
 	   </div>
 

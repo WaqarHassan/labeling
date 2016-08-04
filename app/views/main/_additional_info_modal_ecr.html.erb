@@ -28,6 +28,7 @@
           <div class="col-lg-6">
            
             <select id="source" class="form-control" name="source">
+              <option value="">Please select station </option>
                 <% Station.all.each do |station| %>
                   <option value=""><%= station.name %></option>
                 <% end %> 

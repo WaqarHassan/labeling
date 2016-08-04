@@ -21,7 +21,7 @@
           </div>
             <div class="col-lg-6">
             <% if @show_projects == 'dropdown' %>
-              <%= f.select :project_id, options_from_collection_for_select(@project, 'id', 'name'),{include_blank: false}, :class=>'form-control pnd-reqst pull-left'%>
+              <%= f.select :project_id, options_from_collection_for_select(@project, 'id', 'name'),{prompt: 'please select project'}, :class=>'form-control pnd-reqst pull-left'%>
             <% else %>
             <%= f.hidden_field :project_id, :value => @project.id %>
             <span class='pull-left'>

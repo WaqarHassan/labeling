@@ -41,7 +41,7 @@
 
       <div class="modal-footer">
      
-      <%=  link_to 'Add IA', new_ia_path(@project.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_ia_modal',"data-dismiss" => "modal", :class => 'btn save-print-update-edit-btn pull-left'} %>
+      <%=  link_to 'Add IA', add_new_ia_list_path(@project.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_ia_modal',"data-dismiss" => "modal", :class => 'btn save-print-update-edit-btn pull-left'} %>
    
 
         <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>

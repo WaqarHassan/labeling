@@ -58,7 +58,7 @@ class IaListsController < ApplicationController
 
     if @ia_list.save
       if @ia_list.project.work_flow_id.present?
-        templates = Template.joins(:step).where("templates.work_flow_id= #{@ia_list.project.work_flow_id} and steps.recording_level='IA'")
+        templates = Template.joins(:step).where("templates.work_flow_id= #{@ia_list.project.work_flow_id} and steps.recording_level='IaList'")
         templates.each do |temp|
           transition = Transition.find_by_step_id_and_previous_step_id(temp.step_id, (temp.step_id - 1))
           if transition.present?

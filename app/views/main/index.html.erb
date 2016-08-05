@@ -199,18 +199,20 @@
           <tr>
              <td colspan="11" class="project"></td>
           </tr>  
+          <tr>
+           
               <% project.ia_lists.each do |ia| 
                 ia.workflow_steps.each do |workflow_step| %>
-              
+                 <td>
                 <% if workflow_step.eta.present? %>
                         <%= link_to workflow_step.eta.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
                 <% else %>
                   N/A
                 <% end %> 
-              
+              </td>
               <% end %>
 
-              </td>
+              
               <td></td>
               <td></td>
               <td></td>

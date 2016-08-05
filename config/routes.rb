@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   
   resources :ia_lists
 
-  get '/ia_list/new(/:project_id)(.:format)' => 'ia_list#new', as: 'add_new_ia_list'
+  get '/ia_lists/new(/:project_id)(.:format)' => 'ia_lists#new', as: 'add_new_ia_list'
 
 
   resources :rework_infos

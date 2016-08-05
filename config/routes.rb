@@ -54,6 +54,7 @@ Rails.application.routes.draw do
 
   get '/main/open_info_modal/:ia_list_id' => 'main#open_info_modal', as: 'open_info_modal'
   get '/main/open_info_modal_ecr/:ecr_id' => 'main#open_info_modal_ecr', as: 'open_info_modal_ecr'
+  
   get '/main/open_rework_modal' => 'main#open_rework_modal', as: 'open_rework_modal'
   get '/main/open_confirm_modal' => 'main#open_confirm_modal', as: 'open_confirm_modal'
   get '/main/open_modal4' => 'main#open_modal4', as: 'open_modal4'
@@ -62,8 +63,6 @@ Rails.application.routes.draw do
   get '/main/add_ia_list_modal' => 'main#add_ia_list_modal', as: 'add_ia_list_modal'
   get '/main/project_status_popup/:id' => 'main#project_status_popup', as: 'project_status_popup'
   
-  get '/ia_list/add_nested_ia_list/:ia_list_id' => 'ia_list#add_nested_ia_list', as: 'add_nested_ia_list'
-  get '/ecrs/add_nested_ecr/:ecr_id' => 'ecrs#add_nested_ecr', as: 'add_nested_ecr'
   
   #what we write after 'as' keyword becomes path
  

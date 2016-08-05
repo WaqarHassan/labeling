@@ -14,12 +14,12 @@ class EcrsController < ApplicationController
   def new
     
     @ecr_type = 'ADD ECR'
-    if params.has_key?(:ia_id)
+    if params.has_key?(:ia_list_id)
       @show_projects = 'readonly'
-      @ia = Ia.find(params[:ia_id])
+      @ia = IaList.find(params[:ia_list_id])
     else 
       @show_projects = 'dropdown'
-      @ia = Ia.all 
+      @ia = IaList.all 
     end 
     comp_attribute = AttributeList.find_by_label('Component Type')
     @components = comp_attribute.attribute_list_values
@@ -101,6 +101,6 @@ class EcrsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def ecr_params
-      params.require(:ecr).permit(:id, :name, :status, :note, :ia_id,:comp_count,:comp_type)
+      params.require(:ecr).permit(:id, :name, :status, :note, :ia_list_id,:comp_count,:comp_type)
     end
 end

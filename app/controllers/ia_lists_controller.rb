@@ -25,6 +25,7 @@ class IaListsController < ApplicationController
 
   # GET /ia/new
   def new
+     @ia_type = 'ADD IA '
     if params.has_key?(:project_id)
       @show_projects = 'readonly'
       @project = Project.find(params[:project_id])
@@ -42,9 +43,10 @@ class IaListsController < ApplicationController
 
   # GET /ia/1/edit
   def edit
+     @ia_type = 'UPDATE IA '
     @ia_list = IaList.find(params[:id])
-    @project = current_user.projects.all
-    @show_projects = 'dropdown'
+    @project = @ia_list.project
+    @show_projects = 'dropdowddn'
     respond_to do |format|
       format.html
       format.js
@@ -93,7 +95,7 @@ class IaListsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_ia_list
-      @ia_list_list = IaList.find(params[:id])
+      @ia_list = IaList.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

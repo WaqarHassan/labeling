@@ -44,6 +44,12 @@ module Labeling
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    config.generators do |g|
+      g.orm             :active_record
+      g.template_engine :erb
+      g.test_framework  :test_unit, fixture: true
+    end
+    
     # Enable faster precompiles
     config.assets.initialize_on_precompile = false
 

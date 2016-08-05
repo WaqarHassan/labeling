@@ -16,7 +16,7 @@
           %b.caret
         %ul.dropdown-menu.setting_menu
           %li= link_to '+ADD PROJECT', new_project_path,  {:remote => true, 'data-toggle' =>  "modal",class: 'add_links', 'data-target' => '#add_project_modal'} 
-          %li= link_to '+ADD IA', new_ia_path,  {:remote => true,class: 'add_links', 'data-toggle' =>  "modal", 'data-target' => '#add_ia_modal'}
+          %li= link_to '+ADD IA', new_ia_list_path,  {:remote => true,class: 'add_links', 'data-toggle' =>  "modal", 'data-target' => '#add_ia_modal'}
           %li= link_to '+ADD ECR', new_ecr_path,  {:remote => true,class: 'add_links', 'data-toggle' =>  "modal", 'data-target' => '#add_ecr_modal'}
 
       - if user_signed_in?

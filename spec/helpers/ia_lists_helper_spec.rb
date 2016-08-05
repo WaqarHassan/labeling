@@ -1,15 +1,15 @@
 require 'rails_helper'
 
 # Specs in this file have access to a helper object that includes
-# the IaHelper. For example:
+# the IaListsHelper. For example:
 #
-# describe IaHelper do
+# describe IaListsHelper do
 #   describe "string concat" do
 #     it "concats two strings with spaces" do
 #       expect(helper.concat_strings("this","that")).to eq("this that")
 #     end
 #   end
 # end
-RSpec.describe IaHelper, type: :helper do
+RSpec.describe IaListsHelper, type: :helper do
   pending "add some examples to (or delete) #{__FILE__}"
 end

@@ -1,9 +1,10 @@
-class IaController < ApplicationController
-  before_action :set_ia, only: [:show, :edit, :update, :destroy]
-  skip_authorization_check 
-  # GET /ia
+class IaListsController < ApplicationController
+  before_action :set_ia_list, only: [:show, :edit, :update, :destroy]
+  skip_authorization_check
+
+  # GET /ia_lists
   def index
-    @ia = Ia.all
+    @ia_list = IaList.all
   end
 
   # GET /ia/1
@@ -13,7 +14,7 @@ class IaController < ApplicationController
   # GET /ia/new
   def add_nested_ia
     
-    @ia = Ia.find(params[:ia_id])
+    @ia_list = IaList.find(params[:ia_id])
     @project = current_user.projects.all
     @show_projects = 'dropdown'
     respond_to do |format|
@@ -31,7 +32,7 @@ class IaController < ApplicationController
       @show_projects = 'dropdown'
       @project = current_user.projects.all 
     end  
-    @ia = Ia.new
+    @ia_list = IaList.new
     respond_to do |format|
       format.html
       format.js
@@ -41,15 +42,23 @@ class IaController < ApplicationController
 
   # GET /ia/1/edit
   def edit
+    @ia_list = IaList.find(params[:id])
+    @project = current_user.projects.all
+    @show_projects = 'dropdown'
+    respond_to do |format|
+      format.html
+      format.js
+    end
+
   end
 
   # POST /ia
   def create
-    @ia = Ia.new(ia_params)
+    @ia_list = IaList.new(ia_list_params)
 
-    if @ia.save
-      if @ia.project.work_flow_id.present?
-        templates = Template.joins(:step).where("templates.work_flow_id= #{@ia.project.work_flow_id} and steps.recording_level='IA'")
+    if @ia_list.save
+      if @ia_list.project.work_flow_id.present?
+        templates = Template.joins(:step).where("templates.work_flow_id= #{@ia_list.project.work_flow_id} and steps.recording_level='IA'")
         templates.each do |temp|
           transition = Transition.find_by_step_id_and_previous_step_id(temp.step_id, (temp.step_id - 1))
           if transition.present?
@@ -57,7 +66,7 @@ class IaController < ApplicationController
           else
             stpduration = Time.now  
           end
-          WorkflowStep.create(step_id: temp.step_id, object_id: @ia.id, object_type: temp.step.recording_level, is_active: temp.is_active, eta: stpduration, project_id: @ia.project.id)
+          WorkflowStep.create(step_id: temp.step_id, object_id: @ia_list.id, object_type: temp.step.recording_level, is_active: temp.is_active, eta: stpduration, project_id: @ia_list.project.id)
         end
       end
 
@@ -69,7 +78,7 @@ class IaController < ApplicationController
 
   # PATCH/PUT /ia/1
   def update
-    if @ia.update(ia_params)
+    if @ia_list.update(ia_list_params)
       redirect_to root_path, notice: 'Ia was successfully updated.'
     else
       render :edit
@@ -78,18 +87,17 @@ class IaController < ApplicationController
 
   # DELETE /ia/1
   def destroy
-    @ia.destroy
-    redirect_to ia_url, notice: 'Ia was successfully destroyed.'
+    @ia_list.destroy
+    redirect_to ia_list_url, notice: 'Ia was successfully destroyed.'
   end
-
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_ia
-      @ia = Ia.find(params[:id])
+    def set_ia_list
+      @ia_list_list = IaList.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
-    def ia_params
-      params.require(:ia).permit(:name, :translation, :horw, :inbox_date, :sent_date, :received_date, :project_id)
+    def ia_list_params
+      params.require(:ia_list).permit(:name, :project_id, :business_unit, :comp_count, :notes, :is_active, :requested_date, :to_be_approved_by, :translation)
     end
 end

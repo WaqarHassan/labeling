@@ -7,7 +7,7 @@ class CreateEcrs < ActiveRecord::Migration
       t.integer :language_count
       t.integer :is_active
       t.text :notes
-      t.integer :ia_id
+      t.integer :ia_list_id
       t.integer :user_id
       t.integer :modified_by_user_id
 

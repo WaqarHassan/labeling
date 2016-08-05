@@ -2,7 +2,7 @@
       <div class='modal-content'>
         <div class='modal-header'>
            <button type='button' class='close' data-dismiss='modal'>×</button>
-              <h1 class='h1-heading-popup'>Add ECR </h1>
+              <h1 class='h1-heading-popup'> <%=   @ecr_type %> </h1>
          </div>
         <div class='modal-body' id="add_ecr_modal_body">
 
@@ -23,7 +23,7 @@
            <% if @show_projects == 'dropdown' %>
                 <%= f.select :ia_id, options_from_collection_for_select(@ia, 'id', 'name'),{prompt: 'Please Select IA'}, :class=>'form-control'%>
             <% else %>
-            <%= f.hidden_field :ia_id, :value => @ia.id %>
+            <% #f.hidden_field :ia_id, :value => @ia.id %>
             <span class= "pull-left">
               <%= @ia.name %>
               </span>
@@ -76,7 +76,14 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
-        <button class="btn save-print-update-edit-btn" type="submit" onclick="addEcrSubmit();" >Save</button>
+        <button class="btn save-print-update-edit-btn" type="submit" onclick="addEcrSubmit();" >
+        <% if @ecr_type == 'UPDATE ECR' %>
+              Update
+              <% else %>
+              Save
+              <%end%>
+
+        </button>
     </div>
       </div>
   </div>

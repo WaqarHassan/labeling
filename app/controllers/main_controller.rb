@@ -7,7 +7,7 @@ class MainController < ApplicationController
 
    def open_info_modal
 
-    @ia = Ia.find(params[:ia_id])
+    @ia = IaList.find(params[:ia_list_id])
 
     # if params[:popup] == 'add_info'
     #   @info_modal = 'additional_info'

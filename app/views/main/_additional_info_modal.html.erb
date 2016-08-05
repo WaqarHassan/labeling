@@ -11,7 +11,7 @@
          <label class="col-lg-4 control-label">IA:  </label>
           <div class="col-lg-6">
            
-               <%=  link_to @ia.name, add_nested_ia_path(@ia.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#ia_update_popup' , "data-dismiss" => "modal"} %>
+               <%=  link_to @ia.name, edit_ia_list_path(@ia.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#ia_update_popup' , "data-dismiss" => "modal"} %>
 
           </div>
         </div>

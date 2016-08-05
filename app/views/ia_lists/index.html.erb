@@ -1,4 +1,4 @@
-<h1>Listing ia</h1>
+<h1>Listing ia_list</h1>
 <table>
   <thead>
     <tr>
@@ -15,41 +15,41 @@
     </tr>
   </thead>
   <tbody>
-    <% @ia.each do |ia| %>
+    <% @ia_list.each do |ia_list| %>
       <tr>
         <td>
-          <%= ia.name %>
+          <%= ia_list.name %>
         </td>
         <td>
-          <%= ia.translation %>
+          <%= ia_list.translation %>
         </td>
         <td>
-          <%= ia.horw %>
+          <%= ia_list.horw %>
         </td>
         <td>
-          <%= ia.inbox_date %>
+          <%= ia_list.inbox_date %>
         </td>
         <td>
-          <%= ia.sent_date %>
+          <%= ia_list.sent_date %>
         </td>
         <td>
-          <%= ia.received_date %>
+          <%= ia_list.received_date %>
         </td>
         <td>
-          <%= ia.project_id %>
+          <%= ia_list.project_id %>
         </td>
         <td>
-          <%= link_to 'Show', ia %>
+          <%= link_to 'Show', ia_list %>
         </td>
         <td>
-          <%= link_to 'Edit', edit_ia_path(ia) %>
+          <%= link_to 'Edit', edit_ia_list_path(ia_list) %>
         </td>
         <td>
-          <%= link_to 'Destroy', ia, :method => :delete, :data => { :confirm => 'Are you sure?' } %>
+          <%= link_to 'Destroy', ia_list, :method => :delete, :data => { :confirm => 'Are you sure?' } %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 <br/>
-<%= link_to 'New Ia', new_ia_path %>
+<%= link_to 'New ia_list', new_ia_list_path %>

@@ -15,7 +15,7 @@ class IaListsController < ApplicationController
   def add_nested_ia
     
     @ia_list = IaList.find(params[:ia_id])
-    @project = current_user.projects.all
+    @project = current_user.projects.where(is_active: true)
     @show_projects = 'dropdown'
     respond_to do |format|
       format.html
@@ -31,7 +31,7 @@ class IaListsController < ApplicationController
       @project = Project.find(params[:project_id])
     else 
       @show_projects = 'dropdown'
-      @project = current_user.projects.all 
+      @project = current_user.projects.where(is_active: true) 
     end  
     @ia_list = IaList.new
     respond_to do |format|

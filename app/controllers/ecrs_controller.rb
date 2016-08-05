@@ -12,16 +12,22 @@ class EcrsController < ApplicationController
 
   # GET /ecrs/new
   def new
-    @ia = Ia.all
+    
+    if params.has_key?(:ia_id)
+      @show_projects = 'readonly'
+      @ia = Ia.find(params[:ia_id])
+    else 
+      @show_projects = 'dropdown'
+      @ia = Ia.all 
+    end 
     comp_attribute = AttributeList.find_by_label('Component Type')
     @components = comp_attribute.attribute_list_values
-
-    @show_projects = 'dropdown'
-      @ecr = Ecr.new
-      respond_to do |format|
-        format.html
-        format.js
-      end
+    
+    @ecr = Ecr.new
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /ecrs/1/edit

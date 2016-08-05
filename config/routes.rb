@@ -1,6 +1,15 @@
 # Route prefixes use a single letter to allow for vanity urls of two or more characters
 Rails.application.routes.draw do
-  resources :ia
+  
+  get '/ia(.:format)' => 'ia#index', as: 'ia_index'
+  get '/ia/new(/:project_id)(.:format)' => 'ia#new', as: 'new_ia'
+  get '/ia/:id/edit(.:format)' => 'ia#edit', as: 'edit_ia'
+  get '/ia/:id(.:format)' => 'ia#show', as: 'ia_show'
+  post '/ia(.:format)' => 'ia#create'
+  patch '/ia/:id(.:format)' => 'ia#update'
+  put '/ia/:id(.:format)' => 'ia#update'                      
+  delete '/ia/:id(.:format)' => 'ia#destroy'
+
   resources :rework_infos
   resources :archives
   resources :notes
@@ -16,6 +25,8 @@ Rails.application.routes.draw do
   end
 
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin' if defined? RailsAdmin
+
+  get '/ecrs/new(/:ia_id)' => 'ecrs#new', as: 'add_new_ecr'
 
   # Static pages
   match '/error' => 'pages#error', via: [:get, :post], as: 'error_page'

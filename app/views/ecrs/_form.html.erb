@@ -23,9 +23,9 @@
            <% if @show_projects == 'dropdown' %>
                 <%= f.select :ia_id, options_from_collection_for_select(@ia, 'id', 'name'),{prompt: 'Please Select IA'}, :class=>'form-control'%>
             <% else %>
-            
+            <%= f.hidden_field :ia_id, :value => @ia.id %>
             <span class= "pull-left">
-              <%= @ia_find.name %>
+              <%= @ia.name %>
               </span>
             <% end %> 
            

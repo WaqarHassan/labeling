@@ -15,7 +15,7 @@ class IaController < ApplicationController
     
     @ia = Ia.find(params[:ia_id])
     @project = current_user.projects.all
-    @show_projects = 'dropdown';
+    @show_projects = 'dropdown'
     respond_to do |format|
       format.html
       format.js
@@ -24,8 +24,13 @@ class IaController < ApplicationController
 
   # GET /ia/new
   def new
-    @project = current_user.projects.all 
-    @show_projects = 'dropdown';
+    if params.has_key?(:project_id)
+      @show_projects = 'readonly'
+      @project = Project.find(params[:project_id])
+    else 
+      @show_projects = 'dropdown'
+      @project = current_user.projects.all 
+    end  
     @ia = Ia.new
     respond_to do |format|
       format.html

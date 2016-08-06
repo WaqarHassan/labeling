@@ -28,7 +28,7 @@
       <div class="form-group">
          <label class="col-lg-4 control-label">Rework Start</label>
          <div class="col-lg-6">
-           <input type="text" class="form-control" id="datetimepicker" name="dob" required="" 
+           <input type="text" class="form-control datetimepicker" id="datetimepicker" name="dob" required="" 
            value="<%=Time.now.strftime("%m/%d/%Y %I:%M %p")%>" aria-required="true">
          </div>
      </div>
@@ -93,3 +93,5 @@
     </div>
   </div>
 </div>
+
+ <%= javascript_include_tag "modal_form" %>

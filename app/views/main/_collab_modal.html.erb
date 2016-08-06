@@ -36,7 +36,7 @@
            <div class="form-group">
              <label class="col-lg-4 control-label">Timestamp </label>
              <div class="col-lg-8">
-              <input type="text" class="form-control" id="datetimepicker_confirm" name="dob" required="" value="<%=Time.now.strftime("%m/%d/%Y %I:%M %p")%>"  aria-required="true">
+              <input type="text" class="datetimepicker form-control" id="datetimepicker" name="dob" required="" value="<%=Time.now.strftime("%m/%d/%Y %I:%M %p")%>"  aria-required="true">
              </div> 
           </div>
      </form>
@@ -47,3 +47,5 @@
     </div>
   </div>
 </div>
+
+ <%= javascript_include_tag "modal_form" %>

@@ -39,7 +39,7 @@
     <div class="form-group">
          <label class="col-lg-4 control-label">Date/Time </label>
          <div class="col-lg-5">
-           <input type="text" class="datepicker form-control" id="datetimepicker_info" name="dob" required="" value="<%=Time.now.strftime("%m/%d/%Y %I:%M %p")%>"  aria-required="true">
+           <input type="text" class="datetimepicker form-control" id="datetimepicker" name="dob" required="" value="<%=Time.now.strftime("%m/%d/%Y %I:%M %p")%>"  aria-required="true">
          </div>
          <div class="col-lg-3 pull-left">
           <button class="btn btn-primary pull-left" onclick="set_current_timestamp(); return false;"  >Now</button>
@@ -72,3 +72,5 @@
     </div>
   </div>
 </div>
+
+ <%= javascript_include_tag "modal_form" %>

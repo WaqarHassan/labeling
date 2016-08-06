@@ -29,3 +29,4 @@
 #= require imagesloaded
 #= require avatar.errors
 #= require mains
+#= require jquery.validate

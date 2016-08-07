@@ -14,6 +14,8 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
+    @action = 'ADD'
+    @btn_action = 'SAVE'
     @workflow  = WorkFlow.where(is_active: true)
 
     @project = Project.new
@@ -25,6 +27,9 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1/edit
   def edit
+    @action = 'UPDATE'
+    @btn_action = 'UPDATE'
+
      @workflow  = WorkFlow.where(is_active: true)
      respond_to do |format|
       format.html

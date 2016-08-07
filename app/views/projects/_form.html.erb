@@ -1,44 +1,61 @@
-<%= simple_form_for @project , remote: true , :html => { :id => "add_project_form"} do |f| %>
-  <%= f.error_notification %>
-  <div class="form-inputs"> 
-  		<%= f.hidden_field :user_id, :value=> current_user.id %>
-  		<div class="row">
-	         <div class="col-lg-4">
-	               <label for= "workflow_dropdown" class="pull-right echo_patinet form-group"> Workflow </label>
-	         </div>
-	            <div class="col-lg-6" id="workflow_dropdown">
-            		<%= f.select :work_flow_id, options_from_collection_for_select(@workflow, 'id', 'name'),{prompt: 'please select workflow'}, :class=>'form-control pnd-reqst pull-left'%>
-	            </div>
-	   </div>
+<div class='modal-dialog'>
+	<div class='modal-content'>
+		<%= simple_form_for @project , remote: true , :html => { :id => "add_project_form"} do |f| %>
+		<%= f.error_notification %>
+			<div class='modal-header'>
+			 <button type='button' class='close' data-dismiss='modal'>×</button>
+				  <h1 class='h1-heading-popup'><%= @action %> Project</h1>
+			 </div>
+		 	<div class='modal-body' id="add_project_modal_body">
 
+			 	<div class="form-inputs"> 
+			  		<%= f.hidden_field :user_id, :value=> current_user.id %>
+			  		<div class="row">
+				        <div class="col-lg-4">
+			               <label for= "workflow_dropdown" class="pull-right echo_patinet form-group"> Workflow </label>
+				        </div>
+			            <div class="col-lg-6" id="workflow_dropdown">
+	            			<%= f.select :work_flow_id, options_from_collection_for_select(@workflow, 'id', 'name'),{prompt: 'please select workflow'}, {:class=>'form-control pnd-reqst pull-left', required: true} %>
+			            </div>
+				    </div>
 
-	   <div class="row">
-	         <div class="col-lg-4">
-	               <label for= "project_name" class="pull-right echo_patinet form-group"> Project:  </label>
-	         </div>
-	            <div class="col-lg-6">
-	             	 <%= f.input :name,:label => false  %>
-	            </div>
-	   </div>
-	    <div class="row">
-	         <div class="col-lg-4">
-	               <label for="project_description" class="pull-right echo_patinet form-group"> Description:  </label>
-	         </div>
-	            <div class="col-lg-6">
-	             	 <%= f.input :description,:label => false  %>
-	            </div>
-	   </div>
-	  <div class="row">
-	         <div class="col-lg-4">
-	               <label for="Active" class="pull-right echo_patinet form-group"> Active:  </label> 
-	         </div>
-	            <div class="col-lg-6">
+				    <div class="row">
+				        <div class="col-lg-4">
+			               <label for= "project_name" class="pull-right echo_patinet form-group"> Project:  </label>
+				        </div>
+			            <div class="col-lg-6">
+			             	 <%= f.input :name,:label => false  %>
+			            </div>
+				    </div>
 
-	            <%= f.check_box :is_active, :label => false  , :class => "pull-left boolean" ,:checked => true %>
+				    <div class="row">
+			            <div class="col-lg-4">
+			               <label for="project_description" class="pull-right echo_patinet form-group"> Description:  </label>
+		      	        </div>
+			            <div class="col-lg-6">
+			             	 <%= f.input :description,:label => false  %>
+			            </div>
+				    </div>
 
-	            </div>
-	   </div>
-   
-  </div>
- 
-<% end %>
+					<div class="row">
+				        <div class="col-lg-4">
+			               <label for="Active" class="pull-right echo_patinet form-group"> Active:  </label> 
+				        </div>
+			            <div class="col-lg-6">
+				            <%= f.check_box :is_active, :label => false  , :class => "pull-left boolean" ,:checked => true%>
+			            </div>
+				    </div>
+				   
+				</div>
+
+		 	</div>
+
+		    <div class="modal-footer">
+		        <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
+		        <button class="btn save-print-update-edit-btn" type="submit" ><%= @btn_action %></button>
+		    </div>
+		<% end %>
+	</div>
+</div>
+
+ <%= javascript_include_tag "modal_form" %>

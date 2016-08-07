@@ -1,28 +1,36 @@
 <div class='modal-dialog' style="width:450px">
   <div class='modal-content'>
-   <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">×</button>
-     <h1 class="h1-heading-popup">Task Confirmation</h1>
-  </div>
-    <div class='modal-body'>
-      <form class="form-horizontal">
+    <%= form_tag update_task_confirmation_path, remote: true, :id => 'task_confirmation', :class => 'form-horizontal'  do %>
+     <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">×</button>
+       <h1 class="h1-heading-popup">Task Confirmation</h1>
+    </div>
+      <div class='modal-body'>
+          <input type="hidden" value=<%=@wf_step_id%> name="id" >
+
           <div class="form-group">
              <label class="col-lg-4 control-label">Project </label>
              <div class="col-lg-8">
-                <span id="" name="">This is a testing Project </span>
+                <span id="" name=""> <%= @ia.present? == true ? @ia.project.name : '' %> </span>
              </div>
           </div>
       
          <div class="form-group">
            <label class="col-lg-4 control-label">IA </label>
            <div class="col-lg-8">
-              <span id="" name="">IA-00000000A34 </span>
+              <span id="" name=""><%= @ia.present? == true ? @ia.name : '' %> </span>
            </div>
          </div>
           <div class="form-group">
              <label class="col-lg-4 control-label">ECR </label>
              <div class="col-lg-8">
-              <span id="" name="">ECR-00000000A34 </span>
+              <span id="" name="">
+                <% if @ia.present? 
+                  @ia.ecrs.each do |ecr| %>
+                  <%= ecr.name%> <br> 
+                <% end 
+                end %>
+              </span>
             </div>
           </div> 
           
@@ -36,15 +44,15 @@
            <div class="form-group">
              <label class="col-lg-4 control-label">Timestamp </label>
              <div class="col-lg-8">
-              <input type="text" class="datetimepicker form-control" id="datetimepicker" name="dob" required="" value="<%=Time.now.strftime("%m/%d/%Y %I:%M %p")%>"  aria-required="true">
+              <input type="text" class="datetimepicker form-control" id="datetimepicker" name="workflow_step[actual_confirmation]" required value="<%=Time.now.strftime("%m/%d/%Y %I:%M %p")%>"  aria-required="true">
              </div> 
           </div>
-     </form>
     </div>
     <div class='modal-footer'>
       <button class='btn btn-danger' data-dismiss='modal' type='button'>Close</button>
       <button class='btn save-print-update-edit-btn' type='submit'>Update</button>
     </div>
+   <% end %> 
   </div>
 </div>
 

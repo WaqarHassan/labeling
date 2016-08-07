@@ -13,7 +13,8 @@ class EcrsController < ApplicationController
   # GET /ecrs/new
   def new
     
-    @ecr_type = 'ADD ECR'
+    @action = 'ADD'
+    @btn_action = 'SAVE'
     if params.has_key?(:ia_list_id)
       @show_projects = 'readonly'
       @ia = IaList.find(params[:ia_list_id])
@@ -37,7 +38,8 @@ class EcrsController < ApplicationController
       #@ia = Ia.all
     comp_attribute = AttributeList.find_by_label('Component Type')
     @components = comp_attribute.attribute_list_values
-    @ecr_type = 'UPDATE ECR'
+    @action = 'UPDATE'
+    @btn_action = 'UPDATE'
     
     @show_projects = 'dropdowncxd'
     #  @ia_find = Ia.find(params[:id])

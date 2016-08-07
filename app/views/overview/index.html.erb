@@ -200,19 +200,19 @@
              <td colspan="11" class="project"></td>
           </tr>  
           <tr>
-           
               <% project.ia_lists.each do |ia| 
                 ia.workflow_steps.each do |workflow_step| %>
                  <td>
-                <% if workflow_step.eta.present? %>
-                        <%= link_to workflow_step.eta.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
-                <% else %>
-                  N/A
-                <% end %> 
-              </td>
+                    <% if workflow_step.actual_confirmation.blank? && workflow_step.eta.present? %>
+                        <%= link_to workflow_step.eta.strftime("%m/%d/%Y %I:%M %p") , open_confirm_modal_path(workflow_step.id, ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
+                    <% elsif workflow_step.actual_confirmation.present? %>
+                        <%= link_to workflow_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path(workflow_step.id, ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
+                    <% else %>   
+                      N/A
+                    <% end %> 
+                  </td>
               <% end %>
 
-              
               <td></td>
               <td></td>
               <td></td>
@@ -230,30 +230,30 @@
               <td>
               </td>
               <td>
-                  <%= link_to 'N/A', open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
+                  <%= link_to 'N/A', open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
 
               </td>
               <td>
-                  <%= link_to 'N/A', open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup2'} %>
+                  <%= link_to 'N/A', open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
               </td>
 
                   <td class= <%= true == true ? 'future_date' : 'past_date' %> >
-                  <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
+                  <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
                   </td>
 
 
                   <td class= <%= true == true ? 'future_date' : 'past_date' %> >
-                    <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
+                    <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
                   </td>
 
 
                   <td class= <%= true == true ? 'future_date' : 'past_date' %> >
-                    <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
+                    <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
                   </td>
 
 
                   <td class= <%= true == true ? 'future_date' : 'past_date' %> >
-                    <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup3'} %>
+                    <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
                   </td>
 
 

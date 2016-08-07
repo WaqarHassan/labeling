@@ -1,4 +1,4 @@
-class MainController < ApplicationController
+class OverviewController < ApplicationController
 	skip_authorization_check
 
 	def index
@@ -22,16 +22,6 @@ class MainController < ApplicationController
     end
    end
 
-   def open_info_modal_ecr
-
-    @ecr = Ecr.find(params[:ecr_id])
-
-    respond_to do |format|
-      format.html
-      format.js
-    end
-   end
-
    def project_status_popup
 
       @project = Project.find(params[:id])
@@ -44,6 +34,10 @@ class MainController < ApplicationController
 
 
    def open_rework_modal
+    @wf_step_id = params[:wf_step_id]
+    if params[:ia_list_id].present?
+      @ia = IaList.find(params[:ia_list_id])
+    end 
     respond_to do |format|
       format.html
       format.js
@@ -51,10 +45,27 @@ class MainController < ApplicationController
    end
     
   def open_confirm_modal
-      respond_to do |format|
+    @wf_step_id = params[:wf_step_id]
+    if params[:ia_list_id].present?
+      @ia = IaList.find(params[:ia_list_id])
+    end  
+    respond_to do |format|
       format.html
       format.js
     end
-   end
+  end
+
+  def update_task_confirmation
+    @workflow_step = WorkflowStep.find(params[:id])
+    params[:workflow_step][:actual_confirmation] = Project.set_db_datetime_format(params[:workflow_step][:actual_confirmation])
+    @workflow_step.update(workflow_step_params)
+    redirect_to root_path, notice: 'Status was successfully updated.'
+  end
+
+
+  private
+    def workflow_step_params
+      params.require(:workflow_step).permit(:actual_confirmation)
+    end
 
 end

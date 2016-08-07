@@ -52,22 +52,23 @@ Rails.application.routes.draw do
     resources :authentications, path: 'accounts'
   end
 
-  get '/main/open_info_modal/:ia_list_id' => 'main#open_info_modal', as: 'open_info_modal'
-  get '/main/open_info_modal_ecr/:ecr_id' => 'main#open_info_modal_ecr', as: 'open_info_modal_ecr'
+  get '/overview/open_info_modal/:ia_list_id' => 'overview#open_info_modal', as: 'open_info_modal'
+  get '/overview/open_info_modal_ecr/:ecr_id' => 'overview#open_info_modal_ecr', as: 'open_info_modal_ecr'
   
-  get '/main/open_rework_modal' => 'main#open_rework_modal', as: 'open_rework_modal'
-  get '/main/open_confirm_modal' => 'main#open_confirm_modal', as: 'open_confirm_modal'
-  get '/main/open_modal4' => 'main#open_modal4', as: 'open_modal4'
-  get '/main/add_project_modal' => 'main#add_project_modal', as: 'add_project_modal' 
-  get '/main/add_ecr_modal/:id' => 'main#add_ecr_modal', as: 'add_ecr_modal'
-  get '/main/add_ia_list_modal' => 'main#add_ia_list_modal', as: 'add_ia_list_modal'
-  get '/main/project_status_popup/:id' => 'main#project_status_popup', as: 'project_status_popup'
+  get '/overview/open_rework_modal(/:wf_step_id)(/:ia_list_id)' => 'overview#open_rework_modal', as: 'open_rework_modal'
+  get '/overview/open_confirm_modal(/:wf_step_id)(/:ia_list_id)' => 'overview#open_confirm_modal', as: 'open_confirm_modal'
+  get '/overview/open_modal4' => 'overview#open_modal4', as: 'open_modal4'
+  get '/overview/add_project_modal' => 'overview#add_project_modal', as: 'add_project_modal' 
+  get '/overview/add_ecr_modal/:id' => 'overview#add_ecr_modal', as: 'add_ecr_modal'
+  get '/overview/add_ia_list_modal' => 'overview#add_ia_list_modal', as: 'add_ia_list_modal'
+  get '/overview/project_status_popup/:id' => 'overview#project_status_popup', as: 'project_status_popup'
   
   
   #what we write after 'as' keyword becomes path
  
-  resources :main
-  get '/main' => 'main#index', as: 'main_home'
+  resources :overview
+  post '/overview/update_task_confirmation' =>  'overview#update_task_confirmation', as: 'update_task_confirmation'
+  get '/overview' => 'overview#index', as: 'overview_home'
 
   # Dummy preview pages for testing.
   get '/p/test' => 'pages#test', as: 'test'
@@ -75,5 +76,5 @@ Rails.application.routes.draw do
 
   get 'robots.:format' => 'robots#index'
 
-  root 'main#index'
+  root 'overview#index'
 end

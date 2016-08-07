@@ -25,7 +25,7 @@ class IaListsController < ApplicationController
 
   # GET /ia/new
   def new
-     @ia_type = 'ADD IA '
+     @action = 'ADD'
     if params.has_key?(:project_id)
       @show_projects = 'readonly'
       @project = Project.find(params[:project_id])
@@ -43,7 +43,7 @@ class IaListsController < ApplicationController
 
   # GET /ia/1/edit
   def edit
-     @ia_type = 'UPDATE IA '
+    @action = 'UPDATE'
     @ia_list = IaList.find(params[:id])
     @project = @ia_list.project
     @show_projects = 'dropdowddn'

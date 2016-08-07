@@ -7,4 +7,6 @@ $(document).ready(function() {
 	});
 
 	$("#ia_modal_form").validate();
+	$("#add_project_form").validate();
+	$("#add_edit_ecr_form").validate();
 });	

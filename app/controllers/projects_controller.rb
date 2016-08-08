@@ -17,7 +17,8 @@ class ProjectsController < ApplicationController
     @action = 'ADD'
     @btn_action = 'SAVE'
     @workflow  = WorkFlow.where(is_active: true).first
-    puts "------------#{@workflow.inspect}"
+    @attr_list = @workflow.attribute_lists.where(level: 'IALIST')
+    
     @project = Project.new
     respond_to do |format|
       format.html

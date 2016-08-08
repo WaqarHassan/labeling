@@ -9,7 +9,7 @@
 
   .collapse.navbar-collapse
     %ul.nav.navbar-nav.navbar-right
-      
+
       %li.dropdown
         %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
           SETTING
@@ -18,6 +18,14 @@
           %li= link_to '+ADD PROJECT', new_project_path,  {:remote => true, 'data-toggle' =>  "modal",class: 'add_links', 'data-target' => '#add_edit_project_modal'} 
           %li= link_to '+ADD IA', new_ia_list_path,  {:remote => true,class: 'add_links', 'data-toggle' =>  "modal", 'data-target' => '#add_ia_modal'}
           %li= link_to '+ADD ECR', new_ecr_path,  {:remote => true,class: 'add_links', 'data-toggle' =>  "modal", 'data-target' => '#add_ecr_modal'}
+
+      %li.dropdown
+        %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
+          = @active_workflow.name
+          %b.caret
+        %ul.dropdown-menu.setting_menu
+          - @workflows.each do |workflow|
+            %li= link_to workflow.name, update_workflow_status_path(workflow.id)
 
       - if user_signed_in?
         %li.dropdown

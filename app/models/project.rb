@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
   has_many :ia_lists, dependent: :destroy
   belongs_to :user
+  belongs_to :work_flow
   has_many :workflow_steps
 
   class << self

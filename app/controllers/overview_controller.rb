@@ -2,20 +2,14 @@ class OverviewController < ApplicationController
 	skip_authorization_check
 
 	def index
-		@projects = current_user.projects.where(is_active: true)
+    @active_workflow = WorkFlow.find_by_is_active(true)
+    @workflows = WorkFlow.where(is_active: false)
+		@projects = @active_workflow.projects.where(is_active: true)
 	end
 
    def open_info_modal
 
     @ia = IaList.find(params[:ia_list_id])
-
-    # if params[:popup] == 'add_info'
-    #   @info_modal = 'additional_info'
-    # elsif params[:popup] == 'rework'
-    #   @info_modal = 'rework_info'
-    # elsif params[:popup] == 'collab'
-    #   @info_modal = 'collaboration'
-    # end
     respond_to do |format|
       format.html
       format.js
@@ -25,7 +19,6 @@ class OverviewController < ApplicationController
    def project_status_popup
 
       @project = Project.find(params[:id])
-      
       respond_to do |format|
       format.html
       format.js
@@ -53,6 +46,13 @@ class OverviewController < ApplicationController
       format.html
       format.js
     end
+  end
+
+  def update_workflow_status
+    workflow_id = params[:workflow_id]
+    WorkFlow.update_all(is_active: false)
+    WorkFlow.update(workflow_id, is_active: true)
+    redirect_to root_path, notice: 'WorkFlow was successfully changed.'
   end
 
   def update_task_confirmation

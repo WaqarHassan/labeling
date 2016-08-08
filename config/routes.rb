@@ -62,6 +62,7 @@ Rails.application.routes.draw do
   get '/overview/add_ecr_modal/:id' => 'overview#add_ecr_modal', as: 'add_ecr_modal'
   get '/overview/add_ia_list_modal' => 'overview#add_ia_list_modal', as: 'add_ia_list_modal'
   get '/overview/project_status_popup/:id' => 'overview#project_status_popup', as: 'project_status_popup'
+  get '/overview/update_workflow_status/:workflow_id' => 'overview#update_workflow_status', as: 'update_workflow_status'
   
   
   #what we write after 'as' keyword becomes path

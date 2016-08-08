@@ -48,37 +48,43 @@
 				            <%= f.check_box :is_active, :label => false  , :class => "pull-left boolean" ,:checked => true%>
 			            </div>
 				    </div>
-				    <div class="row">
-				        <div class="col-lg-4">
-			               <label for="Active" class="pull-right echo_patinet form-group"> ATTRIBUTES:  </label> 
-				        </div>
-			            <div class="col-lg-6">
-				            <% @attr_list.each do |a| %>
+				        <% @attr_list.each do |a| %>
 
 				            	<% if a.field_type == "integer" %>
 
-				            		<input type="number" name="iro">
-
-				            	<% else %>
-				            	<br/>
-				            	<select>
-				            		 <% a.attribute_list_values.each do |b| %>
-
-				            		<option><%= b.value %></option>
-
-				            		<% end %>
+            		<div class="row">
+				        <div class="col-lg-4">
+					               <label for="Active" class="pull-right echo_patinet form-group"> #Comp:  </label> 
+				        </div>
+			            <div class="col-lg-6">
+						           	<input type="number" name="iro" >
+			            </div>
+				    </div>
 
 
+				            	
 
-				            	</select>
+	            				<% else %>
+					<div class="row">
+				        <div class="col-lg-4">
+					               <label for="Active" class="pull-right echo_patinet form-group"> Attribute List:  </label> 
+				        </div>
+			            <div class="col-lg-6">
+						           <select>
+				            			<% a.attribute_list_values.each do |b| %>
 
+				            				<option><%= b.value %></option>
+
+				            			<% end %>
+
+									</select>
+			            </div>
+				    </div>
 				            		
 				            	<% end %>
 				            <% end %>
 				            		
-
-			            </div>
-				    </div>
+				  
 				   
 				</div>
 

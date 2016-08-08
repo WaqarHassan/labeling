@@ -2,7 +2,7 @@
 	<div class='modal-content'>
 		<%= simple_form_for @project , remote: true , :html => { :id => "add_project_form"} do |f| %>
 		<%= f.error_notification %>
-			<div class='modal-header'>
+			<div class='modal-header  ui-draggable-handle'>
 			 <button type='button' class='close' data-dismiss='modal'>×</button>
 				  <h1 class='h1-heading-popup'><%= @action %> Project</h1>
 			 </div>
@@ -10,13 +10,16 @@
 
 			 	<div class="form-inputs"> 
 			  		<%= f.hidden_field :user_id, :value=> current_user.id %>
+			  		<%= f.hidden_field :work_flow_id , :value=> @workflow.id %>
 			  		<div class="row">
 				        <div class="col-lg-4">
-			               <label for= "workflow_dropdown" class="pull-right echo_patinet form-group"> Workflow </label>
+			               <label for= "workflow_dropdown" class="pull-right echo_patinet form-group"> Workflow: </label>
 				        </div>
-			            <div class="col-lg-6" id="workflow_dropdown">
-	            			<%= f.select :work_flow_id, options_from_collection_for_select(@workflow, 'id', 'name'),{prompt: 'please select workflow'}, {:class=>'form-control pnd-reqst pull-left', required: true} %>
-			            </div>
+			            <div class="col-lg-6 " id="workflow_dropdown">
+				            <span class="pull-left"> 
+								<%= @workflow.name %>
+				            </span>
+			             </div>
 				    </div>
 
 				    <div class="row">
@@ -24,7 +27,7 @@
 			               <label for= "project_name" class="pull-right echo_patinet form-group"> Project:  </label>
 				        </div>
 			            <div class="col-lg-6">
-			             	 <%= f.input :name,:label => false  %>
+			             	 <%= f.input :name,:label => false, :input_html => { :class => 'inputfocus' } %>
 			            </div>
 				    </div>
 

@@ -16,8 +16,8 @@ class ProjectsController < ApplicationController
   def new
     @action = 'ADD'
     @btn_action = 'SAVE'
-    @workflow  = WorkFlow.where(is_active: true)
-
+    @workflow  = WorkFlow.where(is_active: true).first
+    puts "------------#{@workflow.inspect}"
     @project = Project.new
     respond_to do |format|
       format.html

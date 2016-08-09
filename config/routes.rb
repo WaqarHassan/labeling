@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   
   resources :l2s
 
-  get '/l2s/new(/:project_id)(.:format)' => 'l2s#new', as: 'add_new_l2'
+  get '/l2s/new(/:l1_id)(.:format)' => 'l2s#new', as: 'add_new_l2'
 
 
   resources :rework_infos
@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin' if defined? RailsAdmin
 
-  get '/l3s/new(/:ia_list_id)' => 'l3s#new', as: 'add_new_l3'
+  get '/l3s/new(/:l2_id)' => 'l3s#new', as: 'add_new_l3'
 
   # Static pages
   match '/error' => 'pages#error', via: [:get, :post], as: 'error_page'

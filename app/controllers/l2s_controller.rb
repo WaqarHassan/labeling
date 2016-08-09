@@ -71,7 +71,7 @@ class L2sController < ApplicationController
           else
             stpduration = Time.now  
           end
-          WorkflowStep.create(step_id: temp.step_id, object_id: @l2.id, object_type: temp.step.recording_level, is_active: temp.is_active, eta: stpduration, l1_id: @l2.l1.id)
+          WorkflowStep.create(step_id: temp.step_id, object_id: @l2.id, object_type: temp.step.recording_level, is_active: temp.is_active, eta: stpduration)
         end
       end
 

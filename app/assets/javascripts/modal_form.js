@@ -13,16 +13,8 @@ $(document).ready(function() {
 	$("#ia_modal_form").validate();
 	$("#add_project_form").validate();
 	$("#add_edit_ecr_form").validate();
+});
 
-	//$("project_work_flow_id").val($('#cardtype').val(););
-
-
-
-
-
-
-
-
-
-
-});	
+function set_l2_status(status){
+	$('#l2_status').val(status);
+}	

@@ -48,6 +48,43 @@
 				            <%= f.check_box :is_active, :label => false  , :class => "pull-left boolean" ,:checked => true%>
 			            </div>
 				    </div>
+				        <% @attr_list.each do |a| %>
+
+				            	<% if a.field_type == "integer" %>
+
+            		<div class="row">
+				        <div class="col-lg-4">
+					               <label for="Active" class="pull-right echo_patinet form-group"> #Comp:  </label> 
+				        </div>
+			            <div class="col-lg-6">
+						           	<input type="number" name="iro" >
+			            </div>
+				    </div>
+
+
+				            	
+
+	            				<% else %>
+					<div class="row">
+				        <div class="col-lg-4">
+					               <label for="Active" class="pull-right echo_patinet form-group"> Attribute List:  </label> 
+				        </div>
+			            <div class="col-lg-6">
+						           <select>
+				            			<% a.attribute_list_values.each do |b| %>
+
+				            				<option><%= b.value %></option>
+
+				            			<% end %>
+
+									</select>
+			            </div>
+				    </div>
+				            		
+				            	<% end %>
+				            <% end %>
+				            		
+				  
 				   
 				</div>
 

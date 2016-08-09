@@ -3,6 +3,7 @@ class CreateL2s < ActiveRecord::Migration
     create_table :l2s do |t|
       t.string :name
       t.integer :l1_id
+      t.string :status
       t.string :business_unit
       t.integer :comp_count
       t.text :notes

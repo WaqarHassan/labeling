@@ -5,7 +5,7 @@ class CreateAttributeLists < ActiveRecord::Migration
       t.string :short_label
 	  t.integer :work_flow_id
       t.string  :level
-      t.string :input_field_type
+      t.string :field_type
 
       t.timestamps null: false
     end

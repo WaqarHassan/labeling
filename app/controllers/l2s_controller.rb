@@ -59,6 +59,9 @@ class L2sController < ApplicationController
     @l2 = L2.new(l2_params)
 
     if @l2.save
+      if @l2.status != ''
+        save_activity_log
+      end  
       if @l2.l1.work_flow_id.present?
         templates = Template.joins(:step).where("templates.work_flow_id= #{@l2.l1.work_flow_id} and steps.recording_level='L2'")
         templates.each do |temp|
@@ -80,7 +83,9 @@ class L2sController < ApplicationController
 
   # PATCH/PUT /ia/1
   def update
+    previous_status = @l2.status
     if @l2.update(l2_params)
+      save_activity_log(previous_status)
       redirect_to root_path, notice: 'Ia was successfully updated.'
     else
       render :edit
@@ -93,6 +98,14 @@ class L2sController < ApplicationController
     redirect_to l2_url, notice: 'Ia was successfully destroyed.'
   end
   private
+
+    def save_activity_log(previous_status = '')
+      if previous_status == '' || previous_status == 'reject' 
+        current_status = params[:l2][:status] 
+        ActivityLog.create(object_id: @l2.id,object_type: 'L2' , current_value: current_status,previous_value: previous_status, user_id: current_user.id)
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_l2
       @l2 = L2.find(params[:id])

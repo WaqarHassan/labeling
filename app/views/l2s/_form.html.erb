@@ -69,7 +69,7 @@
 
               <% if @action == 'ADD' or @l2.status == '' or @l2.status == 'reject' %>
                   <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
-                  <button class="btn save-print-update-edit-btn" name="submit" type="submit">SAVE</button>
+                  <button class="btn save-print-update-edit-btn" name="submit" type="submit" onclick=" return set_l2_status('');">SAVE</button>
                   <button class="btn save-print-update-edit-btn" name="submit" type="submit" onclick=" return set_l2_status('accept');">Accept</button>
                   <button class="btn reject-btn" name="submit" type="submit" onclick=" return set_l2_status('reject');">REJECT</button>
                 <%else %>

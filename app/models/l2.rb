@@ -3,4 +3,5 @@ class L2 < ActiveRecord::Base
 	has_many :l3s, dependent: :destroy
 
 	has_many :workflow_steps, as: :object
+	has_many :activity_logs, as: :object
 end

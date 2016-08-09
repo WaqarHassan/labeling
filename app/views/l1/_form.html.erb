@@ -1,0 +1,92 @@
+<div class='modal-dialog'>
+	<div class='modal-content'>
+		<%= simple_form_for @l1 , remote: true , :html => { :id => "add_l1_form"} do |f| %>
+		<%= f.error_notification %>
+			<div class='modal-header  ui-draggable-handle'>
+			 <button type='button' class='close' data-dismiss='modal'>×</button>
+				  <h1 class='h1-heading-popup'><%= @action %> L1</h1>
+			 </div>
+		 	<div class='modal-body' id="add_l1_modal_body">
+
+			 	<div class="form-inputs"> 
+			  		<%= f.hidden_field :user_id, :value=> current_user.id %>
+			  		<%= f.hidden_field :work_flow_id , :value=> @workflow.id %>
+			  		<div class="row">
+				        <div class="col-lg-4">
+			               <label for= "workflow_dropdown" class="pull-right echo_patinet form-group"> Workflow: </label>
+				        </div>
+			            <div class="col-lg-6 " id="workflow_dropdown">
+				            <span class="pull-left"> 
+								<%= @workflow.name %>
+				            </span>
+			             </div>
+				    </div>
+
+				    <div class="row">
+				        <div class="col-lg-4">
+			               <label for= "l1_name" class="pull-right echo_patinet form-group"> L1:  </label>
+				        </div>
+			            <div class="col-lg-6">
+			             	 <%= f.input :name,:label => false, :input_html => { :class => 'inputfocus' } %>
+			            </div>
+				    </div>
+
+				    <div class="row">
+			            <div class="col-lg-4">
+			               <label for="l1_description" class="pull-right echo_patinet form-group"> Description:  </label>
+		      	        </div>
+			            <div class="col-lg-6">
+			             	 <%= f.input :description,:label => false  %>
+			            </div>
+				    </div>
+
+					<div class="row">
+				        <div class="col-lg-4">
+			               <label for="Active" class="pull-right echo_patinet form-group"> Active:  </label> 
+				        </div>
+			            <div class="col-lg-6">
+				            <%= f.check_box :is_active, :label => false  , :class => "pull-left boolean" ,:checked => true%>
+			            </div>
+				    </div>
+				    <% @attr_list.each do |a| %>
+						<% if a.field_type == "integer" %>
+							<div class="row">
+				       			<div class="col-lg-4">
+					               <label for="Active" class="pull-right echo_patinet form-group"> #Comp:  </label> 
+				        		</div>
+			            		<div class="col-lg-6">
+						        	<input type="number" name="iro" class="form-control" >
+			            		</div>
+				    		</div>
+						<% else %>
+							<div class="row">
+				        		<div class="col-lg-4">
+					               <label for="Active" class="pull-right echo_patinet form-group"> Attribute List:  </label> 
+				        		</div>
+			            		<div class="col-lg-6">
+						           <select class="form-control">
+				            			<% a.attribute_list_values.each do |b| %>
+											<option><%= b.value %></option>
+										<% end %>
+									</select>
+			           			</div>
+				   			 </div>
+				            		
+				        <% end %>
+				    <% end %>
+				            		
+				  
+				   
+				</div>
+
+		 	</div>
+
+		    <div class="modal-footer">
+		        <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
+		        <button class="btn save-print-update-edit-btn" type="submit" ><%= @btn_action %></button>
+		    </div>
+		<% end %>
+	</div>
+</div>
+
+ <%= javascript_include_tag "modal_form" %>

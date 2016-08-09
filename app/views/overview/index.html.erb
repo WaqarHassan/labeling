@@ -116,35 +116,40 @@
             <th class="collapse_table_data collapse_table"> </th>
           </tr>
           <tr class="sub_heading">
-            <th>Project</th>
-            <th>IA</th>
-            <th>ECR</th>
+            <% @active_workflow.workflow_labels.each do |wfl| %>
+              <th><%= wfl.name %></th>
+            <% end %>
             <th class="collapse_table_data collapse_table">Status</th>
-            <th class="collapse_table_data collapse_table">BU</th>
-            <th class="collapse_table_data collapse_table">Comp</th>
-            <th class="collapse_table_data collapse_table">Lang</th>
-            <th class="collapse_table_data collapse_table no-brd">Comp Type</th>
+            <% 
+            attributes = []
+            @active_workflow.workflow_labels.each do |wfl| 
+                wfl.workflow_label_attributes.each do |wla| 
+                  if !attributes.include? wla.attribute_list.short_label 
+                    attributes << wla.attribute_list.short_label %>
+                    <th class="collapse_table_data collapse_table"><%= wla.attribute_list.short_label %></th>
+                <% end 
+                end 
+            end %>
+            
           </tr>
         </thead>
         <tbody>
 
             <% @projects.each do |project| %>
               <tr>
-                <td colspan="8" class="project">
-                <%=  link_to project.name, project_status_popup_path(project), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#project_status_popup'} %>
-
-               </td>
+                <td colspan="3" class="project">
+                  <%=  link_to project.name, project_status_popup_path(project), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#project_status_popup'} %>
+                </td>
               </tr>  
 
               <% project.ia_lists.each do |ia| %>
                 <tr>
                   <td></td>
-                  <td>
+                  <td colspan="2">
                   <%= link_to ia.name, open_info_modal_path(ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
-                  <td></td>
                   <td class="collapse_table_data collapse_table">Active</td>
-                  <td class="collapse_table_data collapse_table">THV</td>
                   <td class="collapse_table_data collapse_table"></td>
+                  <td class="collapse_table_data collapse_table">THV</td>
                   <td class="collapse_table_data collapse_table"></td>
                   <td class="collapse_table_data collapse_table"></td>
                 </tr>
@@ -154,11 +159,12 @@
                     <td></td>
                     <td>
                       <%= link_to ecr.name, open_info_modal_ecr_path(ecr.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
-                    <td class="collapse_table_data collapse_table">Active</td>
-                    <td class="collapse_table_data collapse_table">HVT/MISC/EPC</td>
+                    <td class="collapse_table_data collapse_table">Active</td>  
                     <td class="collapse_table_data collapse_table">50</td>
+                    <td class="collapse_table_data collapse_table">HVT/MISC/EPC</td>
                     <td class="collapse_table_data collapse_table">10</td>
                     <td class="collapse_table_data collapse_table no-brd">Multi-Lingual IFUs</td>
+                    
                   </tr>
                 <% end %>  
               <% end %>  

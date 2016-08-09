@@ -16,6 +16,15 @@ class OverviewController < ApplicationController
     end
    end
 
+   def open_info_modal_ecr
+
+    @ecr = Ecr.find(params[:ecr_id])
+    respond_to do |format|
+      format.html
+      format.js
+    end
+   end
+
    def project_status_popup
 
       @project = Project.find(params[:id])

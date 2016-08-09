@@ -1,0 +1,60 @@
+<div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+           <button type='button' class='close' data-dismiss='modal'>×</button>
+              <h1 class='h1-heading-popup'>project</h1>
+         </div>
+        <div class='modal-body' id="project_status_popup_body">
+            <%= simple_form_for @l1 , remote: true , :html => { :id => "update_project_status_form"} do |f| %>
+  				<%= f.error_notification %>
+
+					<div class="form-inputs"> 
+					  		<div class="row">
+						         <div class="col-lg-4">
+						               <label for= "project_name" class="pull-right echo_patinet form-group"> Project:  </label>
+						         </div>
+						            <div class="col-lg-6 ">
+						             	<span class= "pull-left"> 
+
+						             	 <%=  link_to @l1.name, edit_l1_path(@l1.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_edit_project_modal' , "data-dismiss" => "modal"} %>
+						             	 </span>
+						            </div>
+						   </div>
+
+
+					  		 <div class="row">
+						         <div class="col-lg-4">
+						               <label for= "workflow_dropdown" class="pull-right echo_patinet form-group"> Active:  </label>
+						         </div>
+						            <div class="col-lg-6">
+
+						            <%= f.check_box :is_active, :class => "pull-left "  %>
+
+						            	
+
+						            </div>
+						   </div>
+					   
+					  </div>
+  <% end %>
+      </div>
+
+      <div class="modal-footer">
+     
+      <%=  link_to 'Add IA', add_new_l2_path(@l1.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_l2_modal',"data-dismiss" => "modal", :class => 'btn save-print-update-edit-btn pull-left'} %>
+   
+
+        <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
+        <button class="btn save-print-update-edit-btn" onclick="updateprojectstatusSubmit();" type="submit" >Save</button>
+    </div>
+      </div>
+  </div>
+
+
+
+
+
+
+
+
+

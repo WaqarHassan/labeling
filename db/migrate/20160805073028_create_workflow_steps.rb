@@ -7,7 +7,7 @@ class CreateWorkflowSteps < ActiveRecord::Migration
       t.datetime :actual_confirmation
       t.datetime :eta
       t.boolean :is_active
-      t.integer :project_id
+      t.integer :l1_id
 
       t.timestamps null: false
     end

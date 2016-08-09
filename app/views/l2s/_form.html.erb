@@ -73,12 +73,12 @@
 
               <% if @action == 'ADD' %>
                   <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
+                  <button class="btn save-print-update-edit-btn" name="submit" type="submit">SAVE</button>
                   <button class="btn save-print-update-edit-btn" name="submit" type="submit">Accept</button>
-                  <button class="btn reject-btn" data-dismiss="modal" type="button">Reject</button>
+                  <button class="btn reject-btn" data-dismiss="modal" type="submit">REJECT</button>
                 <%else %>
                   <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
-                  <button class="btn save-print-update-edit-btn" name="submit" type="submit"><%= @action %></button>
-
+                  <button class="btn save-print-update-edit-btn" name="submit" type="submit"><%= @action%></button>
                  <%end%>
               </div>
         <% end %>     

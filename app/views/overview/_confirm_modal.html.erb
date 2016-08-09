@@ -11,23 +11,23 @@
           <div class="form-group">
              <label class="col-lg-4 control-label">Project </label>
              <div class="col-lg-8">
-                <span id="" name=""> <%= @ia.present? == true ? @ia.project.name : '' %> </span>
+                <span id="" name=""> <%= @l2.present? == true ? @l2.l1.name : '' %> </span>
              </div>
           </div>
       
          <div class="form-group">
            <label class="col-lg-4 control-label">IA </label>
            <div class="col-lg-8">
-              <span id="" name=""><%= @ia.present? == true ? @ia.name : '' %> </span>
+              <span id="" name=""><%= @l2.present? == true ? @l2.name : '' %> </span>
            </div>
          </div>
           <div class="form-group">
              <label class="col-lg-4 control-label">ECR </label>
              <div class="col-lg-8">
               <span id="" name="">
-                <% if @ia.present? 
-                  @ia.ecrs.each do |ecr| %>
-                  <%= ecr.name%> <br> 
+                <% if @l2.present? 
+                  @l2.l3s.each do |l3| %>
+                  <%= l3.name%> <br> 
                 <% end 
                 end %>
               </span>

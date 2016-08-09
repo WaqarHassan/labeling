@@ -17,7 +17,7 @@ class L1sController < ApplicationController
     @action = 'ADD'
     @btn_action = 'SAVE'
     @workflow  = WorkFlow.where(is_active: true).first
-    @attr_list = @workflow.attribute_lists.where(level: 'IALIST')
+    @attr_list = @workflow.attribute_lists.where(level: 'L2')
     
     @l1 = L1.new
     respond_to do |format|

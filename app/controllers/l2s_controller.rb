@@ -15,8 +15,8 @@ class L2sController < ApplicationController
   def add_nested_ia
     
     @l2 = L2.find(params[:ia_id])
-    @project = current_user.projects.where(is_active: true)
-    @show_projects = 'dropdown'
+    @l1 = current_user.l1s.where(is_active: true)
+    @show_l1s = 'dropdown'
     respond_to do |format|
       format.html
       format.js
@@ -26,12 +26,12 @@ class L2sController < ApplicationController
   # GET /ia/new
   def new
      @action = 'ADD'
-    if params.has_key?(:project_id)
-      @show_projects = 'readonly'
-      @project = Project.find(params[:project_id])
+    if params.has_key?(:l1_id)
+      @show_l1s = 'readonly'
+      @l1 = L1.find(params[:l1_id])
     else 
-      @show_projects = 'dropdown'
-      @project = current_user.projects.where(is_active: true) 
+      @show_l1s = 'dropdown'
+      @l1 = current_user.l1s.where(is_active: true) 
     end  
     @l2 = L2.new
     respond_to do |format|
@@ -45,8 +45,8 @@ class L2sController < ApplicationController
   def edit
     @action = 'UPDATE'
     @l2 = L2.find(params[:id])
-    @project = @l2.project
-    @show_projects = 'dropdowddn'
+    @l1 = @l2.l1
+    @show_l1s = 'dropdowddn'
     respond_to do |format|
       format.html
       format.js
@@ -59,8 +59,8 @@ class L2sController < ApplicationController
     @l2 = L2.new(l2_params)
 
     if @l2.save
-      if @l2.project.work_flow_id.present?
-        templates = Template.joins(:step).where("templates.work_flow_id= #{@l2.project.work_flow_id} and steps.recording_level='L2'")
+      if @l2.l1.work_flow_id.present?
+        templates = Template.joins(:step).where("templates.work_flow_id= #{@l2.l1.work_flow_id} and steps.recording_level='L2'")
         templates.each do |temp|
           transition = Transition.find_by_step_id_and_previous_step_id(temp.step_id, (temp.step_id - 1))
           if transition.present?
@@ -68,7 +68,7 @@ class L2sController < ApplicationController
           else
             stpduration = Time.now  
           end
-          WorkflowStep.create(step_id: temp.step_id, object_id: @l2.id, object_type: temp.step.recording_level, is_active: temp.is_active, eta: stpduration, project_id: @l2.project.id)
+          WorkflowStep.create(step_id: temp.step_id, object_id: @l2.id, object_type: temp.step.recording_level, is_active: temp.is_active, eta: stpduration, l1_id: @l2.l1.id)
         end
       end
 

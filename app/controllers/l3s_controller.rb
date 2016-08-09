@@ -17,10 +17,10 @@ class L3sController < ApplicationController
     @btn_action = 'SAVE'
     if params.has_key?(:l2_id)
       @show_projects = 'readonly'
-      @ia = L2.find(params[:l2_id])
+      @l2 = L2.find(params[:l2_id])
     else 
       @show_projects = 'dropdown'
-      @ia = L2.all 
+      @l2 = L2.all 
     end 
     comp_attribute = AttributeList.find_by_label('Component Type')
     @components = comp_attribute.attribute_list_values

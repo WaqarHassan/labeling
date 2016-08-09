@@ -52,16 +52,16 @@ Rails.application.routes.draw do
     resources :authentications, path: 'accounts'
   end
 
-  get '/overview/open_info_modal/:ia_list_id' => 'overview#open_info_modal', as: 'open_info_modal'
-  get '/overview/open_info_modal_ecr/:ecr_id' => 'overview#open_info_modal_ecr', as: 'open_info_modal_ecr'
+  get '/overview/open_info_modal/:l2_id' => 'overview#open_info_modal', as: 'open_info_modal'
+  get '/overview/open_info_modal_l3/:l3_id' => 'overview#open_info_modal_l3', as: 'open_info_modal_l3'
   
-  get '/overview/open_rework_modal(/:wf_step_id)(/:ia_list_id)' => 'overview#open_rework_modal', as: 'open_rework_modal'
-  get '/overview/open_confirm_modal(/:wf_step_id)(/:ia_list_id)' => 'overview#open_confirm_modal', as: 'open_confirm_modal'
+  get '/overview/open_rework_modal(/:wf_step_id)(/:l2_id)' => 'overview#open_rework_modal', as: 'open_rework_modal'
+  get '/overview/open_confirm_modal(/:wf_step_id)(/:l2_id)' => 'overview#open_confirm_modal', as: 'open_confirm_modal'
   get '/overview/open_modal4' => 'overview#open_modal4', as: 'open_modal4'
   get '/overview/add_project_modal' => 'overview#add_project_modal', as: 'add_project_modal' 
   get '/overview/add_ecr_modal/:id' => 'overview#add_ecr_modal', as: 'add_ecr_modal'
   get '/overview/add_ia_list_modal' => 'overview#add_ia_list_modal', as: 'add_ia_list_modal'
-  get '/overview/project_status_popup/:id' => 'overview#project_status_popup', as: 'project_status_popup'
+  get '/overview/l1_status_popup/:id' => 'overview#l1_status_popup', as: 'l1_status_popup'
   get '/overview/update_workflow_status/:workflow_id' => 'overview#update_workflow_status', as: 'update_workflow_status'
   
   

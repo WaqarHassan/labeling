@@ -9,25 +9,25 @@ class OverviewController < ApplicationController
 
    def open_info_modal
 
-    @ia = IaList.find(params[:ia_list_id])
+    @l2 = L2.find(params[:l2_id])
     respond_to do |format|
       format.html
       format.js
     end
    end
 
-   def open_info_modal_ecr
+   def open_info_modal_l3
 
-    @ecr = Ecr.find(params[:ecr_id])
+    @l3 = L3.find(params[:l3_id])
     respond_to do |format|
       format.html
       format.js
     end
    end
 
-   def project_status_popup
+   def l1_status_popup
 
-      @project = Project.find(params[:id])
+      @l1 = L1.find(params[:id])
       respond_to do |format|
       format.html
       format.js
@@ -37,8 +37,8 @@ class OverviewController < ApplicationController
 
    def open_rework_modal
     @wf_step_id = params[:wf_step_id]
-    if params[:ia_list_id].present?
-      @ia = IaList.find(params[:ia_list_id])
+    if params[:l2_id].present?
+      @l2 = L2.find(params[:l2_id])
     end 
     respond_to do |format|
       format.html
@@ -48,8 +48,8 @@ class OverviewController < ApplicationController
     
   def open_confirm_modal
     @wf_step_id = params[:wf_step_id]
-    if params[:ia_list_id].present?
-      @ia = IaList.find(params[:ia_list_id])
+    if params[:l2_id].present?
+      @l2 = L2.find(params[:l2_id])
     end  
     respond_to do |format|
       format.html
@@ -66,7 +66,7 @@ class OverviewController < ApplicationController
 
   def update_task_confirmation
     @workflow_step = WorkflowStep.find(params[:id])
-    params[:workflow_step][:actual_confirmation] = Project.set_db_datetime_format(params[:workflow_step][:actual_confirmation])
+    params[:workflow_step][:actual_confirmation] = L1.set_db_datetime_format(params[:workflow_step][:actual_confirmation])
     @workflow_step.update(workflow_step_params)
     redirect_to root_path, notice: 'Status was successfully updated.'
   end

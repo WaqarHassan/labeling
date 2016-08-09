@@ -1,4 +1,4 @@
-<h1>Listing ecrs</h1>
+<h1>Listing l3s</h1>
 <table>
   <thead>
     <tr>
@@ -16,44 +16,44 @@
     </tr>
   </thead>
   <tbody>
-    <% @ecrs.each do |ecr| %>
+    <% @l3s.each do |l3| %>
       <tr>
         <td>
-          <%= ecr.id %>
+          <%= l3.id %>
         </td>
         <td>
-          <%= ecr.name %>
+          <%= l3.name %>
         </td>
         <td>
-          <%= ecr.user_id %>
+          <%= l3.user_id %>
         </td>
         <td>
-          <%= ecr.status %>
+          <%= l3.status %>
         </td>
         <td>
-          <%= ecr.note %>
+          <%= l3.note %>
         </td>
         <td>
-          <%= ecr.station_id %>
+          <%= l3.station_id %>
         </td>
         <td>
-          <%= ecr.status_start %>
+          <%= l3.status_start %>
         </td>
         <td>
-          <%= ecr.rework_of %>
+          <%= l3.rework_of %>
         </td>
         <td>
-          <%= link_to 'Show', ecr %>
+          <%= link_to 'Show', l3 %>
         </td>
         <td>
-          <%= link_to 'Edit', edit_ecr_path(ecr) %>
+          <%= link_to 'Edit', edit_l3_path(l3) %>
         </td>
         <td>
-          <%= link_to 'Destroy', ecr, :method => :delete, :data => { :confirm => 'Are you sure?' } %>
+          <%= link_to 'Destroy', l3, :method => :delete, :data => { :confirm => 'Are you sure?' } %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 <br/>
-<%= link_to 'New Ecr', new_ecr_path %>
+<%= link_to 'New Ecr', new_l3_path %>

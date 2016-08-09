@@ -1,0 +1,38 @@
+<p id="notice">
+  <%= notice %>
+</p>
+<p>
+  <b>Id:</b>
+  <%= @l3.id %>
+</p>
+<p>
+  <b>Name:</b>
+  <%= @l3.name %>
+</p>
+<p>
+  <b>User:</b>
+  <%= @l3.user_id %>
+</p>
+<p>
+  <b>Status:</b>
+  <%= @l3.status %>
+</p>
+<p>
+  <b>Note:</b>
+  <%= @l3.note %>
+</p>
+<p>
+  <b>Station:</b>
+  <%= @l3.station_id %>
+</p>
+<p>
+  <b>Status start:</b>
+  <%= @l3.status_start %>
+</p>
+<p>
+  <b>Rework of:</b>
+  <%= @l3.rework_of %>
+</p>
+<%= link_to 'Edit', edit_l3_path(@l3) %>
+\|
+<%= link_to 'Back', l3s_path %>

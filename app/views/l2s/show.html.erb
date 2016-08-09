@@ -1,0 +1,34 @@
+<p id="notice">
+  <%= notice %>
+</p>
+<p>
+  <b>Name:</b>
+  <%= @l2.name %>
+</p>
+<p>
+  <b>Translation:</b>
+  <%= @l2.translation %>
+</p>
+<p>
+  <b>Horw:</b>
+  <%= @l2.horw %>
+</p>
+<p>
+  <b>Inbox date:</b>
+  <%= @l2.inbox_date %>
+</p>
+<p>
+  <b>Sent date:</b>
+  <%= @l2.sent_date %>
+</p>
+<p>
+  <b>Received date:</b>
+  <%= @l2.received_date %>
+</p>
+<p>
+  <b>Project:</b>
+  <%= @l2.l1_id %>
+</p>
+<%= link_to 'Edit', edit_l2_path(@l2) %>
+\|
+<%= link_to 'Back', l2_path %>

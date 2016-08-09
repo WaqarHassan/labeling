@@ -15,41 +15,41 @@
     </tr>
   </thead>
   <tbody>
-    <% @ia_list.each do |ia_list| %>
+    <% @l2.each do |l2| %>
       <tr>
         <td>
-          <%= ia_list.name %>
+          <%= l2.name %>
         </td>
         <td>
-          <%= ia_list.translation %>
+          <%= l2.translation %>
         </td>
         <td>
-          <%= ia_list.horw %>
+          <%= l2.horw %>
         </td>
         <td>
-          <%= ia_list.inbox_date %>
+          <%= l2.inbox_date %>
         </td>
         <td>
-          <%= ia_list.sent_date %>
+          <%= l2.sent_date %>
         </td>
         <td>
-          <%= ia_list.received_date %>
+          <%= l2.received_date %>
         </td>
         <td>
-          <%= ia_list.project_id %>
+          <%= l2.project_id %>
         </td>
         <td>
-          <%= link_to 'Show', ia_list %>
+          <%= link_to 'Show', l2 %>
         </td>
         <td>
-          <%= link_to 'Edit', edit_ia_list_path(ia_list) %>
+          <%= link_to 'Edit', edit_l2_path(l2) %>
         </td>
         <td>
-          <%= link_to 'Destroy', ia_list, :method => :delete, :data => { :confirm => 'Are you sure?' } %>
+          <%= link_to 'Destroy', l2, :method => :delete, :data => { :confirm => 'Are you sure?' } %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 <br/>
-<%= link_to 'New ia_list', new_ia_list_path %>
+<%= link_to 'New ia_list', new_l2_path %>

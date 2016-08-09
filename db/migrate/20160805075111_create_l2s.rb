@@ -1,6 +1,6 @@
-class CreateIaLists < ActiveRecord::Migration
+class CreateL2s < ActiveRecord::Migration
   def change
-    create_table :ia_lists do |t|
+    create_table :l2s do |t|
       t.string :name
       t.integer :project_id
       t.string :business_unit

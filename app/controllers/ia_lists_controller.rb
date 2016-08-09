@@ -58,7 +58,7 @@ class IaListsController < ApplicationController
   def create
     @ia_list = IaList.new(ia_list_params)
 
-    if @ia_list.save
+    if @ia_list.save!
       if @ia_list.project.work_flow_id.present?
         templates = Template.joins(:step).where("templates.work_flow_id= #{@ia_list.project.work_flow_id} and steps.recording_level='IaList'")
         templates.each do |temp|

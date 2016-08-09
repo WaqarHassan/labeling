@@ -1,4 +1,5 @@
-class Project < ActiveRecord::Base
+
+class L1 < ActiveRecord::Base
   has_many :l2s, dependent: :destroy
   belongs_to :user
   belongs_to :work_flow

@@ -1,4 +1,4 @@
-<h1>Listing projects</h1>
+<h1>Listing l1s</h1>
 <table>
   <thead>
     <tr>
@@ -13,35 +13,35 @@
     </tr>
   </thead>
   <tbody>
-    <% @projects.each do |project| %>
+    <% @l1s.each do |l1| %>
       <tr>
         <td>
-          <%= project.id %>
+          <%= l1.id %>
         </td>
         <td>
-          <%= project.name %>
+          <%= l1.name %>
         </td>
         <td>
-          <%= project.description %>
+          <%= l1.description %>
         </td>
         <td>
-          <%= project.created_by %>
+          <%= l1.created_by %>
         </td>
         <td>
-          <%= project.updated_by %>
+          <%= l1.updated_by %>
         </td>
         <td>
-          <%= link_to 'Show', project %>
+          <%= link_to 'Show', l1 %>
         </td>
         <td>
-          <%= link_to 'Edit', edit_project_path(project) %>
+          <%= link_to 'Edit', edit_l1_path(l1) %>
         </td>
         <td>
-          <%= link_to 'Destroy', project, :method => :delete, :data => { :confirm => 'Are you sure?' } %>
+          <%= link_to 'Destroy', l1, :method => :delete, :data => { :confirm => 'Are you sure?' } %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 <br/>
-<%= link_to 'New Project', new_project_path %>
+<%= link_to 'New L1', new_l1_path %>

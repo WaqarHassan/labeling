@@ -4,7 +4,7 @@ class OverviewController < ApplicationController
 	def index
     @active_workflow = WorkFlow.find_by_is_active(true)
     @workflows = WorkFlow.where(is_active: false)
-		@projects = @active_workflow.projects.where(is_active: true)
+		@l1s = @active_workflow.l1s.where(is_active: true)
 	end
 
    def open_info_modal

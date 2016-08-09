@@ -1,6 +1,6 @@
-class CreateProjects < ActiveRecord::Migration
+class CreateL1s < ActiveRecord::Migration
   def change
-    create_table :projects do |t|
+    create_table :l1s do |t|
       t.string :name
       t.text :description
       t.boolean :is_active

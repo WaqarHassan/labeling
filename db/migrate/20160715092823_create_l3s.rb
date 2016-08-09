@@ -1,6 +1,6 @@
-class CreateEcrs < ActiveRecord::Migration
+class CreateL3s < ActiveRecord::Migration
   def change
-    create_table :ecrs do |t|
+    create_table :l3s do |t|
       t.string :name
       t.integer :comp_count
       t.string :comp_type

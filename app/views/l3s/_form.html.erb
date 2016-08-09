@@ -1,6 +1,6 @@
 <div class='modal-dialog'>
     <div class='modal-content'>
-        <%= simple_form_for @ecr , remote: true , :html => { :id =>  "add_edit_ecr_form"} do |f| %>
+        <%= simple_form_for @l3 , remote: true , :html => { :id =>  "add_edit_ecr_form"} do |f| %>
         <%= f.error_notification %>
       <div class='modal-header'>
          <button type='button' class='close' data-dismiss='modal'>×</button>
@@ -16,9 +16,9 @@
               </div>
               <div class="col-lg-6">
                 <% if @show_projects == 'dropdown' %>
-                  <%= f.select :ia_list_id, options_from_collection_for_select(@ia, 'id', 'name'),{prompt: 'Please Select IA'}, {:class=>'form-control', required: true } %>
+                  <%= f.select :l2_id, options_from_collection_for_select(@l2, 'id', 'name'),{prompt: 'Please Select IA'}, {:class=>'form-control', required: true } %>
                 <% else %>
-                <%= f.hidden_field :ia_list_id, :value => @ia.id %>
+                <%= f.hidden_field :l2_id, :value => @ia.id %>
                 <span class= "pull-left">
                   <%= @ia.name %>
                   </span>

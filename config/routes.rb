@@ -1,16 +1,16 @@
 # Route prefixes use a single letter to allow for vanity urls of two or more characters
 Rails.application.routes.draw do
   
-  resources :ia_lists
+  resources :l2s
 
-  get '/ia_lists/new(/:project_id)(.:format)' => 'ia_lists#new', as: 'add_new_ia_list'
+  get '/l2s/new(/:project_id)(.:format)' => 'l2s#new', as: 'add_new_l2'
 
 
   resources :rework_infos
   resources :archives
   resources :notes
   resources :stations
-  resources :ecrs
+  resources :l3s
   resources :holidays
   resources :l1s
   if defined? Sidekiq
@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin' if defined? RailsAdmin
 
-  get '/ecrs/new(/:ia_list_id)' => 'ecrs#new', as: 'add_new_ecr'
+  get '/l3s/new(/:ia_list_id)' => 'l3s#new', as: 'add_new_l3'
 
   # Static pages
   match '/error' => 'pages#error', via: [:get, :post], as: 'error_page'

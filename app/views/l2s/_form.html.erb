@@ -1,6 +1,6 @@
   <div class='modal-dialog'>
       <div class='modal-content'>
-        <%= simple_form_for @ia_list, remote: true , :html => { :id => "ia_modal_form"}  do |f| %>
+        <%= simple_form_for @l2, remote: true , :html => { :id => "ia_modal_form"}  do |f| %>
         <%= f.error_notification %>
           <div class='modal-header'>
              <button type='button' class='close' data-dismiss='modal'>×</button>
@@ -22,12 +22,12 @@
                           <label for = "ia_project_id" class=" echo_patinet pull-right control-label">PROJECT:</label>
                       </div>
                         <div class="col-lg-6">
-                          <% if @show_projects == 'dropdown' %>
-                            <%= f.select :project_id, options_from_collection_for_select(@project, 'id', 'name'),{prompt: 'please select project'}, {:class=>'form-control pnd-reqst pull-left', required: true }%>
+                          <% if @show_l1s == 'dropdown' %>
+                            <%= f.select :l1_id, options_from_collection_for_select(@l1, 'id', 'name'),{prompt: 'please select project'}, {:class=>'form-control pnd-reqst pull-left', required: true }%>
                           <% else %>
-                            <%= f.hidden_field :project_id, :value => @project.id %>
+                            <%= f.hidden_field :l1_id, :value => @l1.id %>
                             <span class='pull-left'>
-                              <%= @project.name %>
+                              <%= @l1.name %>
                             </span>
                           <% end %> 
                         </div>

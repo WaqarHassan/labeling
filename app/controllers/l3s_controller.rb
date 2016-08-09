@@ -34,7 +34,7 @@ class L3sController < ApplicationController
 
   # GET /l3s/1/edit
   def edit
-     @ia = @l3.l2
+    @l2 = @l3.l2
       #@ia = Ia.all
     comp_attribute = AttributeList.find_by_label('Component Type')
     @components = comp_attribute.attribute_list_values

@@ -16,7 +16,7 @@ class L1sController < ApplicationController
   def new
     @action = 'ADD'
     @btn_action = 'SAVE'
-    @workflow  = WorkFlow.where(is_active: true).first
+    @workflow  = WorkFlow.find_by_is_active(true)
     @attr_list = @workflow.attribute_lists.where(level: 'L2')
     
     @l1 = L1.new
@@ -31,7 +31,8 @@ class L1sController < ApplicationController
     @action = 'UPDATE'
     @btn_action = 'UPDATE'
 
-     @workflow  = WorkFlow.where(is_active: true)
+     @workflow  = WorkFlow.find_by_is_active(true)
+     @attr_list = @workflow.attribute_lists.where(level: 'L2')
      respond_to do |format|
       format.html
       format.js

@@ -1,7 +1,7 @@
 class CreateArchives < ActiveRecord::Migration
   def change
     create_table :archives do |t|
-      t.integer :ecr_id
+      t.integer :l3_id
       t.datetime :stored_on
       t.integer :user_id
       t.integer :number_of_component

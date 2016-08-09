@@ -8,7 +8,7 @@ class CreateReworkInfos < ActiveRecord::Migration
       t.text :reason
       t.integer :comp_number
       t.string :type
-      t.integer :ecr_id
+      t.integer :l3_id
 
       t.timestamps null: false
     end

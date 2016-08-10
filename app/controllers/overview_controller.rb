@@ -1,6 +1,6 @@
 class OverviewController < ApplicationController
 	skip_authorization_check
-
+  
 	def index
     @active_workflow = WorkFlow.find_by_is_active(true)
     @workflows = WorkFlow.where(is_active: false)
@@ -8,7 +8,8 @@ class OverviewController < ApplicationController
 	end
 
    def open_info_modal
-
+    @label_name = find_label_name('L2')
+    @label_name2 = find_label_name('L3')
     @l2 = L2.find(params[:l2_id])
     respond_to do |format|
       format.html
@@ -17,7 +18,7 @@ class OverviewController < ApplicationController
    end
 
    def open_info_modal_l3
-
+    @label_name = find_label_name('L3')
     @l3 = L3.find(params[:l3_id])
     respond_to do |format|
       format.html
@@ -37,6 +38,9 @@ class OverviewController < ApplicationController
 
 
    def open_rework_modal
+     @label_name = find_label_name('L1')
+      @label_name2 = find_label_name('L2')
+       @label_name3 = find_label_name('L3')
     @wf_step_id = params[:wf_step_id]
     if params[:l2_id].present?
       @l2 = L2.find(params[:l2_id])
@@ -48,6 +52,9 @@ class OverviewController < ApplicationController
    end
     
   def open_confirm_modal
+     @label_name = find_label_name('L1')
+      @label_name2 = find_label_name('L2')
+       @label_name3 = find_label_name('L3')
     @wf_step_id = params[:wf_step_id]
     if params[:l2_id].present?
       @l2 = L2.find(params[:l2_id])

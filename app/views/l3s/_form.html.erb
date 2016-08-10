@@ -4,7 +4,7 @@
         <%= f.error_notification %>
       <div class='modal-header'>
          <button type='button' class='close' data-dismiss='modal'>×</button>
-            <h1 class='h1-heading-popup'> <%=  @action %> ECR </h1>
+            <h1 class='h1-heading-popup'> <%=  @action+" "+@label_name.name %>   </h1>
       </div>
       <div class='modal-body' id="add_ecr_modal_body">
         <div class="form-inputs">
@@ -12,7 +12,7 @@
           <div class= "form-group">
             <div class="row">
               <div class="col-lg-4">
-                 <label for = "ecr_station_id" class="pull-right form-group echo_patinet control-label">IA:</label>
+                 <label for = "ecr_station_id" class="pull-right form-group echo_patinet control-label"><%= @label_name.name %>:</label>
               </div>
               <div class="col-lg-6">
                 <% if @show_projects == 'dropdown' %>

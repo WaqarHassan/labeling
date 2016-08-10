@@ -12,7 +12,7 @@ class L3sController < ApplicationController
 
   # GET /l3s/new
   def new
-    
+    @label_name = find_label_name('L3')
     @action = 'ADD'
     @btn_action = 'SAVE'
     if params.has_key?(:l2_id)

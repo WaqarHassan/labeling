@@ -8,7 +8,7 @@
        <form class="form-horizontal">
 
         <div class="form-group">
-         <label class="col-lg-4 control-label">ECR:  </label>
+         <label class="col-lg-4 control-label"><%= @label_name.name %> :  </label>
           <div class="col-lg-6">
            
           <%=  link_to @l3.name, edit_l3_path(@l3.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#l3_update_popup' , "data-dismiss" => "modal"} %>

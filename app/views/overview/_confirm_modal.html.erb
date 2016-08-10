@@ -9,20 +9,20 @@
           <input type="hidden" value=<%=@wf_step_id%> name="id" >
 
           <div class="form-group">
-             <label class="col-lg-4 control-label">Project </label>
+             <label class="col-lg-4 control-label"><%= @label_name.name %>: </label>
              <div class="col-lg-8">
                 <span id="" name=""> <%= @l2.present? == true ? @l2.l1.name : '' %> </span>
              </div>
           </div>
       
          <div class="form-group">
-           <label class="col-lg-4 control-label">IA </label>
+           <label class="col-lg-4 control-label"><%= @label_name2.name %>: </label>
            <div class="col-lg-8">
               <span id="" name=""><%= @l2.present? == true ? @l2.name : '' %> </span>
            </div>
          </div>
           <div class="form-group">
-             <label class="col-lg-4 control-label">ECR </label>
+             <label class="col-lg-4 control-label"><%= @label_name3.name %>: </label>
              <div class="col-lg-8">
               <span id="" name="">
                 <% if @l2.present? 

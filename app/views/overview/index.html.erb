@@ -180,23 +180,21 @@
   <table class="table table-bordered">
     <thead>
       <tr class="main_heading">
-        <th style="width: 78px;">IA Approval</th>
-        <th colspan="3" style="text-align:center">Translation</th>
-        <th colspan="2" style="text-align:center">ECR</th>
-        <th colspan="4" style="text-align:center">Collaboration</th>
+        <% @active_workflow.template.template_stations.each do |temp_station| %>
+          <th colspan= <%= temp_station.steps.length %> style="text-align:center" >
+            <%= temp_station.station.name %>
+          </th>
+        <% end %>
         <th></th>
       </tr>
       <tr class="sub_heading">
-        <th>IA Approved</th>
-        <th>Inbox</th>
-        <th>Sent</th>
-        <th>Received</th>
-        <th>Inbox  </th>
-        <th>Complete  </th>
-        <th>Sent to Collab.  </th>
-        <th>Back from Coll.  </th>
-        <th>Sent to Legal  </th>
-        <th>Back from Legal </th>
+        <% @active_workflow.template.template_stations.each do |temp_station| 
+          temp_station.steps.each do |step| %>
+            <th style="text-align:center" >
+              <%= step.name %>
+            </th>
+        <% end 
+        end %>
         <th></th>
       </tr>
     </thead>

@@ -62,18 +62,18 @@ class L2sController < ApplicationController
       if @l2.status != ''
         save_activity_log
       end  
-      if @l2.l1.work_flow_id.present?
-        templates = Template.joins(:step).where("templates.work_flow_id= #{@l2.l1.work_flow_id} and steps.recording_level='L2'")
-        templates.each do |temp|
-          transition = Transition.find_by_step_id_and_previous_step_id(temp.step_id, (temp.step_id - 1))
-          if transition.present?
-            stpduration = Time.now + transition.duration.hours
-          else
-            stpduration = Time.now  
-          end
-          WorkflowStep.create(step_id: temp.step_id, object_id: @l2.id, object_type: temp.step.recording_level, is_active: temp.is_active, eta: stpduration)
-        end
-      end
+      # if @l2.l1.work_flow_id.present?
+      #   templates = Template.joins(:step).where("templates.work_flow_id= #{@l2.l1.work_flow_id} and steps.recording_level='L2'")
+      #   templates.each do |temp|
+      #     transition = Transition.find_by_step_id_and_previous_step_id(temp.step_id, (temp.step_id - 1))
+      #     if transition.present?
+      #       stpduration = Time.now + transition.duration.hours
+      #     else
+      #       stpduration = Time.now  
+      #     end
+      #     WorkflowStep.create(step_id: temp.step_id, object_id: @l2.id, object_type: temp.step.recording_level, is_active: temp.is_active, eta: stpduration)
+      #   end
+      # end
 
       redirect_to root_path, notice: 'Ia was successfully created.'
     else

@@ -28,6 +28,7 @@ class OverviewController < ApplicationController
    def l1_status_popup
 
       @l1 = L1.find(params[:id])
+      @label_name = find_label_name('L1')
       respond_to do |format|
       format.html
       format.js

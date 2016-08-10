@@ -17,6 +17,7 @@ class L1sController < ApplicationController
     @action = 'ADD'
     @btn_action = 'SAVE'
     @workflow  = WorkFlow.find_by_is_active(true)
+    @label_name = @workflow.workflow_labels.find_by_label('L1')
     @attr_list = @workflow.attribute_lists.where(level: 'L2')
     
     @l1 = L1.new
@@ -32,6 +33,7 @@ class L1sController < ApplicationController
     @btn_action = 'UPDATE'
 
      @workflow  = WorkFlow.find_by_is_active(true)
+     @label_name = @workflow.workflow_labels.find_by_label('L1')
      @attr_list = @workflow.attribute_lists.where(level: 'L2')
      respond_to do |format|
       format.html

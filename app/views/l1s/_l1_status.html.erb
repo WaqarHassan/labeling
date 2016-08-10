@@ -2,7 +2,7 @@
       <div class='modal-content'>
         <div class='modal-header'>
            <button type='button' class='close' data-dismiss='modal'>×</button>
-              <h1 class='h1-heading-popup'>project</h1>
+              <h1 class='h1-heading-popup'><%= @label_name.name %></h1>
          </div>
         <div class='modal-body' id="project_status_popup_body">
             <%= simple_form_for @l1 , remote: true , :html => { :id => "update_project_status_form"} do |f| %>
@@ -16,7 +16,7 @@
 						            <div class="col-lg-6 ">
 						             	<span class= "pull-left"> 
 
-						             	 <%=  link_to @l1.name, edit_l1_path(@l1.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_edit_l1_modal' , "data-dismiss" => "modal"} %>
+						             	 <%=  link_to @l1.name, edit_l1_path(@l1.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_l1_modal' , "data-dismiss" => "modal"} %>
 						             	 </span>
 						            </div>
 						   </div>

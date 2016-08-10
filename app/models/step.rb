@@ -1,4 +1,3 @@
 class Step < ActiveRecord::Base
-	has_many :templates
-	has_many :transitions
+	has_many :template_station_steps
 end

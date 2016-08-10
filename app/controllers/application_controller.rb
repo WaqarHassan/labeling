@@ -23,6 +23,11 @@ class ApplicationController < ActionController::Base
   include ErrorReportingConcern
   include AuthorizationErrorsConcern
 
+  def find_label_name (lbl)
+    workflow  = WorkFlow.find_by_is_active(true)
+    label_name = workflow.workflow_labels.find_by_label(lbl)
+    return label_name
+  end
   protected
 
   def skip_check_authorization?

@@ -5,7 +5,6 @@ class CreateSteps < ActiveRecord::Migration
       t.string :recording_level
       t.integer :sequence
       t.boolean :is_visible
-      t.integer :station_id
 
       t.timestamps null: false
     end

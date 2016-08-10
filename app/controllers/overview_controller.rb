@@ -53,7 +53,7 @@ class OverviewController < ApplicationController
       @l2 = L2.find(params[:l2_id])
     end  
     respond_to do |format|
-      format.html
+      format.html { render :partial => "confirm_modal" }
       format.js
     end
   end

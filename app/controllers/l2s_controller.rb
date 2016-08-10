@@ -59,9 +59,24 @@ class L2sController < ApplicationController
     @l2 = L2.new(l2_params)
 
     if @l2.save
+      workflow_id = @l2.l1.work_flow_id
+      l2_id = @l2.id
+
       if @l2.status != ''
         save_activity_log
-      end  
+      end 
+      @l2.l1.work_flow.template.template_stations.each do |temp_station|
+        temp_station.steps.where(recording_level: 'L2').each do |stp|
+          WorkflowStep.create(step_id: stp.id, object_id: @l2.id, object_type: 'L2', is_active: nil , eta: '')
+        end
+      end
+
+      if @l2.workflow_steps.present? && @l2.status == 'accept'
+        session[:open_confirm_modal] = 'open_confirm_modal'
+        session[:workflow_step_id] = @l2.workflow_steps.first.id
+        session[:l_number_id] = l2_id
+      end
+
       # if @l2.l1.work_flow_id.present?
       #   templates = Template.joins(:step).where("templates.work_flow_id= #{@l2.l1.work_flow_id} and steps.recording_level='L2'")
       #   templates.each do |temp|

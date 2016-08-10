@@ -57,6 +57,21 @@ class L3sController < ApplicationController
     @l3 = L3.new(l3_params)
 
     if @l3.save
+      @l3.l2.l1.work_flow.template.template_stations.each do |temp_station|
+        temp_station.steps.where(recording_level: 'L3').each do |stp|
+          WorkflowStep.create(step_id: stp.id, object_id: @l3.id, object_type: 'L3', is_active: nil , eta: '')
+        end
+      end
+
+      if @l3.l2.workflow_steps.present?
+        workflow_step = @l3.l2.workflow_steps.first
+        if !workflow_step.actual_confirmation.present?
+          session[:open_confirm_modal] = 'open_confirm_modal'
+          session[:workflow_step_id] = workflow_step.id
+          session[:l_number_id] = @l3.l2.id
+        end  
+      end
+
       redirect_to root_path, notice: 'L3 was successfully created.'
     else
       render :new

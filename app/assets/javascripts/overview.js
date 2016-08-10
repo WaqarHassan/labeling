@@ -23,15 +23,23 @@ $(document).ready(function() {
 	$('.modal-dialog').draggable({
 	    handle: ".modal-header"
 	});
-	
-  return $("#new_article").on("ajax:success", function(e, data, status, xhr) {
-  	//$('add_project_modal').hide();
-    return $("#new_article").append(xhr.responseText);
-  }).on("ajax:error", function(e, xhr, status, error) {
-    return $("#new_article").append("<p>ERROR</p>");
-  });
+
 });
 
+
+$('#add_l2_modal').on('show.bs.modal', function () {
+    setTimeout(function(){
+    	$('#l2_name').focus();
+        console.log('timeout');
+    }, 600);
+});
+
+$('#add_l1_modal').on('show.bs.modal', function () {
+    setTimeout(function(){
+    	$('#l1_name').focus();
+        console.log('l1-timeout');
+    }, 600);
+});
 
 function set_current_timestamp(){
 	$('#datetimepicker_info').val(moment().format('MM/DD/YYYY hh:mm A'));

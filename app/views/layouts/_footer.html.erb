@@ -39,9 +39,22 @@
   </div>
 </div>  
 
-<div class="modal fade" id="add_l3_modal" role="dialog">
-  
-</div>  
+<div class="modal fade" id="add_l3_modal" role="dialog"></div>  
+
+<% if session[:open_confirm_modal] == 'open_confirm_modal'
+    session[:open_confirm_modal] = '' %>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        workflow_step = '<%= session[:workflow_step_id] %>';
+        l_number = '<%= session[:l_number_id] %>';
+        $.get( "/overview/open_confirm_modal/"+workflow_step+"/"+l_number, function( data ) {
+          $( "#add_l2_modal" ).html( data );
+          $("#add_l2_modal").modal('show');
+        });
+
+      });
+    </script>
+  <% end %>
 
 <ul>
   <li>

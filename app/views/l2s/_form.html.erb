@@ -36,7 +36,7 @@
                          <label for = "ia_name" class="echo_patinet pull-right control-label">IA NAME:</label>
                      </div>
                      <div class="col-lg-6">
-                        <%= f.input :name ,:label => false, :autofocus=>true %>
+                        <%= f.input :name ,:label => false, :input_html =>{id: @show_l1s == 'dropdown' ? '' : 'l2_name'} %>
                      </div>
                    </div>
                 </div>

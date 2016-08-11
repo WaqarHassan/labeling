@@ -10,7 +10,7 @@ class L2sController < ApplicationController
   # GET /ia/1
   def show
   end
-
+ 
   # GET /ia/new
   # def add_nested_ia
     

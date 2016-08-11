@@ -44,7 +44,7 @@
             </div>
           </div>
 
-      
+           <% if @attr_list.present? %>
             <% @attr_list.each do |a| %>
             <% if a.field_type == "integer" %>
               <div class="row">
@@ -72,6 +72,7 @@
                         
                 <% end %>
             <% end %>
+          <% end %>
 
 
 

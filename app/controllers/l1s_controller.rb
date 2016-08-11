@@ -9,7 +9,7 @@ class L1sController < ApplicationController
   # GET /l1s/1
   def show
 
-
+ 
   end
 
   # GET /l1s/new
@@ -50,8 +50,15 @@ class L1sController < ApplicationController
 
     
     @l1 = L1.new(l1_params)
-
+    
     if @l1.save!
+      params[:attr].each do |a|
+
+       AttributeValue.create(:attribute_list_id => a[0] ,
+                             :value => a[1] ,
+                             :object_id => @l1.id ,
+                             :object_type => 'L1')
+      end
       redirect_to root_path, notice: 'L1 was successfully created.'
     else
       render :new

@@ -12,20 +12,26 @@ class L2sController < ApplicationController
   end
 
   # GET /ia/new
-  def add_nested_ia
+  # def add_nested_ia
     
-    @l2 = L2.find(params[:ia_id])
-    @l1 = current_user.l1s.where(is_active: true)
-    @show_l1s = 'dropdown'
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
+  #   @l2 = L2.find(params[:ia_id])
+  #   @l1 = current_user.l1s.where(is_active: true)
+  #   @workflow  = WorkFlow.find_by_is_active(true)
+  #   @label_name = @workflow.workflow_labels.find_by_label('L2')
+  #   @attr_list = @workflow.attribute_lists.where(level: 'L2')
+  #   @show_l1s = 'dropdown'
+  #   respond_to do |format|
+  #     format.html
+  #     format.js
+  #   end
+  # end
 
   # GET /ia/new
   def new
-     @action = 'ADD'
+     @workflow  = WorkFlow.find_by_is_active(true)
+    @label_name = @workflow.workflow_labels.find_by_label('L2')
+    @attr_list = @workflow.attribute_lists.where(level: 'L2')
+     @action = 'ADD ' + @label_name.name
     if params.has_key?(:l1_id)
       @show_l1s = 'readonly'
       @l1 = L1.find(params[:l1_id])
@@ -43,8 +49,13 @@ class L2sController < ApplicationController
 
   # GET /ia/1/edit
   def edit
-    @action = 'UPDATE'
+     @workflow  = WorkFlow.find_by_is_active(true)
+
+    @attr_list = @workflow.attribute_lists.where(level: 'L2')
+   
     @l2 = L2.find(params[:id])
+   # @attr_list = @l2.attribute_list
+    @action = 'UPDATE ' + @l2.name
     @l1 = @l2.l1
     @show_l1s = 'dropdowddn'
     respond_to do |format|
@@ -65,6 +76,16 @@ class L2sController < ApplicationController
       if @l2.status != ''
         save_activity_log
       end 
+      params[:attr].each do |a|
+
+       AttributeValue.create(:attribute_list_id => a[0] ,
+                             :value => a[1] ,
+                             :object_id => @l2.id ,
+                             :object_type => 'L2')
+      end
+  
+      
+
       @l2.l1.work_flow.template.template_stations.each do |temp_station|
         temp_station.steps.where(recording_level: 'L2').each do |stp|
           WorkflowStep.create(step_id: stp.id, object_id: @l2.id, object_type: 'L2', is_active: nil , eta: '')
@@ -76,19 +97,6 @@ class L2sController < ApplicationController
         session[:workflow_step_id] = @l2.workflow_steps.first.id
         session[:l_number_id] = l2_id
       end
-
-      # if @l2.l1.work_flow_id.present?
-      #   templates = Template.joins(:step).where("templates.work_flow_id= #{@l2.l1.work_flow_id} and steps.recording_level='L2'")
-      #   templates.each do |temp|
-      #     transition = Transition.find_by_step_id_and_previous_step_id(temp.step_id, (temp.step_id - 1))
-      #     if transition.present?
-      #       stpduration = Time.now + transition.duration.hours
-      #     else
-      #       stpduration = Time.now  
-      #     end
-      #     WorkflowStep.create(step_id: temp.step_id, object_id: @l2.id, object_type: temp.step.recording_level, is_active: temp.is_active, eta: stpduration)
-      #   end
-      # end
 
       redirect_to root_path, notice: 'Ia was successfully created.'
     else
@@ -102,6 +110,12 @@ class L2sController < ApplicationController
     if @l2.update!(l2_params)
       save_activity_log(previous_status)
       redirect_to root_path, notice: 'Ia was successfully updated.'
+      #params[:attr].each do |a|
+       #   AttributeValue.find()
+       # AttributeValue.create(:attribute_list_id => a[0] ,
+       #                       :value => a[1] ,
+       #                       :object_id => @l2.id ,
+       #                       :object_type => 'L2')
     else
       render :edit
     end

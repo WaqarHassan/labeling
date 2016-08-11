@@ -26,18 +26,21 @@ $(document).ready(function() {
 
 });
 
+$('#add_l3_modal').on('show.bs.modal', function () {
+    setTimeout(function(){
+    	$('#l3_name').focus();
+    }, 600);
+});
 
 $('#add_l2_modal').on('show.bs.modal', function () {
     setTimeout(function(){
     	$('#l2_name').focus();
-        console.log('timeout');
     }, 600);
 });
 
 $('#add_l1_modal').on('show.bs.modal', function () {
     setTimeout(function(){
     	$('#l1_name').focus();
-        console.log('l1-timeout');
     }, 600);
 });
 

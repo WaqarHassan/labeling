@@ -58,7 +58,7 @@ class L2sController < ApplicationController
   def create
     @l2 = L2.new(l2_params)
 
-    if @l2.save
+    if @l2.save!
       workflow_id = @l2.l1.work_flow_id
       l2_id = @l2.id
 
@@ -99,7 +99,7 @@ class L2sController < ApplicationController
   # PATCH/PUT /ia/1
   def update
     previous_status = @l2.status
-    if @l2.update(l2_params)
+    if @l2.update!(l2_params)
       save_activity_log(previous_status)
       redirect_to root_path, notice: 'Ia was successfully updated.'
     else

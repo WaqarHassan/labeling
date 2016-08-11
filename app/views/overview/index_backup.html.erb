@@ -1,3 +1,301 @@
+ <div class='clearfix'></div> 
+<div class='data-main'>
+
+  <div class="project-data project-formset collapsed" id="projectform">
+   <a href="#" class="collapsed-icon" title="Search form show/hide" onclick="messageform(); return false;"></a>
+    <div style="overflow:hidden;">
+      <div class="project-form">
+          <div class="project-fields">
+              <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-5">
+                  Like (wildcard)
+                </div>
+                <div class="col-lg-5">
+                  Exact
+                </div>
+              </div>
+          </div>
+          <div class="project-fields">
+              <div class="row">
+                <div class="col-lg-2">
+                  BU:
+                </div>
+                  <div class="col-lg-5">
+                    <input type="text" class="form-control">
+                  </div>
+                  <div class="col-lg-5">
+                    <input type="text" class="form-control">
+                  </div>
+                </div>
+            </div>
+            <div class="project-fields">
+              <div class="row">
+                <div class="col-lg-2">
+                  Project:
+                </div>
+                  <div class="col-lg-10">
+                      <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="project-fields">
+              <div class="row">
+                <div class="col-lg-2">
+                  IA:
+                </div>
+                  <div class="col-lg-5">
+                      <input type="text" class="form-control">
+                    </div>
+                    <div class="col-lg-5">
+                      <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="project-fields">
+              <div class="row">
+                <div class="col-lg-2">
+                  ECR:
+                </div>
+                  <div class="col-lg-5">
+                      <input type="text" class="form-control">
+                    </div>
+                    <div class="col-lg-5">
+                      <input type="text" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="project-fields">
+              <div class="row">
+                <div class="col-lg-2">
+                </div>
+                  <div class="col-lg-5">
+                      <input type="submit" value="Search" class="btn save-print-update-edit-btn">
+                    </div>
+                    <div class="col-lg-5">
+                      <input type="reset" value="Clear" class="btn btn-danger">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="project-btmcnt">
+          <div><%= link_to "#" do %>
+              <%= image_tag("cross-btn.png") %>
+             <% end %> Show only incomplete</div>
+            <div class="show_all_result" ><a href="#">Show All</a></div>
+            <div class="project-data-list">
+              <ul class="ia-list">
+                  <li>IA-0012139</li>
+                    <li>ECR-0034871</li>
+                    <li>ECR-0034874</li>
+                    <li>ECR-0034885</li>
+                </ul>
+                <ul class="ia-list">
+                  <li>IA-0000213</li>
+                    <li>ECR-0001223</li>
+                    <li>ECR-0034874</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="project-data project_ia collapsed" id="project_ia">
+   <a href="#" class="collapsed-icon" title="Detail" onclick="messagebox(); return false;"></a>
+    <div style="overflow:hidden;">
+      <table class="table table-bordered">
+        <thead>
+          <tr class="main_heading">
+            <th style="width: 85px;"> </th>
+            <th style="width: 85px;"> </th>
+            <th style="width: 94px;"> </th>
+            <th class="collapse_table_data collapse_table" > </th>
+            <th class="collapse_table_data collapse_table"> </th>
+            <th class="collapse_table_data collapse_table"> </th>
+            <th class="collapse_table_data collapse_table"> </th>
+            <th class="collapse_table_data collapse_table"> </th>
+          </tr>
+          <tr class="sub_heading">
+            <% @active_workflow.workflow_labels.each do |wfl| %>
+              <th><%= wfl.name %></th>
+            <% end %>
+            <th class="collapse_table_data collapse_table">Status</th>
+            <% 
+            attributes = []
+            @active_workflow.workflow_labels.each do |wfl| 
+                wfl.workflow_label_attributes.each do |wla| 
+                  if !attributes.include? wla.attribute_list.short_label 
+                    attributes << wla.attribute_list.short_label %>
+                    <th class="collapse_table_data collapse_table"><%= wla.attribute_list.short_label %></th>
+                <% end 
+                end 
+            end %>
+            
+          </tr>
+        </thead>
+        <tbody>
+
+            <% @l1s.each do |l1| %>
+              <tr>
+                <td colspan="3" class="project">
+                  <%=  link_to l1.name, l1_status_popup_path(l1), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#project_status_popup'} %>
+                </td>
+              </tr>  
+
+              <% l1.l2s.each do |ia| %>
+                <tr>
+                  <td></td>
+                  <td colspan="2">
+                  <%= link_to ia.name, open_info_modal_path(ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
+                  <td class="collapse_table_data collapse_table">Active</td>
+                  <td class="collapse_table_data collapse_table"></td>
+                  <td class="collapse_table_data collapse_table">THV</td>
+                  <td class="collapse_table_data collapse_table"></td>
+                  <td class="collapse_table_data collapse_table"></td>
+                </tr>
+                <% ia.l3s.each do |l3| %>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                      <%= link_to l3.name, open_info_modal_l3_path(l3.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
+                    <td class="collapse_table_data collapse_table">Active</td>  
+                    <td class="collapse_table_data collapse_table">50</td>
+                    <td class="collapse_table_data collapse_table">HVT/MISC/EPC</td>
+                    <td class="collapse_table_data collapse_table">10</td>
+                    <td class="collapse_table_data collapse_table no-brd">Multi-Lingual IFUs</td>
+                    
+                  </tr>
+                <% end %>  
+              <% end %>  
+            <% end %>  
+
+        </tbody>
+        </table>
+    </div>
+  </div>
+
+<div class="approval-data tspend_initial" id="detail_data">
+ <a href="#" class="minus-icon"></a>
+  <table class="table table-bordered">
+    <thead>
+      <tr class="main_heading">
+        <% @active_workflow.template.template_stations.each do |temp_station| %>
+          <th colspan= <%= temp_station.steps.length %> style="text-align:center" >
+            <%= temp_station.station.name %>
+          </th>
+        <% end %>
+        <th></th>
+      </tr>
+      <tr class="sub_heading">
+        <% @active_workflow.template.template_stations.each do |temp_station| 
+          temp_station.steps.each do |step| %>
+            <th style="text-align:center" >
+              <%= step.name %>
+            </th>
+        <% end 
+        end %>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @l1s.each do |l1| %>
+          <tr>
+             <td colspan="11" class="project"></td>
+          </tr>  
+          <tr>
+              <% 
+              number_cls = 11
+              l1.l2s.each do |ia| 
+                ia.workflow_steps.each do |workflow_step| 
+                number_cls -= 1
+                  %>
+                 <td>
+                    <% if workflow_step.actual_confirmation.blank? && workflow_step.eta.present? %>
+                        <%= link_to workflow_step.eta.strftime("%m/%d/%Y %I:%M %p") , open_confirm_modal_path(workflow_step.id, ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
+                    <% elsif workflow_step.actual_confirmation.present? %>
+                        <%= link_to workflow_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path(workflow_step.id, ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
+                    <% else %>   
+                      N/A
+                    <% end %> 
+                  </td>
+              <% end %>
+              <% for clm in 1..number_cls %>
+                <td></td>
+              <% end %>
+            <tr>    
+          <% 
+          l1_cls = 11 - number_cls
+          ia.l3s.each do |l3| %>
+            <tr>
+              <% for cls in 1..l1_cls %>
+                <td></td>
+              <% end %>
+              <td> </td>
+              <td>
+              </td>
+              <td>
+              </td>
+              <td>
+                  <%= link_to 'N/A', open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
+
+              </td>
+              <td>
+                  <%= link_to 'N/A', open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
+              </td>
+
+                  <td class= <%= true == true ? 'future_date' : 'past_date' %> >
+                  <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
+                  </td>
+
+
+                  <td class= <%= true == true ? 'future_date' : 'past_date' %> >
+                    <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
+                  </td>
+
+
+                  <td class= <%= true == true ? 'future_date' : 'past_date' %> >
+                    <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
+                  </td>
+
+
+                  <td class= <%= true == true ? 'future_date' : 'past_date' %> >
+                    <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
+                  </td>
+
+
+              <td>5/19/2016  10:18 PM</td>
+            </tr>
+          <% end %>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+ </div> 
+</div>
+
+<style>
+  .rework {
+    width: 700px;
+  }
+.container {
+    /*width: 1560px;*/
+    background-color: #fff;
+}
+.navbar-default{
+   background-color: #fff;
+}
+</style>
+
+
+
+-------------------------
+
+
+
+
+
+
  
 <div class='clearfix'></div> 
 <div class='data-main'>

@@ -204,8 +204,12 @@
              <td colspan="11" class="project"></td>
           </tr>  
           <tr>
-              <% l1.l2s.each do |ia| 
-                ia.workflow_steps.each do |workflow_step| %>
+              <% 
+              number_cls = 11
+              l1.l2s.each do |ia| 
+                ia.workflow_steps.each do |workflow_step| 
+                number_cls -= 1
+                  %>
                  <td>
                     <% if workflow_step.actual_confirmation.blank? && workflow_step.eta.present? %>
                         <%= link_to workflow_step.eta.strftime("%m/%d/%Y %I:%M %p") , open_confirm_modal_path(workflow_step.id, ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
@@ -216,52 +220,26 @@
                     <% end %> 
                   </td>
               <% end %>
-
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <% for clm in 1..number_cls %>
+                <td></td>
+              <% end %>
             <tr>    
-          <% ia.l3s.each do |l3| %>
+          <% 
+          l1_cls = 11 - number_cls
+          ia.l3s.each do |l3| %>
             <tr>
-              <td></td>
-              <td> </td>
-              <td>
-              </td>
-              <td>
-              </td>
-              <td>
-                  <%= link_to 'N/A', open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
-
-              </td>
-              <td>
-                  <%= link_to 'N/A', open_rework_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
-              </td>
-
-                  <td class= <%= true == true ? 'future_date' : 'past_date' %> >
-                  <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
-                  </td>
-
-
-                  <td class= <%= true == true ? 'future_date' : 'past_date' %> >
-                    <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
-                  </td>
-
-
-                  <td class= <%= true == true ? 'future_date' : 'past_date' %> >
-                    <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
-                  </td>
-
-
-                  <td class= <%= true == true ? 'future_date' : 'past_date' %> >
-                    <%= link_to 'N/A', open_confirm_modal_path,  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
-                  </td>
-
-
-              <td>5/19/2016  10:18 PM</td>
+              <% for cls in 1..l1_cls %>
+                <td></td>
+              <% end %>
+              <% 
+              number_cls_l3 = 11 - l1_cls
+              l3.workflow_steps.each do |l3workflow_step|  
+                number_cls_l3 -= 1 %>
+                <td> Not Started </td>
+              <% end %>  
+              <% for clm in 1..number_cls_l3 %>
+                <td>N/A</td>
+              <% end %>
             </tr>
           <% end %>
         <% end %>

@@ -38,6 +38,7 @@ class L3sController < ApplicationController
       #@ia = Ia.all
     comp_attribute = AttributeList.find_by_label('Component Type')
     @components = comp_attribute.attribute_list_values
+    @label_name = find_label_name('L3')
     @action = 'UPDATE'
     @btn_action = 'UPDATE'
     
@@ -56,7 +57,7 @@ class L3sController < ApplicationController
   def create
     @l3 = L3.new(l3_params)
 
-    if @l3.save
+    if @l3.save!
       @l3.l2.l1.work_flow.template.template_stations.each do |temp_station|
         temp_station.steps.where(recording_level: 'L3').each do |stp|
           WorkflowStep.create(step_id: stp.id, object_id: @l3.id, object_type: 'L3', is_active: nil , eta: '')
@@ -97,7 +98,7 @@ class L3sController < ApplicationController
 
   # PATCH/PUT /l3s/1
   def update
-    if @l3.update(l3_params)
+    if @l3.update!(l3_params)
       redirect_to root_path, notice: 'L3 was successfully updated.'
     else
       render :edit

@@ -4,6 +4,7 @@ class L1 < ActiveRecord::Base
   belongs_to :user
   belongs_to :work_flow
   has_many :workflow_steps
+  validates :name, uniqueness: true
 
   class << self
 

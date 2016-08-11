@@ -1,6 +1,6 @@
-class CreateAttributeListValues < ActiveRecord::Migration
+class CreateAttributeListOptions < ActiveRecord::Migration
   def change
-    create_table :attribute_list_values do |t|
+    create_table :attribute_list_options do |t|
       t.string :value
       t.integer :attribute_list_id
 

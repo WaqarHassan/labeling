@@ -51,7 +51,7 @@ class L1sController < ApplicationController
     
     @l1 = L1.new(l1_params)
 
-    if @l1.save
+    if @l1.save!
       redirect_to root_path, notice: 'L1 was successfully created.'
     else
       render :new
@@ -60,7 +60,7 @@ class L1sController < ApplicationController
 
   # PATCH/PUT /l1s/1
   def update
-    if @l1.update(l1_params)
+    if @l1.update!(l1_params)
       redirect_to root_path, notice: 'L1 was successfully updated.'
     else
       render :edit

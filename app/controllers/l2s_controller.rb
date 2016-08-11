@@ -80,12 +80,14 @@ class L2sController < ApplicationController
       if @l2.status != ''
         save_activity_log
       end 
-      params[:attr].each do |a|
+      if params[:attr].present?
+        params[:attr].each do |a|
 
-       AttributeValue.create(:attribute_list_id => a[0] ,
-                             :value => a[1] ,
-                             :object_id => @l2.id ,
-                             :object_type => 'L2')
+         AttributeValue.create(:attribute_list_id => a[0] ,
+                               :value => a[1] ,
+                               :object_id => @l2.id ,
+                               :object_type => 'L2')
+        end
       end
   
       

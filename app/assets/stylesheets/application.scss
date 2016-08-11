@@ -106,7 +106,6 @@ body {
 .project-btmcnt { margin-top:10px;}
 .ia-list { list-style:none;}
 .ia-list li { text-decoration:underline;}
-.ia-list li:first-child { margin-left:-15px;}
 
 // main.scss
 
@@ -389,5 +388,13 @@ label.error {
 
 #detail_data td {
     text-align: center;
+}
+
+.l1_class {
+    margin-left: -17px;
+}
+
+#search_result_div li a {
+    color: #337ab7;
 }
 

@@ -67,9 +67,9 @@ Rails.application.routes.draw do
   
   #what we write after 'as' keyword becomes path
  
-  resources :overview
   post '/overview/update_task_confirmation' =>  'overview#update_task_confirmation', as: 'update_task_confirmation'
   get '/overview' => 'overview#index', as: 'overview_home'
+  post '/overview/search' => 'overview#search' , as: 'overview_search' 
 
   # Dummy preview pages for testing.
   get '/p/test' => 'pages#test', as: 'test'

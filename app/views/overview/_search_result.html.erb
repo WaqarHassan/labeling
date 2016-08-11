@@ -1,0 +1,19 @@
+<ul class="ia-list">
+
+  <% if @serach_result.present?
+	   l2_name = ''
+	  @serach_result.each do |result| %>
+	  	<% if l2_name != result['l2_name']
+	  		l2_name = result['l2_name'] %>
+	  		<li class= "l1_class">
+	  			<%=  link_to result['l2_name'], edit_l2_path(result['l2_id']), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#l2_update_popup' , "data-dismiss" => "modal"} %>
+	  		</li>
+	  	<% end %>
+
+	    <li class= "l2_class">
+	    	<%=  link_to result['l3_name'], edit_l3_path(result['l3_id']), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#l3_update_popup' , "data-dismiss" => "modal"} %></li>
+	  <% end 
+	  else %>
+	  <span style="color:red">No Result Found! </span>
+  <% end %>  
+</ul>

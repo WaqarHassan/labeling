@@ -4,6 +4,7 @@
   <div class="project-data project-formset collapsed" id="projectform">
    <a href="#" class="collapsed-icon" title="Search form show/hide" onclick="messageform(); return false;"></a>
     <div style="overflow:hidden;">
+    <%= form_tag overview_search_path, remote: true, :id => 'task_confirmation', :class => 'form-horizontal'  do %>
       <div class="project-form">
           <div class="project-fields">
               <div class="row">
@@ -22,10 +23,10 @@
                   BU:
                 </div>
                   <div class="col-lg-5">
-                    <input type="text" class="form-control">
+                    <input type="text" name="wildcard[bu]" class="form-control">
                   </div>
                   <div class="col-lg-5">
-                    <input type="text" class="form-control">
+                    <input type="text" name="exact[bu]" class="form-control">
                   </div>
                 </div>
             </div>
@@ -35,7 +36,7 @@
                   Project:
                 </div>
                   <div class="col-lg-10">
-                      <input type="text" class="form-control">
+                      <input type="text" name="wildcard[l1]" class="form-control">
                     </div>
                 </div>
             </div>
@@ -45,10 +46,10 @@
                   IA:
                 </div>
                   <div class="col-lg-5">
-                      <input type="text" class="form-control">
+                      <input type="text" name="wildcard[l2]" class="form-control">
                     </div>
                     <div class="col-lg-5">
-                      <input type="text" class="form-control">
+                      <input type="text" name="exact[l2]" class="form-control">
                     </div>
                 </div>
             </div>
@@ -58,10 +59,10 @@
                   ECR:
                 </div>
                   <div class="col-lg-5">
-                      <input type="text" class="form-control">
+                      <input type="text" name="wildcard[l3]" class="form-control">
                     </div>
                     <div class="col-lg-5">
-                      <input type="text" class="form-control">
+                      <input type="text" name="exact[l3]" class="form-control">
                     </div>
                 </div>
             </div>
@@ -77,24 +78,13 @@
                     </div>
                 </div>
             </div>
-        </div>
+      </div>
+    <% end %>  
         <div class="project-btmcnt">
-          <div><%= link_to "#" do %>
-              <%= image_tag("cross-btn.png") %>
-             <% end %> Show only incomplete</div>
-            <div class="show_all_result" ><a href="#">Show All</a></div>
-            <div class="project-data-list">
+            <div class="project-data-list" id="search_result_div">
               <ul class="ia-list">
-                  <li>IA-0012139</li>
-                    <li>ECR-0034871</li>
-                    <li>ECR-0034874</li>
-                    <li>ECR-0034885</li>
-                </ul>
-                <ul class="ia-list">
-                  <li>IA-0000213</li>
-                    <li>ECR-0001223</li>
-                    <li>ECR-0034874</li>
-                </ul>
+                <span style="color:green">Search result we be display here: </span>
+              </ul>
             </div>
         </div>
     </div>
@@ -142,18 +132,18 @@
                 </td>
               </tr>  
 
-              <% l1.l2s.each do |ia| %>
+              <% l1.l2s.each do |l2| %>
                 <tr>
                   <td></td>
                   <td colspan="2">
-                  <%= link_to ia.name, open_info_modal_path(ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
+                  <%= link_to l2.name, open_info_modal_path(l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
                   <td class="collapse_table_data collapse_table">Active</td>
                   <td class="collapse_table_data collapse_table"></td>
                   <td class="collapse_table_data collapse_table">THV</td>
                   <td class="collapse_table_data collapse_table"></td>
                   <td class="collapse_table_data collapse_table"></td>
                 </tr>
-                <% ia.l3s.each do |l3| %>
+                <% l2.l3s.each do |l3| %>
                   <tr>
                     <td></td>
                     <td></td>
@@ -204,15 +194,13 @@
              <td colspan="11" class="project"></td>
           </tr>  
           <tr>
-              <% 
-              number_cls = 11
+              <% number_cls = 11
               l1.l2s.each do |ia| 
                 ia.workflow_steps.each do |workflow_step| 
-                number_cls -= 1
-                  %>
+                number_cls -= 1 %>
                  <td>
-                    <% if workflow_step.actual_confirmation.blank? && workflow_step.eta.present? %>
-                        <%= link_to workflow_step.eta.strftime("%m/%d/%Y %I:%M %p") , open_confirm_modal_path(workflow_step.id, ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
+                    <% if workflow_step.actual_confirmation.blank? %>
+                        <%= link_to 'Not Started' , open_confirm_modal_path(workflow_step.id, ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
                     <% elsif workflow_step.actual_confirmation.present? %>
                         <%= link_to workflow_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path(workflow_step.id, ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
                     <% else %>   
@@ -235,7 +223,15 @@
               number_cls_l3 = 11 - l1_cls
               l3.workflow_steps.each do |l3workflow_step|  
                 number_cls_l3 -= 1 %>
-                <td> Not Started </td>
+                <td> 
+                  <% if l3workflow_step.actual_confirmation.blank? %>
+                        <%= link_to 'Not Started' , open_confirm_modal_path(l3workflow_step.id, ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
+                    <% elsif l3workflow_step.actual_confirmation.present? %>
+                        <%= link_to l3workflow_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path(l3workflow_step.id, ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
+                    <% else %>   
+                      N/A
+                    <% end %>  
+                </td>
               <% end %>  
               <% for clm in 1..number_cls_l3 %>
                 <td>N/A</td>

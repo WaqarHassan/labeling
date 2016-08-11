@@ -64,12 +64,12 @@ class L3sController < ApplicationController
         end
       end
 
-      if @l3.l2.workflow_steps.present?
-        workflow_step = @l3.l2.workflow_steps.first
+      if @l3.workflow_steps.present?
+        workflow_step = @l3.workflow_steps.first
         if !workflow_step.actual_confirmation.present?
           session[:open_confirm_modal] = 'open_confirm_modal'
           session[:workflow_step_id] = workflow_step.id
-          session[:l_number_id] = @l3.l2.id
+          session[:l_number_id] = @l3.id
         end  
       end
 

@@ -73,6 +73,23 @@ CREATE TABLE `attribute_lists` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `attribute_values`
+--
+
+DROP TABLE IF EXISTS `attribute_values`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `attribute_values` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `attribute_list_id` int(11) DEFAULT NULL,
+  `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `authentications`
 --
 
@@ -504,7 +521,7 @@ CREATE TABLE `workflow_steps` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-08-11 10:09:14
+-- Dump completed on 2016-08-11 10:13:04
 INSERT INTO schema_migrations (version) VALUES ('20130909170542');
 
 INSERT INTO schema_migrations (version) VALUES ('20130909194719');
@@ -564,4 +581,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160810064410');
 INSERT INTO schema_migrations (version) VALUES ('20160810092412');
 
 INSERT INTO schema_migrations (version) VALUES ('20160811050847');
+
+INSERT INTO schema_migrations (version) VALUES ('20160811051152');
 

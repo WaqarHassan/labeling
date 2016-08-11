@@ -23,7 +23,7 @@ class L3sController < ApplicationController
       @l2 = L2.all 
     end 
     comp_attribute = AttributeList.find_by_label('Component Type')
-    @components = comp_attribute.attribute_list_values
+    @components = comp_attribute.attribute_list_options
     
     @l3 = L3.new
     respond_to do |format|
@@ -37,7 +37,7 @@ class L3sController < ApplicationController
     @l2 = @l3.l2
       #@ia = Ia.all
     comp_attribute = AttributeList.find_by_label('Component Type')
-    @components = comp_attribute.attribute_list_values
+    @components = comp_attribute.attribute_list_options
     @label_name = find_label_name('L3')
     @action = 'UPDATE'
     @btn_action = 'UPDATE'
@@ -84,7 +84,7 @@ class L3sController < ApplicationController
   def add_nested_ecr
     @ia = Ia.all
     comp_attribute = AttributeList.find_by_label('Component Type')
-    @components = comp_attribute.attribute_list_values
+    @components = comp_attribute.attribute_list_options
 
     @l3 = L3.new
     @show_projects = 'dropdown'

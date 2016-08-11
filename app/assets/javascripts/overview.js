@@ -29,19 +29,19 @@ $(document).ready(function() {
 $('#add_l3_modal').on('show.bs.modal', function () {
     setTimeout(function(){
     	$('#l3_name').focus();
-    }, 600);
+    }, 500);
 });
 
 $('#add_l2_modal').on('show.bs.modal', function () {
     setTimeout(function(){
     	$('#l2_name').focus();
-    }, 600);
+    }, 500);
 });
 
 $('#add_l1_modal').on('show.bs.modal', function () {
     setTimeout(function(){
     	$('#l1_name').focus();
-    }, 600);
+    }, 500);
 });
 
 function set_current_timestamp(){

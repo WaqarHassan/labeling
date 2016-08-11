@@ -24,7 +24,7 @@ class L3sController < ApplicationController
       @l2 = L2.find(params[:l2_id])
     else 
       @show_projects = 'dropdown'
-      @l2 = L2.all 
+      @l1 = @workflow.l1s.where(is_active: true) 
     end 
    
     @l3 = L3.new

@@ -16,12 +16,6 @@ $(document).ready(function() {
 });
 
 
-$('#myModal').on('shown.bs.modal', function () {
-    setTimeout(function(){
-        $('#inputId').focus();
-    }, 100);
-});
-
 function set_l2_status(status){
 	$('#l2_status').val(status);
 }	

@@ -35,6 +35,12 @@
               <div class="col-lg-6">
                 <%= f.input :name ,:label => false,  :input_html =>{id: @show_projects == 'dropdown' ? '' : 'l3_name'} %>
               </div>
+                 <script type="text/javascript">
+                   setTimeout(function(){
+                      console.log('l3-modal');
+                      $('#l3_name').focus();
+                    }, 400);
+                 </script>
             </div>
           </div>
 

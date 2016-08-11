@@ -17,7 +17,7 @@ class L2sController < ApplicationController
     @workflow  = WorkFlow.find_by_is_active(true)
     @label_name = @workflow.workflow_labels.find_by_label('L2')
     @attr_list = @workflow.attribute_lists.where(level: 'L2')
-     @action = 'ADD ' + @label_name.name
+     @action = 'ADD'
     if params.has_key?(:l1_id)
       @show_l1s = 'readonly'
       @l1 = L1.find(params[:l1_id])

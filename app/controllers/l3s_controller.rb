@@ -45,7 +45,9 @@ class L3sController < ApplicationController
     @btn_action = 'UPDATE'
     
     @show_projects = 'dropdowncxd'
-    #  @ia_find = Ia.find(params[:id])
+    @workflow  = WorkFlow.find_by_is_active(true)
+    @attr_list = @workflow.attribute_lists.where(level: 'L3')
+    @l1 = @workflow.l1s.where(is_active: true) 
       respond_to do |format|
         format.html
         format.js

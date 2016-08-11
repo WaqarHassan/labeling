@@ -35,13 +35,13 @@ class L2sController < ApplicationController
 
   # GET /ia/1/edit
   def edit
-     @workflow  = WorkFlow.find_by_is_active(true)
-
+    @workflow  = WorkFlow.find_by_is_active(true)
+    @label_name = @workflow.workflow_labels.find_by_label('L2')
     @attr_list = @workflow.attribute_lists.where(level: 'L2')
    
     @l2 = L2.find(params[:id])
    # @attr_list = @l2.attribute_list
-    @action = 'UPDATE ' + @l2.name
+    @action = 'UPDATE ' + @label_name.name
     @l1 = @l2.l1
     @show_l1s = 'dropdowddn'
     respond_to do |format|

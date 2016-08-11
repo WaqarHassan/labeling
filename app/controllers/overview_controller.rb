@@ -81,10 +81,10 @@ class OverviewController < ApplicationController
 
   def search
     q_string = '';
-    wildcard_bu = params[:wildcard][:bu]
-    if wildcard_bu.presence
-      q_string += "bu like '%#{wildcard_bu}%'"
-    end
+    # wildcard_bu = params[:wildcard][:bu]
+    # if wildcard_bu.presence
+    #   q_string += "bu like '%#{wildcard_bu}%'"
+    # end
     wildcard_l1 = params[:wildcard][:l1]
     if wildcard_l1.presence
       q_string += q_string != '' ? ' and ' : ''
@@ -101,11 +101,11 @@ class OverviewController < ApplicationController
       q_string += "l3s.name like '%#{wildcard_l3}%'"
     end
 
-    exact_bu = params[:exact][:bu]
-    if exact_bu.presence
-      q_string += q_string != '' ? ' and ' : ''
-      q_string += "bu = '#{exact_bu}'"
-    end
+    # exact_bu = params[:exact][:bu]
+    # if exact_bu.presence
+    #   q_string += q_string != '' ? ' and ' : ''
+    #   q_string += "bu = '#{exact_bu}'"
+    # end
 
     exact_l2 = params[:exact][:l2]
     if exact_l2.presence

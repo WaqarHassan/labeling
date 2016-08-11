@@ -26,7 +26,7 @@ gem 'mysql2'
 gem 'dalli'                     # memcached
 # gem 'schema_plus'             # add better index and foreign key support
 # gem 'jbuilder'
-
+#gem 'ransack'
 # Assets
 gem 'sass-rails'
 gem 'simple_form'

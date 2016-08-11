@@ -12,8 +12,12 @@ class L3sController < ApplicationController
 
   # GET /l3s/new
   def new
+     @workflow  = WorkFlow.find_by_is_active(true)
+    @attr_list = @workflow.attribute_lists.where(level: 'L3')
+
+
     @label_name = find_label_name('L3')
-    @action = 'ADD'
+    @action = 'ADD '+ @label_name.name
     @btn_action = 'SAVE'
     if params.has_key?(:l2_id)
       @show_projects = 'readonly'
@@ -22,9 +26,7 @@ class L3sController < ApplicationController
       @show_projects = 'dropdown'
       @l2 = L2.all 
     end 
-    comp_attribute = AttributeList.find_by_label('Component Type')
-    @components = comp_attribute.attribute_list_options
-    
+   
     @l3 = L3.new
     respond_to do |format|
       format.html
@@ -72,7 +74,13 @@ class L3sController < ApplicationController
           session[:l_number_id] = @l3.id
         end  
       end
+       params[:attr].each do |a|
 
+       AttributeValue.create(:attribute_list_id => a[0] ,
+                             :value => a[1] ,
+                             :object_id => @l3.id ,
+                             :object_type => 'L3')
+      end
       redirect_to root_path, notice: 'L3 was successfully created.'
     else
       render :new

@@ -15,10 +15,9 @@
           SETTING
           %b.caret
         %ul.dropdown-menu.setting_menu
-          - @active_workflow.workflow_labels.each_with_index do |wkl, index|
-            - open_path = index == 0 ? new_l1_path : index == 1 ? new_l2_path : new_l3_path
-            - open_path_target = index == 0 ? '#add_l1_modal' : index == 1 ? '#add_l2_modal' : '#add_l3_modal'
-            %li= link_to '+ADD '+wkl.name, open_path,  {:remote => true, 'data-toggle' =>  "modal",class: 'add_links', 'data-target' => open_path_target}
+          %li= link_to '+ADD '+@active_workflow.L1, new_l1_path,  {:remote => true, 'data-toggle' =>  "modal",class: 'add_links', 'data-target' => '#add_l1_modal'}
+          %li= link_to '+ADD '+@active_workflow.L2, new_l2_path,  {:remote => true, 'data-toggle' =>  "modal",class: 'add_links', 'data-target' => '#add_l2_modal'}
+          %li= link_to '+ADD '+@active_workflow.L3, new_l3_path,  {:remote => true, 'data-toggle' =>  "modal",class: 'add_links', 'data-target' => '#add_l3_modal'}
 
       %li.dropdown
         %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}

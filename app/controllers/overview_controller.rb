@@ -3,13 +3,14 @@ class OverviewController < ApplicationController
   
 	def index
     @active_workflow = WorkFlow.find_by_is_active(true)
+    @label_attributes = @active_workflow.label_attributes.where(is_visible: true)
+    @workflow_stations = @active_workflow.workflow_stations.where(is_visible: true)
     @workflows = WorkFlow.where(is_active: false)
 		@l1s = @active_workflow.l1s.where(is_active: true)
 	end
 
    def open_info_modal
-    @label_name = find_label_name('L2')
-    @label_name2 = find_label_name('L3')
+    @workflow  = WorkFlow.find_by_is_active(true)
     @l2 = L2.find(params[:l2_id])
     respond_to do |format|
       format.html
@@ -18,7 +19,7 @@ class OverviewController < ApplicationController
    end
 
    def open_info_modal_l3
-    @label_name = find_label_name('L3')
+    @workflow  = WorkFlow.find_by_is_active(true)
     @l3 = L3.find(params[:l3_id])
     respond_to do |format|
       format.html
@@ -27,9 +28,8 @@ class OverviewController < ApplicationController
    end
 
    def l1_status_popup
-
       @l1 = L1.find(params[:id])
-      @label_name = find_label_name('L1')
+      @workflow  = WorkFlow.find_by_is_active(true)
       respond_to do |format|
       format.html
       format.js
@@ -38,9 +38,8 @@ class OverviewController < ApplicationController
 
 
    def open_rework_modal
-     @label_name = find_label_name('L1')
-      @label_name2 = find_label_name('L2')
-       @label_name3 = find_label_name('L3')
+
+    @workflow  = WorkFlow.find_by_is_active(true)
     @wf_step_id = params[:wf_step_id]
     if params[:l2_id].present?
       @l2 = L2.find(params[:l2_id])
@@ -52,9 +51,8 @@ class OverviewController < ApplicationController
    end
     
   def open_confirm_modal
-     @label_name = find_label_name('L1')
-      @label_name2 = find_label_name('L2')
-       @label_name3 = find_label_name('L3')
+    @workflow  = WorkFlow.find_by_is_active(true)
+    
     @wf_step_id = params[:wf_step_id]
     if params[:l2_id].present?
       @l2 = L2.find(params[:l2_id])

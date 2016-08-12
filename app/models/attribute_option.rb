@@ -1,3 +1,3 @@
 class AttributeOption < ActiveRecord::Base
-	belongs_to :attribute
+	belongs_to :label_attribute
 end

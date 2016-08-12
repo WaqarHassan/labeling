@@ -1,4 +1,4 @@
- <div class='clearfix'></div> 
+<div class='clearfix'></div> 
 <div class='data-main'>
 
   <div class="project-data project-formset collapsed" id="projectform">
@@ -107,7 +107,7 @@
           </tr>
           <tr class="sub_heading">
             <% @active_workflow.workflow_labels.each do |wfl| %>
-              <th><%= wfl.name %></th>
+              <th><%= @active_workflow.L1 %></th>
             <% end %>
             <th class="collapse_table_data collapse_table">Status</th>
             <% 

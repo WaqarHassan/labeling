@@ -9,20 +9,20 @@
           <input type="hidden" value=<%=@wf_step_id%> name="id" >
 
           <div class="form-group">
-             <label class="col-lg-4 control-label"><%= @label_name.name %>: </label>
+             <label class="col-lg-4 control-label"><%= @workflow.L1 %>: </label>
              <div class="col-lg-8">
                 <span id="" name=""> <%= @l2.present? == true ? @l2.l1.name : '' %> </span>
              </div>
           </div>
       
          <div class="form-group">
-           <label class="col-lg-4 control-label"><%= @label_name2.name %>: </label>
+           <label class="col-lg-4 control-label"><%= @workflow.L2 %>: </label>
            <div class="col-lg-8">
               <span id="" name=""><%= @l2.present? == true ? @l2.name : '' %> </span>
            </div>
          </div>
           <div class="form-group">
-             <label class="col-lg-4 control-label"><%= @label_name3.name %>: </label>
+             <label class="col-lg-4 control-label"><%= @workflow.L3 %>: </label>
              <div class="col-lg-8">
               <span id="" name="">
                 <% if @l2.present? 
@@ -44,7 +44,7 @@
            <div class="form-group">
              <label class="col-lg-4 control-label">Timestamp </label>
              <div class="col-lg-8">
-              <input type="text" class="datetimepicker form-control" id="datetimepicker" name="workflow_step[actual_confirmation]" required value="<%=Time.now.strftime("%m/%d/%Y %I:%M %p")%>"  aria-required="true">
+              <input type="text" class="datetimepicker form-control" id="datetimepicker" name="workflow_live_step[actual_confirmation]" required value="<%=Time.now.strftime("%m/%d/%Y %I:%M %p")%>"  aria-required="true">
              </div> 
           </div>
     </div>

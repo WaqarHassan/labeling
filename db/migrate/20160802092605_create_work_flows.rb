@@ -7,6 +7,7 @@ class CreateWorkFlows < ActiveRecord::Migration
       t.string :L2
       t.string :L3
       t.boolean :is_active
+      t.boolean :is_in_use
 
       t.timestamps null: false
     end

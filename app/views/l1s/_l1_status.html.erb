@@ -2,7 +2,7 @@
       <div class='modal-content'>
         <div class='modal-header'>
            <button type='button' class='close' data-dismiss='modal'>×</button>
-              <h1 class='h1-heading-popup'><%= @label_name.name %></h1>
+              <h1 class='h1-heading-popup'><%= @workflow.L1 %></h1>
          </div>
         <div class='modal-body' id="project_status_popup_body">
             <%= simple_form_for @l1 , remote: true , :html => { :id => "update_project_status_form"} do |f| %>

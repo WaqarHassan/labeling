@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
 
   # Devise, require authenticate by default
   before_filter :authenticate_user!
+  before_filter :get_in_use_workflow
 
   # CanCan, check authorization unless authorizing with devise
   check_authorization unless: :skip_check_authorization?
@@ -24,6 +25,10 @@ class ApplicationController < ActionController::Base
   include AuthorizationErrorsConcern
 
   protected
+
+  def get_in_use_workflow
+    @workflow  = WorkFlow.find_by_is_in_use(true)
+  end
 
   def skip_check_authorization?
     devise_controller? || is_a?(RailsAdmin::ApplicationController)

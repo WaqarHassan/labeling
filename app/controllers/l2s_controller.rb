@@ -14,10 +14,8 @@ class L2sController < ApplicationController
 
   # GET /ia/new
   def new
-    @workflow  = WorkFlow.find_by_is_active(true)
-    @label_name = @workflow.workflow_labels.find_by_label('L2')
-    @attr_list = @workflow.attribute_lists.where(level: 'L2')
-     @action = 'ADD'
+    @attr_list = @workflow.label_attributes.where(recording_level: 'L2', is_visible: true)
+    @action = 'ADD'
     if params.has_key?(:l1_id)
       @show_l1s = 'readonly'
       @l1 = L1.find(params[:l1_id])
@@ -35,14 +33,9 @@ class L2sController < ApplicationController
 
   # GET /ia/1/edit
   def edit
-    #@workflow  = WorkFlow.find_by_is_active(true)
-    #@label_name = @workflow.workflow_labels.find_by_label('L2')
-    #@attr_list = @workflow.attribute_lists.where(level: 'L2')
-
-   
+    @attr_list = @workflow.label_attributes.where(recording_level: 'L2', is_visible: true)
     @l2 = L2.find(params[:id])
-   # @attr_list = @l2.attribute_list
-    @action = 'UPDATE ' + @label_name.name
+    @action = 'UPDATE'
     @l1 = @l2.l1
     @show_l1s = 'dropdowddn'
     respond_to do |format|
@@ -66,24 +59,22 @@ class L2sController < ApplicationController
       if params[:attr].present?
         params[:attr].each do |a|
 
-         AttributeValue.create(:attribute_list_id => a[0] ,
+        AttributeValue.create(:attribute_id => a[0] ,
                                :value => a[1] ,
                                :object_id => @l2.id ,
                                :object_type => 'L2')
         end
       end
   
-      
-
-      @l2.l1.work_flow.template.template_stations.each do |temp_station|
-        temp_station.steps.where(recording_level: 'L2').each do |stp|
-          WorkflowStep.create(step_id: stp.id, object_id: @l2.id, object_type: 'L2', is_active: nil , eta: '')
+      @l2.l1.work_flow.workflow_stations.each do |station|
+        station.station_steps.where(recording_level: 'L2').each do |stp|
+          WorkflowLiveStep.create(station_step_id: stp.id, object_id: @l2.id, object_type: 'L2', is_active: nil , eta: '')
         end
       end
 
-      if @l2.workflow_steps.present? && @l2.status == 'accept'
+      if @l2.workflow_live_steps.present? && @l2.status == 'accept'
         session[:open_confirm_modal] = 'open_confirm_modal'
-        session[:workflow_step_id] = @l2.workflow_steps.first.id
+        session[:workflow_step_id] = @l2.workflow_live_steps.first.id
         session[:l_number_id] = l2_id
       end
 
@@ -131,6 +122,6 @@ class L2sController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def l2_params
-      params.require(:l2).permit(:name, :l1_id, :status, :business_unit, :comp_count, :notes, :is_active, :requested_date, :to_be_approved_by, :translation)
+      params.require(:l2).permit(:name, :l1_id, :status, :business_unit, :notes, :is_active, :requested_date, :to_be_approved_by, :translation)
     end
 end

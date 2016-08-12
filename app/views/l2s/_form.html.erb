@@ -5,7 +5,7 @@
           <div class='modal-header'>
              <button type='button' class='close' data-dismiss='modal'>×</button>
              
-                <h1 class='h1-heading-popup'> <%= @action %> </h1>
+                <h1 class='h1-heading-popup'> <%= @action %> <%= @workflow.L2 %> </h1>
            </div>
           <div class='modal-body' id="add_ia_modal_body">
               <%= f.hidden_field :status %>
@@ -15,11 +15,11 @@
                 <div class= "form-group">
                   <div class="row">
                       <div class="col-lg-4">
-                          <label for = "ia_project_id" class=" echo_patinet pull-right control-label">PROJECT:</label>
+                          <label for = "ia_project_id" class=" echo_patinet pull-right control-label"><%=@workflow.L1%>:</label>
                       </div>
                         <div class="col-lg-6">
                           <% if @show_l1s == 'dropdown' %>
-                            <%= f.select :l1_id, options_from_collection_for_select(@l1, 'id', 'name'),{prompt: 'please select project'}, {:class=>'form-control pnd-reqst pull-left', required: true }%>
+                            <%= f.select :l1_id, options_from_collection_for_select(@l1, 'id', 'name'),{prompt: 'please select '+@workflow.L1}, {:class=>'form-control pnd-reqst pull-left', required: true }%>
                           <% else %>
                             <%= f.hidden_field :l1_id, :value => @l1.id %>
                             <span class='pull-left'>
@@ -70,27 +70,27 @@
                   </div>
 
                  <% if @attr_list.present? %>
-                  <% @attr_list.each do |a| %>
-                    <% if a.field_type == "integer" %>
+                  <% @attr_list.each do |att| %>
+                    <% if att.field_type == "integer" %>
                       <div class="row">
                          <div class="col-lg-4">
-                            <label for="Active" class="pull-right echo_patinet form-group"><%= a.label %>  </label> 
+                            <label for="Active" class="pull-right echo_patinet form-group"><%= att.label %>  </label> 
                         </div>
                         <div class="col-lg-6">
-                            <input type="number" name=<%= "attr[#{a.id}]" %> class="form-control" >
+                            <input type="number" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="form-control" >
                         </div>
                        </div>
                   <% else %>
                     <div class="row">
                       <div class="col-lg-4">
-                         <label for="Active" class="pull-right echo_patinet form-group">  <%= a.label %>   </label> 
+                         <label for="Active" class="pull-right echo_patinet form-group">  <%= att.label %>   </label> 
                       </div>
                     <div class="col-lg-6">
-                       <select class="form-control" name=<%= "attr[#{a.id}]" %> >
-                          <% a.attribute_list_options.each do |b| %>
-                            <option><%= b.value %></option>
-                          <% end %>
-                        </select>
+                      <% if att.is_required? %>
+                        <%= select_tag 'attr[#{att.id}]', options_from_collection_for_select(att.attribute_options, 'id', 'value'), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left', required: true %> 
+                      <% else %>
+                        <%= select_tag 'attr[#{att.id}]', options_from_collection_for_select(att.attribute_options, 'id', 'value'), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left'%> 
+                      <% end %>
                     </div>
                     </div>
                         

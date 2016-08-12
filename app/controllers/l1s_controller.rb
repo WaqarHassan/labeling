@@ -16,9 +16,7 @@ class L1sController < ApplicationController
   def new
     @action = 'ADD'
     @btn_action = 'SAVE'
-    @workflow  = WorkFlow.find_by_is_active(true)
-    #@attr_list = @workflow.attribute_lists.where(level: 'L1')
-    
+    @attr_list = @workflow.label_attributes.where(recording_level: 'L1', is_visible: true)
     @l1 = L1.new
     respond_to do |format|
       format.html
@@ -30,11 +28,8 @@ class L1sController < ApplicationController
   def edit
     @action = 'UPDATE'
     @btn_action = 'UPDATE'
-
-     @workflow  = WorkFlow.find_by_is_active(true)
-     @label_name = @workflow.workflow_labels.find_by_label('L1')
-     @attr_list = @workflow.attribute_lists.where(level: 'L2')
-     respond_to do |format|
+    @attr_list = @workflow.label_attributes.where(recording_level: 'L1', is_visible: true)
+    respond_to do |format|
       format.html
       format.js
     end
@@ -52,7 +47,7 @@ class L1sController < ApplicationController
       if params[:attr].present?
         params[:attr].each do |a|
 
-         AttributeValue.create(:attribute_list_id => a[0] ,
+         AttributeValue.create(:attribute_id => a[0] ,
                                :value => a[1] ,
                                :object_id => @l1.id ,
                                :object_type => 'L1')

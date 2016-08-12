@@ -4,7 +4,7 @@
 		<%= f.error_notification %>
 			<div class='modal-header  ui-draggable-handle'>
 			 <button type='button' class='close' data-dismiss='modal'>×</button>
-				  <h1 class='h1-heading-popup'><%= @action %> <%= @label_name.name%></h1>
+				  <h1 class='h1-heading-popup'><%= @action %> <%= @workflow.L1 %></h1>
 			 </div>
 		 	<div class='modal-body' id="add_l1_modal_body">
 
@@ -56,25 +56,25 @@
 			            </div>
 				    </div>
 				    <% if @attr_list.present? %>
-	                  <% @attr_list.each do |a| %>
+	                  <% @attr_list.each do |att| %>
 	                    <% if a.field_type == "integer" %>
 	                      <div class="row">
 	                         <div class="col-lg-4">
-	                            <label for="Active" class="pull-right echo_patinet form-group"><%= a.label %>  </label> 
+	                            <label for="Active" class="pull-right echo_patinet form-group"><%= att.label %>  </label> 
 	                        </div>
 	                        <div class="col-lg-6">
-	                            <input type="number" name=<%= "attr[#{a.id}]" %> class="form-control" >
+	                            <input type="number" name=<%= "attr[#{att.id}]" %>  <%= att.is_required == true ? 'required' : '' %> class="form-control" >
 	                        </div>
 	                       </div>
 	                  <% else %>
 	                    <div class="row">
 	                      <div class="col-lg-4">
-	                         <label for="Active" class="pull-right echo_patinet form-group">  <%= a.label %>   </label> 
+	                         <label for="Active" class="pull-right echo_patinet form-group">  <%= att.label %>   </label> 
 	                      </div>
 	                    <div class="col-lg-6">
-	                       <select class="form-control" name=<%= "attr[#{a.id}]" %> >
-	                          <% a.attribute_list_options.each do |b| %>
-	                            <option><%= b.value %></option>
+	                       <select class="form-control" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> >
+	                          <% att.attribute_list_options.each do |option| %>
+	                            <option value= <%= option.id %> ><%= option.value %></option>
 	                          <% end %>
 	                        </select>
 	                    </div>

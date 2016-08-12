@@ -3,8 +3,8 @@ class OverviewController < ApplicationController
   
 	def index
     @active_workflow = WorkFlow.find_by_is_active(true)
-    @label_attributes = @active_workflow.label_attributes.where(is_visible: true)
-    @workflow_stations = @active_workflow.workflow_stations.where(is_visible: true)
+    @label_attributes = @active_workflow.label_attributes #.where(is_visible: true)
+    @workflow_stations = @active_workflow.workflow_stations #.where(is_visible: true)
     @workflows = WorkFlow.where(is_active: false)
 		@l1s = @active_workflow.l1s.where(is_active: true)
 	end

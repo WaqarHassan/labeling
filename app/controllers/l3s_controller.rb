@@ -76,12 +76,13 @@ class L3sController < ApplicationController
           session[:l_number_id] = @l3.id
         end  
       end
-       params[:attr].each do |a|
-
-       AttributeValue.create(:attribute_list_id => a[0] ,
-                             :value => a[1] ,
-                             :object_id => @l3.id ,
-                             :object_type => 'L3')
+      if params[:attr].present?
+        params[:attr].each do |a|
+        AttributeValue.create(:attribute_list_id => a[0] ,
+                               :value => a[1] ,
+                               :object_id => @l3.id ,
+                               :object_type => 'L3')
+        end
       end
       redirect_to root_path, notice: 'L3 was successfully created.'
     else

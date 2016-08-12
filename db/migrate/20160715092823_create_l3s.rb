@@ -2,9 +2,7 @@ class CreateL3s < ActiveRecord::Migration
   def change
     create_table :l3s do |t|
       t.string :name
-      t.integer :comp_count
-      t.string :comp_type
-      t.integer :language_count
+      t.integer :business_unit
       t.integer :is_active
       t.text :notes
       t.integer :l2_id

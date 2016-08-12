@@ -3,7 +3,9 @@ class CreateL1s < ActiveRecord::Migration
     create_table :l1s do |t|
       t.string :name
       t.text :description
+      t.string :business_unit
       t.boolean :is_active
+      t.integer :work_flow_id
       t.integer :user_id
       t.integer :modified_by_user_id
 

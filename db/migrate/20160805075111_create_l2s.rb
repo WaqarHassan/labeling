@@ -5,13 +5,13 @@ class CreateL2s < ActiveRecord::Migration
       t.integer :l1_id
       t.string :status
       t.string :business_unit
-      t.integer :comp_count
       t.text :notes
       t.boolean :is_active
       t.datetime :requested_date
       t.datetime :to_be_approved_by
       t.boolean :translation
-
+      t.integer :user_id
+      t.integer :modified_by_user_id
       t.timestamps null: false
     end
   end

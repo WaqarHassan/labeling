@@ -10,25 +10,7 @@ class L2sController < ApplicationController
   # GET /ia/1
   def show
   end
-<<<<<<< HEAD
- 
-  # GET /ia/new
-  # def add_nested_ia
-    
-  #   @l2 = L2.find(params[:ia_id])
-  #   @l1 = current_user.l1s.where(is_active: true)
-  #   @workflow  = WorkFlow.find_by_is_active(true)
-  #   @label_name = @workflow.workflow_labels.find_by_label('L2')
-  #   @attr_list = @workflow.attribute_lists.where(level: 'L2')
-  #   @show_l1s = 'dropdown'
-  #   respond_to do |format|
-  #     format.html
-  #     format.js
-  #   end
-  # end
-=======
 
->>>>>>> bd2404e2946fe8ea519b2c654d57feb9126c2c0b
 
   # GET /ia/new
   def new
@@ -53,9 +35,10 @@ class L2sController < ApplicationController
 
   # GET /ia/1/edit
   def edit
-    @workflow  = WorkFlow.find_by_is_active(true)
-    @label_name = @workflow.workflow_labels.find_by_label('L2')
-    @attr_list = @workflow.attribute_lists.where(level: 'L2')
+    #@workflow  = WorkFlow.find_by_is_active(true)
+    #@label_name = @workflow.workflow_labels.find_by_label('L2')
+    #@attr_list = @workflow.attribute_lists.where(level: 'L2')
+
    
     @l2 = L2.find(params[:id])
    # @attr_list = @l2.attribute_list

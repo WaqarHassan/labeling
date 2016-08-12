@@ -9,7 +9,6 @@ Rails.application.routes.draw do
   resources :rework_infos
   resources :archives
   resources :notes
-  resources :stations
   resources :l3s
   resources :holidays
   resources :l1s

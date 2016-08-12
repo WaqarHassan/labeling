@@ -45,7 +45,7 @@ DROP TABLE IF EXISTS `attribute_options`;
 CREATE TABLE `attribute_options` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `attribute_id` int(11) DEFAULT NULL,
+  `label_attribute_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -61,32 +61,10 @@ DROP TABLE IF EXISTS `attribute_values`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `attribute_values` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `attribute_id` int(11) DEFAULT NULL,
+  `label_attribute_id` int(11) DEFAULT NULL,
   `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `object_id` int(11) DEFAULT NULL,
   `object_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `attributes`
---
-
-DROP TABLE IF EXISTS `attributes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `attributes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `label` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `short_label` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `recording_level` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `is_required` tinyint(1) DEFAULT NULL,
-  `is_visible` tinyint(1) DEFAULT NULL,
-  `work_flow_id` int(11) DEFAULT NULL,
-  `field_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -198,6 +176,28 @@ CREATE TABLE `l3s` (
   `l2_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `modified_by_user_id` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `label_attributes`
+--
+
+DROP TABLE IF EXISTS `label_attributes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `label_attributes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `label` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `short_label` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `recording_level` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `is_required` tinyint(1) DEFAULT NULL,
+  `is_visible` tinyint(1) DEFAULT NULL,
+  `work_flow_id` int(11) DEFAULT NULL,
+  `field_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -418,7 +418,7 @@ CREATE TABLE `workflow_stations` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-08-12 14:38:27
+-- Dump completed on 2016-08-12 16:09:03
 INSERT INTO schema_migrations (version) VALUES ('20130909170542');
 
 INSERT INTO schema_migrations (version) VALUES ('20130909194719');

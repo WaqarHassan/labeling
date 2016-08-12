@@ -106,19 +106,17 @@
             <th class="collapse_table_data collapse_table"> </th>
           </tr>
           <tr class="sub_heading">
-            <% @active_workflow.workflow_labels.each do |wfl| %>
-              <th><%= @active_workflow.L1 %></th>
-            <% end %>
+            <th><%= @active_workflow.L1 %></th>
+            <th><%= @active_workflow.L2 %></th>
+            <th><%= @active_workflow.L3 %></th>
             <th class="collapse_table_data collapse_table">Status</th>
             <% 
             attributes = []
-            @active_workflow.workflow_labels.each do |wfl| 
-                wfl.workflow_label_attributes.each do |wla| 
-                  if !attributes.include? wla.attribute_list.short_label 
-                    attributes << wla.attribute_list.short_label %>
-                    <th class="collapse_table_data collapse_table"><%= wla.attribute_list.short_label %></th>
-                <% end 
-                end 
+            @label_attributes.each do |label_attri| 
+              if !attributes.include? label_attri.short_label 
+                attributes << label_attri.short_label %>
+                <th class="collapse_table_data collapse_table"><%= label_attri.short_label %></th>
+            <% end 
             end %>
             
           </tr>
@@ -170,18 +168,18 @@
   <table class="table table-bordered">
     <thead>
       <tr class="main_heading">
-        <% @active_workflow.template.template_stations.each do |temp_station| %>
-          <th colspan= <%= temp_station.steps.length %> style="text-align:center" >
-            <%= temp_station.station.name %>
+        <% @workflow_stations.each do |station| %>
+          <th colspan= <%= station.station_steps.length %> style="text-align:center" >
+            <%= station.station_name %>
           </th>
         <% end %>
         <th></th>
       </tr>
       <tr class="sub_heading">
-        <% @active_workflow.template.template_stations.each do |temp_station| 
-          temp_station.steps.each do |step| %>
+        <% @workflow_stations.each do |station|
+          station.station_steps.each do |step| %>
             <th style="text-align:center" >
-              <%= step.name %>
+              <%= step.step_name %>
             </th>
         <% end 
         end %>
@@ -195,14 +193,14 @@
           </tr>  
           <tr>
               <% number_cls = 11
-              l1.l2s.each do |ia| 
-                ia.workflow_steps.each do |workflow_step| 
+              l1.l2s.each do |l2| 
+                l2.workflow_live_steps.each do |workflow_live_step| 
                 number_cls -= 1 %>
                  <td>
-                    <% if workflow_step.actual_confirmation.blank? %>
-                        <%= link_to 'Not Started' , open_confirm_modal_path(workflow_step.id, ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
-                    <% elsif workflow_step.actual_confirmation.present? %>
-                        <%= link_to workflow_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path(workflow_step.id, ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
+                    <% if workflow_live_step.actual_confirmation.blank? %>
+                      <%= link_to 'Not Started' , open_confirm_modal_path(workflow_live_step.id, l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
+                    <% elsif workflow_live_step.actual_confirmation.present? %>
+                      <%= link_to workflow_live_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path(workflow_live_step.id, l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
                     <% else %>   
                       N/A
                     <% end %> 
@@ -214,20 +212,20 @@
             <tr>    
           <% 
           l1_cls = 11 - number_cls
-          ia.l3s.each do |l3| %>
+          l2.l3s.each do |l3| %>
             <tr>
               <% for cls in 1..l1_cls %>
                 <td></td>
               <% end %>
               <% 
               number_cls_l3 = 11 - l1_cls
-              l3.workflow_steps.each do |l3workflow_step|  
+              l3.workflow_live_steps.each do |l3workflow_step|  
                 number_cls_l3 -= 1 %>
                 <td> 
                   <% if l3workflow_step.actual_confirmation.blank? %>
-                        <%= link_to 'Not Started' , open_confirm_modal_path(l3workflow_step.id, ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
+                        <%= link_to 'Not Started' , open_confirm_modal_path(l3workflow_step.id, l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
                     <% elsif l3workflow_step.actual_confirmation.present? %>
-                        <%= link_to l3workflow_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path(l3workflow_step.id, ia.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
+                        <%= link_to l3workflow_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path(l3workflow_step.id, l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
                     <% else %>   
                       N/A
                     <% end %>  

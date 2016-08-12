@@ -35,9 +35,10 @@ class L2sController < ApplicationController
 
   # GET /ia/1/edit
   def edit
-    @workflow  = WorkFlow.find_by_is_active(true)
-    @label_name = @workflow.workflow_labels.find_by_label('L2')
-    @attr_list = @workflow.attribute_lists.where(level: 'L2')
+    #@workflow  = WorkFlow.find_by_is_active(true)
+    #@label_name = @workflow.workflow_labels.find_by_label('L2')
+    #@attr_list = @workflow.attribute_lists.where(level: 'L2')
+
    
     @l2 = L2.find(params[:id])
    # @attr_list = @l2.attribute_list

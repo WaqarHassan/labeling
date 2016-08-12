@@ -46,8 +46,6 @@ class L1sController < ApplicationController
 
   # POST /l1s
   def create
-    @l1 = 
-
     
     @l1 = L1.new(l1_params)
     

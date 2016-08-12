@@ -3,7 +3,8 @@ class L1 < ActiveRecord::Base
   has_many :l2s, dependent: :destroy
   belongs_to :user
   belongs_to :work_flow
-  has_many :workflow_steps
+  has_many :workflow_live_steps, as: :object
+  has_many :attribute_values, as: :object
   validates :name, uniqueness: true
 
   class << self

@@ -51,15 +51,35 @@
             </div>
           </div>
 
+          <div class= "form-group">
+            <div class="row">
+              <div class="col-lg-4">
+                 <label for = "ecr_station_id" class="pull-right form-group control-label">BU</label>
+              </div>
+              <div class="col-lg-6">
+                <select id="l3_l2_id" name="l3[business_unit]" required="required" class="form-control">
+                  <option value="">Please Select BU</option>
+                  <option value="THV">THV</option> 
+                  <option value="HVT">HVT</option>  
+                </select>
+              </div>
+            </div>
+          </div>
+
            <% if @attr_list.present? %>
-            <% @attr_list.each do |att| %>
+            <% attr_field_value = ''
+            @attr_list.each do |att| 
+              if @attr_values.present? 
+                attr_value_object = @attr_values.find{|attr_value| attr_value.label_attribute_id == att.id }
+                attr_field_value = attr_value_object.present? ? attr_value_object.value : ''
+              end %>
             <% if att.field_type == "integer" %>
               <div class="row">
                   <div class="col-lg-4">
                     <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %>: </label> 
                   </div>
                     <div class="col-lg-6">
-                    <input type="number" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="form-control" >
+                    <input type="number" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="form-control" value=<%= attr_field_value %> >
                   </div>
                 </div>
             <% else %>
@@ -69,9 +89,9 @@
                 </div>
                   <div class="col-lg-6">
                    <% if att.is_required? %>
-                    <%= select_tag 'attr[#{att.id}]', options_from_collection_for_select(att.attribute_options, 'id', 'value'), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left', required: true %> 
+                    <%= select_tag "attr[#{att.id}]", options_from_collection_for_select(att.attribute_options, 'value', 'value', attr_field_value), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left', required: true %> 
                    <% else %>
-                    <%= select_tag 'attr[#{att.id}]', options_from_collection_for_select(att.attribute_options, 'id', 'value'), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left'%> 
+                    <%= select_tag "attr[#{att.id}]", options_from_collection_for_select(att.attribute_options, 'value', 'value', attr_field_value), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left'%> 
                    <% end %>
                   </div>
               </div>

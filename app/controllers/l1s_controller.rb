@@ -29,6 +29,7 @@ class L1sController < ApplicationController
     @action = 'UPDATE'
     @btn_action = 'UPDATE'
     @attr_list = @workflow.label_attributes.where(recording_level: 'L1', is_visible: true)
+    @attr_values = @l1.attribute_values
     respond_to do |format|
       format.html
       format.js
@@ -45,15 +46,9 @@ class L1sController < ApplicationController
     
     if @l1.save!
       if params[:attr].present?
-        params[:attr].each do |a|
-
-         AttributeValue.create(:attribute_id => a[0] ,
-                               :value => a[1] ,
-                               :object_id => @l1.id ,
-                               :object_type => 'L1')
-        end
+        AttributeValue.create_attribute_values(params[:attr], @l1, 'L1') 
       end  
-      redirect_to root_path, notice: 'L1 was successfully created.'
+      redirect_to root_path, notice: @workflow.L1+' was successfully created.'
     else
       render :new
     end
@@ -62,7 +57,18 @@ class L1sController < ApplicationController
   # PATCH/PUT /l1s/1
   def update
     if @l1.update!(l1_params)
-      redirect_to root_path, notice: 'L1 was successfully updated.'
+      if params[:attr].present?
+        params[:attr].each do |att|
+         attr_value_object = AttributeValue.find_by_label_attribute_id_and_object_id_and_object_type(att[0], @l1.id, 'L1')
+          if attr_value_object.present?
+            attr_value_object.value = att[1]
+            attr_value_object.save!
+          else
+            AttributeValue.create_single_attribute_value(att[0], att[1], @l1, 'L1')   
+          end
+        end
+      end  
+      redirect_to root_path, notice: @workflow.L1+' was successfully updated.'
     else
       render :edit
     end
@@ -71,7 +77,7 @@ class L1sController < ApplicationController
   # DELETE /l1s/1
   def destroy
     @l1.destroy
-    redirect_to l1s_url, notice: 'L1 was successfully destroyed.'
+    redirect_to l1s_url, notice: @workflow.L1+' was successfully destroyed.'
   end
 
   private
@@ -82,6 +88,6 @@ class L1sController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def l1_params
-      params.require(:l1).permit(:id, :name, :description, :user_id, :work_flow_id, :is_active)
+      params.require(:l1).permit(:id, :name, :description, :user_id, :work_flow_id, :is_active, :business_unit)
     end
 end

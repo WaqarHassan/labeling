@@ -3,9 +3,9 @@ class OverviewController < ApplicationController
   
 	def index
     @label_attributes = @workflow.label_attributes #.where(is_visible: true)
-    @workflow_stations = @workflow.workflow_stations #.where(is_visible: true)
+    @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
-		@l1s = @workflow.l1s.where(is_active: true)
+		@l1s = @workflow.l1s.where(is_active: true).order(:id)
 	end
 
    def open_info_modal
@@ -71,10 +71,12 @@ class OverviewController < ApplicationController
 
   def search
     q_string = '';
-    # wildcard_bu = params[:wildcard][:bu]
-    # if wildcard_bu.presence
-    #   q_string += "bu like '%#{wildcard_bu}%'"
-    # end
+    wildcard_bu = params[:wildcard][:business_unit]
+    if wildcard_bu.presence
+      q_string += "(l1s.business_unit like '%#{wildcard_bu}%'"
+      q_string += "OR l2s.business_unit like '%#{wildcard_bu}%'"
+      q_string += "OR l3s.business_unit like '%#{wildcard_bu}%')"
+    end
     wildcard_l1 = params[:wildcard][:l1]
     if wildcard_l1.presence
       q_string += q_string != '' ? ' and ' : ''
@@ -91,11 +93,13 @@ class OverviewController < ApplicationController
       q_string += "l3s.name like '%#{wildcard_l3}%'"
     end
 
-    # exact_bu = params[:exact][:bu]
-    # if exact_bu.presence
-    #   q_string += q_string != '' ? ' and ' : ''
-    #   q_string += "bu = '#{exact_bu}'"
-    # end
+    exact_bu = params[:exact][:business_unit]
+    if exact_bu.presence
+      q_string += q_string != '' ? ' and ' : ''
+      q_string += "(l1s.business_unit = '#{exact_bu}'"
+      q_string += "OR l2s.business_unit = '#{exact_bu}'"
+      q_string += "OR l3s.business_unit = '#{exact_bu}')"
+    end
 
     exact_l2 = params[:exact][:l2]
     if exact_l2.presence
@@ -109,8 +113,8 @@ class OverviewController < ApplicationController
     end
 
   @serach_result = ActiveRecord::Base.connection.select_all "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name 
-                    from l1s, l2s, l3s 
-                    where #{q_string} and l1s.id = l2s.l1_id and l2s.id = l3s.l2_id"
+                    from l1s, l2s left join l3s on l2s.id = l3s.l2_id 
+                    where #{q_string}  and l2s.l1_id = l1s.id"
 
     respond_to do |format|
       format.html

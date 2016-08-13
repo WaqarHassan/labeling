@@ -2,20 +2,11 @@
 console.log('main js working........');
 
 
-function addProjectSubmit() {
-	$("form#add_project_form").submit();
-	$('#modal').modal('toggle');
-	
-}
-function updateprojectstatusSubmit(){
-	$("form#update_project_status_form").submit();
-	$('#modal').modal('toggle');
-}
-function addEcrSubmit() {
-	$("form#add_ecr_form").submit();
-}
-function addIaSubmit() {
-	$("form#add_ia_form").submit();
+function resetSearchResult(){
+	dataHtml = '<ul class="ia-list" search_result_div>';
+	dataHtml += '<span style="color:green">Search result we be display here: </span>';
+	dataHtml += '</ul>';
+	$('#search_result_div').html(dataHtml);
 }
 
 $(document).ready(function() {

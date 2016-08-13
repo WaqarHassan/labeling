@@ -34,6 +34,7 @@ class L3sController < ApplicationController
   def edit
     @l2 = @l3.l2
     @attr_list = @workflow.label_attributes.where(recording_level: 'L3', is_visible: true)
+    @attr_values = @l3.attribute_values
     @action = 'UPDATE'
     @btn_action = 'UPDATE'
     
@@ -50,6 +51,10 @@ class L3sController < ApplicationController
     @l3 = L3.new(l3_params)
 
     if @l3.save!
+      if params[:attr].present?
+        AttributeValue.create_attribute_values(params[:attr], @l3, 'L3') 
+      end 
+
       @l3.l2.l1.work_flow.workflow_stations.each do |station|
         station.station_steps.where(recording_level: 'L3').each do |stp|
           WorkflowLiveStep.create(station_step_id: stp.id, object_id: @l3.id, object_type: 'L3', is_active: nil , eta: '')
@@ -65,15 +70,7 @@ class L3sController < ApplicationController
          end  
        end
 
-      if params[:attr].present?
-        params[:attr].each do |a|
-        AttributeValue.create(:attribute_id => a[0] ,
-                               :value => a[1] ,
-                               :object_id => @l3.id ,
-                               :object_type => 'L3')
-        end
-      end
-      redirect_to root_path, notice: 'L3 was successfully created.'
+      redirect_to root_path, notice: @workflow.L3+' was successfully created.'
     else
       render :new
     end
@@ -83,7 +80,18 @@ class L3sController < ApplicationController
   # PATCH/PUT /l3s/1
   def update
     if @l3.update!(l3_params)
-      redirect_to root_path, notice: 'L3 was successfully updated.'
+      if params[:attr].present?
+        params[:attr].each do |att|
+         attr_value_object = AttributeValue.find_by_label_attribute_id_and_object_id_and_object_type(att[0], @l3.id, 'L3')
+          if attr_value_object.present?
+            attr_value_object.value = att[1]
+            attr_value_object.save!
+          else
+            AttributeValue.create_single_attribute_value(att[0], att[1], @l3, 'L3')   
+          end
+        end
+      end  
+      redirect_to root_path, notice: @workflow.L3+' was successfully updated.'
     else
       render :edit
     end
@@ -92,7 +100,7 @@ class L3sController < ApplicationController
   # DELETE /l3s/1
   def destroy
     @l3.destroy
-    redirect_to l3s_url, notice: 'L3 was successfully destroyed.'
+    redirect_to l3s_url, notice: @workflow.L3+' was successfully destroyed.'
   end
 
   private
@@ -103,6 +111,6 @@ class L3sController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def l3_params
-      params.require(:l3).permit(:id, :name, :status, :note, :l2_id,:business_unit)
+      params.require(:l3).permit(:id, :name, :status, :note, :l2_id, :business_unit)
     end
 end

@@ -34,7 +34,7 @@ class L2sController < ApplicationController
   # GET /ia/1/edit
   def edit
     @attr_list = @workflow.label_attributes.where(recording_level: 'L2', is_visible: true)
-    @l2 = L2.find(params[:id])
+    @attr_values = @l2.attribute_values
     @action = 'UPDATE'
     @l1 = @l2.l1
     @show_l1s = 'dropdowddn'
@@ -50,21 +50,16 @@ class L2sController < ApplicationController
     @l2 = L2.new(l2_params)
 
     if @l2.save!
+      if params[:attr].present?
+        AttributeValue.create_attribute_values(params[:attr], @l2, 'L2') 
+      end 
+
       workflow_id = @l2.l1.work_flow_id
       l2_id = @l2.id
 
       if @l2.status != ''
         save_activity_log
       end 
-      if params[:attr].present?
-        params[:attr].each do |a|
-
-        AttributeValue.create(:attribute_id => a[0] ,
-                               :value => a[1] ,
-                               :object_id => @l2.id ,
-                               :object_type => 'L2')
-        end
-      end
   
       @l2.l1.work_flow.workflow_stations.each do |station|
         station.station_steps.where(recording_level: 'L2').each do |stp|
@@ -78,7 +73,7 @@ class L2sController < ApplicationController
         session[:l_number_id] = l2_id
       end
 
-      redirect_to root_path, notice: 'Ia was successfully created.'
+      redirect_to root_path, notice: @workflow.L2+' was successfully created.'
     else
       render :new
     end
@@ -88,14 +83,24 @@ class L2sController < ApplicationController
   def update
     previous_status = @l2.status
     if @l2.update!(l2_params)
+      if params[:attr].present?
+        params[:attr].each do |att|
+         attr_value_object = AttributeValue.find_by_label_attribute_id_and_object_id_and_object_type(att[0], @l2.id, 'L2')
+          if attr_value_object.present?
+            attr_value_object.value = att[1]
+            attr_value_object.save!
+          else
+            AttributeValue.create_single_attribute_value(att[0], att[1], @l2, 'L2')   
+          end
+        end
+      end  
+      if previous_status == 'reject'
+        session[:open_confirm_modal] = 'open_confirm_modal'
+        session[:workflow_step_id] = @l2.workflow_live_steps.first.id
+        session[:l_number_id] = @l2.id
+      end
       save_activity_log(previous_status)
-      redirect_to root_path, notice: 'Ia was successfully updated.'
-      #params[:attr].each do |a|
-       #   AttributeValue.find()
-       # AttributeValue.create(:attribute_list_id => a[0] ,
-       #                       :value => a[1] ,
-       #                       :object_id => @l2.id ,
-       #                       :object_type => 'L2')
+      redirect_to root_path, notice: @workflow.L2+' was successfully updated.'
     else
       render :edit
     end
@@ -104,7 +109,7 @@ class L2sController < ApplicationController
   # DELETE /ia/1
   def destroy
     @l2.destroy
-    redirect_to l2_url, notice: 'Ia was successfully destroyed.'
+    redirect_to l2_url, notice: @workflow.L2+' was successfully destroyed.'
   end
   private
 

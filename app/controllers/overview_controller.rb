@@ -122,6 +122,33 @@ class OverviewController < ApplicationController
     end
   end
 
+  def project_deatils_l2
+    @label_attributes = @workflow.label_attributes #.where(is_visible: true)
+    @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
+    @workflows = WorkFlow.where(is_active: true, is_in_use: false)
+    l2 = L2.find(params[:l2_id])
+    @l1s = L1.where(id: l2.l1_id)
+
+    respond_to do |format|
+      format.html
+      format.js
+    end 
+  end
+
+  def project_deatils_l3
+    @label_attributes = @workflow.label_attributes #.where(is_visible: true)
+    @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
+    @workflows = WorkFlow.where(is_active: true, is_in_use: false)
+    l3 = L3.find(params[:l3_id])
+    ll2 = l3.l2
+    @l1s = L1.where(id: ll2.l1_id)
+
+    respond_to do |format|
+      format.html
+      format.js
+    end 
+  end
+
   private
     def workflow_live_step_params
       params.require(:workflow_live_step).permit(:actual_confirmation)

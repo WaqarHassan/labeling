@@ -17,24 +17,6 @@ $(document).ready(function() {
 
 });
 
-$('#add_l3_modal').on('show.bs.modal', function () {
-    setTimeout(function(){
-    	$('#l3_name').focus();
-    }, 500);
-});
-
-$('#add_l2_modal').on('show.bs.modal', function () {
-    setTimeout(function(){
-    	$('#l2_name').focus();
-    }, 500);
-});
-
-$('#add_l1_modal').on('show.bs.modal', function () {
-    setTimeout(function(){
-    	$('#l1_name').focus();
-    }, 500);
-});
-
 function set_current_timestamp(){
 	$('#datetimepicker_info').val(moment().format('MM/DD/YYYY hh:mm A'));
 }
@@ -84,9 +66,8 @@ function messageform()
 	 
 }
 
-function messagebox()
+function label_attributes_box()
 {
-	console.log('sssssssss');
      var className = $('.project_ia').attr('class');
 
       if (className == "project-data project_ia collapsed" || className == 'project-data project_ia collapsed project_serach_noDetail'){

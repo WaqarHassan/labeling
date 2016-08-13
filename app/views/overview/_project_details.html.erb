@@ -9,9 +9,13 @@
 						<th style="width: 94px;"> </th>
 						<th class="collapse_table_data collapse_table" > </th>
 						<th class="collapse_table_data collapse_table"> </th>
-						<th class="collapse_table_data collapse_table"> </th>
-						<th class="collapse_table_data collapse_table"> </th>
-						<th class="collapse_table_data collapse_table"> </th>
+						<% attributes = []
+						@label_attributes.each do |label_attri| 
+							if !attributes.include? label_attri.short_label 
+								attributes << label_attri.short_label %>
+							<th class="collapse_table_data collapse_table"> </th>
+						<% end 
+						end %>
 					</tr>
 					<tr class="sub_heading">
 						<th><%= @workflow.L1 %></th>

@@ -11,25 +11,43 @@
           <div class="form-group">
              <label class="col-lg-4 control-label"><%= @workflow.L1 %>: </label>
              <div class="col-lg-8">
-                <span id="" name=""> <%= @l2.present? == true ? @l2.l1.name : '' %> </span>
+                <span id="" name=""> <%= @l1.present? == true ? @l1.name : @l2.present? == true ? @l2.l1.name : @l3.present? == true ? @l3.l2.l1.name : '' %> </span>
              </div>
           </div>
       
          <div class="form-group">
            <label class="col-lg-4 control-label"><%= @workflow.L2 %>: </label>
            <div class="col-lg-8">
-              <span id="" name=""><%= @l2.present? == true ? @l2.name : '' %> </span>
+              <span id="" name="">
+                <% if @l1.present? 
+                  @l1.l2s.each do |l2| %>
+                      <%= l2.name%> <br> 
+                   <% end
+                 elsif @l2.present?  %>
+                      <%= @l2.name %>
+                  <% elsif @l3.present? %>
+                  <%= @l3.l2.name %>
+                  <% end %>
+              </span>
            </div>
          </div>
           <div class="form-group">
              <label class="col-lg-4 control-label"><%= @workflow.L3 %>: </label>
              <div class="col-lg-8">
               <span id="" name="">
-                <% if @l2.present? 
+                <% if @l1.present? 
+                  @l1.l2s.each do |l2|
+                    l2.l3s.each do |l3| %>
+                      <%= l3.name%> <br> 
+                   <% end
+                   end 
+                 elsif @l2.present? 
                   @l2.l3s.each do |l3| %>
-                  <%= l3.name%> <br> 
-                <% end 
-                end %>
+                      <%= l3.name%> <br> 
+                   <% end
+                 elsif @l3.present? %>
+                      <%= @l3.name%> 
+                <% end %>
               </span>
             </div>
           </div> 

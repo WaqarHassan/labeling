@@ -70,7 +70,6 @@ class L2sController < ApplicationController
       if @l2.workflow_live_steps.present? && @l2.status == 'accept'
         session[:open_confirm_modal] = 'open_confirm_modal'
         session[:workflow_step_id] = @l2.workflow_live_steps.first.id
-        session[:l_number_id] = l2_id
       end
 
       redirect_to root_path, notice: @workflow.L2+' was successfully created.'

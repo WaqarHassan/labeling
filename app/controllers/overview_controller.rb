@@ -46,8 +46,13 @@ class OverviewController < ApplicationController
     
   def open_confirm_modal
     @wf_step_id = params[:wf_step_id]
-    if params[:l2_id].present?
-      @l2 = L2.find(params[:l2_id])
+    workflow_live_tep = WorkflowLiveStep.find(@wf_step_id)
+    if workflow_live_tep.object_type == 'L1'
+      @l1 = L1.find(workflow_live_tep.object_id)
+    elsif workflow_live_tep.object_type == 'L2'
+      @l2 = L2.find(workflow_live_tep.object_id)
+    elsif workflow_live_tep.object_type == 'L3'
+      @l3 = L3.find(workflow_live_tep.object_id)
     end  
     respond_to do |format|
       format.html { render :partial => "confirm_modal" }

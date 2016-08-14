@@ -46,8 +46,7 @@
     <script type="text/javascript">
       $(document).ready(function() {
         workflow_step = '<%= session[:workflow_step_id] %>';
-        l_number = '<%= session[:l_number_id] %>';
-        $.get( "/overview/open_confirm_modal/"+workflow_step+"/"+l_number, function( data ) {
+        $.get( "/overview/open_confirm_modal/"+workflow_step, function( data ) {
           $( "#add_l2_modal" ).html( data );
           $("#add_l2_modal").modal('show');
         });

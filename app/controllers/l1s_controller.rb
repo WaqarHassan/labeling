@@ -47,7 +47,21 @@ class L1sController < ApplicationController
     if @l1.save!
       if params[:attr].present?
         AttributeValue.create_attribute_values(params[:attr], @l1, 'L1') 
-      end  
+      end
+      @l1.work_flow.workflow_stations.each do |station|
+        station.station_steps.where(recording_level: 'L1').each do |stp|
+          WorkflowLiveStep.create(station_step_id: stp.id, object_id: @l1.id, object_type: 'L1', is_active: nil , eta: '')
+        end
+      end
+
+      if @l1.workflow_live_steps.present?
+         workflow_step = @l1.workflow_live_steps.first
+         if !workflow_step.actual_confirmation.present?
+           session[:open_confirm_modal] = 'open_confirm_modal'
+           session[:workflow_step_id] = workflow_step.id
+         end  
+       end
+
       redirect_to root_path, notice: @workflow.L1+' was successfully created.'
     else
       render :new

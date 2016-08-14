@@ -66,7 +66,6 @@ class L3sController < ApplicationController
          if !workflow_step.actual_confirmation.present?
            session[:open_confirm_modal] = 'open_confirm_modal'
            session[:workflow_step_id] = workflow_step.id
-           session[:l_number_id] = @l3.l2.id
          end  
        end
 

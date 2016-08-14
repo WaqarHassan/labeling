@@ -37,7 +37,7 @@ font-style:normal;
 //
 
 .container{
-    width: 1248px;    
+    width: 1219px;    
 }
 
 // Padding to clear fixed nav
@@ -81,7 +81,7 @@ body {
       border-top: medium none !important;
   }
 
-.data-main { margin-top:10px; padding:20px;}
+.data-main { margin-top:10px; padding:20px 0px 0px 0px;}
 .table-bordered th { font-size:12px; font-weight:normal; padding:5px !important;}
 .project-formset {
     width: 15% !important;
@@ -89,13 +89,17 @@ body {
 .project-formset.collapsed {
     width: 0 !important;
 }
-.project-data { width:45%; float:left; position:relative;}
+.project-data { width:22%; float:left; position:relative;}
 .approval-data {width:55%; float:left; position:relative;}
 .collapsed-icon { display:block; width:20px; height:21px; position:absolute; top:-17px; right:0px; z-index:999;}
 .project-data.collapsed { width:23.44% ;}
 .project-data.collapsed .collapsed-icon { background:image-url("col_exp.png") no-repeat; opacity: 0.62;}
 .project-data .collapsed-icon { background:image-url("col_exp.png") no-repeat; opacity: 0.62;}
 .tspend {width: 60% !important;}
+
+.project-data.project_ia {
+    width: 59%;
+}
 
 .no-brd { border-right:none !important; width: 95px}
 .project-fields { margin-top:10px;}
@@ -305,7 +309,18 @@ navbar-default {
 }
 
 .tspend_initial {
-    width: 76.5% !important;
+    overflow-x: scroll;
+    width: 18% !important;
+}
+
+.approval-data.tspend_initial table tr th {
+    min-width: 78px;
+}
+
+.table {
+    margin-bottom: 0;
+    max-width: 100%;
+    width: 100%;
 }
 
 .collapse_table{

@@ -43,7 +43,7 @@ class L1sController < ApplicationController
   def create
     
     @l1 = L1.new(l1_params)
-    
+    @l1.user_id = current_user.id
     if @l1.save!
       if params[:attr].present?
         AttributeValue.create_attribute_values(params[:attr], @l1, 'L1') 

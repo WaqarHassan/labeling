@@ -49,7 +49,7 @@ class L3sController < ApplicationController
   # POST /l3s
   def create
     @l3 = L3.new(l3_params)
-
+    @l3.user_id = current_user.id
     if @l3.save!
       if params[:attr].present?
         AttributeValue.create_attribute_values(params[:attr], @l3, 'L3') 

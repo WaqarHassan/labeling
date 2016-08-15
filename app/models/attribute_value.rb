@@ -9,7 +9,7 @@ class AttributeValue < ActiveRecord::Base
                                :value => att[1] ,
                                :object_id => l_object.id ,
                                :object_type => l_type)
-        	end
+        	end 
     	end
 
         def create_single_attribute_value(label_attribute, att_value, l_object, l_type)   

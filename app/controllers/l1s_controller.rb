@@ -70,6 +70,8 @@ class L1sController < ApplicationController
 
   # PATCH/PUT /l1s/1
   def update
+
+    @l1.modified_by_user_id = current_user.id
     if @l1.update!(l1_params)
       if params[:attr].present?
         params[:attr].each do |att|

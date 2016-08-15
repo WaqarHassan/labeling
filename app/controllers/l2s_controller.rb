@@ -47,6 +47,7 @@ class L2sController < ApplicationController
 
   # POST /ia
   def create
+
     @l2 = L2.new(l2_params)
 
     if @l2.save!
@@ -80,6 +81,7 @@ class L2sController < ApplicationController
 
   # PATCH/PUT /ia/1
   def update
+    @l2.modified_by_user_id = current_user.id
     previous_status = @l2.status
     if @l2.update!(l2_params)
       if params[:attr].present?

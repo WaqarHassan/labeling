@@ -78,6 +78,7 @@ class L3sController < ApplicationController
 
   # PATCH/PUT /l3s/1
   def update
+    @l3.modified_by_user_id = current_user.id
     if @l3.update!(l3_params)
       if params[:attr].present?
         params[:attr].each do |att|

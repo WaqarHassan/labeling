@@ -7,13 +7,13 @@ class OverviewController < ApplicationController
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
 		@l1s = @workflow.l1s.where(is_active: true).order(:id)
 
-    if session[:wildcard] != ''
+    if session[:wildcard] != '' && session[:wildcard] != nil
       @wildcard = session[:wildcard]
     end
-    if session[:exact] != ''
+    if session[:exact] != '' && session[:exact] != nil
       @exact = session[:exact]
     end
-    if session[:q_string] != ''
+    if session[:q_string] != '' && session[:q_string] != nil
       q_string = session[:q_string]
       @serach_result = WorkFlow.search(q_string)
     end
@@ -135,7 +135,9 @@ class OverviewController < ApplicationController
     end
 
     session[:q_string] = q_string
-    @serach_result = WorkFlow.search(q_string)
+    if q_string != ''
+      @serach_result = WorkFlow.search(q_string)
+    end
 
     respond_to do |format|
       format.html

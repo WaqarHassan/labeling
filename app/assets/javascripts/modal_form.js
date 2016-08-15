@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	console.log('modal  form');
-	$('.datetimepicker').datetimepicker();
+	$('.datetimepicker').datetimepicker({maxDate : moment.now()});
 
 	$('.modal-dialog').draggable({
     	handle: ".modal-header"

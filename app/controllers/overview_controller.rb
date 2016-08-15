@@ -118,13 +118,25 @@ class OverviewController < ApplicationController
     end
 
   @serach_result = ActiveRecord::Base.connection.select_all "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name 
-                    from l1s, l2s left join l3s on l2s.id = l3s.l2_id 
-                    where #{q_string}  and l2s.l1_id = l1s.id"
+                    from l1s left join l2s on l1s.id = l2s.l1_id left join l3s on l2s.id = l3s.l2_id 
+                    where #{q_string}"
 
     respond_to do |format|
       format.html
       format.js
     end
+  end
+
+  def project_deatils_l1
+    @label_attributes = @workflow.label_attributes #.where(is_visible: true)
+    @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
+    @workflows = WorkFlow.where(is_active: true, is_in_use: false)
+    @l1s = L1.where(id: params[:l1_id])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end 
   end
 
   def project_deatils_l2

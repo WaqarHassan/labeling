@@ -62,6 +62,7 @@ Rails.application.routes.draw do
   get '/overview/add_ia_list_modal' => 'overview#add_ia_list_modal', as: 'add_ia_list_modal'
   get '/overview/l1_status_popup/:id' => 'overview#l1_status_popup', as: 'l1_status_popup'
   get '/overview/update_workflow_status/:workflow_id' => 'overview#update_workflow_status', as: 'update_workflow_status'
+  get '/overview/project_deatils_l1/:l1_id' => 'overview#project_deatils_l1', as: 'project_deatils_l1'
   get '/overview/project_deatils_l2/:l2_id' => 'overview#project_deatils_l2', as: 'project_deatils_l2'
   get '/overview/project_deatils_l3/:l3_id' => 'overview#project_deatils_l3', as: 'project_deatils_l3'
   

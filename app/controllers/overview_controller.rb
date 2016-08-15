@@ -58,6 +58,10 @@ class OverviewController < ApplicationController
   def open_confirm_modal
     @wf_step_id = params[:wf_step_id]
     workflow_live_tep = WorkflowLiveStep.find(@wf_step_id)
+   
+    @st_step = workflow_live_tep.station_step.step_name
+    @st_name = workflow_live_tep.station_step.workflow_station.station_name
+
     if workflow_live_tep.object_type == 'L1'
       @l1 = L1.find(workflow_live_tep.object_id)
     elsif workflow_live_tep.object_type == 'L2'

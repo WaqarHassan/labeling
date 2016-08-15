@@ -93,7 +93,7 @@ class L2sController < ApplicationController
           end
         end
       end  
-      if previous_status == 'reject'
+      if previous_status == 'reject' && @l2.status == 'accept'
         session[:open_confirm_modal] = 'open_confirm_modal'
         session[:workflow_step_id] = @l2.workflow_live_steps.first.id
         session[:l_number_id] = @l2.id

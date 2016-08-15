@@ -81,18 +81,23 @@ body {
       border-top: medium none !important;
   }
 
-.data-main { margin-top:10px; padding:20px 0px 0px 0px;}
+.data-main { margin-top:10px; padding:20px 10px 0px;}
 .table-bordered th { font-size:12px; font-weight:normal; padding:5px !important;}
 .project-formset {
     width: 15% !important;
 }
+
+.project-data.project_ia.collapsed.project_serach_noDetail table tr th {
+    min-width: 96px;
+}
+
 .project-formset.collapsed {
     width: 0 !important;
 }
 .project-data { width:22%; float:left; position:relative;}
 .approval-data {width:55%; float:left; position:relative;}
 .collapsed-icon { display:block; width:20px; height:21px; position:absolute; top:-17px; right:0px; z-index:999;}
-.project-data.collapsed { width:23.44% ;}
+.project-data.collapsed { width:0% ;}
 .project-data.collapsed .collapsed-icon { background:image-url("col_exp.png") no-repeat; opacity: 0.62;}
 .project-data .collapsed-icon { background:image-url("col_exp.png") no-repeat; opacity: 0.62;}
 .tspend {width: 60% !important;}
@@ -301,7 +306,7 @@ navbar-default {
 }
 
 .project_serach_noDetail{
-    width: 14.1% !important;
+    width: 24% !important;
 }
 
 .btn.btn-danger {
@@ -311,6 +316,21 @@ navbar-default {
 .tspend_initial {
     overflow-x: scroll;
     width: 18% !important;
+}
+
+.labels_hidden {
+    overflow-x: scroll;
+    width: 54% !important;
+}
+
+.search_labels_hidden{
+    overflow-x: scroll;
+    width: 41% !important;    
+}
+
+.search_and_labels_both_hidden{
+    overflow-x: scroll;
+    width: 76% !important;    
 }
 
 .approval-data.tspend_initial table tr th {

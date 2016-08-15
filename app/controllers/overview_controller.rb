@@ -15,7 +15,7 @@ class OverviewController < ApplicationController
       format.js
     end
    end
-
+ 
    def open_info_modal_l3
     @l3 = L3.find(params[:l3_id])
     respond_to do |format|

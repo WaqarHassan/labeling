@@ -66,7 +66,7 @@
 									<td></td>
 									<td colspan="2">
 									<%= link_to l2.name, open_info_modal_path(l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
-									<td class="_data "><%= l2.is_active == true ? 'Active' : '' %></td>
+									<td class="_data "><%= l2.status %></td>
 									<td class="_data "><%= l2.business_unit %></td>
 									 <% attribute_values_data = l2.attribute_values
 										attributes = []

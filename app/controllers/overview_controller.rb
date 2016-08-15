@@ -149,7 +149,8 @@ class OverviewController < ApplicationController
     @label_attributes = @workflow.label_attributes #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
-    @l1s = L1.where(id: params[:l1_id])
+    l1_list = params[:l1_id].split('_')
+    @l1s = L1.where(id: [l1_list])
 
     respond_to do |format|
       format.html
@@ -163,6 +164,7 @@ class OverviewController < ApplicationController
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
     @l2_records = L2.where(id: params[:l2_id])
+
     @l1s = L1.where(id: @l2_records.first.l1_id)
 
     respond_to do |format|
@@ -188,6 +190,18 @@ class OverviewController < ApplicationController
       format.html
       format.js
     end 
+  end
+
+  def show_all_db
+    @label_attributes = @workflow.label_attributes #.where(is_visible: true)
+    @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
+    @workflows = WorkFlow.where(is_active: true, is_in_use: false)
+    @l1s = @workflow.l1s.where(is_active: true).order(:id)
+    respond_to do |format|
+      format.html
+      format.js
+    end 
+    
   end
 
   def destroy_seaaion

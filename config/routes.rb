@@ -66,6 +66,7 @@ Rails.application.routes.draw do
   get '/overview/project_deatils_l2/:l2_id' => 'overview#project_deatils_l2', as: 'project_deatils_l2'
   get '/overview/project_deatils_l3/:l3_id' => 'overview#project_deatils_l3', as: 'project_deatils_l3'
   get '/overview/destroy_seaaion' => 'overview#destroy_seaaion', as: 'destroy_seaaion'
+  get '/overview/show_all_db' => 'overview#show_all_db', as: 'show_all_db' 
   
   
   #what we write after 'as' keyword becomes path

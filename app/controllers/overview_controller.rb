@@ -6,6 +6,17 @@ class OverviewController < ApplicationController
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
 		@l1s = @workflow.l1s.where(is_active: true).order(:id)
+
+    if session[:wildcard] != ''
+      @wildcard = session[:wildcard]
+    end
+    if session[:exact] != ''
+      @exact = session[:exact]
+    end
+    if session[:q_string] != ''
+      q_string = session[:q_string]
+      @serach_result = WorkFlow.search(q_string)
+    end
 	end
 
    def open_info_modal
@@ -76,6 +87,8 @@ class OverviewController < ApplicationController
 
   def search
     q_string = '';
+    session[:wildcard] = params[:wildcard]
+    session[:exact] = params[:exact]
     wildcard_bu = params[:wildcard][:business_unit]
     if wildcard_bu.presence
       q_string += "(l1s.business_unit like '%#{wildcard_bu}%'"
@@ -117,9 +130,8 @@ class OverviewController < ApplicationController
       q_string += "l3s.name = '#{exact_l3}'"
     end
 
-  @serach_result = ActiveRecord::Base.connection.select_all "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name 
-                    from l1s left join l2s on l1s.id = l2s.l1_id left join l3s on l2s.id = l3s.l2_id 
-                    where #{q_string}"
+    session[:q_string] = q_string
+    @serach_result = WorkFlow.search(q_string)
 
     respond_to do |format|
       format.html
@@ -170,6 +182,15 @@ class OverviewController < ApplicationController
       format.html
       format.js
     end 
+  end
+
+  def destroy_seaaion
+    session[:q_string] = ''
+    session[:wildcard] = ''
+    session[:exact] = ''
+    respond_to do |format|
+      format.json {render :json=>'session_empty'}
+    end
   end
 
   private

@@ -3,6 +3,13 @@ console.log('main js working........');
 
 
 function resetSearchResult(){
+	$.ajax({
+	  type:"GET",
+	  url:"/overview/destroy_seaaion",
+	  dataType:"json",
+	});
+
+	$('.form-control').removeAttr( "value" )
 	dataHtml = '<ul class="ia-list" search_result_div>';
 	dataHtml += '<span style="color:green">Search result we be display here: </span>';
 	dataHtml += '</ul>';

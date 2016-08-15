@@ -23,10 +23,12 @@
 									BU:
 								</div>
 									<div class="col-lg-5">
-										<input type="text" name="wildcard[business_unit]" class="form-control">
+										<input type="text" name="wildcard[business_unit]" class="form-control" 
+										value= <%= @wildcard.present? ? @wildcard['business_unit'] : '' %> >
 									</div>
 									<div class="col-lg-5">
-										<input type="text" name="exact[business_unit]" class="form-control">
+										<input type="text" name="exact[business_unit]" class="form-control"
+										value= <%= @exact.present? ? @exact['business_unit'] : '' %>  >
 									</div>
 								</div>
 						</div>
@@ -36,7 +38,8 @@
 									<%= @workflow.L1 %>
 								</div>
 									<div class="col-lg-10">
-											<input type="text" name="wildcard[l1]" class="form-control">
+											<input type="text" name="wildcard[l1]" class="form-control"
+											value= <%= @wildcard.present? ? @wildcard['l1'] : '' %> >
 										</div>
 								</div>
 						</div>
@@ -46,10 +49,12 @@
 									<%= @workflow.L2 %>
 								</div>
 									<div class="col-lg-5">
-											<input type="text" name="wildcard[l2]" class="form-control">
+											<input type="text" name="wildcard[l2]" class="form-control"
+											value= <%= @wildcard.present? ? @wildcard['l2'] : '' %> >
 										</div>
 										<div class="col-lg-5">
-											<input type="text" name="exact[l2]" class="form-control">
+											<input type="text" name="exact[l2]" class="form-control"
+											value= <%= @exact.present? ? @exact['l2'] : '' %> >
 										</div>
 								</div>
 						</div>
@@ -59,10 +64,12 @@
 									<%= @workflow.L3 %>
 								</div>
 									<div class="col-lg-5">
-											<input type="text" name="wildcard[l3]" class="form-control">
+											<input type="text" name="wildcard[l3]" class="form-control"
+											value= <%= @wildcard.present? ? @wildcard['l3'] : '' %> >
 										</div>
 										<div class="col-lg-5">
-											<input type="text" name="exact[l3]" class="form-control">
+											<input type="text" name="exact[l3]" class="form-control"
+											value= <%= @exact.present? ? @exact['l3'] : '' %> >
 										</div>
 								</div>
 						</div>
@@ -81,11 +88,15 @@
 			</div>
 		<% end %>  
 				<div class="project-btmcnt">
-						<div class="project-data-list" id="search_result_div">
-							<ul class="ia-list" search_result_div>
+					<div class="project-data-list" id="search_result_div">
+						<% if @serach_result.present? %>
+							<%= render 'overview/search_result' %>
+						<% else %>	
+							<ul class="ia-list">
 								<span style="color:green">Search result will be display here: </span>
 							</ul>
-						</div>
+						<% end %>	
+					</div>
 				</div>
 		</div>
 	</div>

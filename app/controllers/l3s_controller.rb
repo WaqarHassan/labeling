@@ -55,7 +55,7 @@ class L3sController < ApplicationController
         AttributeValue.create_attribute_values(params[:attr], @l3, 'L3') 
       end 
 
-      @l3.l2.l1.work_flow.workflow_stations.each do |station|
+      @l3.l2.l1.work_flow.workflow_stations.order(:sequence).each do |station|
         station.station_steps.where(recording_level: 'L3').each do |stp|
           WorkflowLiveStep.create(station_step_id: stp.id, object_id: @l3.id, object_type: 'L3', is_active: nil , eta: '')
         end

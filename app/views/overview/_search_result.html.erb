@@ -2,15 +2,24 @@
 
   <% if @serach_result.present?
 	   l2_name = ''
+	   l1_name = ''
 	  @serach_result.each do |result| %>
-	  	<% if l2_name != result['l2_name']
-	  		l2_name = result['l2_name'] %>
+
+	  	<% if l1_name != result['l1_name']
+	  		l1_name = result['l1_name'] %>	
 	  		<li class= "l1_class">
-	  			<%=  link_to result['l2_name'], project_deatils_l2_path(result['l2_id']), :remote => true %>
+	  			<%= link_to result['l1_name'], project_deatils_l1_path(result['l1_id']), :remote => true %>
 	  		</li>
 	  	<% end %>
 
-	    <li class= "l2_class">
+	  	<% if l2_name != result['l2_name']
+	  		l2_name = result['l2_name'] %>	
+	  		<li class= "l2_class">
+	  			<%= link_to result['l2_name'], project_deatils_l2_path(result['l2_id']), :remote => true %>
+	  		</li>
+	  	<% end %>
+
+	    <li class= "l3_class">
 	    	<% if result['l3_id'].presence %>
 	    		<%=  link_to result['l3_name'], project_deatils_l3_path(result['l3_id']), :remote => true %></li>
 	    	<% end %>

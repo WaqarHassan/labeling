@@ -68,7 +68,7 @@ class L2sController < ApplicationController
         end
       end
 
-      if @l2.workflow_live_steps.present? && @l2.status == 'accept'
+      if @l2.workflow_live_steps.present? && @l2.status == 'Active'
         session[:open_confirm_modal] = 'open_confirm_modal'
         session[:workflow_step_id] = @l2.workflow_live_steps.first.id
       end

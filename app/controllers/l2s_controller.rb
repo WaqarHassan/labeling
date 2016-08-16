@@ -16,11 +16,13 @@ class L2sController < ApplicationController
   def new
     @attr_list = @workflow.label_attributes.where(recording_level: 'L2', is_visible: true)
     @action = 'ADD'
+     @l2_bu = @workflow.l2_bu
     if params.has_key?(:l1_id)
       @show_l1s = 'readonly'
       @l1 = L1.find(params[:l1_id])
     else 
       @show_l1s = 'dropdown'
+
       @l1 = @workflow.l1s.where(is_active: true) 
     end  
     @l2 = L2.new

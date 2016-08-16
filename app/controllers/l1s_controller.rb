@@ -14,6 +14,7 @@ class L1sController < ApplicationController
 
   # GET /l1s/new
   def new
+     @l1_bu = @workflow.l1_bu
     @action = 'ADD'
     @btn_action = 'SAVE'
     @attr_list = @workflow.label_attributes.where(recording_level: 'L1', is_visible: true)

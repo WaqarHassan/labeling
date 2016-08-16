@@ -15,6 +15,7 @@ class L3sController < ApplicationController
     @attr_list = @workflow.label_attributes.where(recording_level: 'L3', is_visible: true)
     @action = 'ADD'
     @btn_action = 'SAVE'
+    @l3_bu = @workflow.l3_bu
     if params.has_key?(:l2_id)
       @show_projects = 'readonly'
       @l2 = L2.find(params[:l2_id])

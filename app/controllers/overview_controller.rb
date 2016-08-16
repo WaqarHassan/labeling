@@ -2,10 +2,32 @@ class OverviewController < ApplicationController
 	skip_authorization_check
   
 	def index
+    
     @label_attributes = @workflow.label_attributes #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
-		@l1s = @workflow.l1s.where(is_active: true).order(:id)
+     
+
+     if session[:l_type] == 'l1'
+        #l1_list = 
+        @l1s = L1.where(id: session[:l_id])
+     elsif session['l_type'] == 'l2'
+        @show_search_result_l2 = 'filter_type_l2'
+        @l2_records = L2.where(id: session[:l_id])
+        @l1s = L1.where(id: @l2_records.first.l1_id)
+      elsif session[:l_type] == 'l3'
+        @show_search_result_l2 = 'filter_type_l2' 
+        @show_search_result_l3 = 'filter_type_l3' 
+        l3 = L3.find(session[:l_id])
+        ll2 = l3.l2
+        @l3_records = L3.where(id: session[:l_id])
+        @l2_records = L2.where(id: @l3_records.first.l2_id)
+        @l1s = L1.where(id: @l2_records.first.l1_id)
+      else
+        @l1s = @workflow.l1s.where(is_active: true).order(:id)
+       
+      end
+    
 
     if session[:wildcard] != '' && session[:wildcard] != nil
       @wildcard = session[:wildcard]
@@ -79,6 +101,10 @@ class OverviewController < ApplicationController
     workflow_id = params[:workflow_id]
     WorkFlow.update_all(is_in_use: false)
     WorkFlow.update(workflow_id, is_in_use: true)
+    session[:q_string] = ''
+    session[:wildcard] = ''
+    session[:exact] = ''
+
     redirect_to root_path, notice: 'WorkFlow was successfully changed.'
   end
 
@@ -122,18 +148,17 @@ class OverviewController < ApplicationController
       q_string += "OR l2s.business_unit = '#{exact_bu}'"
       q_string += "OR l3s.business_unit = '#{exact_bu}')"
     end
-
+  
     exact_l2 = params[:exact][:l2]
     if exact_l2.presence
       q_string += q_string != '' ? ' and ' : ''
       q_string += "l2s.name = '#{exact_l2}'"
     end
-    exact_l3 = params[:exact][:l3]
-    if exact_l3.presence
+    
+    if @workflow.id.presence && q_string != ''
       q_string += q_string != '' ? ' and ' : ''
-      q_string += "l3s.name = '#{exact_l3}'"
+      q_string += "l1s.work_flow_id = "+ @workflow.id.to_s
     end
-
     session[:q_string] = q_string
     if q_string != ''
       @serach_result = WorkFlow.search(q_string)

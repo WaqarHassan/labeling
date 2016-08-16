@@ -73,6 +73,8 @@ class L2sController < ApplicationController
         session[:workflow_step_id] = @l2.workflow_live_steps.first.id
       end
 
+      session[:l_type] = 'l2'
+      session[:l_id] = @l2.id
       redirect_to root_path, notice: @workflow.L2+' was successfully created.'
     else
       render :new

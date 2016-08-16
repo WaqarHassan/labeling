@@ -68,7 +68,8 @@ class L3sController < ApplicationController
            session[:workflow_step_id] = workflow_step.id
          end  
        end
-
+          session[:l_type] = 'l3'
+          session[:l_id] = @l3.id
       redirect_to root_path, notice: @workflow.L3+' was successfully created.'
     else
       render :new

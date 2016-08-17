@@ -5,6 +5,7 @@ class CreateWorkflowLiveSteps < ActiveRecord::Migration
       t.integer :object_id
       t.string :object_type
       t.datetime :actual_confirmation
+      t.datetime :step_completion
       t.datetime :eta
       t.boolean :is_active
       

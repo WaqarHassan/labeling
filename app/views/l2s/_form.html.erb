@@ -16,7 +16,7 @@
                   <div class="row">
                       <div class="col-lg-4">
                           <label for = "ia_project_id" class=" echo_patinet pull-right control-label"><%=@workflow.L1%>:</label>
-                      </div>
+                      </div> 
                         <div class="col-lg-6">
                           <% if @show_l1s == 'dropdown' %>
                             <%= f.select :l1_id, options_from_collection_for_select(@l1, 'id', 'name'),{prompt: 'please select '+@workflow.L1}, {:class=>'form-control pnd-reqst pull-left', required: true }%>
@@ -46,21 +46,24 @@
                      </script>
                    </div>
                 </div>
-
+                <% if @l2_bu.split('|')[0] == 'Y'%>
                 <div class= "form-group">
                   <div class="row">
                     <div class="col-lg-4">
-                       <%= f.label :first_name %>:
+                       <%= f.label :business_unit %> :
                     </div>
                     <div class="col-lg-6">
-                      <select id="l3_l2_id" name="l2[business_unit]" class="form-control">
-                        <option value="">Please Select BU</option>
-                        <option value="THV">THV</option> 
-                        <option value="HVT">HVT</option>  
-                      </select>
+                    <% if @l2_bu.split('|')[1] == 'R' %>
+                      <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select business units'}, {:class=>'form-control pnd-reqst pull-left', required: true }%>
+                      <%else%>
+                          <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select business units'}, {:class=>'form-control pnd-reqst pull-left', required: false }%>
+                      <%end%>
+
+                     
                     </div>
                   </div>
                 </div>
+                 <% end %>
                  <div class= "form-group">
                   <div class="row">
                      <div class="col-lg-4">

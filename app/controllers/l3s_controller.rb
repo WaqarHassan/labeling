@@ -16,6 +16,7 @@ class L3sController < ApplicationController
     @action = 'ADD'
     @btn_action = 'SAVE'
     @l3_bu = @workflow.l3_bu
+    @bu_options = BuOption.where(recording_level: 'L3') 
     if params.has_key?(:l2_id)
       @show_projects = 'readonly'
       @l2 = L2.find(params[:l2_id])
@@ -33,6 +34,8 @@ class L3sController < ApplicationController
 
   # GET /l3s/1/edit
   def edit
+    @l3_bu = @workflow.l3_bu
+    @bu_options = BuOption.where(recording_level: 'L3')
     @l2 = @l3.l2
     @attr_list = @workflow.label_attributes.where(recording_level: 'L3', is_visible: true)
     @attr_values = @l3.attribute_values

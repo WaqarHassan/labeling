@@ -2,20 +2,21 @@ class OverviewController < ApplicationController
 	skip_authorization_check
   
 	def index
-    
     @label_attributes = @workflow.label_attributes #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
      
-
+     
      if session[:l_type] == 'l1'
-        #l1_list = 
+        session[:l_type] = nil
         @l1s = L1.where(id: session[:l_id])
      elsif session['l_type'] == 'l2'
+       session[:l_type] = nil
         @show_search_result_l2 = 'filter_type_l2'
         @l2_records = L2.where(id: session[:l_id])
         @l1s = L1.where(id: @l2_records.first.l1_id)
       elsif session[:l_type] == 'l3'
+         session[:l_type] = nil
         @show_search_result_l2 = 'filter_type_l2' 
         @show_search_result_l3 = 'filter_type_l3' 
         l3 = L3.find(session[:l_id])
@@ -64,25 +65,43 @@ class OverviewController < ApplicationController
       format.js
     end
    end
-
-
+ 
+  #GET rework Modal
    def open_rework_modal
     @wf_step_id = params[:wf_step_id]
-    if params[:l2_id].present?
-      @l2 = L2.find(params[:l2_id])
-    end 
+     workflow_live_step = WorkflowLiveStep.find(@wf_step_id)
+
+    @st_step = workflow_live_step.station_step.step_name
+    @st_name = workflow_live_step.station_step.workflow_station.station_name
+    @stations = WorkflowStation.where(work_flow_id: @wf_step_id)
+
+    # if params[:l2_id].present?
+    #   @l2 = L2.find(params[:l2_id])
+    # end 
+    if workflow_live_step.object_type == 'L1'
+      @l1 = L1.find(workflow_live_step.object_id)
+    elsif workflow_live_step.object_type == 'L2'
+      @l2 = L2.find(workflow_live_step.object_id)
+    elsif workflow_live_step.object_type == 'L3'
+      @l3 = L3.find(workflow_live_step.object_id)
+    end  
     respond_to do |format|
       format.html
       format.js
     end
    end
-    
+   #POST rework Modal
+   def update_rework_modal
+
+   end
+    #GET task Confirmation
   def open_confirm_modal
     @wf_step_id = params[:wf_step_id]
     workflow_live_tep = WorkflowLiveStep.find(@wf_step_id)
    
     @st_step = workflow_live_tep.station_step.step_name
     @st_name = workflow_live_tep.station_step.workflow_station.station_name
+
 
     if workflow_live_tep.object_type == 'L1'
       @l1 = L1.find(workflow_live_tep.object_id)
@@ -107,7 +126,7 @@ class OverviewController < ApplicationController
 
     redirect_to root_path, notice: 'WorkFlow was successfully changed.'
   end
-
+  #POST Task Confirmation
   def update_task_confirmation
     @workflow_step = WorkflowLiveStep.find(params[:id])
     params[:workflow_live_step][:actual_confirmation] = L1.set_db_datetime_format(params[:workflow_live_step][:actual_confirmation])

@@ -14,9 +14,12 @@ class L1sController < ApplicationController
 
   # GET /l1s/new
   def new
-     @l1_bu = @workflow.l1_bu
+    @l1_bu = @workflow.l1_bu
+    @bu_options = BuOption.where(recording_level: 'L1') 
+   
     @action = 'ADD'
     @btn_action = 'SAVE'
+    @bu_options = BuOption.where(recording_level: 'L1')
     @attr_list = @workflow.label_attributes.where(recording_level: 'L1', is_visible: true)
     @l1 = L1.new
     respond_to do |format|
@@ -27,6 +30,8 @@ class L1sController < ApplicationController
 
   # GET /l1s/1/edit
   def edit
+    @l1_bu = @workflow.l1_bu
+    @bu_options = BuOption.where(recording_level: 'L1')
     @action = 'UPDATE'
     @btn_action = 'UPDATE'
     @attr_list = @workflow.label_attributes.where(recording_level: 'L1', is_visible: true)

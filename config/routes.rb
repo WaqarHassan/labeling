@@ -76,6 +76,8 @@ Rails.application.routes.draw do
   #what we write after 'as' keyword becomes path
  
   post '/overview/update_task_confirmation' =>  'overview#update_task_confirmation', as: 'update_task_confirmation'
+  post '/overview/update_rework_modal' => 'overview#update_rework_modal', as: 'update_rework_modal'
+  
   get '/overview' => 'overview#index', as: 'overview_home'
   post '/overview/search' => 'overview#search' , as: 'overview_search' 
 

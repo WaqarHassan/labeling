@@ -18,7 +18,7 @@
 				            <span class="pull-left"> 
 								<%= @workflow.name %>
 				            </span>
-			             </div>
+			             </div> 
 				    </div>
 
 				    <div class="row">
@@ -36,7 +36,24 @@
 	                          }, 300);
 	                     </script>
 				    </div>
+				    <% if @l1_bu.split('|')[0] == 'Y'%>
+		                <div class= "form-group">
+		                  <div class="row">
+		                    <div class="col-lg-4">
+		                       <%= f.label :business_unit %> :
+		                    </div>
+		                    <div class="col-lg-6">
+		                    <% if @l1_bu.split('|')[1] == 'R' %>
+		                      <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select business units'}, {:class=>'form-control pnd-reqst pull-left', required: true }%>
+		                      <%else%>
+		                          <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select business units'}, {:class=>'form-control pnd-reqst pull-left', required: false }%>
+		                      <%end%>
 
+		                     
+		                    </div>
+		                  </div>
+		                </div>
+                 	<% end %>
 				    <div class="row">
 			            <div class="col-lg-4">
 			               <label for="l1_description" class="pull-right echo_patinet form-group"> Description:  </label>

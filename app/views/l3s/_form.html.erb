@@ -16,7 +16,7 @@
               </div>
               <div class="col-lg-6">
                 <% if @show_projects == 'dropdown' %>
-                <select id="l3_l2_id" name="l3[l2_id]" required="required" class="form-control">
+                <select id="l3_l2_id" name="l3[l2_id]"  class="form-control" required >
                   <option value="">Please Select <%= @workflow.L2 %></option>
                   <% @l1.each do |l1|
                     l1.l2s.each do |l2| %>
@@ -50,22 +50,22 @@
                  </script>
             </div>
           </div>
-
+          <% if @l3_bu.split('|')[0] == 'Y' %>
           <div class= "form-group">
             <div class="row">
               <div class="col-lg-4">
-                 <label for = "ecr_station_id" class="pull-right form-group control-label">BU</label>
+                 <%= f.label :business_unit %>:
               </div>
               <div class="col-lg-6">
-                <select id="l3_l2_id" name="l3[business_unit]" required="required" class="form-control">
-                  <option value="">Please Select BU</option>
-                  <option value="THV">THV</option> 
-                  <option value="HVT">HVT</option>  
-                </select>
+                <% if @l3_bu.split('|')[1] == 'R' %>
+                      <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select business units'}, {:class=>'form-control pnd-reqst pull-left', required: true }%>
+                      <%else%>
+                          <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select business units'}, {:class=>'form-control pnd-reqst pull-left', required: false }%>
+                      <%end%>
               </div>
             </div>
           </div>
-
+          <%end%>
            <% if @attr_list.present? %>
             <% attr_field_value = ''
             @attr_list.each do |att| 

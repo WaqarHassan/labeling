@@ -156,7 +156,7 @@
 										<% elsif workflow_live_step.actual_confirmation.present? %>
 											<%= link_to workflow_live_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path(workflow_live_step.id, l1.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
 										<% elsif workflow_live_step.eta.present? %>
-											<%= link_to workflow_live_step.eta.strftime("%m/%d/%Y %I:%M %p") , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
+											<%= link_to workflow_live_step.eta.strftime("%m/%d/%Y %I:%M %p") , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 										<% end %> 
 									</td>
 							 <% else %>
@@ -183,7 +183,7 @@
 											<% elsif workflow_live_step.actual_confirmation.present? %>
 												<%= link_to workflow_live_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path(workflow_live_step.id, l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
 											<% elsif workflow_live_step.eta.present? %>
-												<%= link_to workflow_live_step.eta.strftime("%m/%d/%Y %I:%M %p") , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
+												<%= link_to workflow_live_step.eta.strftime("%m/%d/%Y %I:%M %p") , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 											<% end %> 
 										</td>
 								 <% else %>
@@ -211,7 +211,7 @@
 												<% elsif workflow_live_step.actual_confirmation.present? %>
 													<%= link_to workflow_live_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") , open_rework_modal_path(workflow_live_step.id, l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
 												<% elsif workflow_live_step.eta.present? %>
-													<%= link_to workflow_live_step.eta.strftime("%m/%d/%Y %I:%M %p") , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
+													<%= link_to workflow_live_step.eta.strftime("%m/%d/%Y %I:%M %p") , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 												<% end %> 
 											</td>
 									<%  else %>

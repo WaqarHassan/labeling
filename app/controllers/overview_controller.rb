@@ -82,14 +82,6 @@ class OverviewController < ApplicationController
     redirect_to root_path, notice: 'WorkFlow was successfully changed.'
   end
 
-  def update_task_confirmation
-    actualConfirmation = params[:workflow_live_step][:actual_confirmation]
-    actual_confirmation = L1.set_db_datetime_format(actualConfirmation)
-    workflow_live_step = WorkflowLiveStep.find(params[:id])
-    calculate_eta_completion(actual_confirmation, workflow_live_step)
-    redirect_to root_path, notice: 'Step confirmation done'
-  end
-
   def search
     q_string = '';
     session[:wildcard] = params[:wildcard]
@@ -214,6 +206,14 @@ class OverviewController < ApplicationController
     end
   end
 
+  def update_task_confirmation
+    actualConfirmation = params[:workflow_live_step][:actual_confirmation]
+    actual_confirmation = L1.set_db_datetime_format(actualConfirmation)
+    workflow_live_step = WorkflowLiveStep.find(params[:id])
+    calculate_eta_completion(actual_confirmation, workflow_live_step)
+    redirect_to root_path, notice: 'Step confirmation done'
+  end
+
   private
 
     def calculate_eta_completion(actual_confirmation, workflow_live_step)
@@ -222,26 +222,36 @@ class OverviewController < ApplicationController
       
       station_step = workflow_live_step.station_step
       step_completion = station_step.calculate_step_completion(actual_confirmation, comp_attribute_value, lang_attribute_value)
-      
-      puts "----step_completion: #{step_completion}"
+
       workflow_live_step.actual_confirmation = actual_confirmation
       workflow_live_step.step_completion = step_completion
       workflow_live_step.save!
 
-      workflow_live_steps = WorkflowLiveStep.where(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type).where.not(id: workflow_live_step.id)
+      workflow_live_steps = WorkflowLiveStep.where(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type).where("id > #{workflow_live_step.id}").order(:id)
+       
       workflow_live_steps.each do |wls|
                                             #check successor---------------------
         transitions = Transition.where(station_step_id: wls.station_step_id)
                                             #successor calculation
-        transitions.each do |transition|
+        transitions.each_with_index do |transition, indx|
           pre_workflow_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(transition.previous_station_step_id, wls.object_id, wls.object_type)
-          if pre_workflow_live_step.present? and pre_workflow_live_step.step_completion.present?
-            if wls.eta.blank? or DateTime.parse(re_workflow_live_step.step_completion) > DateTime.parse(wls.eta)
-              station_step = wls.station_step
-              step_completion_current = station_step.calculate_step_completion(pre_workflow_live_step.step_completion, comp_attribute_value, lang_attribute_value)
-              wls.eta = pre_workflow_live_step.step_completion
-              wls.step_completion = step_completion_current
-              wls.save!
+          if indx == 0
+            if pre_workflow_live_step.present? and pre_workflow_live_step.step_completion.present?
+                station_step = wls.station_step
+                step_completion_current = station_step.calculate_step_completion(pre_workflow_live_step.step_completion, comp_attribute_value, lang_attribute_value)
+                wls.eta = pre_workflow_live_step.step_completion
+                wls.step_completion = step_completion_current
+                wls.save!
+            end
+          else
+            if pre_workflow_live_step.present? and pre_workflow_live_step.step_completion.present?
+              if DateTime.parse(pre_workflow_live_step.step_completion.to_s) > DateTime.parse(wls.eta.to_s)
+                station_step = wls.station_step
+                step_completion_current = station_step.calculate_step_completion(pre_workflow_live_step.step_completion, comp_attribute_value, lang_attribute_value)
+                wls.eta = pre_workflow_live_step.step_completion
+                wls.step_completion = step_completion_current
+                wls.save!
+              end
             end
           end
         end

@@ -4,7 +4,6 @@
         <%= f.error_notification %>
           <div class='modal-header'>
              <button type='button' class='close' data-dismiss='modal'>×</button>
-             
                 <h1 class='h1-heading-popup'> <%= @action %> <%= @workflow.L2 %> </h1>
            </div>
           <div class='modal-body' id="add_ia_modal_body">
@@ -46,7 +45,8 @@
                      </script>
                    </div>
                 </div>
-                <% if @l2_bu.split('|')[0] == 'Y'%>
+                <% if @l2_bu.present? 
+                  if @l2_bu.split('|')[0] == 'Y'%>
                 <div class= "form-group">
                   <div class="row">
                     <div class="col-lg-4">
@@ -63,7 +63,7 @@
                     </div>
                   </div>
                 </div>
-                 <% end %>
+                 <% end end %>
                  <div class= "form-group">
                   <div class="row">
                      <div class="col-lg-4">

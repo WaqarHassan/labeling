@@ -50,7 +50,8 @@
                  </script>
             </div>
           </div>
-          <% if @l3_bu.split('|')[0] == 'Y' %>
+          <% if @l3_bu.present?
+            if @l3_bu.split('|')[0] == 'Y' %>
           <div class= "form-group">
             <div class="row">
               <div class="col-lg-4">
@@ -65,7 +66,7 @@
               </div>
             </div>
           </div>
-          <%end%>
+          <%end end %>
            <% if @attr_list.present? %>
             <% attr_field_value = ''
             @attr_list.each do |att| 

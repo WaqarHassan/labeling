@@ -36,7 +36,8 @@
 	                          }, 300);
 	                     </script>
 				    </div>
-				    <% if @l1_bu.split('|')[0] == 'Y'%>
+				    <% if @l1_bu.present?
+				    	if @l1_bu.split('|')[0] == 'Y'%>
 		                <div class= "form-group">
 		                  <div class="row">
 		                    <div class="col-lg-4">
@@ -53,7 +54,7 @@
 		                    </div>
 		                  </div>
 		                </div>
-                 	<% end %>
+                 	<% end end %>
 				    <div class="row">
 			            <div class="col-lg-4">
 			               <label for="l1_description" class="pull-right echo_patinet form-group"> Description:  </label>

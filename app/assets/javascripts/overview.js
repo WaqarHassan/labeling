@@ -1,6 +1,10 @@
 
 console.log('main js working........');
 
+function updateprojectstatusSubmit(){
+	$("form#update_project_status_form").submit();
+	$('#modal').modal('toggle');
+}
 
 function resetSearchResult(){
 	$.ajax({

@@ -84,6 +84,16 @@ class OverviewController < ApplicationController
     end
    end
  
+
+  def get_steps
+    @steps = StationStep.where(workflow_station_id: params[:station_id])
+    
+     respond_to do |format|
+      format.html
+      format.js
+    end
+
+  end
   #GET rework Modal
    def open_rework_modal
     @wf_step_id = params[:wf_step_id]
@@ -145,25 +155,22 @@ class OverviewController < ApplicationController
     redirect_to root_path, notice: 'WorkFlow was successfully changed.'
   end
 
+<<<<<<< HEAD
+=======
   #POST Task Confirmation
   def update_task_confirmation
 
     @workflow_step = WorkflowLiveStep.find(params[:id])
     params[:workflow_live_step][:actual_confirmation] = L1.set_db_datetime_format(params[:workflow_live_step][:actual_confirmation])
     @workflow_step.update(workflow_live_step_params)
-    # if @workflow_step.object_type == 'l3'
-    #   @workflow_step.l3.update(:is_active => true)
+     if @workflow_step.object_type == 'l3'
+       @workflow_step.l3.update(:is_active => true)
 
-    #   #L3.updateL3.find(@workflow_step.object_id)
-    # elsif @workflow_step.object_type == 'l2'
-    #    @workflow_step.l2.update(:is_active => true)
-
-    # else
-    #    @workflow_step.l1.update(:is_active => true)
-    # end
+    
     redirect_to root_path, notice: 'Status was successfully updated.'
   end
 
+>>>>>>> LB-08
   def search
     q_string = '';
     session[:wildcard] = params[:wildcard]
@@ -287,11 +294,31 @@ class OverviewController < ApplicationController
     end
   end
 
+
+   #POST Task Confirmation
+
   def update_task_confirmation
     actualConfirmation = params[:workflow_live_step][:actual_confirmation]
     actual_confirmation = L1.set_db_datetime_format(actualConfirmation)
     workflow_live_step = WorkflowLiveStep.find(params[:id])
     calculate_eta_completion(actual_confirmation, workflow_live_step)
+
+    
+    if  workflow_live_step.object_type == 'l3'
+       workflow_live_step.object.update(:is_active => true)
+     end
+
+    #   #L3.updateL3.find(@workflow_step.object_id)
+    # elsif @workflow_step.object_type == 'l2'
+    #    @workflow_step.l2.update(:is_active => true)
+
+    # else
+    #    @workflow_step.l1.update(:is_active => true)
+    # end
+
+
+
+
     redirect_to root_path, notice: 'Step confirmation done'
   end
 

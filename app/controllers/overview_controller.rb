@@ -159,7 +159,6 @@ class OverviewController < ApplicationController
     redirect_to root_path, notice: 'WorkFlow was successfully changed.'
   end
 
-
   def search
     q_string = '';
     session[:wildcard] = params[:wildcard]
@@ -291,7 +290,6 @@ class OverviewController < ApplicationController
     actual_confirmation = L1.set_db_datetime_format(actualConfirmation)
     workflow_live_step = WorkflowLiveStep.find(params[:id])
     calculate_eta_completion(actual_confirmation, workflow_live_step)
-
     if  workflow_live_step.object_type == 'L3'
        workflow_live_step.object.update(:is_active => true)
     end

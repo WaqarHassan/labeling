@@ -1,11 +1,11 @@
 <div class='modal-dialog'>
   <div class='modal-content'>
+    <%= simple_form_for @additional_info, :url => add_additional_info_path, remote: true , :html => { :id => "ia_modal_form", :class=> 'form-horizontal'}  do |f| %>
     <div class='modal-header'>
       <button class='close' data-dismiss='modal' type='button'>×</button>
       <h1 class="h1-heading-popup">Additional Info</h1>
     </div>
     <div class='modal-body'>
-       <form class="form-horizontal">
 
         <div class="form-group">
          <label class="col-lg-4 control-label"><%= @workflow.L3 %> :  </label>
@@ -16,24 +16,29 @@
           </div>
         </div>
 
+        <%= f.hidden_field :object_id, :value => @l3.id %>
+        <%= f.hidden_field :object_type, :value => 'L3' %>
+        <%= f.hidden_field :user_id, :value => current_user.id %>
+        <%= f.hidden_field :work_flow_id, :value => @workflow.id %>
+
         <div class="form-group">
-         <label class="col-lg-4 control-label">Active </label>
+         <label class="col-lg-4 control-label">Status</label>
           <div class="col-lg-6">
-           <input type="checkbox" name="active" checked>
+           <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status'), {prompt: "please select station"}, {:class=>'form-control pnd-reqst pull-left'} %> 
           </div>
         </div>
 
      <div class="form-group">
          <label class="col-lg-4 control-label">Station </label>
           <div class="col-lg-6">
-          <%= select_tag 'station_name', options_from_collection_for_select(@workflow.workflow_stations, 'id', 'station_name'), prompt: "please select station", :class=>'form-control pnd-reqst pull-left'%> 
+           <%= f.select :workflow_station_id, options_from_collection_for_select(@workflow_stations, 'id', 'station_name'), {prompt: "please select station"}, {:class=>'form-control pnd-reqst pull-left'} %> 
           </div>
      </div>
 
     <div class="form-group">
          <label class="col-lg-4 control-label">Date/Time </label>
          <div class="col-lg-5">
-           <input type="text" class="datetimepicker form-control" id="datetimepicker" name="dob" required="" value="<%=Time.now.strftime("%m/%d/%Y %I:%M %p")%>"  aria-required="true">
+           <input type="text" class="datetimepicker form-control" id="datetimepicker" name="additional_info[info_timestamp]" required="" value="<%=Time.now.strftime("%m/%d/%Y %I:%M %p")%>"  aria-required="true">
          </div>
          <div class="col-lg-3 pull-left">
           <button class="btn btn-primary pull-left" onclick="set_current_timestamp(); return false;"  >Now</button>
@@ -44,24 +49,40 @@
       <div class="form-group">
          <label class="col-lg-4 control-label">Note </label>
           <div class="col-lg-6 ">
-            <textarea class="form-control" col='50' id='notes' row='12' ></textarea>
+            <%= f.input :note ,:label => false %>
         </div>
      </div>
     
       <span>
         <div class="form-group">
            <label class="col-lg-4 control-label">Archive </label>
-            <div class="col-lg-6 ">
-              <textarea class="form-control" col='50' id='notes' row='12' ></textarea>
+            <div class="col-lg-6 add_note_div">
+              <% @additional_info_data.each do |add_info| 
+                user_name = add_info.user.first_name.present? ? add_info.user.first_name : '' %>
+                 <% if add_info.status.present? %>
+                    <%= add_info.status+" by "+user_name+" on "+add_info.created_at.strftime("%m/%d/%Y %I:%M %p")  %>
+                   <% else %> 
+                    <%= "By "+user_name+" on "+add_info.created_at.strftime("%m/%d/%Y %I:%M %p")  %>
+                  <% end %> 
+                  <br>
+                  <% if add_info.workflow_station.present? %>
+                    <strong>Station:</strong> <%= add_info.workflow_station.station_name %>
+                    <br>
+                  <% end %>
+                  <strong>Note:</strong> <%= add_info.note %>
+                  <br>
+                  ----------------------
+                  <br>
+              <% end %>
             </div>
         </div> 
-   </form>
     </div>
     <div class='modal-footer'>
 
       <button class='btn btn-danger' data-dismiss='modal' type='button'>Close</button>
       <button class='btn save-print-update-edit-btn' type='submit'>Save</button>
     </div>
+    <% end %>
   </div>
 </div>
 

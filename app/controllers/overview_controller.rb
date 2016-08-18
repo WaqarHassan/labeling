@@ -6,17 +6,25 @@ class OverviewController < ApplicationController
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
      
-     
-     if session[:l_type] == 'l1'
-        session[:l_type] = nil
-        @l1s = L1.where(id: session[:l_id])
+      
+     if session[:l_type] == 'l1' 
+        if session[:open_confirm_modal] != 'open_confirm_modal'
+          session[:l_type] = nil
+        end
+    @l1s = L1.where(id: session[:l_id])
      elsif session['l_type'] == 'l2'
-       session[:l_type] = nil
+
+        if session[:open_confirm_modal] != 'open_confirm_modal'
+          session[:l_type] = nil
+        end
+
         @show_search_result_l2 = 'filter_type_l2'
         @l2_records = L2.where(id: session[:l_id])
         @l1s = L1.where(id: @l2_records.first.l1_id)
       elsif session[:l_type] == 'l3'
-         session[:l_type] = nil
+        if session[:open_confirm_modal] != 'open_confirm_modal'
+          session[:l_type] = nil
+        end
         @show_search_result_l2 = 'filter_type_l2' 
         @show_search_result_l3 = 'filter_type_l3' 
         l3 = L3.find(session[:l_id])
@@ -28,7 +36,7 @@ class OverviewController < ApplicationController
         @l1s = @workflow.l1s.where(is_active: true).order(:id)
        
       end
-    
+     
 
     if session[:wildcard] != '' && session[:wildcard] != nil
       @wildcard = session[:wildcard]
@@ -128,9 +136,20 @@ class OverviewController < ApplicationController
   end
   #POST Task Confirmation
   def update_task_confirmation
+
     @workflow_step = WorkflowLiveStep.find(params[:id])
     params[:workflow_live_step][:actual_confirmation] = L1.set_db_datetime_format(params[:workflow_live_step][:actual_confirmation])
     @workflow_step.update(workflow_live_step_params)
+    # if @workflow_step.object_type == 'l3'
+    #   @workflow_step.l3.update(:is_active => true)
+
+    #   #L3.updateL3.find(@workflow_step.object_id)
+    # elsif @workflow_step.object_type == 'l2'
+    #    @workflow_step.l2.update(:is_active => true)
+
+    # else
+    #    @workflow_step.l1.update(:is_active => true)
+    # end
     redirect_to root_path, notice: 'Status was successfully updated.'
   end
 

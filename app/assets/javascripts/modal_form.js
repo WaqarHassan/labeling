@@ -11,7 +11,7 @@ $(document).ready(function() {
 	$('#ecr_name').focus();
 
 	$("#ia_modal_form").validate();
-	$("#add_project_form").validate();
+	$("#add_l1_form").validate();
 	$("#add_edit_ecr_form").validate();
 });
 

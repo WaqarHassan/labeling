@@ -35,7 +35,7 @@
                          <label for = "ia_name" class="echo_patinet pull-right control-label">Name:</label>
                      </div>
                      <div class="col-lg-6">
-                        <%= f.input :name ,:label => false, :input_html =>{id: @show_l1s == 'dropdown' ? '' : 'l2_name'} %>
+                        <%= f.input :name ,:label => false, :input_html =>{id: @show_l1s == 'dropdown' ? '' : 'l2_name'}, :required => true %>
                      </div>
                      <script type="text/javascript">
                          setTimeout(function(){
@@ -56,7 +56,12 @@
                     <% if @l2_bu.split('|')[1] == 'R' %>
                       <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select business units'}, {:class=>'form-control pnd-reqst pull-left', required: true }%>
                       <%else%>
-                          <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select business units'}, {:class=>'form-control pnd-reqst pull-left', required: false }%>
+                         <%if @action == 'UPDATE' %>
+                           <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{:include_blank => true}, {:class=>'form-control pnd-reqst pull-left', required: false }%>
+                             
+                              <%else%>
+                                 <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select business units'}, {:class=>'form-control pnd-reqst pull-left', required: false }%>
+                              <%end%>
                       <%end%>
 
                      
@@ -74,17 +79,18 @@
                      </div>
                    </div>
                  </div>
-
+                <% if @l2.status != 'Active' %>
                   <div class= "form-group">
                     <div class="row">
                       <div class="col-lg-4">
-                        <label for = "ia_name" class="echo_patinet pull-right control-label">Approval/Rejection Date:</label>
+                        <label for = "ia_name" class="echo_patinet pull-right control-label">Accept/Reject Date:</label>
                       </div>
                       <div class="col-lg-6">
                         <%= f.datetime_field :requested_date,:value => Time.now.strftime("%m/%d/%Y %I:%M %p"), :label => false , :class => "datetimepicker form-control"%>
                       </div>
                      </div>
                   </div>
+                  <%end%>
 
                  <% if @attr_list.present? %>
                   <% attr_field_value = ''

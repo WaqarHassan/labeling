@@ -27,7 +27,7 @@
 
 				        </div>
 			            <div class="col-lg-6">
-			             	 <%= f.input :name,:label => false %>
+			             	 <%= f.input :name,:label => false,:required => true %>
 			            </div>
 				         <script type="text/javascript">
 	                         setTimeout(function(){
@@ -47,7 +47,12 @@
 		                    <% if @l1_bu.split('|')[1] == 'R' %>
 		                      <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select business units'}, {:class=>'form-control pnd-reqst pull-left', required: true }%>
 		                      <%else%>
-		                          <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select business units'}, {:class=>'form-control pnd-reqst pull-left', required: false }%>
+		                      <%if @action == 'UPDATE' %>
+		                       <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{:include_blank => true}, {:class=>'form-control pnd-reqst pull-left', required: false }%>
+		                         
+		                          <%else%>
+		                          	 <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select business units'}, {:class=>'form-control pnd-reqst pull-left', required: false }%>
+		                          <%end%>
 		                      <%end%>
 
 		                     

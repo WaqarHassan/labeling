@@ -288,7 +288,7 @@ class OverviewController < ApplicationController
     calculate_eta_completion(actual_confirmation, workflow_live_step)
 
     
-    if  workflow_live_step.object_type == 'l3'
+    if  workflow_live_step.object_type == 'L3'
        workflow_live_step.object.update(:is_active => true)
      end
 

@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
 
   has_many :l1s, dependent: :destroy
   has_many :notes, dependent: :destroy
+  has_many :additional_info
 
   #after_create :send_welcome_emails
 

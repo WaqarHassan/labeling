@@ -5,6 +5,7 @@ class L1 < ActiveRecord::Base
   belongs_to :work_flow
   has_many :workflow_live_steps, as: :object
   has_many :attribute_values, as: :object
+  has_many :additional_info, as: :object
   validates :name, uniqueness: true
 
   class << self

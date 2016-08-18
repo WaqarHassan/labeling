@@ -52,10 +52,20 @@ class OverviewController < ApplicationController
 
    def open_info_modal
     @l2 = L2.find(params[:l2_id])
+    @additional_info = AdditionalInfo.new
+    @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
+    @info_status = @workflow.statuses.where(recording_level: 'L2')
+    @additional_info_data = @workflow.additional_infos.where(object_id: @l2.id, object_type: 'L2').order(:id)
     respond_to do |format|
       format.html
       format.js
     end
+   end
+
+   def add_additional_info
+      params[:additional_info][:info_timestamp] = L1.set_db_datetime_format(params[:additional_info][:info_timestamp])
+      AdditionalInfo.create(additional_info_params)
+      redirect_to root_path, notice: 'Additional Info was successfully created.'
    end
  
    def open_info_modal_l3
@@ -327,6 +337,10 @@ class OverviewController < ApplicationController
           end
         end
       end
+    end
+
+    def additional_info_params
+      params.require(:additional_info).permit(:object_id, :object_type, :status, :workflow_station_id, :info_timestamp, :work_flow_id, :note, :user_id)
     end
 
     def workflow_live_step_params

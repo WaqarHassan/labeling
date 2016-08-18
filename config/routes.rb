@@ -70,6 +70,7 @@ Rails.application.routes.draw do
   get '/overview/project_deatils_l3/:l3_id' => 'overview#project_deatils_l3', as: 'project_deatils_l3'
   get '/overview/destroy_seaaion' => 'overview#destroy_seaaion', as: 'destroy_seaaion'
   get '/overview/show_all_db' => 'overview#show_all_db', as: 'show_all_db' 
+  post '/overview/add_additional_info' => 'overview#add_additional_info', as: 'add_additional_info'
   #get '/overview/index(/:l_id/:l_type)' => 'overview', as: 'my_root'
 
   

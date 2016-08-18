@@ -69,7 +69,7 @@ class L2sController < ApplicationController
       end 
   
       @l2.l1.work_flow.workflow_stations.order(:sequence).each do |station|
-        station.station_steps.where(recording_level: 'L2').each do |stp|
+        station.station_steps.where(recording_level: 'L2').order(:sequence).each do |stp|
           WorkflowLiveStep.create(station_step_id: stp.id, object_id: @l2.id, object_type: 'L2', is_active: nil , eta: '')
         end
       end

@@ -5,6 +5,9 @@ class CreateStationSteps < ActiveRecord::Migration
       t.string :step_name
       t.string :recording_level
       t.integer :sequence
+      t.integer :duration_days
+      t.integer :duration_minutes
+      t.string :duration_multiplier
       t.boolean :is_visible
 
       t.timestamps null: false

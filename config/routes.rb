@@ -5,9 +5,6 @@ Rails.application.routes.draw do
 
   get '/l2s/new(/:l1_id)(.:format)' => 'l2s#new', as: 'add_new_l2'
 
-  
-
-
 
   resources :rework_infos
   resources :archives
@@ -71,6 +68,8 @@ Rails.application.routes.draw do
   get '/overview/destroy_seaaion' => 'overview#destroy_seaaion', as: 'destroy_seaaion'
   get '/overview/show_all_db' => 'overview#show_all_db', as: 'show_all_db' 
   post '/overview/add_additional_info' => 'overview#add_additional_info', as: 'add_additional_info'
+  get '/overview/get_steps' => 'overview#get_steps', as: 'get_steps'
+
   #get '/overview/index(/:l_id/:l_type)' => 'overview', as: 'my_root'
 
   

@@ -68,17 +68,17 @@
      <div class="form-group">
         <label class="col-lg-4 control-label">Start rework at station</label>
         <div class="col-lg-6">
-         <%= select_tag 'station_name', options_from_collection_for_select(@workflow.workflow_stations, 'id', 'station_name'), prompt: "please select station", :class=>'form-control pnd-reqst pull-left'%>
+         <%= select_tag 'station_id', options_from_collection_for_select(@workflow.workflow_stations, 'id', 'station_name'), prompt: "please select station", :'data-remote' => 'true',:'data-url' => url_for(get_steps_path), :class=>'form-control pnd-reqst pull-left', required: true %>
 
       
         </div>
       </div>
       <div class="form-group">
         <label class="col-lg-4 control-label">Start rework at step</label>
-        <div class="col-lg-6">
-       
-
-
+        <div class="col-lg-6" id= "get_steps_div">
+       <select class = "form-control"> 
+          <option>Please Select Step</option>
+       </select>
 
         </div>
       </div>

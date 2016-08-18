@@ -453,3 +453,19 @@ label.error {
     max-height: 175px;
     overflow-y: scroll;
 }
+
+.overflow_scroll{
+    overflow-x: scroll;
+}
+
+.overflow_hidden{
+    overflow: hidden;
+}
+
+.actual_confirmation{
+    background-color: lightgreen;
+}
+
+.eta{
+    background-color: lightgrey;
+}

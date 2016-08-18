@@ -447,3 +447,8 @@ label.error {
 .modal-footer.btn:active {
     color: #FFFFFF;
 }
+
+.add_note_div{
+    max-height: 175px;
+    overflow-y: scroll;
+}

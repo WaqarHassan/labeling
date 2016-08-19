@@ -70,6 +70,10 @@ class OverviewController < ApplicationController
  
    def open_info_modal_l3
     @l3 = L3.find(params[:l3_id])
+    @additional_info = AdditionalInfo.new
+    @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
+    @info_status = @workflow.statuses.where(recording_level: 'L3')
+    @additional_info_data = @workflow.additional_infos.where(object_id: @l3.id, object_type: 'L3').order(:id)
     respond_to do |format|
       format.html
       format.js
@@ -286,22 +290,9 @@ class OverviewController < ApplicationController
     actual_confirmation = L1.set_db_datetime_format(actualConfirmation)
     workflow_live_step = WorkflowLiveStep.find(params[:id])
     calculate_eta_completion(actual_confirmation, workflow_live_step)
-
-    
     if  workflow_live_step.object_type == 'L3'
        workflow_live_step.object.update(:is_active => true)
-     end
-
-    #   #L3.updateL3.find(@workflow_step.object_id)
-    # elsif @workflow_step.object_type == 'l2'
-    #    @workflow_step.l2.update(:is_active => true)
-
-    # else
-    #    @workflow_step.l1.update(:is_active => true)
-    # end
-
-
-
+    end
 
     redirect_to root_path, notice: 'Step confirmation done'
   end

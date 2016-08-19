@@ -1,14 +1,14 @@
 	<div class="project-data project_ia" id="project_ia">
 	 <a href="#" class="collapsed-icon" title="Detail" onclick="label_attributes_box(); return false;"></a>
-		<div style="overflow:hidden;">
+		<div style="overflow-x: scroll;">
 			<table class="table table-bordered">
 				<thead>
 					<tr class="main_heading">
 						<th style="width: 85px;"> </th>
 						<th style="width: 85px;"> </th>
 						<th style="width: 94px;"> </th>
-						<th class="_data " > </th>
-						<th class="_data "> </th>
+						<th class="_data" > </th>
+						<th class="_data"> </th>
 						<% attributes = []
 						@label_attributes.each do |label_attri| 
 							if !attributes.include? label_attri.short_label 

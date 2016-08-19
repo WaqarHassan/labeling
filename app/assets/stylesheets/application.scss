@@ -335,6 +335,7 @@ navbar-default {
 
 .project-data.project_ia table {
     border-right: medium none;
+    table-layout: fixed;
 }
 
 .approval-data.tspend_initial table tr th {
@@ -446,4 +447,9 @@ label.error {
 
 .modal-footer.btn:active {
     color: #FFFFFF;
+}
+
+.add_note_div{
+    max-height: 175px;
+    overflow-y: scroll;
 }

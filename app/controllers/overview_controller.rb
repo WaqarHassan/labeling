@@ -90,7 +90,7 @@ class OverviewController < ApplicationController
  
 
   def get_steps
-    @steps = StationStep.where(workflow_station_id: params[:station_id])
+    @steps = StationStep.where(workflow_station_id: params[:rework_info][:station_id] )
     
      respond_to do |format|
       format.html
@@ -103,8 +103,9 @@ class OverviewController < ApplicationController
     @wf_step_id = params[:wf_step_id]
      workflow_live_step = WorkflowLiveStep.find(@wf_step_id)
 
-    @st_step = workflow_live_step.station_step.step_name
-    @st_name = workflow_live_step.station_step.workflow_station.station_name
+    @user_id = current_user.id
+    @st_step = workflow_live_step.station_step
+    @st_name = workflow_live_step.station_step.workflow_station
     @stations = WorkflowStation.where(work_flow_id: @wf_step_id)
 
     # if params[:l2_id].present?
@@ -124,6 +125,9 @@ class OverviewController < ApplicationController
    end
    #POST rework Modal
    def update_rework_modal
+     ReworkInfo.create(rework_info_params)
+     redirect_to root_path, notice: 'Rework Info was successfully created.'
+
 
    end
     #GET task Confirmation
@@ -342,9 +346,14 @@ class OverviewController < ApplicationController
     end
 
     def additional_info_params
-      params.require(:additional_info).permit(:object_id, :object_type, :status, :workflow_station_id, :info_timestamp, :work_flow_id, :note, :user_id)
+      params.require(:additional_info).permit(:object_id, :object_type, :status,
+       :workflow_station_id, :info_timestamp, :work_flow_id, :note, :user_id)
     end
-
+    def rework_info_params
+      params.require(:rework_info).permit(:start_rework_station, 
+        :start_rework_step, :reason ,:user_id ,:station_id ,
+        :step_id ,:l1_id , :l2_id , :l3_id, :comp )
+    end
     def workflow_live_step_params
       params.require(:workflow_live_step).permit(:actual_confirmation)
     end

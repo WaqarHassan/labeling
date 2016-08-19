@@ -1,6 +1,12 @@
 	<div class="project-data project_ia" id="project_ia">
 	 <a href="#" class="collapsed-icon" title="Detail" onclick="label_attributes_box(); return false;"></a>
-		<div style="overflow-x: scroll;">
+		<% attribute_count = []
+		@label_attributes.each do |label_attri| 
+			if !attribute_count.include? label_attri.short_label 
+				attribute_count << label_attri.short_label %>
+		<% end 
+		end %>
+		<div class= <%= attribute_count.length == 3 ? 'overflow_hidden' : 'overflow_scroll' %> >
 			<table class="table table-bordered">
 				<thead>
 					<tr class="main_heading">
@@ -150,7 +156,7 @@
 							station.station_steps.order(:sequence).each do |step| 
 								workflow_live_step = workflow_liveSteps.find{|wkls| wkls.station_step_id == step.id } 
 								if workflow_live_step.present? %>
-									<td>
+									<td class = "<%= workflow_live_step.actual_confirmation.present? ? 'actual_confirmation' : workflow_live_step.eta.present? ? 'eta' : '' %>" >
 										<% if workflow_live_step.actual_confirmation.blank? and workflow_live_step.eta.blank? %>
 											<%= link_to 'Not Started' , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 										<% elsif workflow_live_step.actual_confirmation.present? %>
@@ -177,7 +183,7 @@
 								station.station_steps.order(:sequence).each do |step| 
 									workflow_live_step = workflow_liveSteps.find{|wkls| wkls.station_step_id == step.id } 
 									if workflow_live_step.present? %>
-										<td>
+										<td class = "<%= workflow_live_step.actual_confirmation.present? ? 'actual_confirmation' : workflow_live_step.eta.present? ? 'eta' : '' %>" >
 											<% if workflow_live_step.actual_confirmation.blank? and workflow_live_step.eta.blank? %>
 												<%= link_to 'Not Started' , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 											<% elsif workflow_live_step.actual_confirmation.present? %>
@@ -205,7 +211,7 @@
 									station.station_steps.order(:sequence).each do |step| 
 										workflow_live_step = workflow_liveSteps.find{|wkls| wkls.station_step_id == step.id } 
 										if workflow_live_step.present? %>
-											<td>
+											<td class = "<%= workflow_live_step.actual_confirmation.present? ? 'actual_confirmation' : workflow_live_step.eta.present? ? 'eta' : '' %>" >
 												<% if workflow_live_step.actual_confirmation.blank? and workflow_live_step.eta.blank? %>
 													<%= link_to 'Not Started' , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 												<% elsif workflow_live_step.actual_confirmation.present? %>

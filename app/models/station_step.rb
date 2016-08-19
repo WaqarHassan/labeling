@@ -2,17 +2,6 @@ class StationStep < ActiveRecord::Base
 	belongs_to :workflow_station
 	has_many :workflow_live_stations
 
-	def calculate_eta (eta, completion)
-		duration_days = self.duration_days
-		duration_minutes = self.duration_minutes
-		duration_multiplier = self.duration_multiplier
-
-		number_hours = duration_days.present? ? duration_days*8 : 0
-		number_minutes = duration_minutes.present? ? duration_minutes : 0
-		total_hours = number_hours + number_minutes
-
-	end
-
 	def calculate_step_completion(actual_confirmation, comp_attribute_value, lang_attribute_value)
 		duration_days = self.duration_days
 		duration_minutes = self.duration_minutes

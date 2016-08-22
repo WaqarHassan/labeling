@@ -71,12 +71,17 @@
 
 					<div class="row">
 				        <div class="col-lg-4">
-			               <label for="Active" class="pull-right echo_patinet form-group"> Active:  </label> 
+			               <label for="Active" class="pull-right echo_patinet form-group"> Status  </label> 
 				        </div>
 			            <div class="col-lg-6">
-				            <%= f.check_box :is_active, :label => false  , :class => "pull-left boolean" ,:checked => true%>
+			             <%if @action == 'UPDATE' %>
+				           <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status',@l1.status), {prompt: "please select status"}, {:class=>'form-control pnd-reqst pull-left'} %>
+				         <%else%>
+				           <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status'), {prompt: "please select status"}, {:class=>'form-control pnd-reqst pull-left'} %>
+				         <%end%>
 			            </div>
 				    </div>
+
 				    <% if @attr_list.present? %>
 	                  <% attr_field_value = ''
 	                  @attr_list.each do |att|

@@ -38,6 +38,10 @@ class StationStep < ActiveRecord::Base
 		total_hours = number_hours + minutes_to_hour
 		actual_confirmation = actual_confirmation.to_time.strftime('%Y-%m-%d %H:%M')
 		actual_confirmation_time = Time.parse(actual_confirmation)
+
+		      puts "BBBBBBBBBBBBBBBBBBBB-----#{BusinessTime::Config.beginning_of_workday}"
+      		   puts "EEEEEEEEEEEEEEEEEEEE******#{BusinessTime::Config.end_of_workday}"
+
 		actual_confirmationTime =  total_hours.business_hours.after(actual_confirmation_time)
 
 		return  actual_confirmationTime + reminaing_minutes.minutes

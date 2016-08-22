@@ -305,6 +305,11 @@ class OverviewController < ApplicationController
   private
 
     def calculate_eta_completion(actual_confirmation, workflow_live_step)
+      BusinessTime::Config.beginning_of_workday = @workflow.beginning_of_workday
+      BusinessTime::Config.end_of_workday = @workflow.end_of_workday
+      puts "%%%%BBBBBBBBBBBBBBBBBBBB-----#{BusinessTime::Config.beginning_of_workday}"
+      puts "^^^^^EEEEEEEEEEEEEEEEEEEE******#{BusinessTime::Config.end_of_workday}"
+
       comp_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
       lang_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
       
@@ -340,17 +345,15 @@ class OverviewController < ApplicationController
         end
       end
 
-      puts "@@@@@@@@@@@@@@@@@@@@@----- #{object_ids}"
-      puts "*******************888----- #{object_types}"
       workflow_live_steps = WorkflowLiveStep.where(object_id: object_ids, object_type: object_types).where("id > #{workflow_live_step.id}").order(:id)
-       
+
       workflow_live_steps.each do |wls|
+        pre_workflow_live_step = workflow_live_step
+        workflow_live_step = wls
                                             #check successor---------------------
         transitions = Transition.where(station_step_id: wls.station_step_id)
                                             #successor calculation
         transitions.each_with_index do |transition, indx|
-          pre_workflow_live_step = workflow_live_step
-          workflow_live_step = wls
           
           if indx == 0
             if pre_workflow_live_step.present? and pre_workflow_live_step.step_completion.present?

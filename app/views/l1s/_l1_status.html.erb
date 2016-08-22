@@ -27,9 +27,7 @@
 						               <label for= "workflow_dropdown" class="pull-right echo_patinet form-group"> Active:  </label>
 						         </div>
 						            <div class="col-lg-6">
-
-						            <%= f.check_box :is_active, :class => "pull-left "  %>
-
+									<%= f.select :status, options_from_collection_for_select(@status, 'status', 'status',@l1.status), {include_blank: :true}, {:class=>'form-control pnd-reqst pull-left'} %>
 						            	
 
 						            </div>

@@ -22,7 +22,7 @@ class L3sController < ApplicationController
       @l2 = L2.find(params[:l2_id])
     else 
       @show_projects = 'dropdown'
-      @l1 = @workflow.l1s.where(is_active: true) 
+      @l1 = @workflow.l1s.where(status: 'Active') 
     end 
    
     @l3 = L3.new
@@ -43,7 +43,7 @@ class L3sController < ApplicationController
     @btn_action = 'UPDATE'
     
     @show_projects = 'dropdowncxd'
-    @l1 = @workflow.l1s.where(is_active: true) 
+    @l1 = @workflow.l1s.where(status: 'Active') 
       respond_to do |format|
         format.html
         format.js

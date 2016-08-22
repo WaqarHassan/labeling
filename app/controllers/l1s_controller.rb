@@ -112,6 +112,6 @@ class L1sController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def l1_params
-      params.require(:l1).permit(:id, :name, :description,:status, :user_id, :work_flow_id, :is_active, :business_unit)
+      params.require(:l1).permit(:id, :name, :description,:status, :user_id, :work_flow_id, :business_unit)
     end
 end

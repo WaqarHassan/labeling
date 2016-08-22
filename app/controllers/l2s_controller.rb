@@ -24,7 +24,7 @@ class L2sController < ApplicationController
     else 
       @show_l1s = 'dropdown'
 
-      @l1 = @workflow.l1s.where(is_active: true) 
+      @l1 = @workflow.l1s.where(status: 'Active') 
     end  
     @l2 = L2.new
     respond_to do |format|
@@ -142,6 +142,6 @@ class L2sController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def l2_params
-      params.require(:l2).permit(:name, :l1_id, :status, :business_unit, :notes, :is_active, :requested_date, :to_be_approved_by)
+      params.require(:l2).permit(:name, :l1_id, :status, :business_unit, :notes, :requested_date, :to_be_approved_by)
     end
 end

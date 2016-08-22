@@ -82,6 +82,7 @@ class OverviewController < ApplicationController
 
    def l1_status_popup
       @l1 = L1.find(params[:id])
+      @status = @workflow.statuses.where(recording_level: 'L1')
       respond_to do |format|
       format.html
       format.js
@@ -269,7 +270,7 @@ class OverviewController < ApplicationController
     @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
-    @l1s = @workflow.l1s.where(is_active: true).order(:id)
+    @l1s = @workflow.l1s.where(status: 'Active').order(:id)
     respond_to do |format|
       format.html
       format.js

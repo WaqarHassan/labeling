@@ -67,6 +67,9 @@ class L2sController < ApplicationController
       if @l2.status != ''
         save_activity_log
       end 
+      if @l2.status == 'Rejected'
+        save_initial_status
+      end
   
       @l2.l1.work_flow.workflow_stations.order(:sequence).each do |station|
         station.station_steps.where(recording_level: 'L2').order(:sequence).each do |stp|
@@ -123,10 +126,13 @@ class L2sController < ApplicationController
   private
 
     def save_activity_log(previous_status = '')
-      if previous_status == 'Rejected' 
+      if previous_status == 'Rejected' || previous_status == '' 
         current_status = params[:l2][:status] 
         ActivityLog.create(object_id: @l2.id,object_type: 'L2' , current_value: current_status,previous_value: previous_status, user_id: current_user.id)
       end
+    end
+    def save_initial_status
+      AdditionalInfo.create(workflow_station_id: @l2.l1.work_flow.workflow_stations.first.id,user_id: current_user.id, status: @l2.status ,object_id: @l2.id, object_type: 'L2', work_flow_id: @workflow.id, )
     end
 
     # Use callbacks to share common setup or constraints between actions.

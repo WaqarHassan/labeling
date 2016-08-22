@@ -7,6 +7,7 @@ class CreateL1s < ActiveRecord::Migration
       t.boolean :is_active
       t.integer :work_flow_id
       t.integer :user_id
+      t.string :status
       t.integer :modified_by_user_id
 
       t.timestamps null: false

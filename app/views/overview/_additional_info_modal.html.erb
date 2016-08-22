@@ -8,7 +8,7 @@
       <div class='modal-body'>
 
           <div class="form-group">
-           <label class="col-lg-4 control-label"> <%= @workflow.L2 %>:  </label>
+           <label class="col-lg-4 control-label"> <%= @workflow.L2 %>  </label>
             <div class="col-lg-6">
            
              <%=  link_to @l2.name, edit_l2_path(@l2.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#l2_update_popup' , "data-dismiss" => "modal"} %>
@@ -23,7 +23,7 @@
         <div class="form-group">
          <label class="col-lg-4 control-label">Status</label>
           <div class="col-lg-6">
-           <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status'), {prompt: "please select station"}, {:class=>'form-control pnd-reqst pull-left'} %> 
+           <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status'), {prompt: "please select status"}, {:class=>'form-control pnd-reqst pull-left'} %> 
           </div>
         </div>
 
@@ -68,10 +68,12 @@
                     <strong>Station:</strong> <%= add_info.workflow_station.station_name %>
                     <br>
                   <% end %>
+                  <% if add_info.note.present? %>
                   <strong>Note:</strong> <%= add_info.note %>
                   <br>
                   ----------------------
                   <br>
+                  <%end%>
               <% end %>
             </div>
         </div> 

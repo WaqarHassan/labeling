@@ -19,6 +19,7 @@ class L1sController < ApplicationController
     @action = 'ADD'
     @btn_action = 'SAVE'
     @bu_options = @workflow.bu_options.where(recording_level: 'L1')
+    @info_status = @workflow.statuses.where(recording_level: 'L1')
     @attr_list = @workflow.label_attributes.where(recording_level: 'L1', is_visible: true)
     @l1 = L1.new
     respond_to do |format|
@@ -33,6 +34,7 @@ class L1sController < ApplicationController
     @bu_options = @workflow.bu_options.where(recording_level: 'L1')
     @action = 'UPDATE'
     @btn_action = 'UPDATE'
+    @info_status = @workflow.statuses.where(recording_level: 'L1')
     @attr_list = @workflow.label_attributes.where(recording_level: 'L1', is_visible: true)
     @attr_values = @l1.attribute_values
     respond_to do |format|
@@ -110,6 +112,6 @@ class L1sController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def l1_params
-      params.require(:l1).permit(:id, :name, :description, :user_id, :work_flow_id, :is_active, :business_unit)
+      params.require(:l1).permit(:id, :name, :description,:status, :user_id, :work_flow_id, :is_active, :business_unit)
     end
 end

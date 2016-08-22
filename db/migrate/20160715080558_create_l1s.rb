@@ -4,7 +4,6 @@ class CreateL1s < ActiveRecord::Migration
       t.string :name
       t.text :description
       t.string :business_unit
-      t.boolean :is_active
       t.integer :work_flow_id
       t.integer :user_id
       t.string :status

@@ -33,7 +33,7 @@ class OverviewController < ApplicationController
         @l2_records = L2.where(id: @l3_records.first.l2_id)
         @l1s = L1.where(id: @l2_records.first.l1_id)
       else
-        @l1s = @workflow.l1s.where(is_active: true).order(:id)
+        @l1s = @workflow.l1s.where(status: 'Active').order(:id)
        
       end
      

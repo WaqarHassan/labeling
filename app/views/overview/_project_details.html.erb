@@ -45,7 +45,7 @@
 								<td colspan="3" class="project">
 									<%=  link_to l1.name, l1_status_popup_path(l1), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#project_status_popup'} %>
 								</td>
-									<td class="_data "><%= l1.is_active == true ? 'Active' : '' %></td>
+									<td class="_data "><%= l1.status == true ? 'Active' : '' %></td>
 									<td class="_data "><%= l1.business_unit %></td>
 									 <% attribute_values_data = l1.attribute_values
 										attributes = []

@@ -6,7 +6,6 @@ class CreateL2s < ActiveRecord::Migration
       t.string :status
       t.string :business_unit
       t.text :notes
-      t.boolean :is_active
       t.datetime :requested_date
       t.datetime :to_be_approved_by
       t.integer :user_id

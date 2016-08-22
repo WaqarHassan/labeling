@@ -5,6 +5,7 @@ class CreateLabelAttributes < ActiveRecord::Migration
       t.string  :short_label
       t.string  :recording_level
       t.boolean :is_required
+      t.integer :sequence
       t.boolean :is_visible
 	    t.integer :work_flow_id
       t.string  :field_type

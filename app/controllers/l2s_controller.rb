@@ -136,6 +136,6 @@ class L2sController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def l2_params
-      params.require(:l2).permit(:name, :l1_id, :status, :business_unit, :notes, :is_active, :requested_date, :to_be_approved_by, :translation)
+      params.require(:l2).permit(:name, :l1_id, :status, :business_unit, :notes, :is_active, :requested_date, :to_be_approved_by)
     end
 end

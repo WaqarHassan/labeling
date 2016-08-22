@@ -9,7 +9,6 @@ class CreateL2s < ActiveRecord::Migration
       t.boolean :is_active
       t.datetime :requested_date
       t.datetime :to_be_approved_by
-      t.boolean :translation
       t.integer :user_id
       t.integer :modified_by_user_id
       t.timestamps null: false

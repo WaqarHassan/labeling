@@ -2,7 +2,7 @@ class OverviewController < ApplicationController
 	skip_authorization_check
   
 	def index
-    @label_attributes = @workflow.label_attributes #.where(is_visible: true)
+    @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
      
@@ -215,7 +215,7 @@ class OverviewController < ApplicationController
   end
 
   def project_deatils_l1
-    @label_attributes = @workflow.label_attributes #.where(is_visible: true)
+    @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
     l1_list = params[:l1_id].split('_')
@@ -229,7 +229,7 @@ class OverviewController < ApplicationController
 
   def project_deatils_l2
     @show_search_result_l2 = 'filter_type_l2' 
-    @label_attributes = @workflow.label_attributes #.where(is_visible: true)
+    @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
     @l2_records = L2.where(id: params[:l2_id])
@@ -245,7 +245,7 @@ class OverviewController < ApplicationController
   def project_deatils_l3
     @show_search_result_l2 = 'filter_type_l2' 
     @show_search_result_l3 = 'filter_type_l3' 
-    @label_attributes = @workflow.label_attributes #.where(is_visible: true)
+    @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
     l3 = L3.find(params[:l3_id])
@@ -262,7 +262,7 @@ class OverviewController < ApplicationController
   end
 
   def show_all_db
-    @label_attributes = @workflow.label_attributes #.where(is_visible: true)
+    @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
     @l1s = @workflow.l1s.where(is_active: true).order(:id)
@@ -310,6 +310,77 @@ class OverviewController < ApplicationController
       workflow_live_step.step_completion = step_completion
       workflow_live_step.save!
 
+      object_ids = []
+      object_types = []
+
+      object_ids << workflow_live_step.object_id
+      object_types << workflow_live_step.object_type
+
+      if workflow_live_step.object_type == "L1"
+        workflow_live_step.object.l2s.each do |l2|
+          object_ids << l2.id
+          object_types << 'L2'
+          l2.l3s.each do |l3|
+            object_ids << l3.id
+            object_types << 'L3'
+          end
+        end
+      end
+
+
+      if workflow_live_step.object_type == "L2"
+        workflow_live_step.object.l3s.each do |l3|
+          object_ids << l3.id
+          object_types << 'L3'
+        end
+      end
+
+      puts "@@@@@@@@@@@@@@@@@@@@@----- #{object_ids}"
+      puts "*******************888----- #{object_types}"
+      workflow_live_steps = WorkflowLiveStep.where(object_id: object_ids, object_type: object_types).where("id > #{workflow_live_step.id}").order(:id)
+       
+      workflow_live_steps.each do |wls|
+                                            #check successor---------------------
+        transitions = Transition.where(station_step_id: wls.station_step_id)
+                                            #successor calculation
+        transitions.each_with_index do |transition, indx|
+          pre_workflow_live_step = workflow_live_step
+          workflow_live_step = wls
+          
+          if indx == 0
+            if pre_workflow_live_step.present? and pre_workflow_live_step.step_completion.present?
+                station_step = wls.station_step
+                step_completion_current = station_step.calculate_step_completion(pre_workflow_live_step.step_completion, comp_attribute_value, lang_attribute_value)
+                wls.eta = pre_workflow_live_step.step_completion
+                wls.step_completion = step_completion_current
+                wls.save!
+            end
+          else
+            if pre_workflow_live_step.present? and pre_workflow_live_step.step_completion.present?
+              if DateTime.parse(pre_workflow_live_step.step_completion.to_s) > DateTime.parse(wls.eta.to_s)
+                station_step = wls.station_step
+                step_completion_current = station_step.calculate_step_completion(pre_workflow_live_step.step_completion, comp_attribute_value, lang_attribute_value)
+                wls.eta = pre_workflow_live_step.step_completion
+                wls.step_completion = step_completion_current
+                wls.save!
+              end
+            end
+          end
+        end
+      end
+    end
+
+    def calculate_eta_completion_backup(actual_confirmation, workflow_live_step)
+      comp_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
+      lang_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
+      
+      station_step = workflow_live_step.station_step
+      step_completion = station_step.calculate_step_completion(actual_confirmation, comp_attribute_value, lang_attribute_value)
+
+      workflow_live_step.actual_confirmation = actual_confirmation
+      workflow_live_step.step_completion = step_completion
+      workflow_live_step.save!
+
       workflow_live_steps = WorkflowLiveStep.where(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type).where("id > #{workflow_live_step.id}").order(:id)
        
       workflow_live_steps.each do |wls|
@@ -340,7 +411,6 @@ class OverviewController < ApplicationController
         end
       end
     end
-
     def additional_info_params
       params.require(:additional_info).permit(:object_id, :object_type, :status, :workflow_station_id, :info_timestamp, :work_flow_id, :note, :user_id)
     end

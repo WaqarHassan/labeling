@@ -6,13 +6,62 @@
 				attribute_count << label_attri.short_label %>
 		<% end 
 		end %>
-		<div class= <%= attribute_count.length == 3 ? 'overflow_hidden' : 'overflow_scroll' %> >
-			<table class="table table-bordered">
-				<thead>
+		<div name = 'project_table'>
+			<thead>
 					<tr class="main_heading">
 						<th style="width: 85px;"> </th>
 						<th style="width: 85px;"> </th>
 						<th style="width: 94px;"> </th>
+					</tr> 
+					<tr class="sub_heading">
+						<th><%= @workflow.L1 %></th>
+						<th><%= @workflow.L2 %></th>
+						<th><%= @workflow.L3 %></th>
+					</tr>
+			</thead>
+			<tbody>
+				<% @l1s.each do |l1| %>
+					<tr>
+						<td colspan="3" class="project">
+							<%=  link_to l1.name, l1_status_popup_path(l1), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#project_status_popup'} %>
+						</td>
+					</tr>
+						<%if @show_search_result_l2 == 'filter_type_l2' 
+						   l2_rows = @l2_records
+						  else
+						   l2_rows = l1.l2s  	
+						  end %>
+						<% l2_rows.each do |l2| %>
+							<tr>
+								<td></td>
+								<td colspan="2">
+									<%= link_to l2.name, open_info_modal_path(l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+								</td>
+							</tr>
+						<%if @show_search_result_l3 == 'filter_type_l3' 
+						   l3_rows = @l3_records
+						  else
+						   l3_rows = l2.l3s  	
+						  end %>
+						<% l3_rows.each do |l3| %>
+							<tr>
+								<td></td>
+								<td></td>
+								<td>
+									<%= link_to l3.name, open_info_modal_l3_path(l3.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+								</td>
+							</tr>
+						<%end end end %>
+
+
+
+			</tbody>
+
+		</div>
+		<div class= <%= attribute_count.length == 3 ? 'overflow_hidden' : 'overflow_scroll' %> >
+			<table class="table table-bordered">
+				<thead>
+					<tr class="main_heading">
 						<th class="_data" > </th>
 						<th class="_data"> </th>
 						<% attributes = []
@@ -24,9 +73,6 @@
 						end %>
 					</tr> 
 					<tr class="sub_heading">
-						<th><%= @workflow.L1 %></th>
-						<th><%= @workflow.L2 %></th>
-						<th><%= @workflow.L3 %></th>
 						<th class="_data ">Status</th>
 						<th class="_data ">BU</th>
 						<% attributes = []
@@ -38,14 +84,12 @@
 						end %>
 						
 					</tr>
+
 				</thead>
 				<tbody>
 						<% @l1s.each do |l1| %>
 							<tr>
-								<td colspan="3" class="project">
-									<%=  link_to l1.name, l1_status_popup_path(l1), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#project_status_popup'} %>
-								</td>
-									<td class="_data "><%= l1.is_active == true ? 'Active' : '' %></td>
+								<td class="_data "><%= l1.status %></td>
 									<td class="_data "><%= l1.business_unit %></td>
 									 <% attribute_values_data = l1.attribute_values
 										attributes = []
@@ -69,10 +113,7 @@
 							  end %>
 							<% l2_rows.each do |l2| %>
 								<tr>
-									<td></td>
-									<td colspan="2">
-									<%= link_to l2.name, open_info_modal_path(l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
-									<td class="_data "><%= l2.status %></td>
+								<td class="_data "><%= l2.status %></td>
 									<td class="_data "><%= l2.business_unit %></td>
 									 <% attribute_values_data = l2.attribute_values
 										attributes = []
@@ -97,10 +138,6 @@
 								  end %>
 								<% l3_rows.each do |l3| %>
 									<tr>
-										<td></td>
-										<td></td>
-										<td>
-											<%= link_to l3.name, open_info_modal_l3_path(l3.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
 										<td class="_data "><%= l3.is_active == true ? 'Active' : '' %></td> 
 										<td class="_data "><%= l3.business_unit %></td> 
 											<% attribute_values_l3_data = l3.attribute_values
@@ -226,14 +263,13 @@
 									end 
 								end%>
 							</tr>	
+							<%end%>
 						<% end %>
 					<% end %>
-				<% end %>
 			</tbody>
 		</table>
 	 </div> 
 	</div>
-
 <style>
 	.rework {
 		width: 700px;

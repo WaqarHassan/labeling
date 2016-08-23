@@ -103,8 +103,12 @@ body {
 .project-data .collapsed-icon { background:image-url("col_exp.png") no-repeat; opacity: 0.62;}
 .tspend {width: 60% !important;}
 
+.project-data.project_fix.fix_levels {
+    width: 22.4%;
+}
+
 .project-data.project_ia {
-    width: 59%;
+    width: 37%;
 }
 
 .no-brd { border-right:none !important; width: 95px}
@@ -307,7 +311,7 @@ navbar-default {
 }
 
 .project_serach_noDetail{
-    width: 24% !important;
+    width: 0 !important;
 }
 
 .btn.btn-danger {
@@ -326,7 +330,7 @@ navbar-default {
 
 .search_labels_hidden{
     overflow-x: scroll;
-    width: 41% !important;    
+    width: 40.5% !important;    
 }
 
 .search_and_labels_both_hidden{
@@ -336,6 +340,15 @@ navbar-default {
 
 .project-data.project_ia table {
     border-right: medium none;
+    table-layout: fixed;
+}
+
+.project-data.project_ia table {
+    border-right: medium none;
+    table-layout: fixed;
+}
+
+.project-data.project_fix.fix_levels table {
     table-layout: fixed;
 }
 
@@ -439,6 +452,10 @@ label.error {
 }
 
 #search_result_div li a {
+    color: #337ab7;
+}
+
+.project-data.project_fix.fix_levels table a {
     color: #337ab7;
 }
 

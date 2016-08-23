@@ -1,3 +1,65 @@
+	<div class="project-data project_fix fix_levels" id="">
+		<% attribute_count = []
+		@label_attributes.each do |label_attri| 
+			if !attribute_count.include? label_attri.short_label 
+				attribute_count << label_attri.short_label %>
+		<% end 
+		end %>
+		<div>
+			<table class="table table-bordered">
+				<thead>
+					<tr class="main_heading">
+						<th style="width: 85px;"> </th>
+						<th style="width: 85px;"> </th>
+						<th style="width: 94px;"> </th>
+					</tr> 
+					<tr class="sub_heading">
+						<th><%= @workflow.L1 %></th>
+						<th><%= @workflow.L2 %></th>
+						<th><%= @workflow.L3 %></th>
+					</tr>
+				</thead>
+				<tbody>
+						<% @l1s.each do |l1| %>
+							<tr>
+								<td colspan="3" class="project">
+									<%=  link_to l1.name, l1_status_popup_path(l1), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#project_status_popup'} %>
+								</td>
+							</tr>  
+							<%if @show_search_result_l2 == 'filter_type_l2' 
+							   l2_rows = @l2_records
+							  else
+							   l2_rows = l1.l2s  	
+							  end %>
+							<% l2_rows.each do |l2| %>
+								<tr>
+									<td></td>
+									<td colspan="2">
+									<%= link_to l2.name, open_info_modal_path(l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
+								</tr>
+
+								<%if @show_search_result_l3 == 'filter_type_l3' 
+								   l3_rows = @l3_records
+								  else
+								   l3_rows = l2.l3s  	
+								  end %>
+								<% l3_rows.each do |l3| %>
+									<tr>
+										<td></td>
+										<td></td>
+										<td>
+											<%= link_to l3.name, open_info_modal_l3_path(l3.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+										</td>
+									</tr>
+								<% end %>  
+							<% end %>  
+						<% end %>  
+
+				</tbody>
+				</table>
+		</div>
+	</div>
+
 	<div class="project-data project_ia" id="project_ia">
 	 <a href="#" class="collapsed-icon" title="Detail" onclick="label_attributes_box(); return false;"></a>
 		<% attribute_count = []
@@ -10,9 +72,6 @@
 			<table class="table table-bordered">
 				<thead>
 					<tr class="main_heading">
-						<th style="width: 85px;"> </th>
-						<th style="width: 85px;"> </th>
-						<th style="width: 94px;"> </th>
 						<th class="_data" > </th>
 						<th class="_data"> </th>
 						<% attributes = []
@@ -24,9 +83,6 @@
 						end %>
 					</tr> 
 					<tr class="sub_heading">
-						<th><%= @workflow.L1 %></th>
-						<th><%= @workflow.L2 %></th>
-						<th><%= @workflow.L3 %></th>
 						<th class="_data ">Status</th>
 						<th class="_data ">BU</th>
 						<% attributes = []
@@ -42,25 +98,22 @@
 				<tbody>
 						<% @l1s.each do |l1| %>
 							<tr>
-								<td colspan="3" class="project">
-									<%=  link_to l1.name, l1_status_popup_path(l1), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#project_status_popup'} %>
-								</td>
-									<td class="_data "><%= l1.status %></td>
-									<td class="_data "><%= l1.business_unit %></td>
-									 <% attribute_values_data = l1.attribute_values
-										attributes = []
-										@label_attributes.each do |label_attri| 
-											if !attributes.include? label_attri.short_label 
-												attributes << label_attri.short_label %>
-												<td class="_data ">
-													<% attribute_values_data.each do |data| 
-														if data.label_attribute.present?
-															if data.label_attribute.short_label == label_attri.short_label%>
-													<%= data.value %>
-													<% end end end%>
-												</td>
-										<% end 
-										end %>
+								<td class="_data "><%= l1.status %></td>
+								<td class="_data "><%= l1.business_unit %></td>
+								 <% attribute_values_data = l1.attribute_values
+									attributes = []
+									@label_attributes.each do |label_attri| 
+										if !attributes.include? label_attri.short_label 
+											attributes << label_attri.short_label %>
+											<td class="_data ">
+												<% attribute_values_data.each do |data| 
+													if data.label_attribute.present?
+														if data.label_attribute.short_label == label_attri.short_label%>
+												<%= data.value %>
+												<% end end end%>
+											</td>
+									<% end 
+									end %>
 							</tr>  
 							<%if @show_search_result_l2 == 'filter_type_l2' 
 							   l2_rows = @l2_records
@@ -69,9 +122,6 @@
 							  end %>
 							<% l2_rows.each do |l2| %>
 								<tr>
-									<td></td>
-									<td colspan="2">
-									<%= link_to l2.name, open_info_modal_path(l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
 									<td class="_data "><%= l2.status %></td>
 									<td class="_data "><%= l2.business_unit %></td>
 									 <% attribute_values_data = l2.attribute_values
@@ -97,10 +147,6 @@
 								  end %>
 								<% l3_rows.each do |l3| %>
 									<tr>
-										<td></td>
-										<td></td>
-										<td>
-											<%= link_to l3.name, open_info_modal_l3_path(l3.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
 										<td class="_data "><%= l3.is_active == true ? 'Active' : '' %></td> 
 										<td class="_data "><%= l3.business_unit %></td> 
 											<% attribute_values_l3_data = l3.attribute_values

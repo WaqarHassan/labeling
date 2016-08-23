@@ -50,7 +50,7 @@
                 <div class= "form-group">
                   <div class="row">
                     <div class="col-lg-4">
-                       <%= f.label :business_unit, :class=> "bbbbbbbb" %>
+                       <%= f.label :business_unit %>
                     </div>
                     <div class="col-lg-6">
                     <% if @l2_bu.split('|')[1] == 'R' or (@l2_bu.split('|')[1] == 'R' and @action == 'UPDATE') %>
@@ -117,7 +117,7 @@
                             <label for="Active" class="pull-right echo_patinet form-group">  <%= att.label %>   </label> 
                           </div>
                           <div class="col-lg-6">
-                            <input type="text" name=<%= "attr[#{att.id}]" %>  <%= att.is_required == true ? 'required' : '' %> class="datepicker form-control" value= <%= attr_field_value %> >
+                            <input type="text" name=<%= "attr[#{att.id}]" %>  <%= att.is_required == true ? 'required' : '' %> class="datepicker_only form-control" value= <%= attr_field_value.present? ? attr_field_value : Time.now.strftime("%m/%d/%Y") %> >
                         </div>
                       </div>
                       <%else%>
@@ -126,7 +126,7 @@
                               <label for="Active" class="pull-right echo_patinet form-group">  <%= att.label %>   </label> 
                             </div>
                             <div class="col-lg-6">
-                             <input type="text" name=<%= "attr[#{att.id}]" %>  <%= att.is_required == true ? 'required' : '' %> class=" form-control" value= <%= attr_field_value %> >
+                             <input type="text" name=<%= "attr[#{att.id}]" %>  <%= att.is_required == true ? 'required' : '' %> class="form-control" value= <%= attr_field_value %> >
                             </div>
                           </div>
 

@@ -108,7 +108,7 @@
                     <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %>: </label> 
                   </div>
                     <div class="col-lg-6">
-                    <input type="text" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="datepicker form-control" value=<%= attr_field_value %> >
+                    <input type="text" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="datepicker_only form-control" value=<%= attr_field_value.present? ? attr_field_value : Time.now.strftime("%m/%d/%Y") %> >
                   </div>
                 </div>
 
@@ -118,7 +118,7 @@
                     <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %>: </label> 
                   </div>
                     <div class="col-lg-6">
-                    <input type="texts" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="datepicker form-control" value=<%= attr_field_value %> >
+                    <input type="text" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="form-control" value=<%= attr_field_value %> >
                   </div>
                 </div>
 

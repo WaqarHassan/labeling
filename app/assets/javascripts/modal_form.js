@@ -1,7 +1,8 @@
 $(document).ready(function() {
 	console.log('modal  form');
 	$('.datetimepicker').datetimepicker({maxDate : moment.now()});
-	$('.datepicker').datepicker({format: 'mm/dd/yyyy' , autoclose: true });
+	$('.datepicker_only').datepicker({format: 'mm/dd/yyyy' , autoclose: true });
+	//$('.datepicker_only').datetimepicker({format: 'MM/DD/YYYY' , autoclose: true });
 
 	$('.modal-dialog').draggable({
     	handle: ".modal-header"

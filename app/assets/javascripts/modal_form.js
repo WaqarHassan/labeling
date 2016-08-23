@@ -19,3 +19,7 @@ $(document).ready(function() {
 function set_l2_status(status){
 	$('#l2_status').val(status);
 }
+
+function remove_l2_status(){
+	$('#l2_status').remove();
+}

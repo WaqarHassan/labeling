@@ -111,7 +111,9 @@ class L2sController < ApplicationController
         session[:workflow_step_id] = @l2.workflow_live_steps.first.id
         session[:l_number_id] = @l2.id
       end
-      save_activity_log(previous_status)
+      if params[:l2][:status].present?
+        save_activity_log(previous_status)
+      end
       redirect_to root_path, notice: @workflow.L2+' was successfully updated.'
     else
       render :edit

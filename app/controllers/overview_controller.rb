@@ -11,7 +11,8 @@ class OverviewController < ApplicationController
         if session[:open_confirm_modal] != 'open_confirm_modal'
           session[:l_type] = nil
         end
-    @l1s = L1.where(id: session[:l_id])
+        @l1s = L1.where(id: session[:l_id])
+        
      elsif session['l_type'] == 'l2'
 
         if session[:open_confirm_modal] != 'open_confirm_modal'
@@ -295,8 +296,11 @@ class OverviewController < ApplicationController
     actual_confirmation = L1.set_db_datetime_format(actualConfirmation)
     workflow_live_step = WorkflowLiveStep.find(params[:id])
     calculate_eta_completion(actual_confirmation, workflow_live_step)
-    if  workflow_live_step.object_type == 'L3'
+    if workflow_live_step.object_type == 'L3'
        workflow_live_step.object.update(:is_active => true)
+    elsif workflow_live_step.object_type == 'L2' && workflow_live_step.object.status == 'Rejected'
+      workflow_live_step.object.update(:status => 'Active')
+      ActivityLog.create(object_id: workflow_live_step.object.id,object_type: 'L2' , current_value: 'Active' ,previous_value: 'Rejected', user_id: current_user.id)
     end
 
     redirect_to root_path, notice: 'Step confirmation done'

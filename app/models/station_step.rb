@@ -18,28 +18,29 @@ class StationStep < ActiveRecord::Base
 			lang = lang.to_i
 		end
 		
-		numberHour = duration_days.present? ? duration_days*9 : 0
+		numberDays = duration_days.present? ? duration_days : 0
 		numberMinute = duration_minutes.present? ? duration_minutes : 0
 
 						# Duration Multiplier
 		if duration_multiplier == 'C'
-			number_hours = numberHour*comp
+			number_days = numberDays*comp
 			number_minutes = numberMinute*comp
 		elsif duration_multiplier == 'L'
-			number_hours = (numberHour*comp)/lang
+			number_days = (numberDays*comp)/lang
 			number_minutes = (numberMinute*comp)/lang
 		else
-			number_hours = numberHour
+			number_days = numberDays
 			number_minutes = numberMinute
 		end
 
 						# Covnert minutes to hours and minutes
-		minutes_to_hour, reminaing_minutes = number_minutes.divmod(60)
-		total_hours = number_hours + minutes_to_hour
+		total_hours, reminaing_minutes = number_minutes.divmod(60)
+
 		actual_confirmation = actual_confirmation.to_time.strftime('%Y-%m-%d %H:%M')
 		actual_confirmation_time = Time.parse(actual_confirmation)
 
-		actual_confirmationTime =  total_hours.business_hours.after(actual_confirmation_time)
+		actual_confirmationTimeDays =  number_days.business_days.after(actual_confirmation_time)
+		actual_confirmationTime =  total_hours.business_hours.after(actual_confirmationTimeDays)
 
 		return  actual_confirmationTime + reminaing_minutes.minutes
 	end

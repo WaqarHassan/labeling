@@ -18,7 +18,7 @@ class StationStep < ActiveRecord::Base
 			lang = lang.to_i
 		end
 		
-		numberHour = duration_days.present? ? duration_days*8 : 0
+		numberHour = duration_days.present? ? duration_days*9 : 0
 		numberMinute = duration_minutes.present? ? duration_minutes : 0
 
 						# Duration Multiplier
@@ -38,9 +38,6 @@ class StationStep < ActiveRecord::Base
 		total_hours = number_hours + minutes_to_hour
 		actual_confirmation = actual_confirmation.to_time.strftime('%Y-%m-%d %H:%M')
 		actual_confirmation_time = Time.parse(actual_confirmation)
-
-		      puts "BBBBBBBBBBBBBBBBBBBB-----#{BusinessTime::Config.beginning_of_workday}"
-      		   puts "EEEEEEEEEEEEEEEEEEEE******#{BusinessTime::Config.end_of_workday}"
 
 		actual_confirmationTime =  total_hours.business_hours.after(actual_confirmation_time)
 

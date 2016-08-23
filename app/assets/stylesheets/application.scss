@@ -103,8 +103,12 @@ body {
 .project-data .collapsed-icon { background:image-url("col_exp.png") no-repeat; opacity: 0.62;}
 .tspend {width: 60% !important;}
 
+.project-data.project_ia.fix_levels {
+    width: 23%;
+}
+
 .project-data.project_ia {
-    width: 59%;
+    width: 37%;
 }
 
 .no-brd { border-right:none !important; width: 95px}

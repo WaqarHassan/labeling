@@ -5,6 +5,7 @@ class WorkFlow < ActiveRecord::Base
 	has_many :bu_options
 	has_many :statuses
 	has_many :additional_infos
+	has_many :holidays
 
 		class << self
 			

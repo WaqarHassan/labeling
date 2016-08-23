@@ -307,8 +307,10 @@ class OverviewController < ApplicationController
     def calculate_eta_completion(actual_confirmation, workflow_live_step)
       BusinessTime::Config.beginning_of_workday = @workflow.beginning_of_workday
       BusinessTime::Config.end_of_workday = @workflow.end_of_workday
-      puts "%%%%BBBBBBBBBBBBBBBBBBBB-----#{BusinessTime::Config.beginning_of_workday}"
-      puts "^^^^^EEEEEEEEEEEEEEEEEEEE******#{BusinessTime::Config.end_of_workday}"
+
+      @workflow.holidays.each do |holiday|
+        BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
+      end
 
       comp_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
       lang_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
@@ -320,32 +322,48 @@ class OverviewController < ApplicationController
       workflow_live_step.step_completion = step_completion
       workflow_live_step.save!
 
-      object_ids = []
-      object_types = []
-
-      object_ids << workflow_live_step.object_id
-      object_types << workflow_live_step.object_type
-
+                                 # If confirmation occur at L1 level
       if workflow_live_step.object_type == "L1"
+        workflow_live_steps_l1 = WorkflowLiveStep.where(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type).where("id > #{workflow_live_step.id}").order(:id)
+        calculate_eta(workflow_live_steps_l1, workflow_live_step)
+
         workflow_live_step.object.l2s.each do |l2|
-          object_ids << l2.id
-          object_types << 'L2'
+          workflow_live_steps_l2 = WorkflowLiveStep.where(object_id: l2.id, object_type: 'L2').order(:id)
+          calculate_eta(workflow_live_steps_l2, workflow_live_steps_l1.last)
+
           l2.l3s.each do |l3|
-            object_ids << l3.id
-            object_types << 'L3'
+            workflow_live_steps_l3 = WorkflowLiveStep.where(object_id: l3.id, object_type: 'L3').order(:id)
+            calculate_eta(workflow_live_steps_l3, workflow_live_steps_l2.last)
           end
         end
       end
 
-
+                  # If confirmation occur at L2 level
       if workflow_live_step.object_type == "L2"
+        workflow_live_steps_l2 = WorkflowLiveStep.where(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type).where("id > #{workflow_live_step.id}").order(:id)
+        calculate_eta(workflow_live_steps_l2, workflow_live_step)
+
         workflow_live_step.object.l3s.each do |l3|
-          object_ids << l3.id
-          object_types << 'L3'
-        end
+          workflow_live_steps_l3 = WorkflowLiveStep.where(object_id: l3.id, object_type: 'L3').order(:id)
+          calculate_eta(workflow_live_steps_l3, workflow_live_steps_l2.last)
+        end  
       end
 
-      workflow_live_steps = WorkflowLiveStep.where(object_id: object_ids, object_type: object_types).where("id > #{workflow_live_step.id}").order(:id)
+                        # If confirmation occur at L3 level
+      if workflow_live_step.object_type == "L3"
+        workflow_live_steps = WorkflowLiveStep.where(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type).where("id > #{workflow_live_step.id}").order(:id)
+        calculate_eta(workflow_live_steps, workflow_live_step)
+      end
+
+    end
+
+    def calculate_eta(workflow_live_steps, workflow_live_step)
+
+      if workflow_live_steps.present?
+        workflow_live_step_attribute = workflow_live_steps.first
+        comp_attribute_value = workflow_live_step_attribute.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
+        lang_attribute_value = workflow_live_step_attribute.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
+      end
 
       workflow_live_steps.each do |wls|
         pre_workflow_live_step = workflow_live_step
@@ -376,12 +394,13 @@ class OverviewController < ApplicationController
           end
         end
       end
-    end
 
+    end
+    
     def calculate_eta_completion_backup(actual_confirmation, workflow_live_step)
       comp_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
       lang_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
-      
+
       station_step = workflow_live_step.station_step
       step_completion = station_step.calculate_step_completion(actual_confirmation, comp_attribute_value, lang_attribute_value)
 
@@ -419,6 +438,7 @@ class OverviewController < ApplicationController
         end
       end
     end
+    
     def additional_info_params
       params.require(:additional_info).permit(:object_id, :object_type, :status,
        :workflow_station_id, :info_timestamp, :work_flow_id, :note, :user_id)

@@ -16,6 +16,7 @@
 @import "hacks";
 @import "bootstrap-datetimepicker";
 @import "lb_style.scss";
+@import "datepicker";
 
 // Plugins
 @import 'nprogress';
@@ -468,4 +469,8 @@ label.error {
 
 .eta{
     background-color: lightgrey;
+}
+.datepicker {
+    
+    z-index: 9999 !important;
 }

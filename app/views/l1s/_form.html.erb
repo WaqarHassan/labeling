@@ -90,7 +90,7 @@
 	                  		attr_field_value = attr_value_object.present? ? attr_value_object.value : ''
 	                  	end %>
 	                  	<% case att.field_type %>
-	                  		<%when "integer" %>
+	                  		<% when "integer" %>
 	                  			<div class="row">
 	                        		 <div class="col-lg-4">
 	                           			 <label for="Active" class="pull-right echo_patinet form-group"><%= att.label %>  </label> 
@@ -99,7 +99,7 @@
 	                            		<input type="number" name=<%= "attr[#{att.id}]" %>  <%= att.is_required == true ? 'required' : '' %> class="form-control" value= <%= attr_field_value %> >
 	                       			</div>
 	                       		</div>
-	                        <%when "dropdown" %>
+	                        <% when "dropdown" %>
 	                        	<div class="row">
 	                      			<div class="col-lg-4">
 	                         			<label for="Active" class="pull-right echo_patinet form-group">  <%= att.label %>   

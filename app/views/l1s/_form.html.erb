@@ -115,20 +115,27 @@
                   						 </div>
 	                    			</div>
 	                    		</div>
-	                    	<% else %>
+	                    	<% when "date" %>
 	                    		<div class="row">
 	                        		 <div class="col-lg-4">
 	                           			 <label for="Active" class="pull-right echo_patinet form-group"><%= att.label %>
 	                           			 </label> 
 	                       			 </div>
 	                        		<div class="col-lg-6">
-	                            		<input type="date" name=<%= "attr[#{att.id}]" %>  <%= att.is_required == true ? 'required' : '' %> class="datepicker form-control" value= <%= attr_field_value %> >
+	                            		<input type="text" name=<%= "attr[#{att.id}]" %>  <%= att.is_required == true ? 'required' : '' %> class="datepicker form-control" value= <%= attr_field_value %> >
 	                       			</div>
 	                       		</div>
-	                    	
-	                       	
-	                  		
-	                  		<% end %>
+	                       		<%else%>
+	                       		<div class="row">
+	                        		 <div class="col-lg-4">
+	                           			 <label for="Active" class="pull-right echo_patinet form-group"><%= att.label %>
+	                           			 </label> 
+	                       			 </div>
+	                        		<div class="col-lg-6">
+	                            		<input type="text" name=<%= "attr[#{att.id}]" %>  <%= att.is_required == true ? 'required' : '' %> class="datepicker form-control" value= <%= attr_field_value %> >
+	                       			</div>
+	                       		</div>
+	                    	<% end %>
 	             		<% end %>
 	                 <% end %>
 				            		

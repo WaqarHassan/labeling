@@ -69,19 +69,17 @@
                   </div>
                 </div>
                  <% end end %>
-                 
-                <% if @l2.status != 'Active' %>
-                  <div class= "form-group">
-                    <div class="row">
-                      <div class="col-lg-4">
-                        <label for = "ia_name" class="echo_patinet pull-right control-label">Accept/Reject Date:</label>
-                      </div>
-                      <div class="col-lg-6">
-                        <%= f.datetime_field :requested_date,:value => Time.now.strftime("%m/%d/%Y %I:%M %p"), :label => false , :class => "datetimepicker form-control"%>
-                      </div>
+                 <div class= "form-group">
+                  <div class="row">
+                     <div class="col-lg-4">
+                       <label for = "ia_name" class="echo_patinet pull-right control-label">Translation:</label>
                      </div>
-                  </div>
-                  <%end%>
+                     <div class="col-lg-6">
+                       <%= f.check_box :translation ,:checked => true, :class => "pull-left control-label"  %>
+                     </div>
+                   </div>
+                 </div>
+               
 
                  <% if @attr_list.present? %>
                   <% attr_field_value = ''
@@ -90,28 +88,49 @@
                         attr_value_object = @attr_values.find{|attr_value| attr_value.label_attribute_id == att.id }
                         attr_field_value = attr_value_object.present? ? attr_value_object.value : ''
                       end %>
-                    <% if att.field_type == "integer" %>
-                      <div class="row">
-                         <div class="col-lg-4">
-                            <label for="Active" class="pull-right echo_patinet form-group"><%= att.label %>  </label> 
+                      <%case att.field_type %>
+                        <% when "integer" %>
+                          <div class="row">
+                            <div class="col-lg-4">
+                              <label for="Active" class="pull-right echo_patinet form-group"><%= att.label %>  </label> 
+                            </div>
+                            <div class="col-lg-6">
+                              <input type="number" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="form-control" value=<%=attr_field_value%> >
+                            </div>
+                         </div>
+                      <% when  "dropdown" %>
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <label for="Active" class="pull-right echo_patinet form-group">  <%= att.label %>   </label> 
+                          </div>
+                          <div class="col-lg-6">
+                            <% if att.is_required? %>
+                              <%= select_tag "attr[#{att.id}]", options_from_collection_for_select(att.attribute_options, 'value', 'value',attr_field_value), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left', required: true %> 
+                            <% else %>
+                              <%= select_tag "attr[#{att.id}]", options_from_collection_for_select(att.attribute_options, 'value', 'value',attr_field_value), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left'%> 
+                            <% end %>
                         </div>
-                        <div class="col-lg-6">
-                            <input type="number" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="form-control" value=<%=attr_field_value%> >
-                        </div>
-                       </div>
-                  <% else %>
-                    <div class="row">
-                      <div class="col-lg-4">
-                         <label for="Active" class="pull-right echo_patinet form-group">  <%= att.label %>   </label> 
                       </div>
-                    <div class="col-lg-6">
-                      <% if att.is_required? %>
-                        <%= select_tag "attr[#{att.id}]", options_from_collection_for_select(att.attribute_options, 'value', 'value',attr_field_value), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left', required: true %> 
-                      <% else %>
-                        <%= select_tag "attr[#{att.id}]", options_from_collection_for_select(att.attribute_options, 'value', 'value',attr_field_value), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left'%> 
-                      <% end %>
-                    </div>
-                    </div>
+                      <% when "date"%>
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <label for="Active" class="pull-right echo_patinet form-group">  <%= att.label %>   </label> 
+                          </div>
+                          <div class="col-lg-6">
+                            <input type="text" name=<%= "attr[#{att.id}]" %>  <%= att.is_required == true ? 'required' : '' %> class="datepicker form-control" value= <%= attr_field_value %> >
+                        </div>
+                      </div>
+                      <%else%>
+                          <div class="row">
+                            <div class="col-lg-4">
+                              <label for="Active" class="pull-right echo_patinet form-group">  <%= att.label %>   </label> 
+                            </div>
+                            <div class="col-lg-6">
+                             <input type="text" name=<%= "attr[#{att.id}]" %>  <%= att.is_required == true ? 'required' : '' %> class=" form-control" value= <%= attr_field_value %> >
+                            </div>
+                          </div>
+
+
                         
                     <% end %>
                   <% end %>
@@ -134,7 +153,7 @@
               <div class="modal-footer">
                 <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
                 <% if @action.include? 'UPDATE'  %>
-                    <button class="btn save-print-update-edit-btn" name="submit" type="submit" onclick=" return remove_l2_status();"><%= @action%></button>
+                    <button class="btn save-print-update-edit-btn" name="submit" type="submit" onclick=" return set_l2_status('Active');"><%= @action%></button>
                 <%end%>
                 <% if @action.include? 'ADD' or @l2.status == 'Rejected' %>
                     <button class="btn save-print-update-edit-btn" name="submit" type="submit" onclick=" return set_l2_status('Active');">Accept</button>

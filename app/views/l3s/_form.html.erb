@@ -79,7 +79,8 @@
                 attr_value_object = @attr_values.find{|attr_value| attr_value.label_attribute_id == att.id }
                 attr_field_value = attr_value_object.present? ? attr_value_object.value : ''
               end %>
-            <% if att.field_type == "integer" %>
+              <%case att.field_type %>
+            <% when  "integer" %>
               <div class="row">
                   <div class="col-lg-4">
                     <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %>: </label> 
@@ -88,7 +89,7 @@
                     <input type="number" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="form-control" value=<%= attr_field_value %> >
                   </div>
                 </div>
-            <% else %>
+            <% when "dropdown"%>
               <div class="row">
                 <div class="col-lg-4">
                   <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %>: </label> 
@@ -101,6 +102,26 @@
                    <% end %>
                   </div>
               </div>
+              <% when "date"%>
+                  <div class="row">
+                  <div class="col-lg-4">
+                    <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %>: </label> 
+                  </div>
+                    <div class="col-lg-6">
+                    <input type="text" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="datepicker form-control" value=<%= attr_field_value %> >
+                  </div>
+                </div>
+
+              <%else%>
+               <div class="row">
+                  <div class="col-lg-4">
+                    <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %>: </label> 
+                  </div>
+                    <div class="col-lg-6">
+                    <input type="text" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="datepicker form-control" value=<%= attr_field_value %> >
+                  </div>
+                </div>
+
                         
                 <% end %>
             <% end %>

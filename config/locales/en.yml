@@ -108,7 +108,7 @@ en:
             name:
               taken: 'must be unique test 3'
   errors:
-    unknown: 'Oops! Something went wrong. Please try again.'
+    unknown: 'Oops! Something went wrong. Please try again later.'
 
   unauthorized:
     default: 'Sorry, you are not authorized to access the requested page.'

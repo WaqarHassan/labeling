@@ -212,7 +212,7 @@
 								end
 
 								if workflow_live_step.present? %>
-									<td class = "<%= workflow_live_step.actual_confirmation.present? ? 'actual_confirmation' : workflow_live_step.eta.present? ? eta_red_class : '' %>" >
+									<td title= "<%= station.station_name+' - '+ step.step_name %>" class = "<%= workflow_live_step.actual_confirmation.present? ? 'actual_confirmation' : workflow_live_step.eta.present? ? eta_red_class : '' %>">
 										<% if workflow_live_step.actual_confirmation.blank? and workflow_live_step.eta.blank? %>
 											<%= link_to 'Not Started' , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 										<% elsif workflow_live_step.actual_confirmation.present? %>
@@ -222,7 +222,7 @@
 										<% end %> 
 									</td>
 							 <% else %>
-								<td class="<%= step.recording_level == 'L1' ? 'na' : '' %>"  ><%= step.recording_level == 'L1' ? 'N/A' : ''  %></td>	 
+								<td title= "<%= station.station_name+' - '+ step.step_name %>" class="<%= step.recording_level == 'L1' ? 'na' : '' %>"  ><%= step.recording_level == 'L1' ? 'N/A' : ''  %></td>	 
 							 <% end 
 						    end 
 					    end%>
@@ -249,7 +249,8 @@
 									end
 
 									if workflow_live_step.present? %>
-										<td class = "<%= workflow_live_step.actual_confirmation.present? ? 'actual_confirmation' : workflow_live_step.eta.present? ? eta_red_class : '' %>" >
+										<td title= "<%= station.station_name+' - '+ step.step_name %>"
+											class= "<%= workflow_live_step.actual_confirmation.present? ? 'actual_confirmation' : workflow_live_step.eta.present? ? eta_red_class : '' %>" >
 											<% if workflow_live_step.actual_confirmation.blank? and workflow_live_step.eta.blank? %>
 												<%= link_to 'Not Started' , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 											<% elsif workflow_live_step.actual_confirmation.present? %>
@@ -259,7 +260,8 @@
 											<% end %> 
 										</td>
 								 <% else %>
-									<td class="<%= step.recording_level == 'L2' ? 'na' : '' %>" ><%= step.recording_level == 'L2' ? 'N/A' : ''  %></td>	 
+									<td title= "<%= station.station_name+' - '+ step.step_name %>"
+										class="<%= step.recording_level == 'L2' ? 'na' : '' %>" ><%= step.recording_level == 'L2' ? 'N/A' : ''  %></td>	 
 								 <% end 
 							    end 
 						    end%>
@@ -287,7 +289,8 @@
 											end
 
 										if workflow_live_step.present? %>
-											<td class = "<%= workflow_live_step.actual_confirmation.present? ? 'actual_confirmation' : workflow_live_step.eta.present? ? eta_red_class : '' %>" >
+											<td title= "<%= station.station_name+' - '+ step.step_name %>"
+												class = "<%= workflow_live_step.actual_confirmation.present? ? 'actual_confirmation' : workflow_live_step.eta.present? ? eta_red_class : '' %>" >
 												<% if workflow_live_step.actual_confirmation.blank? and workflow_live_step.eta.blank? %>
 													<%= link_to 'Not Started' , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 												<% elsif workflow_live_step.actual_confirmation.present? %>
@@ -297,7 +300,8 @@
 												<% end %> 
 											</td>
 									<%  else %>
-										<td class="<%= step.recording_level == 'L3' ? 'na' : '' %>" ><%= step.recording_level == 'L3' ? 'N/A' : ''  %></td>	 
+										<td title= "<%= station.station_name+' - '+ step.step_name %>"
+											class="<%= step.recording_level == 'L3' ? 'na' : '' %>" ><%= step.recording_level == 'L3' ? 'N/A' : ''  %></td>	 
 									 <% end 
 									end 
 								end%>

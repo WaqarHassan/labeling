@@ -7,5 +7,5 @@ class L2 < ActiveRecord::Base
 	has_many :attribute_values, as: :object
 	has_many :additional_info, as: :object
 
-	validates :name, uniqueness: true
+	validates :name, uniqueness: {:message => "must be unique!" }
 end

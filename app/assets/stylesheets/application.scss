@@ -511,3 +511,16 @@ label.error {
 .na a{
     color: black !important;
 }
+
+.modal-content .errors__container {
+    background-color: #f2d9e2;
+}
+
+.modal-content .alert.alert-dismissable.alert-info {
+    background-color: #a94442;
+}
+
+.datepicker th.next, .datepicker th.prev {
+    cursor: pointer;
+    font-size: 21px;
+}

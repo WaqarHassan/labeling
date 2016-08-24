@@ -100,19 +100,18 @@ en:
     dashboard:
       name: 'Admin'         # Title of admin dashboard on the left
 
-  errors:
-    unknown: 'Oops! Something went wrong. Please try again this.'
-
-  unauthorized:
-    default: 'Sorry, you are not authorized to access the requested page.'
-
   activerecord:
     errors:
       models:
         l1:
           attributes:
             name:
-              taken: 'must be unique test'
+              taken: 'must be unique test 3'
+  errors:
+    unknown: 'Oops! Something went wrong. Please try again.'
+
+  unauthorized:
+    default: 'Sorry, you are not authorized to access the requested page.'
 
   helpers:
     submit:

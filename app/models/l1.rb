@@ -6,7 +6,8 @@ class L1 < ActiveRecord::Base
   has_many :workflow_live_steps, as: :object
   has_many :attribute_values, as: :object
   has_many :additional_info, as: :object
-  validate :uniqueness_of_name
+  validates :name, uniqueness: true
+  #validate :uniqueness_of_name
   #validates :name, uniqueness: {:message => "must be unique!" }
 
   def uniqueness_of_name

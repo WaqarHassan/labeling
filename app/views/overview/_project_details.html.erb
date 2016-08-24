@@ -200,9 +200,19 @@
 						<% workflow_liveSteps = l1.workflow_live_steps
 						@workflow_stations.each do |station|
 							station.station_steps.order(:sequence).each do |step| 
-								workflow_live_step = workflow_liveSteps.find{|wkls| wkls.station_step_id == step.id } 
+								workflow_live_step = workflow_liveSteps.find{|wkls| wkls.station_step_id == step.id }
+								
+								eta_red_class = ''
+								if workflow_live_step.present?
+									if workflow_live_step.eta.present?
+										if DateTime.parse(Time.now.to_s) > DateTime.parse(workflow_live_step.eta.to_s)
+											eta_red_class = 'eta_light_red'
+										end
+									end
+								end
+
 								if workflow_live_step.present? %>
-									<td class = "<%= workflow_live_step.actual_confirmation.present? ? 'actual_confirmation' : workflow_live_step.eta.present? ? 'eta_light_red' : '' %>" >
+									<td class = "<%= workflow_live_step.actual_confirmation.present? ? 'actual_confirmation' : workflow_live_step.eta.present? ? eta_red_class : '' %>" >
 										<% if workflow_live_step.actual_confirmation.blank? and workflow_live_step.eta.blank? %>
 											<%= link_to 'Not Started' , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 										<% elsif workflow_live_step.actual_confirmation.present? %>
@@ -228,8 +238,18 @@
 							@workflow_stations.each do |station|
 								station.station_steps.order(:sequence).each do |step| 
 									workflow_live_step = workflow_liveSteps.find{|wkls| wkls.station_step_id == step.id } 
+
+									eta_red_class = ''
+									if workflow_live_step.present?
+										if workflow_live_step.eta.present?
+											if DateTime.parse(Time.now.to_s) > DateTime.parse(workflow_live_step.eta.to_s)
+												eta_red_class = 'eta_light_red'
+											end
+										end
+									end
+
 									if workflow_live_step.present? %>
-										<td class = "<%= workflow_live_step.actual_confirmation.present? ? 'actual_confirmation' : workflow_live_step.eta.present? ? 'eta_light_red' : '' %>" >
+										<td class = "<%= workflow_live_step.actual_confirmation.present? ? 'actual_confirmation' : workflow_live_step.eta.present? ? eta_red_class : '' %>" >
 											<% if workflow_live_step.actual_confirmation.blank? and workflow_live_step.eta.blank? %>
 												<%= link_to 'Not Started' , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 											<% elsif workflow_live_step.actual_confirmation.present? %>
@@ -256,8 +276,18 @@
 								@workflow_stations.each do |station|
 									station.station_steps.order(:sequence).each do |step| 
 										workflow_live_step = workflow_liveSteps.find{|wkls| wkls.station_step_id == step.id } 
+
+											eta_red_class = ''
+											if workflow_live_step.present?
+												if workflow_live_step.eta.present?
+													if DateTime.parse(Time.now.to_s) > DateTime.parse(workflow_live_step.eta.to_s)
+														eta_red_class = 'eta_light_red'
+													end
+												end
+											end
+
 										if workflow_live_step.present? %>
-											<td class = "<%= workflow_live_step.actual_confirmation.present? ? 'actual_confirmation' : workflow_live_step.eta.present? ? 'eta_light_red' : '' %>" >
+											<td class = "<%= workflow_live_step.actual_confirmation.present? ? 'actual_confirmation' : workflow_live_step.eta.present? ? eta_red_class : '' %>" >
 												<% if workflow_live_step.actual_confirmation.blank? and workflow_live_step.eta.blank? %>
 													<%= link_to 'Not Started' , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 												<% elsif workflow_live_step.actual_confirmation.present? %>

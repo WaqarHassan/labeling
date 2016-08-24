@@ -2,7 +2,9 @@
   <div class='modal-content'>
 
    <%= form_tag update_rework_modal_path, remote: true, :id => 'rework_modal', :class => 'form-horizontal'  do %>
-
+    <div class = 'errors__container'>
+        <%= render 'layouts/messages' %>
+      </div>
    <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">×</button>
      <h1 class="h1-heading-popup">Rework</h1>

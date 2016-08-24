@@ -78,9 +78,9 @@
 				        </div>
 			            <div class="col-lg-6">
 			             <%if @action == 'UPDATE' %>
-				           <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status',@l1.status), {prompt: "please select status"}, {:class=>'form-control pnd-reqst pull-left'} %>
+				           <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status',@l1.status), {prompt: "please select status"}, {:class=>'form-control pnd-reqst pull-left', required: :true} %>
 				         <%else%>
-				           <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status'), {prompt: "please select status"}, {:class=>'form-control pnd-reqst pull-left'} %>
+				           <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status'), {prompt: "please select status"}, {required: :true, :class=>'form-control pnd-reqst pull-left'} %>
 				         <%end%>
 			            </div>
 				    </div>

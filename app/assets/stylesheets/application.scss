@@ -480,13 +480,7 @@ label.error {
     overflow: hidden;
 }
 
-.actual_confirmation{
-    background-color: lightgreen;
-}
 
-.eta{
-    background-color: lightgrey;
-}
 .datepicker {
     
     z-index: 9999 !important;
@@ -494,4 +488,26 @@ label.error {
 
 .string {
     letter-spacing: unset !important;
+}
+
+.actual_confirmation{
+    background-color: #c1f0c1;
+}
+
+.actual_confirmation a{
+    color: green !important;
+}
+
+.eta_light_red {
+    background-color: #ffe6e6;
+}
+.eta_light_red a{
+    color: red !important;
+}
+
+.na {
+    background-color: #e6ffe6;
+}
+.na a{
+    color: black !important;
 }

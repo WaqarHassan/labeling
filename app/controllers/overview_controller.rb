@@ -292,6 +292,7 @@ class OverviewController < ApplicationController
    #POST Task Confirmation
 
   def update_task_confirmation
+    session[:open_confirm_modal] = 'no modal'
     actualConfirmation = params[:workflow_live_step][:actual_confirmation]
     actual_confirmation = L1.set_db_datetime_format(actualConfirmation)
     workflow_live_step = WorkflowLiveStep.find(params[:id])

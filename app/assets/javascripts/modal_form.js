@@ -15,6 +15,8 @@ $(document).ready(function() {
 	$("#ia_modal_form").validate();
 	$("#add_l1_form").validate();
 	$("#add_edit_ecr_form").validate();
+	$("#errors__container").hide();
+
 });
 
 

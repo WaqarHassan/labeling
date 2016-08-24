@@ -1,6 +1,9 @@
 <div class='modal-dialog'>
 	<div class='modal-content'>
 		<%= simple_form_for @l1 , remote: true , :html => { :id => "add_l1_form"} do |f| %>
+			<div class = 'errors__container'>
+				<%= render 'layouts/messages' %>
+		 	</div>
 		<%= f.error_notification %>
 			<div class='modal-header  ui-draggable-handle'>
 			 <button type='button' class='close' data-dismiss='modal'>×</button>

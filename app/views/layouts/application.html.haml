@@ -17,7 +17,7 @@
     - if user_signed_in?
       = render 'layouts/navigation'
     .container#labeling_container
-      .errors__container
+      .errors__container#errors_container
         = render 'layouts/messages'
       = yield
       - if user_signed_in?

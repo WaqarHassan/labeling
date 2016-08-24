@@ -101,7 +101,7 @@ en:
       name: 'Admin'         # Title of admin dashboard on the left
 
   errors:
-    unknown: 'Oops! Something went wrong. Please try again.'
+    unknown: 'Oops! Something went wrong. Please try again this.'
 
   unauthorized:
     default: 'Sorry, you are not authorized to access the requested page.'
@@ -109,10 +109,10 @@ en:
   activerecord:
     errors:
       models:
-        user:
+        l1:
           attributes:
-            email:
-              taken: 'is used by another account'
+            name:
+              taken: 'must be unique test'
 
   helpers:
     submit:

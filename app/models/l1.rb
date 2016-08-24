@@ -6,7 +6,15 @@ class L1 < ActiveRecord::Base
   has_many :workflow_live_steps, as: :object
   has_many :attribute_values, as: :object
   has_many :additional_info, as: :object
-  validates :name, uniqueness: {:message => "must be unique!" }
+  validates :name, uniqueness: true
+  #validates :name, uniqueness: {:message => "must be unique!" }
+
+  def uniqueness_of_name
+   existing_record = Model.find_by_name(name)
+   unless existing_record.nil?
+     errors.add(:name, "Record #{existing_record.id} already has the name #{name}")
+   end
+  end
 
   class << self
 

@@ -108,7 +108,7 @@ en:
             name:
               taken: 'must be unique test 3'
   errors:
-    unknown: 'Name must be unique!.'
+    unknown: 'Validation error: Name must be unique!'
 
   unauthorized:
     default: 'Sorry, you are not authorized to access the requested page.'

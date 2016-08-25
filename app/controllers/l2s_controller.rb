@@ -76,6 +76,7 @@ class L2sController < ApplicationController
           WorkflowLiveStep.create(station_step_id: stp.id, object_id: @l2.id, object_type: 'L2', is_active: nil , eta: '')
         end
       end
+      AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l2.id,object_type: 'L2' , status: @l2.status, user_id: current_user.id)
 
       if @l2.workflow_live_steps.present? && @l2.status == 'Active'
         session[:open_confirm_modal] = 'open_confirm_modal'
@@ -109,6 +110,8 @@ class L2sController < ApplicationController
           end
         end
       end  
+      AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l2.id,object_type: 'L2' , status: @l2.status, user_id: current_user.id)
+
       
       if previous_status == 'Rejected' && @l2.status == 'Active'
         session[:open_confirm_modal] = 'open_confirm_modal'

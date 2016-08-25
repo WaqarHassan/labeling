@@ -71,7 +71,8 @@ Rails.application.routes.draw do
   get '/overview/destroy_seaaion' => 'overview#destroy_seaaion', as: 'destroy_seaaion'
   get '/overview/show_all_db' => 'overview#show_all_db', as: 'show_all_db' 
   post '/overview/add_additional_info' => 'overview#add_additional_info', as: 'add_additional_info'
-  get '/overview/reject_reason_modal' => 'overview#reject_reason_modal', as: 'reject_reason_modal'
+  get '/overview/reject_reason_modal/:id' => 'overview#reject_reason_modal', as: 'reject_reason_modal'
+  post '/overview/save_reject_reason' => 'overview#save_reject_reason', as: 'save_reject_reason'
   get '/overview/get_steps' => 'overview#get_steps', as: 'get_steps'
 
  

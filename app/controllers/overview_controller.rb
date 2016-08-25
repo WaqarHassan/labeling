@@ -255,12 +255,17 @@ class OverviewController < ApplicationController
   end
 
   def reject_reason_modal
-    l2_id = params[:l2_id]
+    l2_id = params[:id]
     @l2 = L2.find(l2_id)
     respond_to do |format|
-      format.html { render :partial => "confirm_modal" }
+      format.html { render :partial => "reject_reason_modal" }
       format.js
     end
+  end
+
+  def save_reject_reason
+    AdditionalInfo.create(additional_info_params)
+    redirect_to root_path, notice: 'Reject reason saved'
   end
 
   def project_deatils_l1
@@ -490,7 +495,7 @@ class OverviewController < ApplicationController
     
     def additional_info_params
       params.require(:additional_info).permit(:object_id, :object_type, :status,
-       :workflow_station_id, :info_timestamp, :work_flow_id, :note, :user_id)
+       :workflow_station_id, :info_timestamp, :work_flow_id, :note, :user_id, :reject_reason)
     end
     def rework_info_params
       params.require(:rework_info).permit(:start_rework_station, 

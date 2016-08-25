@@ -5,6 +5,7 @@ class CreateAdditionalInfos < ActiveRecord::Migration
       t.integer :workflow_station_id
       t.datetime :info_timestamp
       t.text :note
+      t.string :reject_reason
       t.integer :object_id
       t.string :object_type
       t.integer :work_flow_id

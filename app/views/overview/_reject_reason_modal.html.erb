@@ -11,52 +11,34 @@
        <h1 class="h1-heading-popup">Reject Reason</h1>
     </div>
       <div class='modal-body'>
-          <input type="hidden" value=<%=@l2.id%> name="id" >
-  
-          <% if @l2.present? || @l3.present?  %>
-         <div class="form-group">
-           <label class="col-lg-4 control-label"><%= @workflow.L2 %>: </label>
-           <div class="col-lg-8">
-              <span id="" name="">
-                 <% if @l2.present?  %>
-                      <%= @l2.name %>
-              <% elsif @l3.present? %>
-                  <%= @l3.l2.name %>
-                  <% end %>
-              </span>
-           </div>
-         </div>
-         <%end%>
-         <% if @l3.present? %>
-          <div class="form-group">
-             <label class="col-lg-4 control-label"><%= @workflow.L3 %>: </label>
-             <div class="col-lg-8">
-              <span id="" name="">
-                
-                 <% if @l3.present? %>
-                      <%= @l3.name%> 
-                <% end %>
-              </span>
-            </div>
-          </div> 
-          <%end%>
-          <div class="form-group">
-             <label class="col-lg-4 control-label"> <%= @st_name %>:</label>
-              <div class="col-lg-8">
-              <span id="" name=""><%= @st_step %></span>
-            </div>
-          </div>
 
-           <div class="form-group">
-             <label class="col-lg-4 control-label">Timestamp </label>
-             <div class="col-lg-8">
-              <input type="text" class="datetimepicker form-control" id="datetimepicker" name="workflow_live_step[actual_confirmation]" required value="<%=Time.now.strftime("%m/%d/%Y %I:%M %p")%>"  aria-required="true">
-             </div> 
-          </div>
+          <input type="hidden" id="additional_info_object_id" name="additional_info[object_id]" value="<%=@l2.id%>">
+          <input type="hidden" id="additional_info_object_type" name="additional_info[object_type]" value="L2">
+          <input type="hidden" id="additional_info_user_id" name="additional_info[user_id]" value="<%=current_user.id%>">
+          <input type="hidden" id="additional_info_work_flow_id" name="additional_info[work_flow_id]" value="<%=@workflow.id%>">
+
+
+         <div class="form-group">
+			<label class="col-lg-3 control-label">Reason </label>
+            <div class="col-lg-8">
+			    <select id="l1_status" name="additional_info[reject_reason]" required="required" class="form-control pnd-reqst pull-left valid">
+					<option value="internal" >Internal</option>
+					<option value="external" >External</option>
+				</select>
+            </div>
+         </div>
+
+        <div class="form-group">
+         <label class="col-lg-3 control-label">Note </label>
+          <div class="col-lg-8">
+          	<textarea id="reason_note" name="additional_info[note]" maxlength="65535" class="text optional form-control"></textarea>
+         </div>
+    	</div>
+
     </div>
     <div class='modal-footer'>
       <button class='btn btn-danger' data-dismiss='modal' type='button'>Close</button>
-      <button class='btn save-print-update-edit-btn' type='submit'>Update</button>
+      <button class='btn save-print-update-edit-btn' type='submit'>Save</button>
     </div>
    <% end %> 
   </div>

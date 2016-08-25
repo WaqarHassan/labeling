@@ -51,17 +51,16 @@
           $( "#add_l2_modal" ).html( data );
           $("#add_l2_modal").modal('show');
         });
-
       });
     </script>
   <% end %>
 
-<% if session[:open_reason_modal] = 'open_reason_modal'
+<% if session[:open_reason_modal] == 'open_reason_modal'
     session[:open_reason_modal] = 'no modal' %>
     <script type="text/javascript">
       $(document).ready(function() {
         l2_id = '<%= session[:l2_id] %>';
-        $.get( "/overview/reject_reason_modal/"+l2_id, function( data ) {
+        $.get( "/overview/reject_reason_modal/2", function( data ) {
           $( "#reject_reason_modal" ).html( data );
           $("#reject_reason_modal").modal('show');
         });

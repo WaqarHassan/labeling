@@ -51,7 +51,7 @@
         <div class="form-group">
          <label class="col-lg-4 control-label">Status</label>
           <div class="col-lg-6">
-           <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status'), {prompt: "please select status"}, {:class=>'form-control pnd-reqst pull-left'} %> 
+           <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status',@status_), {prompt: "please select status"}, {:class=>'form-control pnd-reqst pull-left'} %> 
           </div>
         </div>
 

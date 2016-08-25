@@ -6,6 +6,10 @@ function updateprojectstatusSubmit(){
 	$('#modal').modal('toggle');
 }
 
+function save_note_only(){
+	$("#save_note_only").val("savenoteonly");
+}
+
 function resetSearchResult(){
 	$.ajax({
 	  type:"GET",

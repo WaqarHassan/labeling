@@ -9,7 +9,7 @@
         <h1 class="h1-heading-popup">Additional Info</h1>
       </div>
       <div class='modal-body'>
-       <input type="hidden" name="save_note_only" id = "save_note_only">
+       <input type="hidden" name="save_note_only" id ="save_note_only">
         <%if @type == 'L1' %>
 
           <div class="form-group">
@@ -123,7 +123,7 @@
       <button class='btn btn-danger' data-dismiss='modal' type='button'>Close</button>
       <button class='btn save-print-update-edit-btn' type='submit'>Save</button>
       <button class='btn save-print-update-edit-btn' 
-        onclick=" $("#save_note_only").val("savenoteonly"); "  type='submit'>Save Note only</button>
+        onclick="return save_note_only();"  type='submit'>Save Note only</button>
 
     </div>
     <% end %>

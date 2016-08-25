@@ -66,6 +66,7 @@ class L3sController < ApplicationController
           WorkflowLiveStep.create(station_step_id: stp.id, object_id: @l3.id, object_type: 'L3', is_active: nil , eta: '')
         end
       end
+      AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l3.id,object_type: 'L3' , status: @l3.status, user_id: current_user.id)
 
        if @l3.workflow_live_steps.present?
          workflow_step = @l3.workflow_live_steps.first
@@ -98,6 +99,8 @@ class L3sController < ApplicationController
           end
         end
       end  
+      AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l3.id,object_type: 'L3' , status: @l3.status, user_id: current_user.id)
+
       redirect_to root_path, notice: @workflow.L3+' was successfully updated.'
     else
       render :edit

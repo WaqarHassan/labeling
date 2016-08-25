@@ -9,12 +9,13 @@
         <h1 class="h1-heading-popup">Additional Info</h1>
       </div>
       <div class='modal-body'>
+       <input type="hidden" name="save_note_only" id = "save_note_only">
         <%if @type == 'L1' %>
 
           <div class="form-group">
             <label class="col-lg-4 control-label"> <%= @workflow.L1 %>  </label>
               <div class="col-lg-6">
-                <%=  link_to @l1.name, edit_l1_path(@l1.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#l1_update_popup' , "data-dismiss" => "modal"} %>
+                <%=  link_to @l1.name, edit_l1_path(@l1.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_l1_modal' , "data-dismiss" => "modal"} %>
               </div>
           </div>
 
@@ -22,6 +23,8 @@
           <%= f.hidden_field :object_type, :value => 'L1' %>
           <%= f.hidden_field :user_id, :value => current_user.id %>
           <%= f.hidden_field :work_flow_id, :value => @workflow.id %>
+         
+
         <%elsif @type == 'L2'%>
           <div class="form-group">
             <label class="col-lg-4 control-label"> <%= @workflow.L2 %>  </label>
@@ -34,6 +37,7 @@
           <%= f.hidden_field :object_type, :value => 'L2' %>
           <%= f.hidden_field :user_id, :value => current_user.id %>
           <%= f.hidden_field :work_flow_id, :value => @workflow.id %>
+
         <%else%>
           <div class="form-group">
             <label class="col-lg-4 control-label"> <%= @workflow.L3 %>  </label>
@@ -118,6 +122,9 @@
 
       <button class='btn btn-danger' data-dismiss='modal' type='button'>Close</button>
       <button class='btn save-print-update-edit-btn' type='submit'>Save</button>
+      <button class='btn save-print-update-edit-btn' 
+        onclick=" $("#save_note_only").val("savenoteonly"); "  type='submit'>Save Note only</button>
+
     </div>
     <% end %>
   </div>

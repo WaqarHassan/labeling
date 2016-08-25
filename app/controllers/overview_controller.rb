@@ -99,22 +99,16 @@ class OverviewController < ApplicationController
        AdditionalInfo.create(additional_info_params_note_only)
       else
          AdditionalInfo.create(additional_info_params)
-        
-      end
-      if params[:additional_info][:object_type] == 'L1'
-        l1 = L1.find(params[:additional_info][:object_id])
-        l1.update(status: params[:additional_info][:status])
-
-      elsif params[:additional_info][:object_type] == 'L2'
-
-         l2 = L2.find(params[:additional_info][:object_id])
-         l2.update(status: params[:additional_info][:status])
-
-      elsif params[:additional_info][:object_type] == 'L3'
-         l3 = L3.find(params[:additional_info][:object_id])
-        l3.update(status: params[:additional_info][:status])
-          
-          
+        if params[:additional_info][:object_type] == 'L1'
+          l1 = L1.find(params[:additional_info][:object_id])
+          l1.update(status: params[:additional_info][:status])
+        elsif params[:additional_info][:object_type] == 'L2'
+           l2 = L2.find(params[:additional_info][:object_id])
+           l2.update(status: params[:additional_info][:status])
+        elsif params[:additional_info][:object_type] == 'L3'
+           l3 = L3.find(params[:additional_info][:object_id])
+          l3.update(status: params[:additional_info][:status])
+        end
       end
       #abort()
       redirect_to root_path, notice: 'Additional Info was successfully created.'

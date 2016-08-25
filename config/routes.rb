@@ -3,9 +3,6 @@ Rails.application.routes.draw do
   
   resources :l2s
 
-  get '/l2s/new(/:l1_id)(.:format)' => 'l2s#new', as: 'add_new_l2'
-
-
   resources :rework_infos
   resources :archives
   resources :notes
@@ -21,6 +18,7 @@ Rails.application.routes.draw do
 
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin' if defined? RailsAdmin
 
+  get '/l2s/new(/:l1_id)(.:format)' => 'l2s#new', as: 'add_new_l2'
   get '/l3s/new(/:l2_id)' => 'l3s#new', as: 'add_new_l3'
 
   # Static pages
@@ -51,7 +49,10 @@ Rails.application.routes.draw do
     resources :authentications, path: 'accounts'
   end
 
-  get '/overview/open_info_modal/:l2_id' => 'overview#open_info_modal', as: 'open_info_modal'
+  get '/overview/open_info_modal_l1/:l1_id' => 'overview#open_info_modal_l1', as: 'open_info_modal_l1'
+  
+  get '/overview/open_info_modal_l2/:l2_id' => 'overview#open_info_modal_l2', as: 'open_info_modal_l2'
+
   get '/overview/open_info_modal_l3/:l3_id' => 'overview#open_info_modal_l3', as: 'open_info_modal_l3'
   
   get '/overview/open_rework_modal(/:wf_step_id)(/:l2_id)' => 'overview#open_rework_modal', as: 'open_rework_modal'
@@ -60,7 +61,9 @@ Rails.application.routes.draw do
   get '/overview/add_project_modal' => 'overview#add_project_modal', as: 'add_project_modal' 
   get '/overview/add_ecr_modal/:id' => 'overview#add_ecr_modal', as: 'add_ecr_modal'
   get '/overview/add_ia_list_modal' => 'overview#add_ia_list_modal', as: 'add_ia_list_modal'
-  get '/overview/l1_status_popup/:id' => 'overview#l1_status_popup', as: 'l1_status_popup'
+
+  #get '/overview/l1_status_popup/:id' => 'overview#l1_status_popup', as: 'l1_status_popup'
+
   get '/overview/update_workflow_status/:workflow_id' => 'overview#update_workflow_status', as: 'update_workflow_status'
   get '/overview/project_deatils_l1/:l1_id' => 'overview#project_deatils_l1', as: 'project_deatils_l1'
   get '/overview/project_deatils_l2/:l2_id' => 'overview#project_deatils_l2', as: 'project_deatils_l2'

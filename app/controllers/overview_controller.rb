@@ -51,7 +51,21 @@ class OverviewController < ApplicationController
     end
 	end
 
-   def open_info_modal
+  def open_info_modal_l1
+    @type = 'L1' 
+    @l1 = L1.find(params[:l1_id])
+    @additional_info = AdditionalInfo.new
+    @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
+    @info_status = @workflow.statuses.where(recording_level: 'L1')
+    @additional_info_data = @workflow.additional_infos.where(object_id: @l1.id, object_type: 'L1').order(:id)
+    respond_to do |format|
+      format.html
+      format.js
+    end
+   end
+
+   def open_info_modal_l2
+    @type = 'L2'
     @l2 = L2.find(params[:l2_id])
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
@@ -63,13 +77,8 @@ class OverviewController < ApplicationController
     end
    end
 
-   def add_additional_info
-      params[:additional_info][:info_timestamp] = L1.set_db_datetime_format(params[:additional_info][:info_timestamp])
-      AdditionalInfo.create(additional_info_params)
-      redirect_to root_path, notice: 'Additional Info was successfully created.'
-   end
- 
    def open_info_modal_l3
+    @type = 'L3'
     @l3 = L3.find(params[:l3_id])
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
@@ -81,14 +90,37 @@ class OverviewController < ApplicationController
     end
    end
 
-   def l1_status_popup
-      @l1 = L1.find(params[:id])
-      @status = @workflow.statuses.where(recording_level: 'L1')
-      respond_to do |format|
-      format.html
-      format.js
-    end
+   def add_additional_info
+      params[:additional_info][:info_timestamp] = L1.set_db_datetime_format(params[:additional_info][:info_timestamp])
+      AdditionalInfo.create(additional_info_params)
+      if params[:additional_info][:object_type] == 'L1'
+        l1 = L1.find(params[:additional_info][:object_id])
+        l1.update(status: params[:additional_info][:status])
+
+      elsif params[:additional_info][:object_type] == 'L2'
+         l2 = L2.find(params[:additional_info][:object_id])
+        l2.update(status: params[:additional_info][:status])
+
+      elsif params[:additional_info][:object_type] == 'L3'
+         l3 = L3.find(params[:additional_info][:object_id])
+        l3.update(status: params[:additional_info][:status])
+          
+          
+      end
+      #abort()
+      redirect_to root_path, notice: 'Additional Info was successfully created.'
    end
+ 
+   
+
+   # def l1_status_popup
+   #    @l1 = L1.find(params[:id])
+   #    @status = @workflow.statuses.where(recording_level: 'L1')
+   #    respond_to do |format|
+   #    format.html
+   #    format.js
+   #  end
+   # end
  
 
   def get_steps

@@ -2,7 +2,6 @@ $(document).ready(function() {
 	console.log('modal  form');
 	$('.datetimepicker').datetimepicker({maxDate : moment.now()});
 	$('.datepicker_only').datepicker({format: 'mm/dd/yyyy' , autoclose: true });
-	//$('.datepicker_only').datetimepicker({format: 'MM/DD/YYYY' , autoclose: true });
 
 	$('.modal-dialog').draggable({
     	handle: ".modal-header"
@@ -19,11 +18,14 @@ $(document).ready(function() {
 
 });
 
-
 function set_l2_status(status){
 	$('#l2_status').val(status);
 }
 
 function remove_l2_status(){
 	$('#l2_status').remove();
+}
+
+function onlySaveNote(){
+	$('#save_note_only').val("savenoteonly");
 }

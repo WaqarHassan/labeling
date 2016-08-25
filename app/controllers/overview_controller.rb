@@ -252,7 +252,8 @@ class OverviewController < ApplicationController
   end
 
   def reject_reason_modal
-    @l2_id = params[:l2_id]
+    l2_id = params[:l2_id]
+    @l2 = L2.find(l2_id)
     respond_to do |format|
       format.html { render :partial => "confirm_modal" }
       format.js

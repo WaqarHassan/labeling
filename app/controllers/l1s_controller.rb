@@ -68,6 +68,8 @@ class L1sController < ApplicationController
            session[:workflow_step_id] = workflow_step.id
          end  
        end
+      AdditionalInfo.create(object_id: @l1.id,object_type: 'L1' , status: @l1.status, user_id: current_user.id)
+
       session[:l_type] = 'l1'
       session[:l_id] = @l1.id
       redirect_to root_path, notice: @workflow.L1+' was successfully created.'

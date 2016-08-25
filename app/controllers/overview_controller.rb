@@ -53,6 +53,7 @@ class OverviewController < ApplicationController
   def open_info_modal_l1
     @type = 'L1' 
     @l1 = L1.find(params[:l1_id])
+    @status_ = @l1.status
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @info_status = @workflow.statuses.where(recording_level: 'L1')
@@ -66,6 +67,7 @@ class OverviewController < ApplicationController
    def open_info_modal_l2
     @type = 'L2'
     @l2 = L2.find(params[:l2_id])
+    @status_ = @l2.status
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @info_status = @workflow.statuses.where(recording_level: 'L2')
@@ -79,6 +81,7 @@ class OverviewController < ApplicationController
    def open_info_modal_l3
     @type = 'L3'
     @l3 = L3.find(params[:l3_id])
+    @status_ = @l3.status
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @info_status = @workflow.statuses.where(recording_level: 'L3')

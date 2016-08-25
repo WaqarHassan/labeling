@@ -57,7 +57,7 @@ class OverviewController < ApplicationController
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @info_status = @workflow.statuses.where(recording_level: 'L1')
-    @additional_info_data = @workflow.additional_infos.where(object_id: @l1.id, object_type: 'L1').order(:id)
+    @additional_info_data = @workflow.additional_infos.where(object_id: @l1.id, object_type: 'L1').order(id: :desc)
     respond_to do |format|
       format.html
       format.js
@@ -71,7 +71,7 @@ class OverviewController < ApplicationController
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @info_status = @workflow.statuses.where(recording_level: 'L2')
-    @additional_info_data = @workflow.additional_infos.where(object_id: @l2.id, object_type: 'L2').order(:id)
+    @additional_info_data = @workflow.additional_infos.where(object_id: @l2.id, object_type: 'L2').order(id: :desc)
     respond_to do |format|
       format.html
       format.js
@@ -85,7 +85,7 @@ class OverviewController < ApplicationController
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @info_status = @workflow.statuses.where(recording_level: 'L3')
-    @additional_info_data = @workflow.additional_infos.where(object_id: @l3.id, object_type: 'L3').order(:id)
+    @additional_info_data = @workflow.additional_infos.where(object_id: @l3.id, object_type: 'L3').order(id: :desc)
     respond_to do |format|
       format.html
       format.js

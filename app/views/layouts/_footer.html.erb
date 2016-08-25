@@ -60,7 +60,7 @@
     <script type="text/javascript">
       $(document).ready(function() {
         l2_id = '<%= session[:l2_id] %>';
-        $.get( "/overview/reject_reason_modal/2", function( data ) {
+        $.get( "/overview/reject_reason_modal/"+l2_id, function( data ) {
           $( "#reject_reason_modal" ).html( data );
           $("#reject_reason_modal").modal('show');
         });

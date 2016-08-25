@@ -90,19 +90,26 @@
             <div class="col-lg-6 add_note_div">
               <% @additional_info_data.each do |add_info| 
                 user_name = add_info.user.first_name.present? ? add_info.user.first_name : '' %>
-                 <% if add_info.status.present? %>
+
+                  <% if add_info.status.present? %>
                     <%= add_info.status+" by "+user_name+" on "+add_info.created_at.strftime("%m/%d/%Y %I:%M %p")  %>
-                   <% else %> 
+                    <% else %> 
                     <%= "By "+user_name+" on "+add_info.created_at.strftime("%m/%d/%Y %I:%M %p")  %>
                   <% end %> 
-                  <br>
+                    <br>
                   <% if add_info.workflow_station.present? %>
                     <strong>Station:</strong> <%= add_info.workflow_station.station_name %>
                     <br>
                   <% end %>
+
+                  <% if add_info.reject_reason.present? %>
+                    <strong>Rejected Reason:</strong> <%= add_info.reject_reason %>
+                    <br>
+                  <%end%>
+
                   <% if add_info.note.present? %>
-                  <strong>Note:</strong> <%= add_info.note %>
-                  <br>
+                    <strong>Note:</strong> <%= add_info.note %>
+                    <br>
                   <%end%>
                   ----------------------
                   <br>

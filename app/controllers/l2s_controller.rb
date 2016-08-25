@@ -63,19 +63,13 @@ class L2sController < ApplicationController
 
       workflow_id = @l2.l1.work_flow_id
       l2_id = @l2.id
-
-      if @l2.status != ''
-        save_activity_log
-      end 
-      if @l2.status == 'Rejected'
-        save_initial_status
-      end
   
       @l2.l1.work_flow.workflow_stations.order(:sequence).each do |station|
         station.station_steps.where(recording_level: 'L2').order(:sequence).each do |stp|
           WorkflowLiveStep.create(station_step_id: stp.id, object_id: @l2.id, object_type: 'L2', is_active: nil , eta: '')
         end
       end
+
       AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l2.id,object_type: 'L2' , status: @l2.status, user_id: current_user.id)
 
       if @l2.workflow_live_steps.present? && @l2.status == 'Active'
@@ -110,21 +104,20 @@ class L2sController < ApplicationController
           end
         end
       end  
-      AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l2.id,object_type: 'L2' , status: @l2.status, user_id: current_user.id)
 
-      
+      if params[:l2][:status].present?
+        AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l2.id,object_type: 'L2' , status: @l2.status, user_id: current_user.id)
+      end
+
       if previous_status == 'Rejected' && @l2.status == 'Active'
         session[:open_confirm_modal] = 'open_confirm_modal'
         session[:workflow_step_id] = @l2.workflow_live_steps.first.id
         session[:l_number_id] = @l2.id
-      elsif @l2.status == 'Rejected'
+      elsif params[:l2][:status] == 'Rejected'
         session[:open_reason_modal] = 'open_reason_modal'
         session[:l2_id] = @l2.id  
       end
 
-      if params[:l2][:status].present?
-        save_activity_log(previous_status)
-      end
       redirect_to root_path, notice: @workflow.L2+' was successfully updated.'
     else
       render :edit
@@ -138,15 +131,15 @@ class L2sController < ApplicationController
   end
   private
 
-    def save_activity_log(previous_status = '')
-      if previous_status == 'Rejected' || previous_status == '' 
-        current_status = params[:l2][:status] 
-        ActivityLog.create(object_id: @l2.id,object_type: 'L2' , current_value: current_status,previous_value: previous_status, user_id: current_user.id)
-      end
-    end
-    def save_initial_status
-      AdditionalInfo.create(workflow_station_id: @l2.l1.work_flow.workflow_stations.first.id,user_id: current_user.id, status: @l2.status ,object_id: @l2.id, object_type: 'L2', work_flow_id: @workflow.id, )
-    end
+    # def save_activity_log(previous_status = '')
+    #   if previous_status == 'Rejected' || previous_status == '' 
+    #     current_status = params[:l2][:status] 
+    #     ActivityLog.create(object_id: @l2.id,object_type: 'L2' , current_value: current_status,previous_value: previous_status, user_id: current_user.id)
+    #   end
+    # end
+    # def save_initial_status
+    #   AdditionalInfo.create(workflow_station_id: @l2.l1.work_flow.workflow_stations.first.id,user_id: current_user.id, status: @l2.status ,object_id: @l2.id, object_type: 'L2', work_flow_id: @workflow.id, )
+    # end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_l2

@@ -19,11 +19,11 @@
 						<th><%= @workflow.L3 %></th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody> 
 						<% @l1s.each do |l1| %>
 							<tr>
 								<td colspan="3" class="project">
-									<%=  link_to l1.name, l1_status_popup_path(l1), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#project_status_popup'} %>
+									<%=  link_to l1.name, open_info_modal_l1_path(l1), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#info_modal_popup'} %>
 								</td>
 							</tr>  
 							<%if @show_search_result_l2 == 'filter_type_l2' 
@@ -35,7 +35,7 @@
 								<tr>
 									<td></td>
 									<td colspan="2">
-									<%= link_to l2.name, open_info_modal_path(l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
+									<%= link_to l2.name, open_info_modal_l2_path(l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
 								</tr>
 
 								<%if @show_search_result_l3 == 'filter_type_l3' 

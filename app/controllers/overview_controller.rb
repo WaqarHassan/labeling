@@ -94,14 +94,21 @@ class OverviewController < ApplicationController
 
    def add_additional_info
       params[:additional_info][:info_timestamp] = L1.set_db_datetime_format(params[:additional_info][:info_timestamp])
-      AdditionalInfo.create(additional_info_params)
+      
+      if params[:save_note_only] = 'savenoteonly'
+       AdditionalInfo.create(additional_info_params_note_only)
+      else
+         AdditionalInfo.create(additional_info_params)
+        
+      end
       if params[:additional_info][:object_type] == 'L1'
         l1 = L1.find(params[:additional_info][:object_id])
         l1.update(status: params[:additional_info][:status])
 
       elsif params[:additional_info][:object_type] == 'L2'
+
          l2 = L2.find(params[:additional_info][:object_id])
-        l2.update(status: params[:additional_info][:status])
+         l2.update(status: params[:additional_info][:status])
 
       elsif params[:additional_info][:object_type] == 'L3'
          l3 = L3.find(params[:additional_info][:object_id])
@@ -491,6 +498,10 @@ class OverviewController < ApplicationController
     def additional_info_params
       params.require(:additional_info).permit(:object_id, :object_type, :status,
        :workflow_station_id, :info_timestamp, :work_flow_id, :note, :user_id)
+    end
+    def additional_info_params_note_only
+      params.require(:additional_info).permit(:object_id, :object_type,
+        :work_flow_id, :note, :user_id)
     end
     def rework_info_params
       params.require(:rework_info).permit(:start_rework_station, 

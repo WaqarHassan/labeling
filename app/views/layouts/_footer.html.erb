@@ -2,6 +2,7 @@
 <div class="modal fade" id="rework_modal_popup" role="dialog"></div>
 <div class="modal fade" id="confirm_modal_popup" role="dialog"></div>
 <div class="modal fade" id="add_l2_modal" role="dialog"> </div>
+<div class="modal fade" id="reject_reason_modal" role="dialog"> </div>
 
 <div class="modal fade" id="add_l1_modal" role="dialog"></div>	
 
@@ -55,6 +56,18 @@
     </script>
   <% end %>
 
+<% if session[:open_reason_modal] = 'open_reason_modal'
+    session[:open_reason_modal] = 'no modal' %>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        l2_id = '<%= session[:l2_id] %>';
+        $.get( "/overview/reject_reason_modal/"+l2_id, function( data ) {
+          $( "#reject_reason_modal" ).html( data );
+          $("#reject_reason_modal").modal('show');
+        });
+      });
+    </script>
+  <% end %>
 <ul>
   <li>
     <%= link_to 'Terms', terms_path %>

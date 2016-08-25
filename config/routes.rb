@@ -68,12 +68,9 @@ Rails.application.routes.draw do
   get '/overview/destroy_seaaion' => 'overview#destroy_seaaion', as: 'destroy_seaaion'
   get '/overview/show_all_db' => 'overview#show_all_db', as: 'show_all_db' 
   post '/overview/add_additional_info' => 'overview#add_additional_info', as: 'add_additional_info'
+  get '/overview/reject_reason_modal' => 'overview#reject_reason_modal', as: 'reject_reason_modal'
   get '/overview/get_steps' => 'overview#get_steps', as: 'get_steps'
 
-  #get '/overview/index(/:l_id/:l_type)' => 'overview', as: 'my_root'
-
-  
-  #what we write after 'as' keyword becomes path
  
   post '/overview/update_task_confirmation' =>  'overview#update_task_confirmation', as: 'update_task_confirmation'
   post '/overview/update_rework_modal' => 'overview#update_rework_modal', as: 'update_rework_modal'

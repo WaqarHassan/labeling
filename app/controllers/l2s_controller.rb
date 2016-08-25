@@ -80,6 +80,9 @@ class L2sController < ApplicationController
       if @l2.workflow_live_steps.present? && @l2.status == 'Active'
         session[:open_confirm_modal] = 'open_confirm_modal'
         session[:workflow_step_id] = @l2.workflow_live_steps.first.id
+      elsif @l2.status == 'Rejected'
+        session[:open_reason_modal] = 'open_reason_modal'
+        session[:l2_id] = @l2.id
       end
 
       session[:l_type] = 'l2'
@@ -106,11 +109,16 @@ class L2sController < ApplicationController
           end
         end
       end  
+      
       if previous_status == 'Rejected' && @l2.status == 'Active'
         session[:open_confirm_modal] = 'open_confirm_modal'
         session[:workflow_step_id] = @l2.workflow_live_steps.first.id
         session[:l_number_id] = @l2.id
+      elsif @l2.status == 'Rejected'
+        session[:open_reason_modal] = 'open_reason_modal'
+        session[:l2_id] = @l2.id  
       end
+
       if params[:l2][:status].present?
         save_activity_log(previous_status)
       end

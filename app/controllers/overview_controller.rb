@@ -5,8 +5,7 @@ class OverviewController < ApplicationController
     @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
-     
-      
+          
      if session[:l_type] == 'l1' 
         if session[:open_confirm_modal] != 'open_confirm_modal'
           session[:l_type] = nil
@@ -216,6 +215,14 @@ class OverviewController < ApplicationController
 
     respond_to do |format|
       format.html
+      format.js
+    end
+  end
+
+  def reject_reason_modal
+    @l2_id = params[:l2_id]
+    respond_to do |format|
+      format.html { render :partial => "confirm_modal" }
       format.js
     end
   end

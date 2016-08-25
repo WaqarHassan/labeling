@@ -57,13 +57,13 @@
                     </div>
                     <div class="col-lg-6">
                     <% if @l2_bu.split('|')[1] == 'R' or (@l2_bu.split('|')[1] == 'R' and @action == 'UPDATE') %>
-                      <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value',@l2.business_unit),{prompt: 'please select business units'}, {:class=>'form-control pnd-reqst pull-left', required: true }%>
+                      <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value',@l2.business_unit),{prompt: 'please select Business Unit'}, {:class=>'form-control pnd-reqst pull-left', required: true }%>
                       <%else%>
                          <%if @action == 'UPDATE' %>
                            <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value',@l2.business_unit),{:include_blank => true}, {:class=>'form-control pnd-reqst pull-left', required: false }%>
                              
                           <%else%>
-                             <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select business units'}, {:class=>'form-control pnd-reqst pull-left', required: false }%>
+                             <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select Business Unit'}, {:class=>'form-control pnd-reqst pull-left', required: false }%>
                           <%end%>
                       <%end%>
 

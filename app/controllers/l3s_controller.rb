@@ -12,10 +12,11 @@ class L3sController < ApplicationController
 
   # GET /l3s/new
   def new
-    @attr_list = @workflow.label_attributes.where(recording_level: 'L3', is_visible: true)
+    @attr_list = @workflow.label_attributes.where(recording_level: 'L3', is_visible: true).order(:sequence)
     @action = 'ADD'
     @btn_action = 'SAVE'
     @l3_bu = @workflow.l3_bu
+    @status_list = @workflow.statuses.where(recording_level: 'L3')
     @bu_options = @workflow.bu_options.where(recording_level: 'L3')
     if params.has_key?(:l2_id)
       @show_projects = 'readonly'
@@ -37,7 +38,8 @@ class L3sController < ApplicationController
     @l3_bu = @workflow.l3_bu
     @bu_options = @workflow.bu_options.where(recording_level: 'L3')
     @l2 = @l3.l2
-    @attr_list = @workflow.label_attributes.where(recording_level: 'L3', is_visible: true)
+    @status_list = @workflow.statuses.where(recording_level: 'L3')
+    @attr_list = @workflow.label_attributes.where(recording_level: 'L3', is_visible: true).order(:sequence)
     @attr_values = @l3.attribute_values
     @action = 'UPDATE'
     @btn_action = 'UPDATE'

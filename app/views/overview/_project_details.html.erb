@@ -147,7 +147,7 @@
 								  end %>
 								<% l3_rows.each do |l3| %>
 									<tr>
-										<td class="_data "><%= l3.is_active == true ? 'Active' : '' %></td> 
+										<td class="_data "><%= l3.status %></td> 
 										<td class="_data "><%= l3.business_unit %></td> 
 											<% attribute_values_l3_data = l3.attribute_values
 											attributes = []

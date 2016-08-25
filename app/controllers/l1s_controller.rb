@@ -19,8 +19,8 @@ class L1sController < ApplicationController
     @action = 'ADD'
     @btn_action = 'SAVE'
     @bu_options = @workflow.bu_options.where(recording_level: 'L1')
-    @info_status = @workflow.statuses.where(recording_level: 'L1')
-    @attr_list = @workflow.label_attributes.where(recording_level: 'L1', is_visible: true)
+    @status_list = @workflow.statuses.where(recording_level: 'L1')
+    @attr_list = @workflow.label_attributes.where(recording_level: 'L1', is_visible: true).order(:sequence)
     @l1 = L1.new
     respond_to do |format|
       format.html
@@ -34,8 +34,8 @@ class L1sController < ApplicationController
     @bu_options = @workflow.bu_options.where(recording_level: 'L1')
     @action = 'UPDATE'
     @btn_action = 'UPDATE'
-    @info_status = @workflow.statuses.where(recording_level: 'L1')
-    @attr_list = @workflow.label_attributes.where(recording_level: 'L1', is_visible: true)
+    @status_list = @workflow.statuses.where(recording_level: 'L1')
+    @attr_list = @workflow.label_attributes.where(recording_level: 'L1', is_visible: true).order(:sequence)
     @attr_values = @l1.attribute_values
     respond_to do |format|
       format.html

@@ -48,13 +48,13 @@
 		                    </div>
 		                    <div class="col-lg-6">
 		                    <% if @l1_bu.split('|')[1] == 'R' %>
-		                      <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select business units'}, {:class=>'form-control pnd-reqst pull-left', required: true }%>
+		                      <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select Business Unit'}, {:class=>'form-control pnd-reqst pull-left', required: true }%>
 		                      <%else%>
 		                      <%if @action == 'UPDATE' %>
 		                       <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value',@l1.business_unit),{:include_blank => true}, {:class=>'form-control pnd-reqst pull-left', required: false }%>
 		                         
 		                          <%else%>
-		                          	 <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select business units'}, {:class=>'form-control pnd-reqst pull-left', required: false }%>
+		                          	 <%= f.select :business_unit, options_from_collection_for_select(@bu_options, 'value', 'value'),{prompt: 'please select Business Unit'}, {:class=>'form-control pnd-reqst pull-left', required: false }%>
 		                          <%end%>
 		                      <%end%>
 
@@ -77,11 +77,17 @@
 			               <label for="Active" class="pull-right echo_patinet form-group"> Status  </label> 
 				        </div>
 			            <div class="col-lg-6">
-			             <%if @action == 'UPDATE' %>
-				           <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status',@l1.status), {prompt: "please select status"}, {:class=>'form-control pnd-reqst pull-left', required: :true} %>
-				         <%else%>
-				           <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status'), {prompt: "please select status"}, {required: :true, :class=>'form-control pnd-reqst pull-left'} %>
-				         <%end%>
+			             <% if @l1.status.present?
+			             		selected_status = @l1.status
+			             	else
+			             		selected_status = 'Active'
+			             	end
+			              %>
+						    <select id="l1_status" name="l1[status]" required="required" class="form-control pnd-reqst pull-left valid">
+						    	<% @status_list.each do |st| %>
+									<option value="<%=st.status%>" <%= st.status == selected_status ? 'selected' : '' %> ><%=st.status%></option>
+								<% end %>
+							</select>
 			            </div>
 				    </div>
 

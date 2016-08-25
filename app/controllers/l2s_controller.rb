@@ -14,7 +14,7 @@ class L2sController < ApplicationController
 
   # GET /ia/new
   def new
-    @attr_list = @workflow.label_attributes.where(recording_level: 'L2', is_visible: true)
+    @attr_list = @workflow.label_attributes.where(recording_level: 'L2', is_visible: true).order(:sequence)
     @action = 'ADD'
     @bu_options = @workflow.bu_options.where(recording_level: 'L2')
     @l2_bu = @workflow.l2_bu
@@ -37,7 +37,7 @@ class L2sController < ApplicationController
   # GET /ia/1/edit
   def edit
     
-    @attr_list = @workflow.label_attributes.where(recording_level: 'L2', is_visible: true)
+    @attr_list = @workflow.label_attributes.where(recording_level: 'L2', is_visible: true).order(:sequence)
     @attr_values = @l2.attribute_values
     @bu_options = @workflow.bu_options.where(recording_level: 'L2')
     @l2_bu = @workflow.l2_bu

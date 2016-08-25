@@ -298,7 +298,7 @@ class OverviewController < ApplicationController
     workflow_live_step = WorkflowLiveStep.find(params[:id])
     calculate_eta_completion(actual_confirmation, workflow_live_step)
     if workflow_live_step.object_type == 'L3'
-       workflow_live_step.object.update(:is_active => true)
+       workflow_live_step.object.update(:status => 'Active')
     elsif workflow_live_step.object_type == 'L2' && workflow_live_step.object.status == 'Rejected'
       workflow_live_step.object.update(:status => 'Active')
       ActivityLog.create(object_id: workflow_live_step.object.id,object_type: 'L2' , current_value: 'Active' ,previous_value: 'Rejected', user_id: current_user.id)
@@ -319,9 +319,10 @@ class OverviewController < ApplicationController
 
       comp_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
       lang_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
-      
+      hours_per_workday = @workflow.hours_per_workday.present? ? @workflow.hours_per_workday : 1
+
       station_step = workflow_live_step.station_step
-      step_completion = station_step.calculate_step_completion(actual_confirmation, comp_attribute_value, lang_attribute_value)
+      step_completion = station_step.calculate_step_completion(actual_confirmation, comp_attribute_value, lang_attribute_value, hours_per_workday)
 
       workflow_live_step.actual_confirmation = actual_confirmation
       workflow_live_step.step_completion = step_completion
@@ -330,15 +331,15 @@ class OverviewController < ApplicationController
                                  # If confirmation occur at L1 level
       if workflow_live_step.object_type == "L1"
         workflow_live_steps_l1 = WorkflowLiveStep.where(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type).where("id > #{workflow_live_step.id}").order(:id)
-        calculate_eta(workflow_live_steps_l1, workflow_live_step)
+        calculate_eta(workflow_live_steps_l1, workflow_live_step,hours_per_workday)
 
         workflow_live_step.object.l2s.each do |l2|
           workflow_live_steps_l2 = WorkflowLiveStep.where(object_id: l2.id, object_type: 'L2').order(:id)
-          calculate_eta(workflow_live_steps_l2, workflow_live_steps_l1.last)
+          calculate_eta(workflow_live_steps_l2, workflow_live_steps_l1.last, hours_per_workday)
 
           l2.l3s.each do |l3|
             workflow_live_steps_l3 = WorkflowLiveStep.where(object_id: l3.id, object_type: 'L3').order(:id)
-            calculate_eta(workflow_live_steps_l3, workflow_live_steps_l2.last)
+            calculate_eta(workflow_live_steps_l3, workflow_live_steps_l2.last, hours_per_workday)
           end
         end
       end
@@ -346,23 +347,23 @@ class OverviewController < ApplicationController
                   # If confirmation occur at L2 level
       if workflow_live_step.object_type == "L2"
         workflow_live_steps_l2 = WorkflowLiveStep.where(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type).where("id > #{workflow_live_step.id}").order(:id)
-        calculate_eta(workflow_live_steps_l2, workflow_live_step)
+        calculate_eta(workflow_live_steps_l2, workflow_live_step, hours_per_workday)
 
         workflow_live_step.object.l3s.each do |l3|
           workflow_live_steps_l3 = WorkflowLiveStep.where(object_id: l3.id, object_type: 'L3').order(:id)
-          calculate_eta(workflow_live_steps_l3, workflow_live_steps_l2.last)
+          calculate_eta(workflow_live_steps_l3, workflow_live_steps_l2.last, hours_per_workday)
         end  
       end
 
                         # If confirmation occur at L3 level
       if workflow_live_step.object_type == "L3"
         workflow_live_steps = WorkflowLiveStep.where(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type).where("id > #{workflow_live_step.id}").order(:id)
-        calculate_eta(workflow_live_steps, workflow_live_step)
+        calculate_eta(workflow_live_steps, workflow_live_step, hours_per_workday)
       end
 
     end
 
-    def calculate_eta(workflow_live_steps, workflow_live_step)
+    def calculate_eta(workflow_live_steps, workflow_live_step, hours_per_workday)
 
       if workflow_live_steps.present?
         workflow_live_step_attribute = workflow_live_steps.first
@@ -381,7 +382,7 @@ class OverviewController < ApplicationController
           if indx == 0
             if pre_workflow_live_step.present? and pre_workflow_live_step.step_completion.present?
                 station_step = wls.station_step
-                step_completion_current = station_step.calculate_step_completion(pre_workflow_live_step.step_completion, comp_attribute_value, lang_attribute_value)
+                step_completion_current = station_step.calculate_step_completion(pre_workflow_live_step.step_completion, comp_attribute_value, lang_attribute_value, hours_per_workday)
                 wls.eta = pre_workflow_live_step.step_completion
                 wls.step_completion = step_completion_current
                 wls.save!
@@ -390,7 +391,7 @@ class OverviewController < ApplicationController
             if pre_workflow_live_step.present? and pre_workflow_live_step.step_completion.present?
               if DateTime.parse(pre_workflow_live_step.step_completion.to_s) > DateTime.parse(wls.eta.to_s)
                 station_step = wls.station_step
-                step_completion_current = station_step.calculate_step_completion(pre_workflow_live_step.step_completion, comp_attribute_value, lang_attribute_value)
+                step_completion_current = station_step.calculate_step_completion(pre_workflow_live_step.step_completion, comp_attribute_value, lang_attribute_value, hours_per_workday)
                 wls.eta = pre_workflow_live_step.step_completion
                 wls.step_completion = step_completion_current
                 wls.save!

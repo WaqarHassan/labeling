@@ -2,7 +2,7 @@ class StationStep < ActiveRecord::Base
 	belongs_to :workflow_station
 	has_many :workflow_live_stations
 
-	def calculate_step_completion(actual_confirmation, comp_attribute_value, lang_attribute_value)
+	def calculate_step_completion(actual_confirmation, comp_attribute_value, lang_attribute_value, hours_per_workday)
 		duration_days = self.duration_days
 		duration_minutes = self.duration_minutes
 		duration_multiplier = self.duration_multiplier
@@ -34,13 +34,15 @@ class StationStep < ActiveRecord::Base
 		end
 
 						# Covnert minutes to hours and minutes
-		total_hours, reminaing_minutes = number_minutes.divmod(60)
+		hours_frm_minutes, reminaing_minutes = number_minutes.divmod(60)
+		days_frm_hours, remaining_hours = hours_frm_minutes.divmod(hours_per_workday)
+		number_days = number_days + days_frm_hours
 
 		actual_confirmation = actual_confirmation.to_time.strftime('%Y-%m-%d %H:%M')
 		actual_confirmation_time = Time.parse(actual_confirmation)
 
 		actual_confirmationTimeDays =  number_days.business_days.after(actual_confirmation_time)
-		actual_confirmationTime =  total_hours.business_hours.after(actual_confirmationTimeDays)
+		actual_confirmationTime =  remaining_hours.business_hours.after(actual_confirmationTimeDays)
 
 		return  actual_confirmationTime + reminaing_minutes.minutes
 	end

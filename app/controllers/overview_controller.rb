@@ -95,7 +95,7 @@ class OverviewController < ApplicationController
    def add_additional_info
       params[:additional_info][:info_timestamp] = L1.set_db_datetime_format(params[:additional_info][:info_timestamp])
       
-      if params[:save_note_only] = 'savenoteonly'
+      if params[:save_note_only] == 'savenoteonly'
        AdditionalInfo.create(additional_info_params_note_only)
       else
          AdditionalInfo.create(additional_info_params)

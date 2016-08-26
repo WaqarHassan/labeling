@@ -19,12 +19,9 @@
 
 
          <div class="form-group">
-			<label class="col-lg-3 control-label">Reason </label>
+			<label class="col-lg-3 control-label">Reason</label>
             <div class="col-lg-8">
-			    <select id="l1_status" name="additional_info[reject_reason]" required="required" class="form-control pnd-reqst pull-left valid">
-					<option value="internal" >Internal</option>
-					<option value="external" >External</option>
-				</select>
+              <%= select_tag "additional_info[reason_code_id]", options_from_collection_for_select(@reason_codes, 'id', 'reason'),prompt: 'please select Reason', :class=>'form-control pnd-reqst pull-left', :required => true %>
             </div>
          </div>
 

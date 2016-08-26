@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.50, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.26, for osx10.7 (x86_64)
 --
--- Host: 127.0.0.1    Database: labeling_development_new
+-- Host: 127.0.0.1    Database: zzzzz_development
 -- ------------------------------------------------------
--- Server version	5.5.50-0ubuntu0.14.04.1
+-- Server version	5.6.26
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -32,7 +32,7 @@ CREATE TABLE `activity_logs` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,13 +48,15 @@ CREATE TABLE `additional_infos` (
   `workflow_station_id` int(11) DEFAULT NULL,
   `info_timestamp` datetime DEFAULT NULL,
   `note` text COLLATE utf8_unicode_ci,
+  `reject_reason` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `object_id` int(11) DEFAULT NULL,
   `object_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `work_flow_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `fk_additional_infos_index` (`work_flow_id`,`object_id`,`object_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -90,8 +92,9 @@ CREATE TABLE `attribute_values` (
   `object_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `index_attribute_values_on_object_id_and_object_type` (`object_id`,`object_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,8 +136,9 @@ CREATE TABLE `bu_options` (
   `work_flow_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `index_bu_options_on_work_flow_id_and_recording_level` (`work_flow_id`,`recording_level`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,9 +151,11 @@ DROP TABLE IF EXISTS `holidays`;
 CREATE TABLE `holidays` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `holiday_date` date DEFAULT NULL,
+  `work_flow_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `index_holidays_on_work_flow_id` (`work_flow_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -165,14 +171,21 @@ CREATE TABLE `l1s` (
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `description` text COLLATE utf8_unicode_ci,
   `business_unit` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `is_active` tinyint(1) DEFAULT NULL,
   `work_flow_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
+  `status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `modified_by_user_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `index_l1s_on_work_flow_id_and_status` (`work_flow_id`,`status`),
+  KEY `index_l1s_on_work_flow_id` (`work_flow_id`),
+  KEY `index_l1s_on_name_and_work_flow_id` (`name`,`work_flow_id`),
+  KEY `index_l1s_on_name` (`name`),
+  KEY `index_l1s_on_business_unit` (`business_unit`),
+  KEY `index_l1s_on_name_and_business_unit` (`name`,`business_unit`),
+  KEY `index_l1s_on_name_and_business_unit_and_work_flow_id` (`name`,`business_unit`,`work_flow_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,16 +202,18 @@ CREATE TABLE `l2s` (
   `status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `business_unit` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `notes` text COLLATE utf8_unicode_ci,
-  `is_active` tinyint(1) DEFAULT NULL,
   `requested_date` datetime DEFAULT NULL,
   `to_be_approved_by` datetime DEFAULT NULL,
-  `translation` tinyint(1) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `modified_by_user_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `index_l2s_on_l1_id` (`l1_id`),
+  KEY `index_l2s_on_name` (`name`),
+  KEY `index_l2s_on_business_unit` (`business_unit`),
+  KEY `index_l2s_on_name_and_business_unit` (`name`,`business_unit`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -211,16 +226,20 @@ DROP TABLE IF EXISTS `l3s`;
 CREATE TABLE `l3s` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `business_unit` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `is_active` int(11) DEFAULT NULL,
+  `business_unit` int(11) DEFAULT NULL,
   `notes` text COLLATE utf8_unicode_ci,
   `l2_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
+  `status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `modified_by_user_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `index_l3s_on_l2_id` (`l2_id`),
+  KEY `index_l3s_on_name` (`name`),
+  KEY `index_l3s_on_business_unit` (`business_unit`),
+  KEY `index_l3s_on_name_and_business_unit` (`name`,`business_unit`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -236,13 +255,15 @@ CREATE TABLE `label_attributes` (
   `short_label` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `recording_level` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `is_required` tinyint(1) DEFAULT NULL,
+  `sequence` int(11) DEFAULT NULL,
   `is_visible` tinyint(1) DEFAULT NULL,
   `work_flow_id` int(11) DEFAULT NULL,
   `field_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `fk_label_attributes_index` (`work_flow_id`,`recording_level`,`is_visible`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -279,6 +300,25 @@ CREATE TABLE `oauth_caches` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `reason_codes`
+--
+
+DROP TABLE IF EXISTS `reason_codes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reason_codes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reason` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `recording_level` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `work_flow_id` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `rework_infos`
 --
 
@@ -287,15 +327,15 @@ DROP TABLE IF EXISTS `rework_infos`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `rework_infos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `start_rework_station` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `start_rework_step` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `reason` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `start_rework_station` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `start_rework_step` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `station_id` int(11) DEFAULT NULL,
-  `step_id` int(11) DEFAULT NULL,
+  `reason` text COLLATE utf8_unicode_ci,
   `l1_id` int(11) DEFAULT NULL,
   `l2_id` int(11) DEFAULT NULL,
   `l3_id` int(11) DEFAULT NULL,
+  `step_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -328,11 +368,16 @@ CREATE TABLE `station_steps` (
   `step_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `recording_level` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `sequence` int(11) DEFAULT NULL,
+  `duration_days` int(11) DEFAULT NULL,
+  `duration_minutes` int(11) DEFAULT NULL,
+  `duration_multiplier` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `is_visible` tinyint(1) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `index_station_steps_on_workflow_station_id` (`workflow_station_id`),
+  KEY `index_station_steps_on_workflow_station_id_and_recording_level` (`workflow_station_id`,`recording_level`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -349,7 +394,8 @@ CREATE TABLE `statuses` (
   `work_flow_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `index_statuses_on_work_flow_id_and_recording_level` (`work_flow_id`,`recording_level`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -367,7 +413,8 @@ CREATE TABLE `transitions` (
   `duration` float DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `index_transitions_on_station_step_id` (`station_step_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -407,7 +454,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `index_users_on_reset_password_token` (`reset_password_token`),
   UNIQUE KEY `index_users_on_confirmation_token` (`confirmation_token`),
   UNIQUE KEY `index_users_on_unlock_token` (`unlock_token`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -425,14 +472,16 @@ CREATE TABLE `work_flows` (
   `L2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `L3` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT NULL,
-  `is_in_use` tinyint(4) DEFAULT NULL,
+  `is_in_use` tinyint(1) DEFAULT NULL,
+  `l1_bu` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `l2_bu` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `l3_bu` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `l1_bu` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `l2_bu` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `l3_bu` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `index_work_flows_on_is_active_and_is_in_use` (`is_active`,`is_in_use`),
+  KEY `index_work_flows_on_is_in_use` (`is_in_use`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -448,12 +497,14 @@ CREATE TABLE `workflow_live_steps` (
   `object_id` int(11) DEFAULT NULL,
   `object_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `actual_confirmation` datetime DEFAULT NULL,
+  `step_completion` datetime DEFAULT NULL,
   `eta` datetime DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `index_workflow_live_steps_on_object_id_and_object_type` (`object_id`,`object_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -467,12 +518,13 @@ CREATE TABLE `workflow_stations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `work_flow_id` int(11) DEFAULT NULL,
   `station_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `is_visible` tinyint(4) DEFAULT NULL,
   `sequence` int(11) DEFAULT NULL,
+  `is_visible` tinyint(1) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`id`),
+  KEY `index_workflow_stations_on_work_flow_id_and_is_visible` (`work_flow_id`,`is_visible`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -484,7 +536,7 @@ CREATE TABLE `workflow_stations` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-08-18 18:53:16
+-- Dump completed on 2016-08-26 10:58:03
 INSERT INTO schema_migrations (version) VALUES ('20130909170542');
 
 INSERT INTO schema_migrations (version) VALUES ('20130909194719');
@@ -532,4 +584,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160816125554');
 INSERT INTO schema_migrations (version) VALUES ('20160817234328');
 
 INSERT INTO schema_migrations (version) VALUES ('20160818002132');
+
+INSERT INTO schema_migrations (version) VALUES ('20160826040550');
+
+INSERT INTO schema_migrations (version) VALUES ('20160826043520');
 

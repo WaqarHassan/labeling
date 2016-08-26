@@ -258,6 +258,7 @@ class OverviewController < ApplicationController
   def reject_reason_modal
     l2_id = params[:id]
     @l2 = L2.find(l2_id)
+    @reason_codes = @workflow.reason_codes.where(status: 'Rejected', recording_level: 'L2')
     respond_to do |format|
       format.html { render :partial => "reject_reason_modal" }
       format.js
@@ -496,7 +497,7 @@ class OverviewController < ApplicationController
     
     def additional_info_params
       params.require(:additional_info).permit(:object_id, :object_type, :status,
-       :workflow_station_id, :info_timestamp, :work_flow_id, :note, :user_id, :reject_reason)
+       :workflow_station_id, :info_timestamp, :work_flow_id, :note, :user_id, :reason_code_id)
     end
     def additional_info_params_note_only
       params.require(:additional_info).permit(:object_id, :object_type,

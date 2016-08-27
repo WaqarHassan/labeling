@@ -349,7 +349,7 @@ class OverviewController < ApplicationController
     calculate_eta_completion(actual_confirmation, workflow_live_step)
     if workflow_live_step.object.status != 'Active'
       workflow_live_step.object.update(:status => 'Active')
-      AdditionalInfo.create(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type, status: 'Active', work_flow_id: @workflow, user_id: current_user.id)
+      AdditionalInfo.create(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type, status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
     end
 
     redirect_to root_path, notice: 'Step confirmation done'

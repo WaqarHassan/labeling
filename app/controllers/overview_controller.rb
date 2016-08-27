@@ -5,46 +5,36 @@ class OverviewController < ApplicationController
     @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
-          
-     if session[:l_type] == 'l1' 
-        if session[:open_confirm_modal] != 'open_confirm_modal'
-          session[:l_type] = nil
-        end
-        @l1s = L1.where(id: session[:l_id])
-        
-     elsif session['l_type'] == 'l2'
 
-        if session[:open_confirm_modal] != 'open_confirm_modal'
-          session[:l_type] = nil
-        end
+    if session[:filter_object_type] == 'L1' 
+      @l1s = L1.where(id: [session[:filter_object_id]])
+  
+    elsif session[:filter_object_type] == 'L2'
+      @show_search_result_l2 = 'filter_type_l2'
+      @l2_records = L2.where(id: session[:filter_object_id])
+      @l1s = L1.where(id: @l2_records.first.l1_id)
+  
+    elsif session[:filter_object_type] == 'L3'
+      @show_search_result_l2 = 'filter_type_l2' 
+      @show_search_result_l3 = 'filter_type_l3' 
+      l3 = L3.find(session[:filter_object_id])
+      ll2 = l3.l2
+      @l3_records = L3.where(id: l3.id)
+      @l2_records = L2.where(id: @l3_records.first.l2_id)
+      @l1s = L1.where(id: @l2_records.first.l1_id)
 
-        @show_search_result_l2 = 'filter_type_l2'
-        @l2_records = L2.where(id: session[:l_id])
-        @l1s = L1.where(id: @l2_records.first.l1_id)
-      elsif session[:l_type] == 'l3'
-        if session[:open_confirm_modal] != 'open_confirm_modal'
-          session[:l_type] = nil
-        end
-        @show_search_result_l2 = 'filter_type_l2' 
-        @show_search_result_l3 = 'filter_type_l3' 
-        l3 = L3.find(session[:l_id])
-        ll2 = l3.l2
-        @l3_records = L3.where(id: session[:l_id])
-        @l2_records = L2.where(id: @l3_records.first.l2_id)
-        @l1s = L1.where(id: @l2_records.first.l1_id)
-      else
-        @l1s = @workflow.l1s.where(status: 'Active').order(:id)
-       
-      end
+    else
+      @l1s = @workflow.l1s.where(status: 'Active').order(:id)       
+    end
      
 
-    if session[:wildcard] != '' && session[:wildcard] != nil
+    if session[:wildcard].present?
       @wildcard = session[:wildcard]
     end
-    if session[:exact] != '' && session[:exact] != nil
+    if session[:exact].present?
       @exact = session[:exact]
     end
-    if session[:q_string] != '' && session[:q_string] != nil
+    if session[:q_string].present?
       q_string = session[:q_string]
       @serach_result = WorkFlow.search(q_string)
     end
@@ -193,9 +183,9 @@ class OverviewController < ApplicationController
     workflow_id = params[:workflow_id]
     WorkFlow.update_all(is_in_use: false)
     WorkFlow.update(workflow_id, is_in_use: true)
-    session[:q_string] = ''
-    session[:wildcard] = ''
-    session[:exact] = ''
+    session.delete(:q_string)
+    session.delete(:wildcard)
+    session.delete(:exact)
 
     redirect_to root_path, notice: 'WorkFlow was successfully changed.'
   end
@@ -256,6 +246,7 @@ class OverviewController < ApplicationController
   end
 
   def reject_reason_modal
+    session.delete(:open_reason_modal)
     l2_id = params[:id]
     @l2 = L2.find(l2_id)
     @reason_codes = @workflow.reason_codes.where(status: 'Rejected', recording_level: 'L2')
@@ -275,6 +266,8 @@ class OverviewController < ApplicationController
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
     l1_list = params[:l1_id].split('_')
+    session[:filter_object_id] = l1_list
+    session[:filter_object_type] = 'L1'
     @l1s = L1.where(id: [l1_list])
 
     respond_to do |format|
@@ -288,8 +281,11 @@ class OverviewController < ApplicationController
     @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
-    @l2_records = L2.where(id: params[:l2_id])
+    l2_id = params[:l2_id]
+    session[:filter_object_id] = l2_id
+    session[:filter_object_type] = 'L2'
 
+    @l2_records = L2.where(id: l2_id)
     @l1s = L1.where(id: @l2_records.first.l1_id)
 
     respond_to do |format|
@@ -304,10 +300,14 @@ class OverviewController < ApplicationController
     @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
-    l3 = L3.find(params[:l3_id])
+    l3_id = params[:l3_id]
+    session[:filter_object_id] = l3_id
+    session[:filter_object_type] = 'L3'
+
+    l3 = L3.find(l3_id)
     ll2 = l3.l2
 
-    @l3_records = L3.where(id: params[:l3_id])
+    @l3_records = L3.where(id: l3_id)
     @l2_records = L2.where(id: @l3_records.first.l2_id)
     @l1s = L1.where(id: @l2_records.first.l1_id)
 
@@ -318,6 +318,8 @@ class OverviewController < ApplicationController
   end
 
   def show_all_db
+    session.delete(:filter_object_id)
+    session.delete(:filter_object_type)
     @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
@@ -329,20 +331,28 @@ class OverviewController < ApplicationController
     
   end
 
-  def destroy_seaaion
-    session[:q_string] = ''
-    session[:wildcard] = ''
-    session[:exact] = ''
+  def clear_search
+    session.delete(:q_string)
+    session.delete(:wildcard)
+    session.delete(:exact)
+    session.delete(:filter_object_id)
+    session.delete(:filter_object_type)
+    @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
+    @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
+    @workflows = WorkFlow.where(is_active: true, is_in_use: false)
+    @l1s = @workflow.l1s.where(status: 'Active').order(:id)
     respond_to do |format|
-      format.json {render :json=>'session_empty'}
-    end
+      format.html
+      format.js
+    end 
+
   end
 
 
    #POST Task Confirmation
 
   def update_task_confirmation
-    session[:open_confirm_modal] = 'no modal'
+    session.delete(:open_confirm_modal)
     actualConfirmation = params[:workflow_live_step][:actual_confirmation]
     actual_confirmation = L1.set_db_datetime_format(actualConfirmation)
     workflow_live_step = WorkflowLiveStep.find(params[:id])

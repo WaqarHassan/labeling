@@ -68,7 +68,7 @@ Rails.application.routes.draw do
   get '/overview/project_deatils_l1/:l1_id' => 'overview#project_deatils_l1', as: 'project_deatils_l1'
   get '/overview/project_deatils_l2/:l2_id' => 'overview#project_deatils_l2', as: 'project_deatils_l2'
   get '/overview/project_deatils_l3/:l3_id' => 'overview#project_deatils_l3', as: 'project_deatils_l3'
-  get '/overview/destroy_seaaion' => 'overview#destroy_seaaion', as: 'destroy_seaaion'
+  get '/overview/clear_search' => 'overview#clear_search', as: 'clear_search'
   get '/overview/show_all_db' => 'overview#show_all_db', as: 'show_all_db' 
   post '/overview/add_additional_info' => 'overview#add_additional_info', as: 'add_additional_info'
   get '/overview/reject_reason_modal/:id' => 'overview#reject_reason_modal', as: 'reject_reason_modal'

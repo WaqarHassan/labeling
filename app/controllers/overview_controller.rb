@@ -15,8 +15,10 @@ class OverviewController < ApplicationController
       @l1s = L1.where(id: @l2_records.first.l1_id)
   
     elsif session[:filter_object_type] == 'L3'
-      @show_search_result_l2 = 'filter_type_l2' 
-      @show_search_result_l3 = 'filter_type_l3' 
+      @show_search_result_l2 = 'filter_type_l2'
+      if !session[:new_object_added].present? 
+        @show_search_result_l3 = 'filter_type_l3'
+      end
       l3 = L3.find(session[:filter_object_id])
       ll2 = l3.l2
       @l3_records = L3.where(id: l3.id)
@@ -159,6 +161,7 @@ class OverviewController < ApplicationController
    end
     #GET task Confirmation
   def open_confirm_modal
+    session.delete(:open_confirm_modal)
     @wf_step_id = params[:wf_step_id]
     workflow_live_tep = WorkflowLiveStep.find(@wf_step_id)
    
@@ -268,6 +271,7 @@ class OverviewController < ApplicationController
     l1_list = params[:l1_id].split('_')
     session[:filter_object_id] = l1_list
     session[:filter_object_type] = 'L1'
+    session.delete(:new_object_added)
     @l1s = L1.where(id: [l1_list])
 
     respond_to do |format|
@@ -284,6 +288,7 @@ class OverviewController < ApplicationController
     l2_id = params[:l2_id]
     session[:filter_object_id] = l2_id
     session[:filter_object_type] = 'L2'
+    session.delete(:new_object_added)
 
     @l2_records = L2.where(id: l2_id)
     @l1s = L1.where(id: @l2_records.first.l1_id)
@@ -303,6 +308,7 @@ class OverviewController < ApplicationController
     l3_id = params[:l3_id]
     session[:filter_object_id] = l3_id
     session[:filter_object_type] = 'L3'
+    session.delete(:new_object_added)
 
     l3 = L3.find(l3_id)
     ll2 = l3.l2
@@ -320,6 +326,7 @@ class OverviewController < ApplicationController
   def show_all_db
     session.delete(:filter_object_id)
     session.delete(:filter_object_type)
+    session.delete(:new_object_added)
     @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)

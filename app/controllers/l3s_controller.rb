@@ -76,6 +76,7 @@ class L3sController < ApplicationController
          end  
        end
           session[:filter_object_type] = 'L3'
+          session[:new_object_added] = 'new_object_added'
           session[:filter_object_id] = @l3.id
       redirect_to root_path, notice: @workflow.L3+' was successfully created.'
     else

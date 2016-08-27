@@ -347,11 +347,9 @@ class OverviewController < ApplicationController
     actual_confirmation = L1.set_db_datetime_format(actualConfirmation)
     workflow_live_step = WorkflowLiveStep.find(params[:id])
     calculate_eta_completion(actual_confirmation, workflow_live_step)
-    if workflow_live_step.object_type == 'L3'
-       workflow_live_step.object.update(:status => 'Active')
-    elsif workflow_live_step.object_type == 'L2' && workflow_live_step.object.status == 'Rejected'
+    if workflow_live_step.object.status != 'Active'
       workflow_live_step.object.update(:status => 'Active')
-      ActivityLog.create(object_id: workflow_live_step.object.id,object_type: 'L2' , current_value: 'Active' ,previous_value: 'Rejected', user_id: current_user.id)
+      AdditionalInfo.create(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type, status: 'Active', work_flow_id: @workflow, user_id: current_user.id)
     end
 
     redirect_to root_path, notice: 'Step confirmation done'

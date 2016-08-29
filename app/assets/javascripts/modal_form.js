@@ -11,9 +11,12 @@ $(document).ready(function() {
 	$('#ia_list_name').focus();
 	$('#ecr_name').focus();
 
-	$("#ia_modal_form").validate();
-	$("#add_l1_form").validate();
-	$("#add_edit_ecr_form").validate();
+	$('#add_l2_modal #ia_modal_form').validate();
+	$('#l2_update_popup #ia_modal_form').validate();
+	$("#add_l1_modal #add_l1_form").validate();
+	$("#add_l3_modal #add_edit_ecr_form").validate();
+	$("#l3_update_popup #add_edit_ecr_form").validate();
+	
 	$("#errors_container").hide();
 
 }); 

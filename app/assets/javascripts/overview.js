@@ -12,6 +12,13 @@ function resetSearchResult(){
 	dataHtml = '<ul class="ia-list" search_result_div>';
 	dataHtml += '<span style="color:green">Search result we be display here: </span>';
 	dataHtml += '</ul>';
+	dataHtml += '<div class="row">';
+	dataHtml +=	      '<div class="col-lg-7">';
+	dataHtml +=      '</div>';
+	dataHtml +=      '<div class="col-lg-5">'
+ 	dataHtml +=     	'<%= link_to 'Show all from DB', show_all_db_path, :remote => true %>'
+	dataHtml +=     '</div>'
+	dataHtml +=    '</div>'
 	$('#search_result_div').html(dataHtml);
 }
 

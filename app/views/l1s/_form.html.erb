@@ -26,7 +26,7 @@
 
 				    <div class="row">
 				        <div class="col-lg-4">
-			               <label for= "l1_name" class="pull-right echo_patinet form-group"> Name:  </label>
+			               <label for= "l1_name" class="pull-right echo_patinet form-group"> <%= @workflow.L1 %> Name:  </label>
 
 				        </div>
 			            <div class="col-lg-6">
@@ -71,7 +71,7 @@
 			             	 <%= f.input :description,:label => false  %>
 			            </div>
 				    </div>
-
+				   <% if @action == "ADD" %>
 					<div class="row">
 				        <div class="col-lg-4">
 			               <label for="Active" class="pull-right echo_patinet form-group"> Status  </label> 
@@ -90,6 +90,7 @@
 							</select>
 			            </div>
 				    </div>
+				    <%end%>
 
 				    <% if @attr_list.present? %>
 	                  <% attr_field_value = ''

@@ -13,7 +13,7 @@
         <%if @type == 'L1' %>
 
           <div class="form-group">
-            <label class="col-lg-4 control-label"> <%= @workflow.L1 %>  </label>
+            <label class="col-lg-4 control-label"> <%= @workflow.L1 %> Name  </label>
               <div class="col-lg-6">
                 <%=  link_to @l1.name, edit_l1_path(@l1.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_l1_modal' , "data-dismiss" => "modal"} %>
               </div>
@@ -27,7 +27,7 @@
 
         <%elsif @type == 'L2'%>
           <div class="form-group">
-            <label class="col-lg-4 control-label"> <%= @workflow.L2 %>  </label>
+            <label class="col-lg-4 control-label"> <%= @workflow.L2 %> Name </label>
               <div class="col-lg-6">
                 <%=  link_to @l2.name, edit_l2_path(@l2.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#l2_update_popup' , "data-dismiss" => "modal"} %>
               </div>
@@ -40,7 +40,7 @@
 
         <%else%>
           <div class="form-group">
-            <label class="col-lg-4 control-label"> <%= @workflow.L3 %>  </label>
+            <label class="col-lg-4 control-label"> <%= @workflow.L3 %> Name </label>
               <div class="col-lg-6">
                 <%=  link_to @l3.name, edit_l3_path(@l3.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#l3_update_popup' , "data-dismiss" => "modal"} %>
               </div>
@@ -55,16 +55,20 @@
         <div class="form-group">
          <label class="col-lg-4 control-label">Status</label>
           <div class="col-lg-6">
-           <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status',@status_), {prompt: "please select status"}, {:class=>'form-control pnd-reqst pull-left'} %> 
+            <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status',@status_), {prompt: "please select status"},{:'data-remote' => 'true',:'data-url' => url_for(get_reasons_path(@type)),  :class=>'form-control pnd-reqst pull-left'} %> 
           </div>
         </div>
 
      <div class="form-group">
-         <label class="col-lg-4 control-label">Station </label>
-          <div class="col-lg-6">
-           <%= f.select :workflow_station_id, options_from_collection_for_select(@workflow_stations, 'id', 'station_name'), {prompt: "please select station"}, {:class=>'form-control pnd-reqst pull-left'} %> 
+         <label class="col-lg-4 control-label">Reason </label>
+          <div class="col-lg-6" id= "get_reasons_div">
+         
+         <%= select_tag "additional_info[reason_code_id]", options_from_collection_for_select(@reasons, 'id', 'reason'),prompt: 'please select Reason', :class=>'form-control pnd-reqst pull-left' %> 
+
+
           </div>
-     </div>
+          </div>
+     
 
     <div class="form-group">
          <label class="col-lg-4 control-label">Date/Time </label>
@@ -92,9 +96,9 @@
                 user_name = add_info.user.first_name.present? ? add_info.user.first_name : '' %>
 
                   <% if add_info.status.present? %>
-                    <%= add_info.status+" by "+user_name+" on "+add_info.created_at.strftime("%m/%d/%Y %I:%M %p")  %>
+                    <%= add_info.status+" by "+user_name+" on "+add_info.info_timestamp.strftime("%m/%d/%Y %I:%M %p")  %>
                     <% else %> 
-                    <%= "By "+user_name+" on "+add_info.created_at.strftime("%m/%d/%Y %I:%M %p")  %>
+                    <%= "By "+user_name+" on "+add_info.info_timestamp.strftime("%m/%d/%Y %I:%M %p")  %>
                   <% end %> 
                     <br>
                   <% if add_info.workflow_station.present? %>

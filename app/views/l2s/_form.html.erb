@@ -17,7 +17,7 @@
                 <div class= "form-group">
                   <div class="row">
                       <div class="col-lg-4">
-                          <label for = "ia_project_id" class=" echo_patinet pull-right control-label"><%=@workflow.L1%>:</label>
+                          <label for = "ia_project_id" class=" echo_patinet pull-right control-label"><%=@workflow.L1%> Name</label>
                       </div> 
                         <div class="col-lg-6">
                           <% if @show_l1s == 'dropdown' %>
@@ -35,7 +35,7 @@
                 <div class= "form-group">
                   <div class="row">
                      <div class="col-lg-4">
-                         <label for = "ia_name" class="echo_patinet pull-right control-label">Name:</label>
+                         <label for = "ia_name" class="echo_patinet pull-right control-label"><%= @workflow.L2 %> Name:</label>
                      </div>
                      <div class="col-lg-6">
                         <%= f.input :name ,:label => false, :input_html =>{id: @show_l1s == 'dropdown' ? '' : 'l2_name'}, :required => true %>
@@ -109,7 +109,7 @@
                             <label for="Active" class="pull-right echo_patinet form-group">  <%= att.label %>   </label> 
                           </div>
                           <div class="col-lg-6">
-                            <input type="text" name=<%= "attr[#{att.id}]" %>  <%= att.is_required == true ? 'required' : '' %> class="datepicker_only form-control" value= <%= attr_field_value.present? ? attr_field_value : Time.now.strftime("%m/%d/%Y") %> >
+                            <input type="text" name=<%= "attr[#{att.id}]" %>  <%= att.is_required == true ? 'required' : '' %> class="datepicker_only form-control" value= <%= attr_field_value.present? ? attr_field_value : "" %> >
                         </div>
                       </div>
                       <%else%>

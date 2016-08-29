@@ -66,9 +66,67 @@ class L2sController < ApplicationController
   
       @l2.l1.work_flow.workflow_stations.order(:sequence).each do |station|
         station.station_steps.where(recording_level: 'L2').order(:sequence).each do |stp|
-          WorkflowLiveStep.create(station_step_id: stp.id, object_id: @l2.id, object_type: 'L2', is_active: nil , eta: '')
+
+          predecessors = Transition.where(station_step_id: stp.id)
+          predecessors_step = ''
+          predecessors.each do |pred|
+            workflow_live_steps = WorkflowLiveStep.where(station_step_id: pred.previous_station_step_id, object_id: @l2.id, object_type: 'L2')
+            workflow_live_steps_l1 = WorkflowLiveStep.where(station_step_id: pred.previous_station_step_id, object_id: @l2.l1.id, object_type: 'L1')
+            workflow_live_steps_l1.each do |wls_l1|
+              workflow_live_steps << wls_l1
+            end
+
+            workflow_live_steps.each do |wls|
+              predecessors_step = predecessors_step+','+wls.id.to_s
+            end
+
+          end
+
+          if predecessors_step != ''
+            predecessors_step.slice!(0)
+          end
+          WorkflowLiveStep.create(station_step_id: stp.id, object_id: @l2.id, object_type: 'L2', predecessors: predecessors_step, is_active: nil , eta: '')
         end
       end
+
+      #-----------------------start mising predecessors
+      workflow_live_steps_empty_pred = WorkflowLiveStep.where(object_id: @l2.l1.id, object_type: 'L1')
+      workflow_live_steps_empty_pred.each do |pred_stp|
+        predecessors = Transition.where(station_step_id: pred_stp.station_step_id)
+        predecessors_step_empty = ''
+        workflow_live_steps_pred = []
+        predecessors.each do |pred|
+          workflow_live_steps_pred_l1 = WorkflowLiveStep.where(station_step_id: pred.previous_station_step_id, object_id: @l2.l1.id, object_type: 'L1')
+          workflow_live_steps_pred_l1.each do |wlsp_l1|
+            workflow_live_steps_pred << wlsp_l1
+          end
+          
+          @l2.l1.l2s.each do |l1_l2|
+            workflow_live_steps_pred_l2 = WorkflowLiveStep.where(station_step_id: pred.previous_station_step_id, object_id: l1_l2.id, object_type: 'L2')
+            workflow_live_steps_pred_l2.each do |wlsp_l2|
+              workflow_live_steps_pred << wlsp_l2
+            end
+
+            l1_l2.l3s.each do |l2_l3|
+              workflow_live_steps_pred_l3 = WorkflowLiveStep.where(station_step_id: pred.previous_station_step_id, object_id: l2_l3.id, object_type: 'L3')
+              workflow_live_steps_pred_l3.each do |wlsp_l3|
+                workflow_live_steps_pred << wlsp_l3
+              end
+
+            end
+          end
+
+        end
+        workflow_live_steps_pred.each do |wls|
+          predecessors_step_empty = predecessors_step_empty+','+wls.id.to_s
+        end
+
+        if predecessors_step_empty != ''
+          predecessors_step_empty.slice!(0)
+        end
+        pred_stp.update(predecessors: predecessors_step_empty)
+      end
+      #-----------------------end mising predecessors
 
       AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l2.id,object_type: 'L2' , status: @l2.status, user_id: current_user.id)
 

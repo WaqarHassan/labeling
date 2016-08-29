@@ -70,8 +70,8 @@ class L1sController < ApplicationController
        end
       AdditionalInfo.create(work_flow_id: @workflow.id , object_id: @l1.id,object_type: 'L1' , status: @l1.status, user_id: current_user.id)
 
-      session[:l_type] = 'l1'
-      session[:l_id] = @l1.id
+      session[:filter_object_type] = 'L1'
+      session[:filter_object_id] = @l1.id
       redirect_to root_path, notice: @workflow.L1+' was successfully created.'
     else
       render :new

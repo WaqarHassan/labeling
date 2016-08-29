@@ -80,8 +80,8 @@ class L2sController < ApplicationController
         session[:l2_id] = @l2.id
       end
 
-      session[:l_type] = 'l2'
-      session[:l_id] = @l2.id
+      session[:filter_object_type] = 'L2'
+      session[:filter_object_id] = @l2.id
       redirect_to root_path, notice: @workflow.L2+' was successfully created.'
     else
       render :new
@@ -130,16 +130,6 @@ class L2sController < ApplicationController
     redirect_to l2_url, notice: @workflow.L2+' was successfully destroyed.'
   end
   private
-
-    # def save_activity_log(previous_status = '')
-    #   if previous_status == 'Rejected' || previous_status == '' 
-    #     current_status = params[:l2][:status] 
-    #     ActivityLog.create(object_id: @l2.id,object_type: 'L2' , current_value: current_status,previous_value: previous_status, user_id: current_user.id)
-    #   end
-    # end
-    # def save_initial_status
-    #   AdditionalInfo.create(workflow_station_id: @l2.l1.work_flow.workflow_stations.first.id,user_id: current_user.id, status: @l2.status ,object_id: @l2.id, object_type: 'L2', work_flow_id: @workflow.id, )
-    # end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_l2

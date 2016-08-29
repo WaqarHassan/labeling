@@ -16,7 +16,7 @@ function resetSearchResult(){
 	dataHtml +=	'<div class="col-lg-7">';
 	dataHtml += '</div>';
 	dataHtml += '<div class="col-lg-5">';
- 	dataHtml += '<%= link_to "Show all from DB", show_all_db_path, :remote => true %>';
+ 	dataHtml += '<a href="/overview/show_all_db" data-remote="true">Show all from DB</a>';
 	dataHtml += '</div>';
 	dataHtml += '</div>';
 	$('#search_result_div').html(dataHtml);

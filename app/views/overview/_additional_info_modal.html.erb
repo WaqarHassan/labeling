@@ -95,11 +95,19 @@
               <% @additional_info_data.each do |add_info| 
                 user_name = add_info.user.first_name.present? ? add_info.user.first_name : '' %>
 
+                <% if add_info.reason_code.present? %>
+                  <% if add_info.status.present? %>
+                    <%= add_info.status+" by "+user_name+" on "+add_info.created_at.strftime("%m/%d/%Y %I:%M %p")  %>
+                  <% else %> 
+                    <%= "By "+user_name+" on "+add_info.created_at.strftime("%m/%d/%Y %I:%M %p")  %>
+                  <% end %> 
+                <% else %> 
                   <% if add_info.status.present? %>
                     <%= add_info.status+" by "+user_name+" on "+add_info.info_timestamp.strftime("%m/%d/%Y %I:%M %p")  %>
-                    <% else %> 
+                  <% else %> 
                     <%= "By "+user_name+" on "+add_info.info_timestamp.strftime("%m/%d/%Y %I:%M %p")  %>
                   <% end %> 
+                <% end %>   
                     <br>
                   <% if add_info.workflow_station.present? %>
                     <strong>Station:</strong> <%= add_info.workflow_station.station_name %>

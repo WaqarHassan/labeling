@@ -378,47 +378,7 @@ abort()
 
                                  # If confirmation occur at L1 level
       workflow_live_step_for_eta = []                     
-      # if workflow_live_step.object_type == "L1"
-      #   workflow_live_steps_l1 = WorkflowLiveStep.where(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type).where("id > #{workflow_live_step.id}").order(:id)
-      #   workflow_live_steps_l1.each do |wls_l1|  
-      #     workflow_live_step_for_eta << wls_l1
-      #   end
-      #   #calculate_eta(workflow_live_steps_l1, workflow_live_step,hours_per_workday)
-
-      #   workflow_live_step.object.l2s.each do |l2|
-      #     workflow_live_steps_l2 = WorkflowLiveStep.where(object_id: l2.id, object_type: 'L2').order(:id)
-      #     workflow_live_steps_l2.each do |wls_l2|  
-      #       workflow_live_step_for_eta << wls_l2
-      #     end
-      #    # calculate_eta(workflow_live_steps_l2, workflow_live_steps_l1.last, hours_per_workday)
-
-      #     l2.l3s.each do |l3|
-      #       workflow_live_steps_l3 = WorkflowLiveStep.where(object_id: l3.id, object_type: 'L3').order(:id)
-      #       workflow_live_steps_l3.each do |wls_l3|  
-      #         workflow_live_step_for_eta << wls_l3
-      #       end
-      #     #  calculate_eta(workflow_live_steps_l3, workflow_live_steps_l2.last, hours_per_workday)
-      #     end
-      #   end
-      # end
-
-                  # If confirmation occur at L2 level
-      # if workflow_live_step.object_type == "L2"
-      #   workflow_live_steps_l2 = WorkflowLiveStep.where(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type).where("id > #{workflow_live_step.id}").order(:id)
-      #   workflow_live_steps_l2.each do |wls_l2|  
-      #     workflow_live_step_for_eta << wls_l2
-      #   end
-      #   #calculate_eta(workflow_live_steps_l2, workflow_live_step, hours_per_workday)
-
-      #   workflow_live_step.object.l3s.each do |l3|
-      #     workflow_live_steps_l3 = WorkflowLiveStep.where(object_id: l3.id, object_type: 'L3').order(:id)
-      #     workflow_live_steps_l3.each do |wls_l3|  
-      #       workflow_live_step_for_eta << wls_l3
-      #     end
-      #    # calculate_eta(workflow_live_steps_l3, workflow_live_steps_l2.last, hours_per_workday)
-      #   end  
-      # end
-
+      
                         # If confirmation occur at L3 level
       if workflow_live_step.object_type == "L3"
         parent_l1 = workflow_live_step.object.l2.l1
@@ -427,10 +387,7 @@ abort()
       elsif workflow_live_step.object_type == "L1"
         parent_l1 = workflow_live_step.object
       end
-        # workflow_live_steps = WorkflowLiveStep.where(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type).where("id > #{workflow_live_step.id}").order(:id)
-        # workflow_live_steps_l3.each do |wls_l3|  
-        #   workflow_live_step_for_eta << wls_l3
-        # end
+
         
       workflow_live_steps_l1 = WorkflowLiveStep.where(object_id: parent_l1.id, object_type: 'L1').where("id > #{workflow_live_step.id}").order(:id)
       workflow_live_steps_l1.each do |wls_l1|  
@@ -461,11 +418,7 @@ abort()
 
     def calculate_eta(workflow_live_step_for_eta, workflow_live_step, hours_per_workday)
       workflow_live_step_for_eta << workflow_live_step
-      # if workflow_live_steps.present?
-      #   workflow_live_step_attribute = workflow_live_steps.first
-      #   comp_attribute_value = workflow_live_step_attribute.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
-      #   lang_attribute_value = workflow_live_step_attribute.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
-      # end
+
 puts ")))))))))))))))))))))))))))))#{workflow_live_step_for_eta.inspect}"
       workflow_live_step_for_eta.each do |wls|
         if !wls.actual_confirmation.present?

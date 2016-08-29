@@ -93,6 +93,13 @@
 						<% if @serach_result.present? %>
 							<%= render 'overview/search_result' %>
 						<% else %>	
+						<div class="row">
+					      <div class="col-lg-7">
+					      </div>
+					      <div class="col-lg-5">
+					      	<%= link_to 'Show all from DB', show_all_db_path, :remote => true %>
+					     </div>
+					    </div>
 							<ul class="ia-list">
 								<span style="color:green">Search results will be displayed here: </span>
 							</ul>

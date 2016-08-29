@@ -16,6 +16,10 @@ $(document).ready(function() {
 	$("#add_l1_modal #add_l1_form").validate();
 	$("#add_l3_modal #add_edit_ecr_form").validate();
 	$("#l3_update_popup #add_edit_ecr_form").validate();
+	$("#info_modal_popup #info_modal_form").validate();
+	$("#confirm_modal_popup #task_confirmation").validate();
+	$("#add_l2_modal #task_confirmation").validate();
+	$("#reject_reason_modal #save_reject_reason").validate();
 	
 	$("#errors_container").hide();
 

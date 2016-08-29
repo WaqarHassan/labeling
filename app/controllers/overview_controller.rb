@@ -13,7 +13,7 @@ class OverviewController < ApplicationController
       @show_search_result_l2 = 'filter_type_l2'
       @l2_records = L2.where(id: session[:filter_object_id])
       @l1s = L1.where(id: @l2_records.first.l1_id)
-  
+   
     elsif session[:filter_object_type] == 'L3'
       @show_search_result_l2 = 'filter_type_l2'
       if !session[:new_object_added].present? 
@@ -46,6 +46,11 @@ class OverviewController < ApplicationController
     @type = 'L1' 
     @l1 = L1.find(params[:l1_id])
     @status_ = @l1.status
+
+    @reasons = ReasonCode.where(status: @status_,
+     recording_level: @type )
+
+
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @info_status = @workflow.statuses.where(recording_level: 'L1')
@@ -60,6 +65,10 @@ class OverviewController < ApplicationController
     @type = 'L2'
     @l2 = L2.find(params[:l2_id])
     @status_ = @l2.status
+
+    @reasons = ReasonCode.where(status: @status_,
+     recording_level: @type )
+
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @info_status = @workflow.statuses.where(recording_level: 'L2')
@@ -74,6 +83,10 @@ class OverviewController < ApplicationController
     @type = 'L3'
     @l3 = L3.find(params[:l3_id])
     @status_ = @l3.status
+
+    @reasons = ReasonCode.where(status: @status_,
+     recording_level: @type )
+
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @info_status = @workflow.statuses.where(recording_level: 'L3')
@@ -87,6 +100,10 @@ class OverviewController < ApplicationController
    def add_additional_info
       params[:additional_info][:info_timestamp] = L1.set_db_datetime_format(params[:additional_info][:info_timestamp])
       
+      if params[:additional_info][:info_timestamp] == ""
+        params[:additional_info][:info_timestamp] = Time.now.strftime("%d/%m/%Y %H:%M")
+      end
+
       if params[:save_note_only] == 'savenoteonly'
        AdditionalInfo.create(additional_info_params_note_only)
       else
@@ -105,7 +122,15 @@ class OverviewController < ApplicationController
       #abort()
       redirect_to root_path, notice: 'Additional Info was successfully created.'
    end
- 
+  def get_reasons
+    @reasons = ReasonCode.where(status: params[:additional_info][:status],
+     recording_level: params[:l_type] )
+
+      respond_to do |format|
+        format.html
+        format.js
+      end
+  end
    
 
    # def l1_status_popup
@@ -252,6 +277,7 @@ class OverviewController < ApplicationController
     session.delete(:open_reason_modal)
     l2_id = params[:id]
     @l2 = L2.find(l2_id)
+
     @reason_codes = @workflow.reason_codes.where(status: 'Rejected', recording_level: 'L2')
     respond_to do |format|
       format.html { render :partial => "reject_reason_modal" }
@@ -260,7 +286,8 @@ class OverviewController < ApplicationController
   end
 
   def save_reject_reason
-    AdditionalInfo.create(additional_info_params)
+    additional_info_id = AdditionalInfo.where(object_id: params[:additional_info][:object_id],object_type: params[:additional_info][:object_type])
+    AdditionalInfo.update(additional_info_id, reason_code_id: params[:additional_info][:reason_code_id], note: params[:additional_info][:note])
     redirect_to root_path, notice: 'Reject reason saved'
   end
 

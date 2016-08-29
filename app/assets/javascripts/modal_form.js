@@ -16,7 +16,7 @@ $(document).ready(function() {
 	$("#add_edit_ecr_form").validate();
 	$("#errors_container").hide();
 
-});
+}); 
 
 function set_l2_status(status){
 	$('#l2_status').val(status);

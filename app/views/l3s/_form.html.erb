@@ -15,7 +15,7 @@
           <div class= "form-group">
             <div class="row">
               <div class="col-lg-4">
-                 <label for = "ecr_station_id" class="pull-right form-group control-label"><%= @workflow.L2 %>:</label>
+                 <label for = "ecr_station_id" class="pull-right form-group control-label"><%= @workflow.L2 %> Name</label>
               </div>
               <div class="col-lg-6">
                 <% if @show_projects == 'dropdown' %>
@@ -40,7 +40,7 @@
           <div class= "form-group">
             <div class="row">
                <div class="col-lg-4">
-                   <label for = "ecr_name" class="pull-right form-group echo_patinet control-label">Name:</label>
+                   <label for = "ecr_name" class="pull-right form-group echo_patinet control-label"> <%=@workflow.L3 %> Name:</label>
               </div>
               <div class="col-lg-6">
                 <%= f.input :name ,:label => false,  :input_html =>{id: @show_projects == 'dropdown' ? '' : 'l3_name'}, :required => true %>
@@ -75,7 +75,7 @@
             </div>
           </div>
           <%end end %>
-
+          <% if  @action == 'ADD'    %>
           <div class="row">
                 <div class="col-lg-4">
                      <label for="Active" class="pull-right echo_patinet form-group"> Status  </label> 
@@ -93,7 +93,8 @@
                       <% end %>
                     </select>
                 </div>
-            </div>        
+            </div> 
+            <%end%>       
 
            <% if @attr_list.present? %>
             <% attr_field_value = ''

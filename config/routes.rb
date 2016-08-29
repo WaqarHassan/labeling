@@ -74,6 +74,7 @@ Rails.application.routes.draw do
   get '/overview/reject_reason_modal/:id' => 'overview#reject_reason_modal', as: 'reject_reason_modal'
   post '/overview/save_reject_reason' => 'overview#save_reject_reason', as: 'save_reject_reason'
   get '/overview/get_steps' => 'overview#get_steps', as: 'get_steps'
+  get '/overview/get_reasons/:l_type' => 'overview#get_reasons', as:'get_reasons'
 
  
   post '/overview/update_task_confirmation' =>  'overview#update_task_confirmation', as: 'update_task_confirmation'

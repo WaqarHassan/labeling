@@ -174,6 +174,7 @@ class L2sController < ApplicationController
       elsif params[:l2][:status] == 'Rejected'
         session[:open_reason_modal] = 'open_reason_modal'
         session[:l2_id] = @l2.id  
+        
       end
 
       redirect_to root_path, notice: @workflow.L2+' was successfully updated.'

@@ -426,46 +426,9 @@ class OverviewController < ApplicationController
 
       WorkflowLiveStep.get_steps_calculate_eta(workflow_live_step, @workflow)
       
-
     end
 
-    def calculate_eta(workflow_live_step_for_eta, hours_per_workday)
 
-      workflow_live_step_for_eta.each do |wls|
-        pred_max_completion = ''
-        max_step_completion = ''
-        if wls.predecessors.present? && !wls.actual_confirmation.present?
-          comp_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
-          lang_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
-                                            #check successor---------------------
-          predecessors_steps = wls.predecessors.split(",")
-          predecessors_step_ojbets = WorkflowLiveStep.where(id: predecessors_steps)
-          predecessors_step_ojbets.each_with_index do |pso, indx|
-            if indx == 0
-              pred_max_completion = pso.step_completion
-            elsif DateTime.parse(pso.step_completion.to_s) > DateTime.parse(pred_max_completion.to_s)
-              pred_max_completion = pso.step_completion
-            end
-          end
-          
-          predecessors_step_ojbets.each_with_index do |pso, indx|
-            if indx == 0 and pso.step_completion.present?
-              station_step = wls.station_step
-              max_step_completion = station_step.calculate_step_completion(pso.step_completion, comp_attribute_value, lang_attribute_value, hours_per_workday)
-            elsif pso.step_completion.present?
-              station_step = wls.station_step
-              step_completion_other = station_step.calculate_step_completion(pso.step_completion, comp_attribute_value, lang_attribute_value, hours_per_workday)
-                if DateTime.parse(step_completion_other.to_s) > DateTime.parse(max_step_completion.to_s)
-                  max_step_completion = step_completion_other 
-                end
-            end
-          end
-          wls.eta = pred_max_completion
-          wls.step_completion = max_step_completion
-          wls.save!
-        end
-      end
-    end
 
     def calculate_eta_completion_backup(actual_confirmation, workflow_live_step)
       comp_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first

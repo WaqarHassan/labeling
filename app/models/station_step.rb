@@ -3,6 +3,7 @@ class StationStep < ActiveRecord::Base
 	has_many :workflow_live_stations
 
 	def calculate_step_completion(actual_confirmation, comp_attribute_value, lang_attribute_value, hours_per_workday)
+		puts "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
 		duration_days = self.duration_days
 		duration_minutes = self.duration_minutes
 		duration_multiplier = self.duration_multiplier

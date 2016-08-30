@@ -15,7 +15,8 @@ class WorkflowLiveStep < ActiveRecord::Base
 
 	      hours_per_workday = workflow.hours_per_workday.present? ? workflow.hours_per_workday : 1
 
-		  workflow_live_step_for_eta = []                     
+		  workflow_live_step_for_eta = []
+		  workflow_live_step_for_eta_ids = []                     
 	      if workflow_live_step.object_type == "L3"
 	        parent_l1 = workflow_live_step.object.l2.l1
 	      elsif workflow_live_step.object_type == "L2"
@@ -24,32 +25,47 @@ class WorkflowLiveStep < ActiveRecord::Base
 	        parent_l1 = workflow_live_step.object
 	      end
 
-	      workflow_live_steps_l1 = WorkflowLiveStep.where(object_id: parent_l1.id, object_type: 'L1')
+	      workflow_live_steps_l1 = WorkflowLiveStep.where(object_id: parent_l1.id, object_type: 'L1').order(:id)
 	      workflow_live_steps_l1.each do |wls_l1|  
-	        workflow_live_step_for_eta << wls_l1
+	        workflow_live_step_for_eta_ids << wls_l1
 	      end
 	      
 	      parent_l1.l2s.each do |l2|
-	        workflow_live_steps_l2 = WorkflowLiveStep.where(object_id: l2.id, object_type: 'L2')
+	        workflow_live_steps_l2 = WorkflowLiveStep.where(object_id: l2.id, object_type: 'L2').order(:id)
 	        workflow_live_steps_l2.each do |wls_l2|  
-	          workflow_live_step_for_eta << wls_l2
+	          workflow_live_step_for_eta_ids << wls_l2
 	        end
 
 	        l2.l3s.each do |l3|
-	          workflow_live_steps_l3 = WorkflowLiveStep.where(object_id: l3.id, object_type: 'L3')
+	          workflow_live_steps_l3 = WorkflowLiveStep.where(object_id: l3.id, object_type: 'L3').order(:id)
 	          workflow_live_steps_l3.each do |wls_l3|  
-	            workflow_live_step_for_eta << wls_l3
+	            workflow_live_step_for_eta_ids << wls_l3
 	          end
 	        end
 	      end
 	     
-	      workflow_live_step_for_eta = workflow_live_step_for_eta.sort_by{|wls_sort| wls_sort.station_step.sequence} 
-	      calculate_eta(workflow_live_step_for_eta, hours_per_workday)
+	      workflow_live_step_for_eta_ids = workflow_live_step_for_eta_ids.sort_by{|wls_sort| wls_sort.id} 
+	      first_step = workflow_live_step_for_eta_ids.first
+	      last_step = workflow_live_step_for_eta_ids.last
+
+	      live_steps_qry = "select station_steps.step_name, workflow_live_steps.`predecessors`,workflow_live_steps.object_id,
+	      workflow_live_steps.object_type,workflow_live_steps.id,workflow_live_steps.`actual_confirmation`,
+	      workflow_live_steps.`step_completion`, workflow_live_steps.eta from workflow_live_steps, station_steps, workflow_stations 
+	      where workflow_live_steps.station_step_id = station_steps.id 
+	      and station_steps.workflow_station_id = workflow_stations.id 
+	      and workflow_live_steps.id >= #{first_step.id} 
+	      and workflow_live_steps.id <= #{last_step.id} 
+	      order by workflow_stations.sequence, station_steps.sequence"
+		  live_steps_qry_result = ActiveRecord::Base.connection.select_all live_steps_qry
+
+	      #workflow_live_step_for_eta = workflow_live_step_for_eta.sort_by{|wls_sort| [wls_sort.station_step.workflow_station.sequence,wls_sort.station_step]}
+	      calculate_eta(live_steps_qry_result, hours_per_workday)
 		end
 
-		def calculate_eta(workflow_live_step_for_eta, hours_per_workday)
+		def calculate_eta(live_steps_qry_result, hours_per_workday)
 
-	      workflow_live_step_for_eta.each do |wls|
+	      live_steps_qry_result.each do |lsr|
+	      	wls = WorkflowLiveStep.find_by_id(lsr["id"])
 	        pred_max_completion = ''
 	        max_step_completion = ''
 	        if wls.predecessors.present? && !wls.actual_confirmation.present?

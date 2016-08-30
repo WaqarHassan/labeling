@@ -128,6 +128,11 @@ class L2sController < ApplicationController
       end
       #-----------------------end mising predecessors
 
+      workflowLiveStep = WorkflowLiveStep.find_by_object_id_and_object_type(@l2.id,'L2')
+      if workflowLiveStep.present?
+        WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow)
+      end
+
       AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l2.id,object_type: 'L2' , status: @l2.status, user_id: current_user.id)
 
       if @l2.workflow_live_steps.present? && @l2.status == 'Active'

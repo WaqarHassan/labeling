@@ -424,36 +424,7 @@ class OverviewController < ApplicationController
       workflow_live_step.step_completion = step_completion
       workflow_live_step.save!
 
-      workflow_live_step_for_eta = []                     
-      if workflow_live_step.object_type == "L3"
-        parent_l1 = workflow_live_step.object.l2.l1
-      elsif workflow_live_step.object_type == "L2"
-        parent_l1 = workflow_live_step.object.l1
-      elsif workflow_live_step.object_type == "L1"
-        parent_l1 = workflow_live_step.object
-      end
-
-      workflow_live_steps_l1 = WorkflowLiveStep.where(object_id: parent_l1.id, object_type: 'L1')
-      workflow_live_steps_l1.each do |wls_l1|  
-        workflow_live_step_for_eta << wls_l1
-      end
-      
-      parent_l1.l2s.each do |l2|
-        workflow_live_steps_l2 = WorkflowLiveStep.where(object_id: l2.id, object_type: 'L2')
-        workflow_live_steps_l2.each do |wls_l2|  
-          workflow_live_step_for_eta << wls_l2
-        end
-
-        l2.l3s.each do |l3|
-          workflow_live_steps_l3 = WorkflowLiveStep.where(object_id: l3.id, object_type: 'L3')
-          workflow_live_steps_l3.each do |wls_l3|  
-            workflow_live_step_for_eta << wls_l3
-          end
-        end
-      end
-     
-      workflow_live_step_for_eta = workflow_live_step_for_eta.sort_by{|wls_sort| wls_sort.station_step.sequence} 
-      calculate_eta(workflow_live_step_for_eta, hours_per_workday)
+      WorkflowLiveStep.get_steps_calculate_eta(workflow_live_step, @workflow)
       
 
     end

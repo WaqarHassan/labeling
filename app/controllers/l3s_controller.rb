@@ -171,20 +171,25 @@ class L3sController < ApplicationController
       end
       #-----------------------end mising predecessors
 
+      workflowLiveStep = WorkflowLiveStep.find_by_object_id_and_object_type(@l3.id,'L3')
+      if workflowLiveStep.present?
+        WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow)
+      end
 
       AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l3.id,object_type: 'L3' , status: @l3.status, user_id: current_user.id)
 
-       if @l3.workflow_live_steps.present?
-         workflow_step = @l3.workflow_live_steps.first
-         if !workflow_step.actual_confirmation.present?
-           session[:open_confirm_modal] = 'open_confirm_modal'
-           session[:workflow_step_id] = workflow_step.id
-         end  
-       end
-          session[:filter_object_type] = 'L3'
-          session[:new_object_added] = 'new_object_added'
-          session[:filter_object_id] = @l3.id
+      if @l3.workflow_live_steps.present?
+       workflow_step = @l3.workflow_live_steps.first
+       if !workflow_step.actual_confirmation.present?
+         session[:open_confirm_modal] = 'open_confirm_modal'
+         session[:workflow_step_id] = workflow_step.id
+       end  
+      end
+      session[:filter_object_type] = 'L3'
+      session[:new_object_added] = 'new_object_added'
+      session[:filter_object_id] = @l3.id
       redirect_to root_path, notice: @workflow.L3+' was successfully created.'
+
     else
       render :new
     end

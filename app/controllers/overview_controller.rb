@@ -7,12 +7,12 @@ class OverviewController < ApplicationController
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
 
     if session[:filter_object_type] == 'L1' 
-      @l1s = L1.where(id: [session[:filter_object_id]])
+      @l1s = @workflow.l1s.where(id: [session[:filter_object_id]])
   
     elsif session[:filter_object_type] == 'L2'
       @show_search_result_l2 = 'filter_type_l2'
       @l2_records = L2.where(id: session[:filter_object_id])
-      @l1s = L1.where(id: @l2_records.first.l1_id)
+      @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
    
     elsif session[:filter_object_type] == 'L3'
       @show_search_result_l2 = 'filter_type_l2'
@@ -23,7 +23,7 @@ class OverviewController < ApplicationController
       ll2 = l3.l2
       @l3_records = L3.where(id: l3.id)
       @l2_records = L2.where(id: @l3_records.first.l2_id)
-      @l1s = L1.where(id: @l2_records.first.l1_id)
+      @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
 
     else
       @l1s = @workflow.l1s.where(status: 'Active').order(:id)       
@@ -214,6 +214,9 @@ class OverviewController < ApplicationController
     session.delete(:q_string)
     session.delete(:wildcard)
     session.delete(:exact)
+    session.delete(:filter_object_id)
+    session.delete(:filter_object_type)
+    session.delete(:new_object_added)
 
     redirect_to root_path, notice: 'WorkFlow was successfully changed.'
   end
@@ -395,7 +398,7 @@ class OverviewController < ApplicationController
       workflow_live_step.object.update(:status => 'Active')
       AdditionalInfo.create(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type, status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
     end
-abort()
+
     redirect_to root_path, notice: 'Step confirmation done'
   end
 
@@ -413,6 +416,7 @@ abort()
       lang_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
       hours_per_workday = @workflow.hours_per_workday.present? ? @workflow.hours_per_workday : 1
 
+                          # calculate step completion for step which id confirmed
       station_step = workflow_live_step.station_step
       step_completion = station_step.calculate_step_completion(actual_confirmation, comp_attribute_value, lang_attribute_value, hours_per_workday)
 
@@ -420,10 +424,7 @@ abort()
       workflow_live_step.step_completion = step_completion
       workflow_live_step.save!
 
-                                 # If confirmation occur at L1 level
       workflow_live_step_for_eta = []                     
-      
-                        # If confirmation occur at L3 level
       if workflow_live_step.object_type == "L3"
         parent_l1 = workflow_live_step.object.l2.l1
       elsif workflow_live_step.object_type == "L2"
@@ -432,74 +433,69 @@ abort()
         parent_l1 = workflow_live_step.object
       end
 
-        
-      workflow_live_steps_l1 = WorkflowLiveStep.where(object_id: parent_l1.id, object_type: 'L1').where("id > #{workflow_live_step.id}").order(:id)
+      workflow_live_steps_l1 = WorkflowLiveStep.where(object_id: parent_l1.id, object_type: 'L1')
       workflow_live_steps_l1.each do |wls_l1|  
         workflow_live_step_for_eta << wls_l1
       end
       
       parent_l1.l2s.each do |l2|
-        workflow_live_steps_l2 = WorkflowLiveStep.where(object_id: l2.id, object_type: 'L2').where("id > #{workflow_live_step.id}").order(:id)
+        workflow_live_steps_l2 = WorkflowLiveStep.where(object_id: l2.id, object_type: 'L2')
         workflow_live_steps_l2.each do |wls_l2|  
           workflow_live_step_for_eta << wls_l2
         end
-       # calculate_eta(workflow_live_steps_l2, workflow_live_steps_l1.last, hours_per_workday)
 
         l2.l3s.each do |l3|
-          workflow_live_steps_l3 = WorkflowLiveStep.where(object_id: l3.id, object_type: 'L3').where("id > #{workflow_live_step.id}").order(:id)
+          workflow_live_steps_l3 = WorkflowLiveStep.where(object_id: l3.id, object_type: 'L3')
           workflow_live_steps_l3.each do |wls_l3|  
             workflow_live_step_for_eta << wls_l3
           end
-        #  calculate_eta(workflow_live_steps_l3, workflow_live_steps_l2.last, hours_per_workday)
         end
       end
      
-      workflow_live_step_for_eta = workflow_live_step_for_eta.sort_by{|wls_sort| wls_sort.station_step_id}
-      calculate_eta(workflow_live_step_for_eta, workflow_live_step, hours_per_workday)
+      workflow_live_step_for_eta = workflow_live_step_for_eta.sort_by{|wls_sort| wls_sort.station_step.sequence} 
+      calculate_eta(workflow_live_step_for_eta, hours_per_workday)
       
 
     end
 
-    def calculate_eta(workflow_live_step_for_eta, workflow_live_step, hours_per_workday)
-      workflow_live_step_for_eta << workflow_live_step
+    def calculate_eta(workflow_live_step_for_eta, hours_per_workday)
 
-puts ")))))))))))))))))))))))))))))#{workflow_live_step_for_eta.inspect}"
       workflow_live_step_for_eta.each do |wls|
-        if !wls.actual_confirmation.present?
-        comp_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
-        lang_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
+        pred_max_completion = ''
+        max_step_completion = ''
+        if wls.predecessors.present? && !wls.actual_confirmation.present?
+          comp_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
+          lang_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
                                             #check successor---------------------
-        transitions = Transition.where(station_step_id: wls.station_step_id)
-                                            #successor calculation
-        transitions.each_with_index do |transition, indx|
-          puts "-------------------#{transition.previous_station_step_id}"
-          pre_workflow_live_step = workflow_live_step_for_eta.find{|pre_wkls| pre_wkls.station_step_id == transition.previous_station_step_id }
-          if pre_workflow_live_step.present?
+          predecessors_steps = wls.predecessors.split(",")
+          predecessors_step_ojbets = WorkflowLiveStep.where(id: predecessors_steps)
+          predecessors_step_ojbets.each_with_index do |pso, indx|
             if indx == 0
-              if pre_workflow_live_step.present? and pre_workflow_live_step.step_completion.present?
-                  station_step = wls.station_step
-                  step_completion_current = station_step.calculate_step_completion(pre_workflow_live_step.step_completion, comp_attribute_value, lang_attribute_value, hours_per_workday)
-                  wls.eta = pre_workflow_live_step.step_completion
-                  wls.step_completion = step_completion_current
-                  wls.save!
-              end
-            else
-              if pre_workflow_live_step.present? and pre_workflow_live_step.step_completion.present?
-                if DateTime.parse(pre_workflow_live_step.step_completion.to_s) > DateTime.parse(wls.eta.to_s)
-                  station_step = wls.station_step
-                  step_completion_current = station_step.calculate_step_completion(pre_workflow_live_step.step_completion, comp_attribute_value, lang_attribute_value, hours_per_workday)
-                  wls.eta = pre_workflow_live_step.step_completion
-                  wls.step_completion = step_completion_current
-                  wls.save!
-                end
-              end
+              pred_max_completion = pso.step_completion
+            elsif DateTime.parse(pso.step_completion.to_s) > DateTime.parse(pred_max_completion.to_s)
+              pred_max_completion = pso.step_completion
             end
           end
+          
+          predecessors_step_ojbets.each_with_index do |pso, indx|
+            if indx == 0 and pso.step_completion.present?
+              station_step = wls.station_step
+              max_step_completion = station_step.calculate_step_completion(pso.step_completion, comp_attribute_value, lang_attribute_value, hours_per_workday)
+            elsif pso.step_completion.present?
+              station_step = wls.station_step
+              step_completion_other = station_step.calculate_step_completion(pso.step_completion, comp_attribute_value, lang_attribute_value, hours_per_workday)
+                if DateTime.parse(step_completion_other.to_s) > DateTime.parse(max_step_completion.to_s)
+                  max_step_completion = step_completion_other 
+                end
+            end
+          end
+          wls.eta = pred_max_completion
+          wls.step_completion = max_step_completion
+          wls.save!
         end
       end
     end
-    end
-    
+
     def calculate_eta_completion_backup(actual_confirmation, workflow_live_step)
       comp_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
       lang_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first

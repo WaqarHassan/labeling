@@ -4,7 +4,7 @@
 	<div class="project-data" id="projectform">
 	 <a href="#" class="collapsed-icon" title="Search form show/hide" onclick="overview_serach_box(); return false;"></a>
 		<div style="overflow:hidden;">
-		<%= form_tag overview_search_path, remote: true, :id => 'task_confirmation', :class => 'form-horizontal'  do %>
+		<%= form_tag overview_search_path, remote: true, :id => 'search_form', :class => 'form-horizontal'  do %>
 			<div class="project-form">
 					<div class="project-fields">
 							<div class="row">
@@ -81,7 +81,8 @@
 											<input type="submit" value="Search" class="btn save-print-update-edit-btn">
 										</div>
 										<div class="col-lg-5">
-											<input type="reset" value="Clear" onclick="return resetSearchResult();" class="btn btn-danger">
+											<a href="/overview/clear_search" data-remote="true" 
+											onclick="resetSearchResult();" class="btn btn-danger">Clear</a>
 										</div>
 								</div>
 						</div>
@@ -92,6 +93,13 @@
 						<% if @serach_result.present? %>
 							<%= render 'overview/search_result' %>
 						<% else %>	
+						<div class="row">
+					      <div class="col-lg-7">
+					      </div>
+					      <div class="col-lg-5">
+					      	<%= link_to 'Show all from DB', show_all_db_path, :remote => true %>
+					     </div>
+					    </div>
 							<ul class="ia-list">
 								<span style="color:green">Search results will be displayed here: </span>
 							</ul>

@@ -4,8 +4,8 @@
 <div class="modal fade" id="add_l2_modal" role="dialog"> </div>
 <div class="modal fade" id="reject_reason_modal" role="dialog"> </div>
 
-<div class="modal fade" id="add_l1_modal" role="dialog"></div>	
-
+<div class="modal fade" id="add_l1_modal" role="dialog"></div>
+<div class="modal fade" id="update_workflow_modal" role="dialog"></div>
 
 
 <div class="modal fade" id="project_status_popup" role="dialog">
@@ -42,8 +42,7 @@
 
 <div class="modal fade" id="add_l3_modal" role="dialog"></div>  
 
-<% if session[:open_confirm_modal] == 'open_confirm_modal'
-    session[:open_confirm_modal] = 'no modal' %>
+<% if session[:open_confirm_modal] == 'open_confirm_modal'%>
     <script type="text/javascript">
       $(document).ready(function() {
         workflow_step = '<%= session[:workflow_step_id] %>';
@@ -55,8 +54,7 @@
     </script>
   <% end %>
 
-<% if session[:open_reason_modal] == 'open_reason_modal'
-    session[:open_reason_modal] = 'no modal' %>
+<% if session[:open_reason_modal] == 'open_reason_modal'%>
     <script type="text/javascript">
       $(document).ready(function() {
         l2_id = '<%= session[:l2_id] %>';

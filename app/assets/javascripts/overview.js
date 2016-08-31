@@ -7,16 +7,18 @@ function updateprojectstatusSubmit(){
 }
 
 function resetSearchResult(){
-	$.ajax({
-	  type:"GET",
-	  url:"/overview/destroy_seaaion",
-	  dataType:"json",
-	});
-
-	$('.form-control').removeAttr( "value" )
+	$('.form-control').removeAttr("value")
+	$('#search_form').trigger("reset");
 	dataHtml = '<ul class="ia-list" search_result_div>';
 	dataHtml += '<span style="color:green">Search result we be display here: </span>';
 	dataHtml += '</ul>';
+	dataHtml += '<div class="row">';
+	dataHtml +=	'<div class="col-lg-7">';
+	dataHtml += '</div>';
+	dataHtml += '<div class="col-lg-5">';
+ 	dataHtml += '<a href="/overview/show_all_db" data-remote="true">Show all from DB</a>';
+	dataHtml += '</div>';
+	dataHtml += '</div>';
 	$('#search_result_div').html(dataHtml);
 }
 

@@ -57,7 +57,20 @@ class L1sController < ApplicationController
       end
       @l1.work_flow.workflow_stations.order(:sequence).each do |station|
         station.station_steps.where(recording_level: 'L1').order(:sequence).each do |stp|
-          WorkflowLiveStep.create(station_step_id: stp.id, object_id: @l1.id, object_type: 'L1', is_active: nil , eta: '')
+          predecessors = Transition.where(station_step_id: stp.id)
+          predecessors_step = ''
+          predecessors.each do |pred|
+            workflow_live_steps = WorkflowLiveStep.where(station_step_id: pred.previous_station_step_id, object_id: @l1.id, object_type: 'L1')
+            workflow_live_steps.each do |wls|
+              predecessors_step = predecessors_step+','+wls.id.to_s
+            end
+          end
+
+          if predecessors_step != ''
+            predecessors_step.slice!(0)
+          end
+          
+          WorkflowLiveStep.create(station_step_id: stp.id, object_id: @l1.id, object_type: 'L1', predecessors: predecessors_step, is_active: true , eta: '')
         end
       end
 
@@ -70,8 +83,8 @@ class L1sController < ApplicationController
        end
       AdditionalInfo.create(work_flow_id: @workflow.id , object_id: @l1.id,object_type: 'L1' , status: @l1.status, user_id: current_user.id)
 
-      session[:l_type] = 'l1'
-      session[:l_id] = @l1.id
+      session[:filter_object_type] = 'L1'
+      session[:filter_object_id] = @l1.id
       redirect_to root_path, notice: @workflow.L1+' was successfully created.'
     else
       render :new

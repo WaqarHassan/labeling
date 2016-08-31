@@ -1,0 +1,48 @@
+<div class='modal-dialog' style="width:450px">
+  <div class='modal-content'>
+    <%= form_tag workflow_update_path, remote: true, :id => 'task_confirmation', :class => 'form-horizontal'  do %>
+     
+    <div class = 'errors__container'>
+        <%= render 'layouts/messages' %>
+    </div>
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">×</button>
+       <h1 class="h1-heading-popup">Update Workflow</h1>
+    </div>
+
+    <div class='modal-body'>
+          <input type="hidden" value=<%=@object_type%> name="object_type" >
+          <input type="hidden" value=<%=@object_id%> name="object_id" >
+    </div>
+
+   <div class="form-group">
+   	  <div class="col-lg-2 control-label"> </div>
+      <h4 class="col-lg-2"> <%= @object.name %> </h4>
+      <div class="col-lg-6">
+      </div>
+   </div>
+
+   <div class="form-group">
+   	  <h4 class="col-lg-2"></h4>
+   	  <h4 class="col-lg-2"> Station </h4>
+      <h4 class="col-lg-2"> Relevant </h4>
+   </div>
+	<% @live_station_steps.each do |live_station_step| %>
+		<div class="form-group">
+	   	  <div class="col-lg-2"></div>
+	      <div class="col-lg-2"> <%=live_station_step.station_step.step_name%> </div>
+	      <div class="col-lg-2"> 
+	      	<input type="checkbox" name="live_steps[]" value="<%=live_station_step.id %>" <%=live_station_step.is_active? ? 'checked' : '' %> /> 
+	      </div>
+      	</div>	
+    <% end %>
+
+    <div class='modal-footer'>
+      <button class='btn btn-danger' data-dismiss='modal' type='button'>Close</button>
+      <button class='btn save-print-update-edit-btn' type='submit'>Save</button>
+    </div>
+   <% end %> 
+  </div>
+</div>
+
+ <%= javascript_include_tag "modal_form" %>

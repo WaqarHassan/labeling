@@ -26,7 +26,7 @@
 
 				    <div class="row">
 				        <div class="col-lg-4">
-			               <label for= "l1_name" class="pull-right echo_patinet form-group"> Name:  </label>
+			               <label for= "l1_name" class="pull-right echo_patinet form-group"> <%= @workflow.L1 %> Name:  </label>
 
 				        </div>
 			            <div class="col-lg-6">
@@ -71,7 +71,7 @@
 			             	 <%= f.input :description,:label => false  %>
 			            </div>
 				    </div>
-
+				   <% if @action == "ADD" %>
 					<div class="row">
 				        <div class="col-lg-4">
 			               <label for="Active" class="pull-right echo_patinet form-group"> Status  </label> 
@@ -90,6 +90,7 @@
 							</select>
 			            </div>
 				    </div>
+				    <%end%>
 
 				    <% if @attr_list.present? %>
 	                  <% attr_field_value = ''
@@ -153,6 +154,9 @@
 		 	</div>
 
 		    <div class="modal-footer">
+		    	<% if @btn_action.downcase == 'update' %>
+		    		<%=  link_to 'Update Workflow', update_workflow_path('L1', @l1.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#update_workflow_modal' , "data-dismiss" => "modal", :class=>'btn save-print-update-edit-btn', :style=>"float: left;"} %>
+		    	<% end %>
 		        <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
 		        <button class="btn save-print-update-edit-btn" type="submit" ><%= @btn_action %></button>
 		    </div>

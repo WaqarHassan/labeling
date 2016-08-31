@@ -97,6 +97,41 @@ class OverviewController < ApplicationController
     end
    end
 
+   def update_workflow
+    @object_type = params[:object_type]
+    @object_id = params[:object_id]
+    if @object_type == 'L1'
+      @object = L1.find(@object_id)
+    elsif @object_type == 'L2' 
+      @object = L2.find(@object_id)
+    elsif @object_type == 'L3' 
+      @object = L3.find(@object_id)
+    end
+    
+    @live_station_steps = WorkflowLiveStep.where(object_type: @object_type, object_id: @object_id)
+    respond_to do |format|
+      format.html
+      format.js
+    end
+   end
+
+   def workflow_update
+    live_steps = params[:live_steps]
+    object_type = params[:object_type]
+    object_id = params[:object_id]
+
+    WorkflowLiveStep.where(object_type: object_type, object_id: object_id).update_all(is_active: false)
+    if live_steps.present?
+      live_steps = live_steps.flatten
+      WorkflowLiveStep.where(id: live_steps).update_all(is_active: true)
+    end  
+    workflowLiveStep = WorkflowLiveStep.find_by_object_type_and_object_id(object_type, object_id)
+    if workflowLiveStep.present?
+      WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow)
+    end
+    redirect_to root_path, notice: 'Workflow Updated'
+   end
+
    def add_additional_info
       params[:additional_info][:info_timestamp] = L1.set_db_datetime_format(params[:additional_info][:info_timestamp])
       
@@ -131,16 +166,6 @@ class OverviewController < ApplicationController
         format.js
       end
   end
-   
-
-   # def l1_status_popup
-   #    @l1 = L1.find(params[:id])
-   #    @status = @workflow.statuses.where(recording_level: 'L1')
-   #    respond_to do |format|
-   #    format.html
-   #    format.js
-   #  end
-   # end
  
 
   def get_steps
@@ -162,9 +187,6 @@ class OverviewController < ApplicationController
     @st_name = workflow_live_step.station_step.workflow_station
     @stations = WorkflowStation.where(work_flow_id: @wf_step_id)
 
-    # if params[:l2_id].present?
-    #   @l2 = L2.find(params[:l2_id])
-    # end 
     if workflow_live_step.object_type == 'L1'
       @l1 = L1.find(workflow_live_step.object_id)
     elsif workflow_live_step.object_type == 'L2'
@@ -177,13 +199,13 @@ class OverviewController < ApplicationController
       format.js
     end
    end
+
    #POST rework Modal
    def update_rework_modal
      ReworkInfo.create(rework_info_params)
      redirect_to root_path, notice: 'Rework Info was successfully created.'
-
-
    end
+
     #GET task Confirmation
   def open_confirm_modal
     session.delete(:open_confirm_modal)

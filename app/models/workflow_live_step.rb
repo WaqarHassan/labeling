@@ -68,7 +68,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 	      	wls = WorkflowLiveStep.find_by_id(lsr["id"])
 	        pred_max_completion = ''
 	        max_step_completion = ''
-	        if wls.predecessors.present? && !wls.actual_confirmation.present?
+	        if wls.predecessors.present? && !wls.actual_confirmation.present? && wls.is_active?
 	          comp_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
 	          lang_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
 	                                            #check successor---------------------
@@ -96,7 +96,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 	                end
 	            end
 	          end
-	          
+
 	          wls.eta = pred_max_completion
 	          wls.step_completion = max_step_completion
 	          wls.save!
@@ -123,9 +123,34 @@ class WorkflowLiveStep < ActiveRecord::Base
 		      	  wls.eta = pred_max_completion
 		          wls.step_completion = max_step_completion
 		          wls.save! 
-	          end  
+	          end
+	        elsif !wls.is_active?
+	          predecessors_steps = wls.predecessors.split(",")
+	          predecessors_step_ojbets = WorkflowLiveStep.where(id: predecessors_steps)
+	          predecessors_step_ojbets.each_with_index do |pso, indx|
+	            if indx == 0 and pso.step_completion.present?
+	              max_step_completion = pso.step_completion
+	            elsif pso.step_completion.present?
+	            	if DateTime.parse(pso.step_completion.to_s) > DateTime.parse(max_step_completion.to_s)
+	              		max_step_completion = pso.step_completion
+	          		end
+	            end
+	            if indx == 0 and pso.eta.present?
+	              pred_max_completion = pso.eta
+	            elsif pso.eta.present?
+	            	if DateTime.parse(pso.eta.to_s) > DateTime.parse(pred_max_completion.to_s)
+	              		pred_max_completion = pso.eta
+	          		end
+	            end
+	          end
+	          if max_step_completion.present?
+		      	  wls.eta = pred_max_completion
+		          wls.step_completion = max_step_completion
+		          wls.save! 
+	          end     
 	        end
 	      end
+
     	end
 
 	end

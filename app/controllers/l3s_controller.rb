@@ -89,7 +89,7 @@ class L3sController < ApplicationController
           if predecessors_step != ''
             predecessors_step.slice!(0)
           end
-          WorkflowLiveStep.create(station_step_id: stp.id, object_id: @l3.id, object_type: 'L3', predecessors: predecessors_step, is_active: nil , eta: '')
+          WorkflowLiveStep.create(station_step_id: stp.id, object_id: @l3.id, object_type: 'L3', predecessors: predecessors_step, is_active: true , eta: '')
         end
       end
 

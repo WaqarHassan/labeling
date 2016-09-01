@@ -59,10 +59,10 @@ class WorkflowLiveStep < ActiveRecord::Base
 		  live_steps_qry_result = ActiveRecord::Base.connection.select_all live_steps_qry
 
 	      #workflow_live_step_for_eta = workflow_live_step_for_eta.sort_by{|wls_sort| [wls_sort.station_step.workflow_station.sequence,wls_sort.station_step]}
-	      calculate_eta(live_steps_qry_result, hours_per_workday)
+	      calculate_eta(live_steps_qry_result, hours_per_workday,workflow_live_step)
 		end
 
-		def calculate_eta(live_steps_qry_result, hours_per_workday)
+		def calculate_eta(live_steps_qry_result, hours_per_workday,currentWorkflowLiveStepConfirm)
 
 	      live_steps_qry_result.each do |lsr|
 	      	wls = WorkflowLiveStep.find_by_id(lsr["id"])
@@ -100,7 +100,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 	          wls.eta = pred_max_completion
 	          wls.step_completion = max_step_completion
 	          wls.save!
-	        elsif wls.predecessors.present? && wls.actual_confirmation.present?
+	        elsif wls.predecessors.present? && wls.actual_confirmation.present? && wls.id != currentWorkflowLiveStepConfirm.id
 	          predecessors_steps = wls.predecessors.split(",")
 	          predecessors_step_ojbets = WorkflowLiveStep.where(id: predecessors_steps)
 	          predecessors_step_ojbets.each_with_index do |pso, indx|

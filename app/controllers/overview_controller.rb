@@ -420,10 +420,6 @@ class OverviewController < ApplicationController
       workflow_live_step.object.update(:status => 'Active')
       AdditionalInfo.create(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type, status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
     end
-    TimeStampLog.create(workflow_live_step_id: workflow_live_step.id,
-                        actual_confirmation: actual_confirmation,
-                        user_id: current_user.id,
-                        work_flow_id: @workflow.id)
 
     redirect_to root_path, notice: 'Step confirmation done'
   end
@@ -449,6 +445,20 @@ class OverviewController < ApplicationController
       workflow_live_step.actual_confirmation = actual_confirmation
       workflow_live_step.step_completion = step_completion
       workflow_live_step.save!
+      no_of_comp = nil
+      no_of_lang = nil
+      if comp_attribute_value.present?
+        no_of_comp = comp_attribute_value.value
+      end
+      if lang_attribute_value.present?
+          no_of_lang = lang_attribute_value.value
+      end
+       TimeStampLog.create(workflow_live_step_id: workflow_live_step.id,
+                        actual_confirmation: actual_confirmation,
+                        user_id: current_user.id,
+                        work_flow_id: @workflow.id,
+                        no_of_comp: no_of_comp,
+                        no_of_lang: no_of_lang)
 
       WorkflowLiveStep.get_steps_calculate_eta(workflow_live_step, @workflow,current_user)
       

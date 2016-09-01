@@ -58,11 +58,11 @@ class WorkflowLiveStep < ActiveRecord::Base
 	      order by workflow_stations.sequence, station_steps.sequence"
 		  live_steps_qry_result = ActiveRecord::Base.connection.select_all live_steps_qry
 
-	      #workflow_live_step_for_eta = workflow_live_step_for_eta.sort_by{|wls_sort| [wls_sort.station_step.workflow_station.sequence,wls_sort.station_step]}
-	      calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user)
+	      #workflow_live_step_for_eta = workflow_live_step_for_eta.sort_by{|wls_sort| [wls_sort.station_step.workflow_station.sequence,wls_sort.station_step]}d
+	      calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user,workflow_live_step)
 		end
 
-		def calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user)
+		def calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
 
 	      live_steps_qry_result.each do |lsr|
 	      	wls = WorkflowLiveStep.find_by_id(lsr["id"])
@@ -100,14 +100,25 @@ class WorkflowLiveStep < ActiveRecord::Base
 	          wls.eta = pred_max_completion
 	          wls.step_completion = max_step_completion
 	          wls.save!
+
+	          no_of_comp = nil
+      		  no_of_lang = nil
+      		  if comp_attribute_value.present?
+        	  	  no_of_comp = comp_attribute_value.value
+      		  end
+		      if lang_attribute_value.present?
+		          no_of_lang = lang_attribute_value.value
+		      end
 	          if current_eta != wls.eta
 	          	TimeStampLog.create(workflow_live_step_id: wls.id, 
 					          		eta: wls.eta,
 					          		user_id: current_user.id,
-					          		work_flow_id: workflow.id)
+					          		work_flow_id: workflow.id,
+					          		no_of_lang: no_of_lang,
+					          		no_of_comp: no_of_comp)
 	          end
 
-	        elsif wls.predecessors.present? && wls.actual_confirmation.present?
+	        elsif wls.predecessors.present? && wls.actual_confirmation.present? && wls.id != currentWorkflowLiveStepConfirm.id
 	          predecessors_steps = wls.predecessors.split(",")
 	          predecessors_step_ojbets = WorkflowLiveStep.where(id: predecessors_steps)
 	          predecessors_step_ojbets.each_with_index do |pso, indx|

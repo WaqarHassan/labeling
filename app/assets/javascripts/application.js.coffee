@@ -24,6 +24,7 @@
 #= require moment
 #= require bootstrap-datetimepicker
 #= require bootstrap-datepicker
+#= require js.cookie
 
 # Add error class to .avatar images if they fail to load
 # See avatar.scss and _avatar.html.haml

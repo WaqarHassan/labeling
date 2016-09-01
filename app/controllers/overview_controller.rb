@@ -185,7 +185,13 @@ class OverviewController < ApplicationController
     @user_id = current_user.id
     @st_step = workflow_live_step.station_step
     @st_name = workflow_live_step.station_step.workflow_station
-    @stations = WorkflowStation.where(work_flow_id: @wf_step_id)
+    @level_workflow_stations = @workflow.workflow_stations.joins(:station_steps).where("station_steps.recording_level='L3' and workflow_stations.is_visible=true").uniq
+    @level_steps = []
+    @level_workflow_stations.each do |level_station|
+      level_station.station_steps.where(is_visible: true, recording_level: 'L3').each do |stp|
+        @level_steps << stp
+      end
+    end
 
     if workflow_live_step.object_type == 'L1'
       @l1 = L1.find(workflow_live_step.object_id)

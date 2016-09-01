@@ -9,6 +9,7 @@ class CreateWorkflowLiveSteps < ActiveRecord::Migration
       t.datetime :eta
       t.boolean :is_active
       
+      
 
       t.timestamps null: false
     end

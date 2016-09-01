@@ -4,7 +4,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 
 	class << self
 
-		def get_steps_calculate_eta(workflow_live_step,workflow)
+		def get_steps_calculate_eta(workflow_live_step,workflow,current_user)
 
 	  	  BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
 	      BusinessTime::Config.end_of_workday = workflow.end_of_workday
@@ -59,10 +59,10 @@ class WorkflowLiveStep < ActiveRecord::Base
 		  live_steps_qry_result = ActiveRecord::Base.connection.select_all live_steps_qry
 
 	      #workflow_live_step_for_eta = workflow_live_step_for_eta.sort_by{|wls_sort| [wls_sort.station_step.workflow_station.sequence,wls_sort.station_step]}
-	      calculate_eta(live_steps_qry_result, hours_per_workday)
+	      calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user)
 		end
 
-		def calculate_eta(live_steps_qry_result, hours_per_workday)
+		def calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user)
 
 	      live_steps_qry_result.each do |lsr|
 	      	wls = WorkflowLiveStep.find_by_id(lsr["id"])
@@ -96,10 +96,17 @@ class WorkflowLiveStep < ActiveRecord::Base
 	                end
 	            end
 	          end
-
+	          current_eta = wls.eta
 	          wls.eta = pred_max_completion
 	          wls.step_completion = max_step_completion
 	          wls.save!
+	          if current_eta != wls.eta
+	          	TimeStampLog.create(workflow_live_step_id: wls.id, 
+					          		eta: wls.eta,
+					          		user_id: current_user.id,
+					          		work_flow_id: workflow.id)
+	          end
+
 	        elsif wls.predecessors.present? && wls.actual_confirmation.present?
 	          predecessors_steps = wls.predecessors.split(",")
 	          predecessors_step_ojbets = WorkflowLiveStep.where(id: predecessors_steps)

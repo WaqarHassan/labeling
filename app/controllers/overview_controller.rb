@@ -127,7 +127,7 @@ class OverviewController < ApplicationController
     end  
     workflowLiveStep = WorkflowLiveStep.find_by_object_type_and_object_id(object_type, object_id)
     if workflowLiveStep.present?
-      WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow)
+      WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
     end
     redirect_to root_path, notice: 'Workflow Updated'
    end
@@ -420,6 +420,10 @@ class OverviewController < ApplicationController
       workflow_live_step.object.update(:status => 'Active')
       AdditionalInfo.create(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type, status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
     end
+    TimeStampLog.create(workflow_live_step_id: workflow_live_step.id,
+                        actual_confirmation: actual_confirmation,
+                        user_id: current_user.id,
+                        work_flow_id: @workflow.id)
 
     redirect_to root_path, notice: 'Step confirmation done'
   end
@@ -446,7 +450,7 @@ class OverviewController < ApplicationController
       workflow_live_step.step_completion = step_completion
       workflow_live_step.save!
 
-      WorkflowLiveStep.get_steps_calculate_eta(workflow_live_step, @workflow)
+      WorkflowLiveStep.get_steps_calculate_eta(workflow_live_step, @workflow,current_user)
       
     end
 

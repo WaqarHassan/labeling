@@ -110,7 +110,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 		          no_of_lang = lang_attribute_value.value
 		      end
 	          if current_eta != wls.eta
-	          	TimeStampLog.create(workflow_live_step_id: wls.id, 
+	          	TimestampLog.create(workflow_live_step_id: wls.id, 
 					          		eta: wls.eta,
 					          		user_id: current_user.id,
 					          		work_flow_id: workflow.id,

@@ -453,7 +453,7 @@ class OverviewController < ApplicationController
       if lang_attribute_value.present?
           no_of_lang = lang_attribute_value.value
       end
-       TimeStampLog.create(workflow_live_step_id: workflow_live_step.id,
+       TimestampLog.create(workflow_live_step_id: workflow_live_step.id,
                         actual_confirmation: actual_confirmation,
                         user_id: current_user.id,
                         work_flow_id: @workflow.id,

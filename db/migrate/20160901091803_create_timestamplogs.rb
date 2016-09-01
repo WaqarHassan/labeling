@@ -1,6 +1,6 @@
 class CreateTimestamplogs < ActiveRecord::Migration
   def change
-    create_table :timestamplogs do |t|
+    create_table :timestamp_logs do |t|
       t.integer :workflow_live_step_id
       t.datetime :eta
       t.datetime :actual_confirmation

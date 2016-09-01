@@ -38,7 +38,8 @@ font-style:normal;
 //
 
 .container{
-    width: 1219px;    
+    width: 100%;
+    background-color: #fff;    
 }
 
 // Padding to clear fixed nav
@@ -528,4 +529,11 @@ label.string {
 
 .update_workflow{
     text-align: left;
+}
+
+.rework {
+    width: 700px;
+    }
+.navbar-default{
+     background-color: #fff;
 }

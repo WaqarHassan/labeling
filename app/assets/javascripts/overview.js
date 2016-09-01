@@ -59,6 +59,14 @@ function overview_serach_box()
 	  	 $('#detail_data').removeClass('search_labels_hidden'); 
 	  	 $('#detail_data').removeClass('search_and_labels_both_hidden');
 	  }
+
+	project_ia_classes = $('#project_ia').attr('class');	 
+	projectform_classes = $('#projectform').attr('class');
+	detail_data_classes = $('#detail_data').attr('class');
+
+	Cookies.set('project_ia', project_ia_classes, { expires: 7 });
+	Cookies.set('projectform', projectform_classes, { expires: 7 });
+	Cookies.set('detail_data', detail_data_classes, { expires: 7 });	  
 }
 
 function label_attributes_box()
@@ -88,6 +96,14 @@ function label_attributes_box()
 
 		 $('#detail_data').removeClass('search_and_labels_both_hidden');
 	  }
+
+	project_ia_classes = $('#project_ia').attr('class');	 
+	projectform_classes = $('#projectform').attr('class');
+	detail_data_classes = $('#detail_data').attr('class');
+
+	Cookies.set('project_ia', project_ia_classes, { expires: 7 });
+	Cookies.set('projectform', projectform_classes, { expires: 7 });
+	Cookies.set('detail_data', detail_data_classes, { expires: 7 });
 	  	 
 }
 

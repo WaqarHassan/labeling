@@ -1,4 +1,4 @@
-$(document).ready(function() {
+jQuery(document).ready(function() {
 
 	if (Cookies.get('project_ia') && Cookies.get('projectform') && Cookies.get('detail_data')){
 		console.log('cooke present....');

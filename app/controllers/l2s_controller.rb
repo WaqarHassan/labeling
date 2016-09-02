@@ -53,12 +53,12 @@ class L2sController < ApplicationController
 
   # POST /ia
   def create
-     name = L2.find_by_name(params[:l2][:name])
+    name = L2.find_by_name(params[:l2][:name])
     if name.present? 
       abort('Validation Error: Name must be Unique.');
     end
+
     @l2 = L2.new(l2_params)
-    #abort()
     @l2.user_id = current_user.id
     if @l2.save!
       if params[:attr].present?
@@ -137,12 +137,13 @@ class L2sController < ApplicationController
         WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
       end
 
+       accept_reject_date = L1.set_db_datetime_format(params[:accept_reject_date])
        additional_info_id = AdditionalInfo.create(work_flow_id: @workflow.id, 
                                                   object_id: @l2.id,
                                                   object_type: 'L2' ,
                                                   status: @l2.status,
                                                   user_id: current_user.id,
-                                                  info_timestamp: params[:accept_reject_date]) 
+                                                  info_timestamp: accept_reject_date) 
 
        session[:additional_info_id] = additional_info_id.id
 
@@ -181,17 +182,14 @@ class L2sController < ApplicationController
       end  
 
       if params[:l2][:status].present?
-        time_stamp =  nil
-        if params[:l2][:status] == 'Rejected'
-          time_stamp =  params[:accept_reject_date]
-        end
-           additional_info_id = AdditionalInfo.create(work_flow_id: @workflow.id,
+          accept_reject_date = L1.set_db_datetime_format(params[:accept_reject_date])
+          additional_info_id = AdditionalInfo.create(work_flow_id: @workflow.id,
                               object_id: @l2.id,
                               object_type: 'L2' ,
                               status: @l2.status,
                               user_id: current_user.id,
-                              info_timestamp: time_stamp)
-           session[:additional_info_id] = additional_info_id.id
+                              info_timestamp: accept_reject_date)
+          session[:additional_info_id] = additional_info_id.id
       end
 
       if previous_status == 'Rejected' && @l2.status == 'Active'

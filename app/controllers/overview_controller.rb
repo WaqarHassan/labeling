@@ -313,9 +313,8 @@ class OverviewController < ApplicationController
   end
 
   def save_reject_reason
-    #additional_info_id = AdditionalInfo.find(params[:additional_info][:id])
     additional_info_id = session[:additional_info_id]
-    AdditionalInfo.update( additional_info_id, reason_code_id: params[:additional_info][:reason_code_id], note: params[:additional_info][:note])
+    AdditionalInfo.update(additional_info_id, reason_code_id: params[:additional_info][:reason_code_id], note: params[:additional_info][:note])
     session.delete(:additional_info_id)
     redirect_to root_path, notice: 'Reject reason saved'
   end

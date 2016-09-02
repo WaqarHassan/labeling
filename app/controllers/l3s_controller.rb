@@ -54,6 +54,10 @@ class L3sController < ApplicationController
 
   # POST /l3s
   def create
+    name = L3.find_by_name(params[:l3][:name])
+    if name.present? 
+      abort('Validation Error: Name must be Unique.');
+    end
     @l3 = L3.new(l3_params)
     @l3.user_id = current_user.id
     if @l3.save!
@@ -173,7 +177,7 @@ class L3sController < ApplicationController
 
       workflowLiveStep = WorkflowLiveStep.find_by_object_id_and_object_type(@l3.id,'L3')
       if workflowLiveStep.present?
-        WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow)
+        WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
       end
 
       AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l3.id,object_type: 'L3' , status: @l3.status, user_id: current_user.id)

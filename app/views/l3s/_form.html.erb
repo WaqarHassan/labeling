@@ -11,7 +11,7 @@
       </div>
       <div class='modal-body' id="add_ecr_modal_body">
         <div class="form-inputs">
-  
+          <%= f.hidden_field :status , :value=> 'Active' %>
           <div class= "form-group">
             <div class="row">
               <div class="col-lg-4">
@@ -74,27 +74,7 @@
               </div>
             </div>
           </div>
-          <%end end %>
-          <% if  @action == 'ADD'    %>
-          <div class="row">
-                <div class="col-lg-4">
-                     <label for="Active" class="pull-right echo_patinet form-group"> Status  </label> 
-                </div>
-                  <div class="col-lg-6">
-                  <% if @l3.status.present?
-                      selected_status = @l3.status
-                    else
-                      selected_status = 'Active'
-                    end
-                    %>
-                    <select id="l1_status" name="l3[status]" required="required" class="form-control pnd-reqst pull-left valid">
-                        <% @status_list.each do |st| %>
-                        <option value="<%=st.status%>" <%= st.status == selected_status ? 'selected' : '' %> ><%=st.status%></option>
-                      <% end %>
-                    </select>
-                </div>
-            </div> 
-            <%end%>       
+          <%end end %>      
 
            <% if @attr_list.present? %>
             <% attr_field_value = ''

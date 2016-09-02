@@ -38,7 +38,7 @@ font-style:normal;
 //
 
 .container{
-    width: 1219px;    
+    width: 100%; 
 }
 
 // Padding to clear fixed nav
@@ -95,7 +95,7 @@ body {
 .project-formset.collapsed {
     width: 0 !important;
 }
-.project-data { width:22%; float:left; position:relative;}
+.project-data { width:250px; float:left; position:relative;}
 .approval-data {width:55%; float:left; position:relative;}
 .collapsed-icon { display:block; width:20px; height:21px; position:absolute; top:-17px; right:0px; z-index:999;}
 .project-data.collapsed { width:0% ;}
@@ -104,7 +104,7 @@ body {
 .tspend {width: 60% !important;}
 
 .project-data.project_fix.fix_levels {
-    width: 22.4%;
+    width: 300px;
 }
 
 .project-data.project_ia {
@@ -320,22 +320,22 @@ navbar-default {
 
 .tspend_initial {
     overflow-x: scroll;
-    width: 18% !important;
+    width: 16% !important;
 }
 
 .labels_hidden {
     overflow-x: scroll;
-    width: 54% !important;
+    width: 53% !important;
 }
 
 .search_labels_hidden{
     overflow-x: scroll;
-    width: 40.5% !important;    
+    width: 37.5% !important;    
 }
 
 .search_and_labels_both_hidden{
     overflow-x: scroll;
-    width: 76% !important;    
+    width: 74.3% !important;    
 }
 
 .project-data.project_ia table {
@@ -528,4 +528,11 @@ label.string {
 
 .update_workflow{
     text-align: left;
+}
+
+.rework {
+    width: 700px;
+    }
+.navbar-default{
+     background-color: #fff;
 }

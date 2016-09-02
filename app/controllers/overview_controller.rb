@@ -517,7 +517,7 @@ class OverviewController < ApplicationController
     end
     def additional_info_params_note_only
       params.require(:additional_info).permit(:object_id, :object_type,
-        :work_flow_id, :note, :user_id)
+        :work_flow_id, :info_timestamp, :note, :user_id)
     end
     def rework_info_params
       params.require(:rework_info).permit(:start_rework_station, 

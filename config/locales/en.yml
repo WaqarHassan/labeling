@@ -100,15 +100,15 @@ en:
     dashboard:
       name: 'Admin'         # Title of admin dashboard on the left
 
-  activerecord:
-    errors:
-      models:
-        l1:
-          attributes:
-            name:
-              taken: 'must be unique test 3'
+  # activerecord:
+  #   errors:
+  #     models:
+  #       l1:
+  #         attributes:
+  #           name:
+  #             taken: 'must be unique test 3'
   errors:
-    unknown: 'Validation error: Name must be unique!'
+    unknown: 'Oops! Something went wrong.'
 
   unauthorized:
     default: 'Sorry, you are not authorized to access the requested page.'

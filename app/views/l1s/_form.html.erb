@@ -13,6 +13,7 @@
 
 			 	<div class="form-inputs"> 
 			  		<%= f.hidden_field :work_flow_id , :value=> @workflow.id %>
+			  		<%= f.hidden_field :status , :value=> 'Active' %>
 			  		<div class="row">
 				        <div class="col-lg-4">
 			               <label for= "workflow_dropdown" class="pull-right echo_patinet form-group"> Workflow: </label>
@@ -71,26 +72,6 @@
 			             	 <%= f.input :description,:label => false  %>
 			            </div>
 				    </div>
-				   <% if @action == "ADD" %>
-					<div class="row">
-				        <div class="col-lg-4">
-			               <label for="Active" class="pull-right echo_patinet form-group"> Status  </label> 
-				        </div>
-			            <div class="col-lg-6">
-			             <% if @l1.status.present?
-			             		selected_status = @l1.status
-			             	else
-			             		selected_status = 'Active'
-			             	end
-			              %>
-						    <select id="l1_status" name="l1[status]" required="required" class="form-control pnd-reqst pull-left valid">
-						    	<% @status_list.each do |st| %>
-									<option value="<%=st.status%>" <%= st.status == selected_status ? 'selected' : '' %> ><%=st.status%></option>
-								<% end %>
-							</select>
-			            </div>
-				    </div>
-				    <%end%>
 
 				    <% if @attr_list.present? %>
 	                  <% attr_field_value = ''

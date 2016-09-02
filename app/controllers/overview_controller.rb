@@ -97,7 +97,7 @@ class OverviewController < ApplicationController
     end
    end
 
-   def update_workflow
+  def update_workflow
     @object_type = params[:object_type]
     @object_id = params[:object_id]
     if @object_type == 'L1'
@@ -113,9 +113,9 @@ class OverviewController < ApplicationController
       format.html
       format.js
     end
-   end
+  end
 
-   def workflow_update
+  def workflow_update
     live_steps = params[:live_steps]
     object_type = params[:object_type]
     object_id = params[:object_id]
@@ -130,7 +130,7 @@ class OverviewController < ApplicationController
       WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
     end
     redirect_to root_path, notice: 'Workflow Updated'
-   end
+  end
 
    def add_additional_info
       params[:additional_info][:info_timestamp] = L1.set_db_datetime_format(params[:additional_info][:info_timestamp])
@@ -140,7 +140,8 @@ class OverviewController < ApplicationController
       end
 
       if params[:save_note_only] == 'savenoteonly'
-       AdditionalInfo.create(additional_info_params_note_only)
+        AdditionalInfo.create(additional_info_params_note_only)
+      
       else
          AdditionalInfo.create(additional_info_params)
         if params[:additional_info][:object_type] == 'L1'
@@ -154,6 +155,7 @@ class OverviewController < ApplicationController
           l3.update(status: params[:additional_info][:status])
         end
       end
+     
       #abort()
       redirect_to root_path, notice: 'Additional Info was successfully created.'
    end
@@ -311,8 +313,9 @@ class OverviewController < ApplicationController
   end
 
   def save_reject_reason
-    additional_info_id = AdditionalInfo.where(object_id: params[:additional_info][:object_id],object_type: params[:additional_info][:object_type])
-    AdditionalInfo.update(additional_info_id, reason_code_id: params[:additional_info][:reason_code_id], note: params[:additional_info][:note])
+    #additional_info_id = AdditionalInfo.find(params[:additional_info][:id])
+    AdditionalInfo.update(session[:additional_info_id_] , reason_code_id: params[:additional_info][:reason_code_id], note: params[:additional_info][:note])
+    session.delete(:additional_info_id_)
     redirect_to root_path, notice: 'Reject reason saved'
   end
 
@@ -420,7 +423,7 @@ class OverviewController < ApplicationController
       workflow_live_step.object.update(:status => 'Active')
       AdditionalInfo.create(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type, status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
     end
-
+    
     redirect_to root_path, notice: 'Step confirmation done'
   end
 

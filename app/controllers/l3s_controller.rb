@@ -54,6 +54,10 @@ class L3sController < ApplicationController
 
   # POST /l3s
   def create
+    name = L3.find_by_name(params[:l3][:name])
+    if name.present? 
+      abort('Validation Error: Name must be Unique.');
+    end
     @l3 = L3.new(l3_params)
     @l3.user_id = current_user.id
     if @l3.save!

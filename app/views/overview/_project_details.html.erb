@@ -186,8 +186,14 @@
 				</tr>
 				<tr class="sub_heading">
 					<% @workflow_stations.each do |station|
-						station.station_steps.where(is_visible: true).order(:sequence).each do |step| %>
-							<th style="text-align:center" >
+						station.station_steps.where(is_visible: true).order(:sequence).each do |step|
+							pred_name = "\n" 
+							step.transitions.each do |trasn|
+								pred_name = pred_name+'*'+trasn.previous_station_step.step_name
+								pred_name = pred_name+"\n"
+							end %>
+							<th style="text-align:center" 
+								title="<%=station.station_name %> - <%=step.step_name %>&#013;Days: <%=step.duration_days.present? ? step.duration_days : 0 %> Minutes: <%=step.duration_minutes.present? ? step.duration_minutes : 0 %>&#013;Indicator: <%=step.duration_multiplier %>&#013;&#013;Predecessors: <%=pred_name%>">
 								<%= step.step_name %>
 							</th>
 					<% end 

@@ -189,7 +189,7 @@
 						station.station_steps.where(is_visible: true).order(:sequence).each do |step|
 							pred_name = "\n" 
 							step.transitions.each do |trasn|
-								pred_name = pred_name+'*'+trasn.previous_station_step.step_name
+								pred_name = pred_name+'*'+trasn.previous_station_step.workflow_station.station_name+' - '+trasn.previous_station_step.step_name
 								pred_name = pred_name+"\n"
 							end %>
 							<th style="text-align:center" 

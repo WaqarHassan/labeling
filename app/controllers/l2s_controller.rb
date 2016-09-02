@@ -144,7 +144,7 @@ class L2sController < ApplicationController
                                                   user_id: current_user.id,
                                                   info_timestamp: params[:accept_reject_date]) 
 
-       session[:additional_info_id_] = additional_info_id.id
+       session[:additional_info_id] = additional_info_id.id
 
 
       if @l2.workflow_live_steps.present? && @l2.status == 'Active'
@@ -185,12 +185,13 @@ class L2sController < ApplicationController
         if params[:l2][:status] == 'Rejected'
           time_stamp =  params[:accept_reject_date]
         end
-           AdditionalInfo.create(work_flow_id: @workflow.id,
+           additional_info_id = AdditionalInfo.create(work_flow_id: @workflow.id,
                               object_id: @l2.id,
                               object_type: 'L2' ,
                               status: @l2.status,
                               user_id: current_user.id,
                               info_timestamp: time_stamp)
+           session[:additional_info_id] = additional_info_id.id
       end
 
       if previous_status == 'Rejected' && @l2.status == 'Active'

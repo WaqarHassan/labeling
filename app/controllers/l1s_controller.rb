@@ -49,6 +49,10 @@ class L1sController < ApplicationController
   # POST /l1s
   def create
     
+    name = L1.find_by_name(params[:l1][:name])
+    if name.present? 
+      abort('Validation Error: Name must be Unique.');
+    end
     @l1 = L1.new(l1_params)
     @l1.user_id = current_user.id
     if @l1.save!

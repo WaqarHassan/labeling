@@ -53,8 +53,12 @@ class L2sController < ApplicationController
 
   # POST /ia
   def create
-
+     name = L2.find_by_name(params[:l2][:name])
+    if name.present? 
+      abort('Validation Error: Name must be Unique.');
+    end
     @l2 = L2.new(l2_params)
+    #abort()
     @l2.user_id = current_user.id
     if @l2.save!
       if params[:attr].present?
@@ -133,7 +137,15 @@ class L2sController < ApplicationController
         WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
       end
 
-      AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l2.id,object_type: 'L2' , status: @l2.status, user_id: current_user.id)
+       additional_info_id = AdditionalInfo.create(work_flow_id: @workflow.id, 
+                                                  object_id: @l2.id,
+                                                  object_type: 'L2' ,
+                                                  status: @l2.status,
+                                                  user_id: current_user.id,
+                                                  info_timestamp: params[:accept_reject_date]) 
+
+       session[:additional_info_id_] = additional_info_id.id
+
 
       if @l2.workflow_live_steps.present? && @l2.status == 'Active'
         session[:open_confirm_modal] = 'open_confirm_modal'
@@ -142,7 +154,7 @@ class L2sController < ApplicationController
         session[:open_reason_modal] = 'open_reason_modal'
         session[:l2_id] = @l2.id
       end
-
+      #abort()
       session[:filter_object_type] = 'L2'
       session[:filter_object_id] = @l2.id
       redirect_to root_path, notice: @workflow.L2+' was successfully created.'
@@ -169,7 +181,16 @@ class L2sController < ApplicationController
       end  
 
       if params[:l2][:status].present?
-        AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l2.id,object_type: 'L2' , status: @l2.status, user_id: current_user.id)
+        time_stamp =  nil
+        if params[:l2][:status] == 'Rejected'
+          time_stamp =  params[:accept_reject_date]
+        end
+           AdditionalInfo.create(work_flow_id: @workflow.id,
+                              object_id: @l2.id,
+                              object_type: 'L2' ,
+                              status: @l2.status,
+                              user_id: current_user.id,
+                              info_timestamp: time_stamp)
       end
 
       if previous_status == 'Rejected' && @l2.status == 'Active'

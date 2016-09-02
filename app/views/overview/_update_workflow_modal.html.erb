@@ -24,13 +24,16 @@
 
    <div class="form-group">
    	  <h4 class="col-lg-1"></h4>
-   	  <h4 class="col-lg-4 update_workflow">Station</h4>
+   	  <h4 class="col-lg-5 update_workflow">Steps</h4>
       <h4 class="col-lg-2">Relevant</h4>
    </div>
 	<% @live_station_steps.each do |live_station_step| %>
 		<div class="form-group">
 	   	  <div class="col-lg-1"></div>
-	      <div class="col-lg-4 update_workflow"><%=live_station_step.station_step.step_name%></div>
+	      <div class="col-lg-5 update_workflow">
+          <%= live_station_step.station_step.workflow_station.station_name%> - 
+          <%= live_station_step.station_step.step_name%>
+        </div>
 	      <div class="col-lg-2"> 
 	      	<input type="checkbox" name="live_steps[]" value="<%=live_station_step.id %>" <%=live_station_step.is_active? ? 'checked' : '' %> /> 
 	      </div>

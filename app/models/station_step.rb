@@ -1,6 +1,7 @@
 class StationStep < ActiveRecord::Base
 	belongs_to :workflow_station
 	has_many :workflow_live_stations
+	has_many :transitions
 
 	def calculate_step_completion(actual_confirmation, comp_attribute_value, lang_attribute_value, hours_per_workday)
 		duration_days = self.duration_days
@@ -39,12 +40,14 @@ class StationStep < ActiveRecord::Base
 		number_days = number_days + days_frm_hours
 
 		actual_confirmation = actual_confirmation.to_time.strftime('%Y-%m-%d %H:%M')
-		actual_confirmation_time = Time.parse(actual_confirmation)
-
-		actual_confirmationTimeDays =  number_days.business_days.after(actual_confirmation_time)
-		actual_confirmationTime =  remaining_hours.business_hours.after(actual_confirmation_time)
-
-		return  actual_confirmationTime + reminaing_minutes.minutes
+		actual_confirmationTime = Time.parse(actual_confirmation)
+		actual_confirmation_time =  remaining_hours.business_hours.after(actual_confirmationTime)
+		
+		if number_days > 0
+			actual_confirmation_time =  number_days.business_days.after(actual_confirmation_time)
+		end
+		
+		return  actual_confirmation_time + reminaing_minutes.minutes
 	end
 	
 end

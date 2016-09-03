@@ -97,7 +97,7 @@ class OverviewController < ApplicationController
     end
    end
 
-   def update_workflow
+  def update_workflow
     @object_type = params[:object_type]
     @object_id = params[:object_id]
     if @object_type == 'L1'
@@ -113,9 +113,9 @@ class OverviewController < ApplicationController
       format.html
       format.js
     end
-   end
+  end
 
-   def workflow_update
+  def workflow_update
     live_steps = params[:live_steps]
     object_type = params[:object_type]
     object_id = params[:object_id]
@@ -127,10 +127,10 @@ class OverviewController < ApplicationController
     end  
     workflowLiveStep = WorkflowLiveStep.find_by_object_type_and_object_id(object_type, object_id)
     if workflowLiveStep.present?
-      WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow)
+      WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
     end
     redirect_to root_path, notice: 'Workflow Updated'
-   end
+  end
 
    def add_additional_info
       params[:additional_info][:info_timestamp] = L1.set_db_datetime_format(params[:additional_info][:info_timestamp])
@@ -140,7 +140,8 @@ class OverviewController < ApplicationController
       end
 
       if params[:save_note_only] == 'savenoteonly'
-       AdditionalInfo.create(additional_info_params_note_only)
+        AdditionalInfo.create(additional_info_params_note_only)
+      
       else
          AdditionalInfo.create(additional_info_params)
         if params[:additional_info][:object_type] == 'L1'
@@ -154,6 +155,7 @@ class OverviewController < ApplicationController
           l3.update(status: params[:additional_info][:status])
         end
       end
+     
       #abort()
       redirect_to root_path, notice: 'Additional Info was successfully created.'
    end
@@ -317,8 +319,9 @@ class OverviewController < ApplicationController
   end
 
   def save_reject_reason
-    additional_info_id = AdditionalInfo.where(object_id: params[:additional_info][:object_id],object_type: params[:additional_info][:object_type])
+    additional_info_id = session[:additional_info_id]
     AdditionalInfo.update(additional_info_id, reason_code_id: params[:additional_info][:reason_code_id], note: params[:additional_info][:note])
+    session.delete(:additional_info_id)
     redirect_to root_path, notice: 'Reject reason saved'
   end
 
@@ -426,7 +429,7 @@ class OverviewController < ApplicationController
       workflow_live_step.object.update(:status => 'Active')
       AdditionalInfo.create(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type, status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
     end
-
+    
     redirect_to root_path, notice: 'Step confirmation done'
   end
 
@@ -451,8 +454,22 @@ class OverviewController < ApplicationController
       workflow_live_step.actual_confirmation = actual_confirmation
       workflow_live_step.step_completion = step_completion
       workflow_live_step.save!
+      no_of_comp = nil
+      no_of_lang = nil
+      if comp_attribute_value.present?
+        no_of_comp = comp_attribute_value.value
+      end
+      if lang_attribute_value.present?
+          no_of_lang = lang_attribute_value.value
+      end
+       TimestampLog.create(workflow_live_step_id: workflow_live_step.id,
+                        actual_confirmation: actual_confirmation,
+                        user_id: current_user.id,
+                        work_flow_id: @workflow.id,
+                        no_of_comp: no_of_comp,
+                        no_of_lang: no_of_lang)
 
-      WorkflowLiveStep.get_steps_calculate_eta(workflow_live_step, @workflow)
+      WorkflowLiveStep.get_steps_calculate_eta(workflow_live_step, @workflow,current_user)
       
     end
 
@@ -506,7 +523,7 @@ class OverviewController < ApplicationController
     end
     def additional_info_params_note_only
       params.require(:additional_info).permit(:object_id, :object_type,
-        :work_flow_id, :note, :user_id)
+        :work_flow_id, :info_timestamp, :note, :user_id)
     end
     def rework_info_params
       params.require(:rework_info).permit(:start_rework_station, 

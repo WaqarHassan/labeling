@@ -11,28 +11,6 @@ if (window.jQuery) {
 			$('#project_ia').addClass(project_ia_classes);
 			$('#projectform').addClass(projectform_classes);
 			adjust();
-			// overview_serach_box();
-			// label_attributes_box();
-			// var labelsClassName = $('.project_ia').attr('class');	
-   //   		var className = $('#projectform').attr('class');
-			// if (className=='project-data' && labelsClassName == 'project-data project_ia collapsed project_serach_noDetail'){
-      	 
-			// var detail_data = container_width() - 300 ;
-			// $('#detail_data').width(detail_data);
-
-   //    		}
-   //    		else if (className=='project-data'){
-			// 	var detail_data = container_width() - 300 - 600;
-			// 	$('#detail_data').width(detail_data);
-
-	  // 		}else if (className=='project-data collapsed' && labelsClassName == 'project-data project_ia collapsed project_serach_noDetail'){
-			// 	var detail_data = container_width() - 300 -250  ;
-			// 	$('#detail_data').width(detail_data);
-			// }else
-			// { 
-			// 		var detail_data = container_width() - 250 - 300 - 600 ;
-			// 		$('#detail_data').width(detail_data);
-	  // 		}
 
 		}
 		else

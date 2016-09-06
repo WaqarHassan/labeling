@@ -1,27 +1,22 @@
 <div class='modal-dialog'>
   <div class='modal-content'>
 
-   <%= form_tag update_rework_modal_path, remote: true, :id => 'rework_modal', :class => 'form-horizontal'  do %>
+  <%= simple_form_for @rework, :url => create_rework_info_path, remote: true , :html => { :id => "rework_modal_from", :class=> 'form-horizontal'}  do |f| %>  
     <div class = 'errors__container'>
-        <%= render 'layouts/messages' %>
-      </div>
+      <%= render 'layouts/messages' %>
+    </div>
    <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">×</button>
      <h1 class="h1-heading-popup">Rework</h1>
   </div>
     <div class='modal-body'>
-      <input type="hidden" name="rework_info[user_id]" value = <%= @user_id %> >
-      <input type="hidden" name="rework_info[start_rework_station]" value = <%= @st_step.id %> >
-      <input type="hidden" name="rework_info[start_rework_step]" value = <%= @st_name.id %> >
-      <% if @l1.present? %>
-        <input type="hidden" name="rework_info[l1_id]" value = <%= @l1.id %> >
-      <%end%>
-      <% if @l2.present? %>
-        <input type="hidden" name="rework_info[l2_id]" value = <%= @l2.id %> >
-      <%end%>
-      <% if @l3.present? %>
-        <input type="hidden" name="rework_info[l3_id]" value = <%= @l3.id %> >
-      <%end%>
+      <%= f.hidden_field :object_type , :value=> @object_type %>
+      <%= f.hidden_field :object_id , :value=> @object.id %>
+      <%= f.hidden_field :user_id , :value=> @user_id %>
+      <%= f.hidden_field :step_initiating_rework , :value=> @current_step.id %>
+      <input type="hidden" name="rework_parent_id" value= "<%=@object.id%>" />
+      <input type="hidden" name="num_component" value= "<%=@object.num_component%>" />
+
         <div class="form-group">
            <label class="col-lg-4 control-label"><%= @workflow.L1 %>: </label>
            <div class="col-lg-6">
@@ -29,7 +24,6 @@
                  @l2.present? == true ? @l2.l1.name :
                  @l3.present? == true ? @l3.l2.l1.name : 
                  '' %> </span>
-
            </div>
        </div>
 
@@ -54,11 +48,11 @@
      <div class="form-group">
          <label class="col-lg-4 control-label"><%= @workflow.L3 %>:</label>
          <div class="col-lg-6">  <span id="" name="">
-                 <% if @l2.present?  %>
-                      <%= @l2.name %>
-              <% elsif @l3.present? %>
-                  <%= @l3.l2.name %>
-                  <% end %>
+                 <% if @l3.present?  %>
+                    <%= @l3.name %>
+                 <% elsif @l2.l3.present? %>
+                    <%= @l2.l3.name %>
+                 <% end %>
               </span>
          </div>
      </div>
@@ -66,48 +60,39 @@
       <div class="form-group">
         <label class="col-lg-4 control-label">Station Initiating the rework</label>
         <div class="col-lg-6">
-          <%= @st_name.station_name %>
+          <%= @current_station.station_name %>
          </div>
      </div> 
       <div class="form-group">
         <label class="col-lg-4 control-label">Step Initiating the rework</label>
         <div class="col-lg-6">
-           <%= @st_step.step_name %>
+           <%= @current_step.step_name %>
          </div>
      </div>
-     <div class="form-group">
-        <label class="col-lg-4 control-label">Start rework at station</label>
-        <div class="col-lg-6">
-         <%= select_tag 'rework_info[station_id]', options_from_collection_for_select(@workflow.workflow_stations, 'id', 'station_name'), prompt: "please select station", :'data-remote' => 'true',:'data-url' => url_for(get_steps_path), :class=>'form-control pnd-reqst pull-left', required: true %>
 
-      
-        </div>
-      </div>
       <div class="form-group">
         <label class="col-lg-4 control-label">Start rework at step</label>
         <div class="col-lg-6" id= "get_steps_div">
-         <select class = "form-control"> 
-            <option>Please Select Step</option>
-
-            </select>
-
+         <select class = "form-control" id="rework_start_step" name="rework_info[rework_start_step]" required="required"> 
+          <option value="">Please Select Step</option>
+          <% @level_steps.each do |stp| %>
+            <option value="<%= stp.id %>" ><%= stp.workflow_station.station_name+' - '+ stp.step_name%></option>
+          <% end %>
+         </select>
         </div>
       </div>
+
       <div class="form-group">
          <label class="col-lg-4 control-label">Reason</label>
           <div class="col-lg-6">
-            <select id="source" class="form-control" name="rework_info[reason]">
-              <option value="internal">Internal</option>
-              <option value="external">External</option>
-           </select>
+            <%= select_tag "rework_info[reason]", options_from_collection_for_select(@reason_codes, 'id', 'reason'), prompt: "please select reason", :class=>'form-control', required: true %>
            </div>
      </div>
-
 
        <div class="form-group">
          <label class="col-lg-4 control-label">#Comp</label>
           <div class="col-lg-6">
-            <input type="number" id="source" class="form-control" name="rework_info[comp]">   
+            <input type="number" id="comp" class="form-control" name="num_component_rework" value="<%=@object.num_component%>" max="<%=@object.num_component%>">   
           </div>
      </div>
 

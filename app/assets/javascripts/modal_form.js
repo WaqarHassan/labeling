@@ -20,6 +20,7 @@ $(document).ready(function() {
 	$("#confirm_modal_popup #task_confirmation").validate();
 	$("#add_l2_modal #task_confirmation").validate();
 	$("#reject_reason_modal #save_reject_reason").validate();
+	$("#rework_modal_popup #rework_modal_from").validate();
 	
 	$("#errors_container").hide();
 

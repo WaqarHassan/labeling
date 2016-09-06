@@ -16,6 +16,7 @@ class L3sController < ApplicationController
     @action = 'ADD'
     @btn_action = 'SAVE'
     @l3_bu = @workflow.l3_bu
+    @l3_component = @workflow.l3_component
     @status_list = @workflow.statuses.where(recording_level: 'L3')
     @bu_options = @workflow.bu_options.where(recording_level: 'L3')
     if params.has_key?(:l2_id)
@@ -36,6 +37,7 @@ class L3sController < ApplicationController
   # GET /l3s/1/edit
   def edit
     @l3_bu = @workflow.l3_bu
+    @l3_component = @workflow.l3_component
     @bu_options = @workflow.bu_options.where(recording_level: 'L3')
     @l2 = @l3.l2
     @status_list = @workflow.statuses.where(recording_level: 'L3')
@@ -237,6 +239,6 @@ class L3sController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def l3_params
-      params.require(:l3).permit(:id, :name, :status, :note, :l2_id, :business_unit)
+      params.require(:l3).permit(:id, :name, :status, :note, :l2_id, :business_unit, :num_component)
     end
 end

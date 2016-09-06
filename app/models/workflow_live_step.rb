@@ -69,7 +69,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 	        pred_max_completion = ''
 	        max_step_completion = ''
 	        if wls.predecessors.present? && !wls.actual_confirmation.present? && wls.is_active?
-	          comp_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
+	          comp_attribute_value = wls.object #attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
 	          lang_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
 	                                            #check successor---------------------
 	          predecessors_steps = wls.predecessors.split(",")
@@ -104,7 +104,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 	          no_of_comp = nil
       		  no_of_lang = nil
       		  if comp_attribute_value.present?
-        	  	  no_of_comp = comp_attribute_value.value
+        	  	  no_of_comp = comp_attribute_value.num_component
       		  end
 		      if lang_attribute_value.present?
 		          no_of_lang = lang_attribute_value.value

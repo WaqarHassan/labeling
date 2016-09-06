@@ -172,27 +172,36 @@ class OverviewController < ApplicationController
 
   def get_steps
     @steps = StationStep.where(workflow_station_id: params[:rework_info][:station_id] )
-    
-     respond_to do |format|
+    respond_to do |format|
       format.html
       format.js
     end
-
   end
+
   #GET rework Modal
    def open_rework_modal
     @wf_step_id = params[:wf_step_id]
-     workflow_live_step = WorkflowLiveStep.find(@wf_step_id)
+    workflow_live_step = WorkflowLiveStep.find(@wf_step_id)
+    @rework = ReworkInfo.new
 
+    @object = workflow_live_step.object
+    @object_type = workflow_live_step.object_type
     @user_id = current_user.id
-    @st_step = workflow_live_step.station_step
-    @st_name = workflow_live_step.station_step.workflow_station
-    @level_workflow_stations = @workflow.workflow_stations.joins(:station_steps).where("station_steps.recording_level='L3' and workflow_stations.is_visible=true").uniq
+    @current_step = workflow_live_step.station_step
+    @current_station = workflow_live_step.station_step.workflow_station
+    @reason_codes = @workflow.reason_codes.where(status: 'Rework', recording_level: workflow_live_step.object_type)
+    @level_workflow_stations = @workflow.workflow_stations.joins(:station_steps).where("station_steps.recording_level='#{workflow_live_step.object_type}' and workflow_stations.sequence <= #{@current_station.sequence} and workflow_stations.is_visible=true").order(:sequence).uniq
     @level_steps = []
     @level_workflow_stations.each do |level_station|
-      level_station.station_steps.where(is_visible: true, recording_level: 'L3').each do |stp|
-        @level_steps << stp
-      end
+      if level_station.id == @current_station.id
+        level_station.station_steps.where("is_visible=#{true} and recording_level='#{workflow_live_step.object_type}' and sequence <= #{@current_step.sequence}").order(:sequence).each do |stp|
+          @level_steps << stp
+        end
+      else
+        level_station.station_steps.where("is_visible=#{true} and recording_level='#{workflow_live_step.object_type}'").order(:sequence).each do |stp|
+          @level_steps << stp
+        end
+      end  
     end
 
     if workflow_live_step.object_type == 'L1'
@@ -209,8 +218,71 @@ class OverviewController < ApplicationController
    end
 
    #POST rework Modal
-   def update_rework_modal
+   def create_rework_info
      ReworkInfo.create(rework_info_params)
+     rework_parent_id = params[:rework_parent_id]
+     rework_object_type = params[:rework_info][:object_type]
+     parent_total_num_component = params[:num_component]
+     num_component_rework = params[:num_component_rework]
+     rework_start_step = params[:rework_info][:rework_start_step]
+     remaining_parent_component = parent_total_num_component.to_i - num_component_rework.to_i
+
+     l3_object = L3.find(rework_parent_id)
+     l3_rework_name = get_rework_name(l3_object.name)
+     l3_object.num_component_rework = num_component_rework
+
+     l3_rework = L3.new
+     l3_rework.user_id = current_user.id
+     l3_rework.name = l3_rework_name
+     l3_rework.business_unit = l3_object.business_unit
+     l3_rework.l2_id = l3_object.l2_id
+     l3_rework.rework_parent_id = rework_parent_id
+     l3_rework.num_component = num_component_rework
+
+     # -----------------fulllllllllllllll Rework
+     if parent_total_num_component.to_i == num_component_rework.to_i
+      l3_rework.is_full_rework = true
+      l3_rework.status = 'Active'
+      l3_object.is_closed = true
+      l3_object.status = 'Closed'
+      reason = ReasonCode.find_by_recording_level('ReworkParent')
+      AdditionalInfo.create(info_timestamp: Time.now ,object_id: l3_object.id, object_type: rework_object_type, 
+        status: 'Closed', reason_code_id: reason.id, work_flow_id: @workflow.id, user_id: current_user.id)
+      WorkflowLiveStep.where(object_type: rework_object_type, object_id: rework_parent_id, actual_confirmation: nil).update_all(is_active: false)
+     end
+
+     l3_object.save!
+     if l3_rework.save!
+        AdditionalInfo.create(info_timestamp: Time.now ,object_id: l3_rework.id, object_type: rework_object_type, 
+        status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
+
+        lang_attribute_value = l3_object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
+        AttributeValue.create(label_attribute_id: lang_attribute_value.label_attribute_id,value: lang_attribute_value.label_attribute_id,
+          object_type: lang_attribute_value.object_type, object_id: l3_rework.id)
+        start_workflow_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(rework_start_step,rework_parent_id, rework_object_type)
+        rework_live_steps = WorkflowLiveStep.where(object_type: rework_object_type, object_id: rework_parent_id)
+        rework_live_steps.each do |full_rework|
+          live_steps_full_rework = WorkflowLiveStep.new
+          live_steps_full_rework.station_step_id = full_rework.station_step_id
+          live_steps_full_rework.object_id = l3_rework.id
+          live_steps_full_rework.object_type = full_rework.object_type
+          live_steps_full_rework.predecessors = full_rework.predecessors
+          live_steps_full_rework.step_completion = full_rework.step_completion
+          live_steps_full_rework.eta = full_rework.eta
+          if full_rework.id >= start_workflow_live_step.id
+            live_steps_full_rework.is_active = true
+          else
+            live_steps_full_rework.is_active = false
+          end
+
+          if live_steps_full_rework.save!
+            AdditionalInfo.create(info_timestamp: Time.now ,object_id: l3_rework.id, object_type: rework_object_type, 
+            status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
+          end
+        end
+
+     end
+
      redirect_to root_path, notice: 'Rework Info was successfully created.'
    end
 
@@ -435,6 +507,18 @@ class OverviewController < ApplicationController
 
   private
 
+    def get_rework_name(object_name, indx = 1)
+      parent_object_name = object_name.split('-R')[0]
+      object_name_new = parent_object_name+'-R'+indx.to_s
+      is_name_exist = L3.find_by_name(object_name_new)
+      if is_name_exist.present?
+        indx +=1
+        get_rework_name(object_name, indx)
+      else
+       return object_name_new
+      end
+    end
+
     def calculate_eta_completion(actual_confirmation, workflow_live_step)
       BusinessTime::Config.beginning_of_workday = @workflow.beginning_of_workday
       BusinessTime::Config.end_of_workday = @workflow.end_of_workday
@@ -443,7 +527,7 @@ class OverviewController < ApplicationController
         BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
       end
 
-      comp_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
+      comp_attribute_value = workflow_live_step.object #attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
       lang_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
       hours_per_workday = @workflow.hours_per_workday.present? ? @workflow.hours_per_workday : 1
 
@@ -457,7 +541,7 @@ class OverviewController < ApplicationController
       no_of_comp = nil
       no_of_lang = nil
       if comp_attribute_value.present?
-        no_of_comp = comp_attribute_value.value
+        no_of_comp = comp_attribute_value.num_component
       end
       if lang_attribute_value.present?
           no_of_lang = lang_attribute_value.value
@@ -526,9 +610,8 @@ class OverviewController < ApplicationController
         :work_flow_id, :info_timestamp, :note, :user_id)
     end
     def rework_info_params
-      params.require(:rework_info).permit(:start_rework_station, 
-        :start_rework_step, :reason ,:user_id ,:station_id ,
-        :step_id ,:l1_id , :l2_id , :l3_id, :comp )
+      params.require(:rework_info).permit(:object_id, :object_type, :reason ,:user_id ,:step_initiating_rework ,
+        :rework_start_step)
     end
     def workflow_live_step_params
       params.require(:workflow_live_step).permit(:actual_confirmation)

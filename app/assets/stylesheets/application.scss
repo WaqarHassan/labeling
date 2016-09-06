@@ -92,6 +92,7 @@ body {
     min-width: 96px;
 }
 
+
 .project-formset.collapsed {
     width: 0 !important;
 }
@@ -108,7 +109,7 @@ body {
 }
 
 .project-data.project_ia {
-    width: 37%;
+    width: 600px;
 }
 
 .no-brd { border-right:none !important; width: 95px}
@@ -320,12 +321,12 @@ navbar-default {
 
 .tspend_initial {
     overflow-x: scroll;
-    width: 15.5% !important;
+    width: 15.5% ;
 }
 
 .labels_hidden {
     overflow-x: scroll;
-    width: 53% !important;
+    width: 53% ;
 }
 
 .search_labels_hidden{

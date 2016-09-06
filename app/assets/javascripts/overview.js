@@ -30,7 +30,7 @@ $(document).ready(function() {
 	});
 
 	if (Cookies.get('project_ia') && Cookies.get('projectform') ){
-		console.log('cooke present....');
+		console.log('cooke overview.js present....');
 		project_ia_classes = Cookies.get('project_ia'); 	 
 		projectform_classes = Cookies.get('projectform'); 
 		
@@ -39,20 +39,27 @@ $(document).ready(function() {
 		$('#project_ia').addClass(project_ia_classes);
 		$('#projectform').addClass(projectform_classes);
 
+		console.log('<><><><><>jbjbjbjb');
 		label_attributes_box();
 		overview_serach_box();
 	}
+	else{
+		console.log('//////>>>>>>>>bjbjbjbjb222222');
+		//overview_serach_box();
+		//label_attributes_box();
+		console.log(container_width());
+		var detail_data = container_width() - 250 - 300 - 600 ;
+		$('#detail_data').width(detail_data);
 
-	$('.modal-dialog').draggable({
-	    handle: ".modal-header"
-	});
+	}
 
 });
-
+function container_width(){
+	return  $('#labeling_container').width() - 22 ;
+}
 function set_current_timestamp(){
 	$('#datetimepicker_info').val(moment().format('MM/DD/YYYY hh:mm A'));
 }
-
 function overview_serach_box()
 {
 	console.log('overview called! =>>>>>>>>>>>>>>>>');
@@ -89,10 +96,6 @@ function overview_serach_box()
 	Cookies.set('projectform', projectform_classes, { expires: 7 });	  
 }
 
-
-function container_width(){
-	return  $('#labeling_container').width() - 20 ;
-}
 
 function label_attributes_box()
 {

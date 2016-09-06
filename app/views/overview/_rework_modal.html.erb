@@ -48,11 +48,11 @@
      <div class="form-group">
          <label class="col-lg-4 control-label"><%= @workflow.L3 %>:</label>
          <div class="col-lg-6">  <span id="" name="">
-                 <% if @l2.present?  %>
-                      <%= @l2.name %>
-              <% elsif @l3.present? %>
-                  <%= @l3.l2.name %>
-                  <% end %>
+                 <% if @l3.present?  %>
+                    <%= @l3.name %>
+                 <% elsif @l2.l3.present? %>
+                    <%= @l2.l3.name %>
+                 <% end %>
               </span>
          </div>
      </div>

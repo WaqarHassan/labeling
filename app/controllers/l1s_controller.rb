@@ -15,6 +15,7 @@ class L1sController < ApplicationController
   # GET /l1s/new
   def new
     @l1_bu = @workflow.l1_bu
+    @l1_component = @workflow.l1_component
    
     @action = 'ADD'
     @btn_action = 'SAVE'
@@ -31,6 +32,7 @@ class L1sController < ApplicationController
   # GET /l1s/1/edit
   def edit
     @l1_bu = @workflow.l1_bu
+    @l1_component = @workflow.l1_component
     @bu_options = @workflow.bu_options.where(recording_level: 'L1')
     @action = 'UPDATE'
     @btn_action = 'UPDATE'
@@ -133,6 +135,6 @@ class L1sController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def l1_params
-      params.require(:l1).permit(:id, :name, :description,:status, :user_id, :work_flow_id, :business_unit)
+      params.require(:l1).permit(:id, :name, :description,:status, :user_id, :work_flow_id, :business_unit, :num_component)
     end
 end

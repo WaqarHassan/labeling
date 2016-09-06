@@ -11,7 +11,7 @@ class StationStep < ActiveRecord::Base
 		lang = 1
 
 		if comp_attribute_value.present?
-			comp = comp_attribute_value.value.present? ? comp_attribute_value.value : 1
+			comp = comp_attribute_value.num_component.present? ? comp_attribute_value.num_component : 1
 			comp = comp.to_i
 		end
 		if lang_attribute_value.present?

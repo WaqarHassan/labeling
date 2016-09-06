@@ -18,6 +18,7 @@ class L2sController < ApplicationController
     @action = 'ADD'
     @bu_options = @workflow.bu_options.where(recording_level: 'L2')
     @l2_bu = @workflow.l2_bu
+    @l2_component = @workflow.l2_component
     if params.has_key?(:l1_id)
       @show_l1s = 'readonly'
       @l1 = L1.find(params[:l1_id])
@@ -41,6 +42,7 @@ class L2sController < ApplicationController
     @attr_values = @l2.attribute_values
     @bu_options = @workflow.bu_options.where(recording_level: 'L2')
     @l2_bu = @workflow.l2_bu
+    @l2_component = @workflow.l2_component
     @action = 'UPDATE'
     @l1 = @l2.l1
     @show_l1s = 'dropdowddn'
@@ -224,6 +226,6 @@ class L2sController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def l2_params
-      params.require(:l2).permit(:name, :l1_id, :status, :business_unit, :notes, :requested_date, :to_be_approved_by)
+      params.require(:l2).permit(:name, :l1_id, :status, :business_unit, :num_component, :notes, :requested_date, :to_be_approved_by)
     end
 end

@@ -73,6 +73,25 @@
                 </div>
                  <% end end %>
 
+                  <% if @l2_component.present?
+                    if @l2_component.split('|')[0] == 'Y'%>
+                    <div class= "form-group">
+                      <div class="row">
+                        <div class="col-lg-4">
+                           <%= f.label :num_component, '#Component', :class =>'integer optional control-label' %>
+                        </div>
+                        <div class="col-lg-6">
+                        <% if @l2_component.split('|')[1] == 'R' %>
+                            <%= f.input :num_component,:label => false, required: true %>
+                          <%else%>
+                            <%= f.input :num_component,:label => false, required: false %>
+                          <%end%>
+                        </div>
+                      </div>
+                    </div>
+                  <% end 
+                  end %>
+
                  <% if @attr_list.present? %>
                   <% attr_field_value = ''
                     @attr_list.each do |att| 

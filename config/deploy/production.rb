@@ -1,5 +1,5 @@
 
-set :branch, "master"
+set :branch, "LB-20"
 
 # server-based syntax
 # ======================

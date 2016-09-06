@@ -63,9 +63,20 @@ class WorkflowLiveStep < ActiveRecord::Base
 		end
 
 		def calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
-
 	      live_steps_qry_result.each do |lsr|
 	      	wls = WorkflowLiveStep.find_by_id(lsr["id"])
+	      	if wls.object_type == 'L3'
+	      		if wls.object.is_closed?
+	      		else
+	      			do_calculate_eta(wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
+	      		end
+	      	else
+      			do_calculate_eta(wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
+	      	end	
+	      end
+    	end
+
+		def do_calculate_eta(wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
 	        pred_max_completion = ''
 	        max_step_completion = ''
 	        if wls.predecessors.present? && !wls.actual_confirmation.present? && wls.is_active?
@@ -118,7 +129,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 					          		no_of_comp: no_of_comp)
 	          end
 
-	        elsif wls.predecessors.present? && wls.actual_confirmation.present? && wls.id != currentWorkflowLiveStepConfirm.id
+	        elsif wls.predecessors.present? && wls.actual_confirmation.present? # && wls.id != currentWorkflowLiveStepConfirm.id
 	          predecessors_steps = wls.predecessors.split(",")
 	          predecessors_step_ojbets = WorkflowLiveStep.where(id: predecessors_steps)
 	          predecessors_step_ojbets.each_with_index do |pso, indx|
@@ -167,9 +178,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 		          wls.save! 
 	          end     
 	        end
-	      end
-
-    	end
+	    end
 
 	end
 end

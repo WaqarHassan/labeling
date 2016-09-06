@@ -74,6 +74,7 @@
 					<tr class="main_heading">
 						<th class="_data" > </th>
 						<th class="_data"> </th>
+						<th class="_data"> </th>
 						<% attributes = []
 						@label_attributes.each do |label_attri| 
 							if !attributes.include? label_attri.short_label 
@@ -85,6 +86,7 @@
 					<tr class="sub_heading">
 						<th class="_data ">Status</th>
 						<th class="_data ">BU</th>
+						<th class="_data ">#Comp</th>
 						<% attributes = []
 						@label_attributes.each do |label_attri| 
 							if !attributes.include? label_attri.short_label 
@@ -100,6 +102,7 @@
 							<tr>
 								<td class="_data "><%= l1.status %></td>
 								<td class="_data "><%= l1.business_unit %></td>
+								<td class="_data "><%= l1.num_component %></td> 
 								 <% attribute_values_data = l1.attribute_values
 									attributes = []
 									@label_attributes.each do |label_attri| 
@@ -124,6 +127,7 @@
 								<tr>
 									<td class="_data "><%= l2.status %></td>
 									<td class="_data "><%= l2.business_unit %></td>
+									<td class="_data "><%= l2.num_component %></td> 
 									 <% attribute_values_data = l2.attribute_values
 										attributes = []
 										@label_attributes.each do |label_attri| 
@@ -149,6 +153,7 @@
 									<tr>
 										<td class="_data "><%= l3.status %></td> 
 										<td class="_data "><%= l3.business_unit %></td> 
+										<td class="_data "><%= l3.num_component %></td> 
 											<% attribute_values_l3_data = l3.attribute_values
 											attributes = []
 											@label_attributes.each do |label_attri| 

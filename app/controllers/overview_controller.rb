@@ -257,9 +257,12 @@ class OverviewController < ApplicationController
         status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
 
         lang_attribute_value = l3_object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
-        AttributeValue.create(label_attribute_id: lang_attribute_value.label_attribute_id,value: lang_attribute_value.label_attribute_id,
-          object_type: lang_attribute_value.object_type, object_id: l3_rework.id)
+        if lang_attribute_value.present?
+          AttributeValue.create(label_attribute_id: lang_attribute_value.label_attribute_id,value: lang_attribute_value.label_attribute_id,
+            object_type: lang_attribute_value.object_type, object_id: l3_rework.id)
+        end
         start_workflow_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(rework_start_step,rework_parent_id, rework_object_type)
+        live_steps_full_rework_object = nil
         rework_live_steps = WorkflowLiveStep.where(object_type: rework_object_type, object_id: rework_parent_id)
         rework_live_steps.each do |full_rework|
           live_steps_full_rework = WorkflowLiveStep.new
@@ -276,11 +279,26 @@ class OverviewController < ApplicationController
           end
 
           if live_steps_full_rework.save!
-            AdditionalInfo.create(info_timestamp: Time.now ,object_id: l3_rework.id, object_type: rework_object_type, 
-            status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
+            predecessor = live_steps_full_rework.predecessors
+            step_predecessor = WorkflowLiveStep.where("id in (#{predecessor})")
+            predecessor_list = ''
+            step_predecessor.each do |st_pred|
+              station_stepID = st_pred.station_step_id
+              start_workflow_liveStep = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(station_stepID,l3_rework.id, rework_object_type)
+              if start_workflow_liveStep.present?
+                predecessor_list = predecessor_list+','+start_workflow_liveStep.id.to_s
+              end
+            end
+            if predecessor_list != ''
+              predecessor_list.slice!(0)
+              live_steps_full_rework.predecessors = predecessor_list
+              live_steps_full_rework.save!
+            end
+
+            live_steps_full_rework_object = live_steps_full_rework
           end
         end
-
+        WorkflowLiveStep.get_steps_calculate_eta(live_steps_full_rework_object, @workflow,current_user)
      end
 
      redirect_to root_path, notice: 'Rework Info was successfully created.'

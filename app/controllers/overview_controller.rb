@@ -293,6 +293,8 @@ class OverviewController < ApplicationController
      if l3_rework.save!
         mew_rework_info_object.new_rework_id = l3_rework.id
         mew_rework_info_object.new_rework_type = rework_object_type
+        mew_rework_info_object.move_riginal_record_back_to_step = move_riginal_record_back_to_step
+        mew_rework_info_object.reset_type = reset_type
         mew_rework_info_object.save!
 
         AdditionalInfo.create(info_timestamp: Time.now ,object_id: l3_rework.id, object_type: rework_object_type, 

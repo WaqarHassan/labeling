@@ -183,23 +183,30 @@ class OverviewController < ApplicationController
     @wf_step_id = params[:wf_step_id]
     workflow_live_step = WorkflowLiveStep.find(@wf_step_id)
     @rework = ReworkInfo.new
-
     @object = workflow_live_step.object
+    @object_live_steps = @object.workflow_live_steps
     @object_type = workflow_live_step.object_type
     @user_id = current_user.id
     @current_step = workflow_live_step.station_step
     @current_station = workflow_live_step.station_step.workflow_station
     @reason_codes = @workflow.reason_codes.where(status: 'Rework', recording_level: workflow_live_step.object_type)
     @level_workflow_stations = @workflow.workflow_stations.joins(:station_steps).where("station_steps.recording_level='#{workflow_live_step.object_type}' and workflow_stations.sequence <= #{@current_station.sequence} and workflow_stations.is_visible=true").order(:sequence).uniq
+
     @level_steps = []
     @level_workflow_stations.each do |level_station|
       if level_station.id == @current_station.id
         level_station.station_steps.where("is_visible=#{true} and recording_level='#{workflow_live_step.object_type}' and sequence <= #{@current_step.sequence}").order(:sequence).each do |stp|
-          @level_steps << stp
+         liveStepObject = @object_live_steps.find{|live_step| live_step.station_step_id == stp.id }
+          if liveStepObject.is_active?
+            @level_steps << stp
+          end
         end
       else
         level_station.station_steps.where("is_visible=#{true} and recording_level='#{workflow_live_step.object_type}'").order(:sequence).each do |stp|
-          @level_steps << stp
+          liveStepObject = @object_live_steps.find{|live_step| live_step.station_step_id == stp.id }
+          if liveStepObject.is_active?
+            @level_steps << stp
+          end
         end
       end  
     end
@@ -379,16 +386,14 @@ class OverviewController < ApplicationController
         #-----------------------end mising predecessors
 
 
-        WorkflowLiveStep.get_steps_calculate_eta(live_steps_full_rework_object, @workflow,current_user)
-
-      if @l3.workflow_live_steps.present?
-       workflow_step = @l3.workflow_live_steps.where(is_active: true).first
+      WorkflowLiveStep.get_steps_calculate_eta(live_steps_full_rework_object, @workflow,current_user)
+      if l3_rework.workflow_live_steps.present?
+       workflow_step = l3_rework.workflow_live_steps.where(is_active: true).first
        if !workflow_step.actual_confirmation.present?
          session[:open_confirm_modal] = 'open_confirm_modal'
          session[:workflow_step_id] = workflow_step.id
        end  
       end
-
      end
 
      redirect_to root_path, notice: 'Rework Info was successfully created.'

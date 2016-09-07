@@ -30,6 +30,8 @@
 # See avatar.scss and _avatar.html.haml
 #= require imagesloaded
 #= require avatar.errors
+#= require labeling_cookie
 #= require overview
 #= require jquery.validate
+
 

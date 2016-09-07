@@ -23,7 +23,7 @@ function resetSearchResult(){
 }
 
 $(document).ready(function() {
-	
+	console.log('inside overview.js');
 	if (Cookies.get('project_ia') && Cookies.get('projectform') ){
 			console.log('Cookie present and gonna get them');
 			project_ia_classes = Cookies.get('project_ia'); 	 

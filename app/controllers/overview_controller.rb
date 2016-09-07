@@ -293,8 +293,10 @@ class OverviewController < ApplicationController
      if l3_rework.save!
         mew_rework_info_object.new_rework_id = l3_rework.id
         mew_rework_info_object.new_rework_type = rework_object_type
-        mew_rework_info_object.move_riginal_record_back_to_step = move_riginal_record_back_to_step
-        mew_rework_info_object.reset_type = reset_type
+        if move_riginal_record_back_to_step.present?
+          mew_rework_info_object.move_riginal_record_back_to_step = move_riginal_record_back_to_step
+          mew_rework_info_object.reset_type = reset_type
+        end
         mew_rework_info_object.save!
 
         AdditionalInfo.create(info_timestamp: Time.now ,object_id: l3_rework.id, object_type: rework_object_type, 
@@ -306,8 +308,12 @@ class OverviewController < ApplicationController
             object_type: lang_attribute_value.object_type, object_id: l3_rework.id)
         end
         start_workflow_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(rework_start_step,rework_parent_id, rework_object_type)
-        original_record_backTO_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(move_riginal_record_back_to_step.to_i,rework_parent_id, rework_object_type)
-        
+        if move_riginal_record_back_to_step.present?
+          original_record_backTO_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(move_riginal_record_back_to_step.to_i,rework_parent_id, rework_object_type)
+        else
+           original_record_backTO_live_step = nil
+        end
+
         live_steps_new_rework_object = nil
         rework_live_steps = WorkflowLiveStep.where(object_type: rework_object_type, object_id: rework_parent_id)
         rework_live_steps.each do |original_rework|
@@ -324,7 +330,7 @@ class OverviewController < ApplicationController
             live_steps_new_rework.is_active = false
           end
 
-          if parent_total_num_component.to_i != num_component_rework.to_i
+          if parent_total_num_component.to_i != num_component_rework.to_i and original_record_backTO_live_step.present?
             if reset_type == 'keep_all' and original_rework.id > original_record_backTO_live_step.id
               original_rework.actual_confirmation = original_rework.actual_confirmation
             elsif reset_type == 'reset_all' and original_rework.id > original_record_backTO_live_step.id

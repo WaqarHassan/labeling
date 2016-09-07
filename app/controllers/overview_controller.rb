@@ -271,7 +271,7 @@ class OverviewController < ApplicationController
 
         lang_attribute_value = l3_object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
         if lang_attribute_value.present?
-          AttributeValue.create(label_attribute_id: lang_attribute_value.label_attribute_id,value: lang_attribute_value.label_attribute_id,
+          AttributeValue.create(label_attribute_id: lang_attribute_value.label_attribute_id,value: lang_attribute_value.value,
             object_type: lang_attribute_value.object_type, object_id: l3_rework.id)
         end
         start_workflow_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(rework_start_step,rework_parent_id, rework_object_type)

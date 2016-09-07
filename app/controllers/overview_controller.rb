@@ -298,7 +298,97 @@ class OverviewController < ApplicationController
             live_steps_full_rework_object = live_steps_full_rework
           end
         end
+
+          #-----------------------start mising predecessors
+        @l3 = l3_object 
+        workflow_live_steps_empty_pred = WorkflowLiveStep.where(object_id: @l3.l2.id, object_type: 'L2')
+        workflow_live_steps_empty_pred.each do |pred_stp|
+          predecessors = Transition.where(station_step_id: pred_stp.station_step_id)
+          predecessors_step_empty = ''
+          workflow_live_steps_pred = []
+          predecessors.each do |pred|
+            workflow_live_steps_pred_l1 = WorkflowLiveStep.where(station_step_id: pred.previous_station_step_id, object_id: @l3.l2.l1.id, object_type: 'L1')
+            workflow_live_steps_pred_l1.each do |wlsp_l1|
+              workflow_live_steps_pred << wlsp_l1
+            end
+
+            #@l3.l2.l1.l2s.each do |l1_l2|
+              workflow_live_steps_pred_l2 = WorkflowLiveStep.where(station_step_id: pred.previous_station_step_id, object_id: @l3.l2.id, object_type: 'L2')
+              workflow_live_steps_pred_l2.each do |wlsp_l2|
+                workflow_live_steps_pred << wlsp_l2
+              end
+
+              @l3.l2.l3s.each do |l2_l3|
+                workflow_live_steps_pred_l3 = WorkflowLiveStep.where(station_step_id: pred.previous_station_step_id, object_id: l2_l3.id, object_type: 'L3')
+                workflow_live_steps_pred_l3.each do |wlsp_l3|
+                  workflow_live_steps_pred << wlsp_l3
+                end
+
+              end
+            #end
+
+          end
+          workflow_live_steps_pred.each do |wls|
+            predecessors_step_empty = predecessors_step_empty+','+wls.id.to_s
+          end
+
+          if predecessors_step_empty != ''
+            predecessors_step_empty.slice!(0)
+          end
+          pred_stp.update(predecessors: predecessors_step_empty)
+        end
+        #-----------------------end mising predecessors
+
+        #-----------------------start mising predecessors
+        workflow_live_steps_empty_pred = WorkflowLiveStep.where(object_id: @l3.l2.l1.id, object_type: 'L1')
+        workflow_live_steps_empty_pred.each do |pred_stp|
+          predecessors = Transition.where(station_step_id: pred_stp.station_step_id)
+          predecessors_step_empty = ''
+          workflow_live_steps_pred = []
+          predecessors.each do |pred|
+            workflow_live_steps_pred_l1 = WorkflowLiveStep.where(station_step_id: pred.previous_station_step_id, object_id: @l3.l2.l1.id, object_type: 'L1')
+            workflow_live_steps_pred_l1.each do |wlsp_l1|
+              workflow_live_steps_pred << wlsp_l1
+            end
+            
+            @l3.l2.l1.l2s.each do |l1_l2|
+              workflow_live_steps_pred_l2 = WorkflowLiveStep.where(station_step_id: pred.previous_station_step_id, object_id: l1_l2.id, object_type: 'L2')
+              workflow_live_steps_pred_l2.each do |wlsp_l2|
+                workflow_live_steps_pred << wlsp_l2
+              end
+
+              l1_l2.l3s.each do |l2_l3|
+                workflow_live_steps_pred_l3 = WorkflowLiveStep.where(station_step_id: pred.previous_station_step_id, object_id: l2_l3.id, object_type: 'L3')
+                workflow_live_steps_pred_l3.each do |wlsp_l3|
+                  workflow_live_steps_pred << wlsp_l3
+                end
+
+              end
+            end
+
+          end
+          workflow_live_steps_pred.each do |wls|
+            predecessors_step_empty = predecessors_step_empty+','+wls.id.to_s
+          end
+
+          if predecessors_step_empty != ''
+            predecessors_step_empty.slice!(0)
+          end
+          pred_stp.update(predecessors: predecessors_step_empty)
+        end
+        #-----------------------end mising predecessors
+
+
         WorkflowLiveStep.get_steps_calculate_eta(live_steps_full_rework_object, @workflow,current_user)
+
+      if @l3.workflow_live_steps.present?
+       workflow_step = @l3.workflow_live_steps.where(is_active: true).first
+       if !workflow_step.actual_confirmation.present?
+         session[:open_confirm_modal] = 'open_confirm_modal'
+         session[:workflow_step_id] = workflow_step.id
+       end  
+      end
+
      end
 
      redirect_to root_path, notice: 'Rework Info was successfully created.'
@@ -556,6 +646,8 @@ class OverviewController < ApplicationController
       workflow_live_step.actual_confirmation = actual_confirmation
       workflow_live_step.step_completion = step_completion
       workflow_live_step.save!
+
+      # save log start
       no_of_comp = nil
       no_of_lang = nil
       if comp_attribute_value.present?
@@ -570,7 +662,8 @@ class OverviewController < ApplicationController
                         work_flow_id: @workflow.id,
                         no_of_comp: no_of_comp,
                         no_of_lang: no_of_lang)
-
+      # save log end
+       
       WorkflowLiveStep.get_steps_calculate_eta(workflow_live_step, @workflow,current_user)
       
     end

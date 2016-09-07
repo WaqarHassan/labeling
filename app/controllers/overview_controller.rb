@@ -199,6 +199,7 @@ class OverviewController < ApplicationController
           end
         end
     end
+    @rework_components = rework_components
     @object_num_component = @object.num_component.present? ? @object.num_component : 1
     @object_num_component = @object_num_component.to_i - rework_components.to_i
 
@@ -244,17 +245,23 @@ class OverviewController < ApplicationController
 
    #POST rework Modal
    def create_rework_info
-     ReworkInfo.create(rework_info_params)
+     mew_rework_info_object = ReworkInfo.create(rework_info_params)
+     
+     reset_type = params[:reset_type]
+     move_riginal_record_back_to_step = params[:move_riginal_record_back_to]
+
      rework_parent_id = params[:rework_parent_id]
      rework_object_type = params[:rework_info][:object_type]
      parent_total_num_component = params[:num_component]
      num_component_rework = params[:num_component_rework]
+     component_already_in_rework = params[:component_already_in_rework]
+     component_already_in_rework = component_already_in_rework.present? ? component_already_in_rework : 0
      rework_start_step = params[:rework_info][:rework_start_step]
      remaining_parent_component = parent_total_num_component.to_i - num_component_rework.to_i
 
      l3_object = L3.find(rework_parent_id)
      l3_rework_name = get_rework_name(l3_object.name)
-     l3_object.num_component_rework = num_component_rework
+     l3_object.num_component_rework = num_component_rework.to_i + component_already_in_rework.to_i
 
      l3_rework = L3.new
      l3_rework.user_id = current_user.id
@@ -284,6 +291,10 @@ class OverviewController < ApplicationController
 
      l3_object.save!
      if l3_rework.save!
+        mew_rework_info_object.new_rework_id = l3_rework.id
+        mew_rework_info_object.new_rework_type = rework_object_type
+        mew_rework_info_object.save!
+
         AdditionalInfo.create(info_timestamp: Time.now ,object_id: l3_rework.id, object_type: rework_object_type, 
         status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
 
@@ -293,24 +304,35 @@ class OverviewController < ApplicationController
             object_type: lang_attribute_value.object_type, object_id: l3_rework.id)
         end
         start_workflow_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(rework_start_step,rework_parent_id, rework_object_type)
-        live_steps_full_rework_object = nil
+        original_record_backTO_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(move_riginal_record_back_to_step.to_i,rework_parent_id, rework_object_type)
+        
+        live_steps_new_rework_object = nil
         rework_live_steps = WorkflowLiveStep.where(object_type: rework_object_type, object_id: rework_parent_id)
-        rework_live_steps.each do |full_rework|
-          live_steps_full_rework = WorkflowLiveStep.new
-          live_steps_full_rework.station_step_id = full_rework.station_step_id
-          live_steps_full_rework.object_id = l3_rework.id
-          live_steps_full_rework.object_type = full_rework.object_type
-          live_steps_full_rework.predecessors = full_rework.predecessors
-          live_steps_full_rework.step_completion = full_rework.step_completion
-          live_steps_full_rework.eta = full_rework.eta
-          if full_rework.id >= start_workflow_live_step.id
-            live_steps_full_rework.is_active = true
+        rework_live_steps.each do |original_rework|
+          live_steps_new_rework = WorkflowLiveStep.new
+          live_steps_new_rework.station_step_id = original_rework.station_step_id
+          live_steps_new_rework.object_id = l3_rework.id
+          live_steps_new_rework.object_type = original_rework.object_type
+          live_steps_new_rework.predecessors = original_rework.predecessors
+          live_steps_new_rework.step_completion = original_rework.step_completion
+          live_steps_new_rework.eta = original_rework.eta
+          if original_rework.id >= start_workflow_live_step.id
+            live_steps_new_rework.is_active = true
           else
-            live_steps_full_rework.is_active = false
+            live_steps_new_rework.is_active = false
           end
 
-          if live_steps_full_rework.save!
-            predecessor = live_steps_full_rework.predecessors
+          if parent_total_num_component.to_i != num_component_rework.to_i
+            if reset_type == 'keep_all' and original_rework.id > original_record_backTO_live_step.id
+              original_rework.actual_confirmation = original_rework.actual_confirmation
+            elsif reset_type == 'reset_all' and original_rework.id > original_record_backTO_live_step.id
+              original_rework.actual_confirmation = nil
+            end
+            original_rework.save!
+          end
+
+          if live_steps_new_rework.save!
+            predecessor = live_steps_new_rework.predecessors
             step_predecessor = WorkflowLiveStep.where("id in (#{predecessor})")
             predecessor_list = ''
             step_predecessor.each do |st_pred|
@@ -322,11 +344,11 @@ class OverviewController < ApplicationController
             end
             if predecessor_list != ''
               predecessor_list.slice!(0)
-              live_steps_full_rework.predecessors = predecessor_list
-              live_steps_full_rework.save!
+              live_steps_new_rework.predecessors = predecessor_list
+              live_steps_new_rework.save!
             end
 
-            live_steps_full_rework_object = live_steps_full_rework
+            live_steps_new_rework_object = live_steps_new_rework
           end
         end
 
@@ -410,7 +432,7 @@ class OverviewController < ApplicationController
         #-----------------------end mising predecessors
 
 
-      WorkflowLiveStep.get_steps_calculate_eta(live_steps_full_rework_object, @workflow,current_user)
+      WorkflowLiveStep.get_steps_calculate_eta(live_steps_new_rework_object, @workflow,current_user)
       if l3_rework.workflow_live_steps.present?
        workflow_step = l3_rework.workflow_live_steps.where(is_active: true).first
        if !workflow_step.actual_confirmation.present?

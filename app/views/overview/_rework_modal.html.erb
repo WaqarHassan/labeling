@@ -16,6 +16,8 @@
       <%= f.hidden_field :step_initiating_rework , :value=> @current_step.id %>
       <input type="hidden" name="rework_parent_id" value= "<%=@object.id%>" />
       <input type="hidden" name="num_component" value= "<%=@object_num_component%>" />
+      <input type="hidden" name="component_already_in_rework" value= "<%=@rework_components%>" />
+
 
         <div class="form-group">
            <label class="col-lg-4 control-label"><%= @workflow.L1 %>: </label>
@@ -89,12 +91,29 @@
            </div>
      </div>
 
-       <div class="form-group">
-         <label class="col-lg-4 control-label">#Comp</label>
-          <div class="col-lg-6">
-            <input type="number" id="comp" class="form-control" name="num_component_rework" value="<%=@object_num_component%>" max="<%=@object_num_component%>" min="0" >   
-          </div>
+     <div class="form-group">
+       <label class="col-lg-4 control-label">#Comp</label>
+        <div class="col-lg-6">
+          <input type="number" id="comp" class="form-control" name="num_component_rework" value="<%=@object_num_component%>" max="<%=@object_num_component%>" min="0" >   
+        </div>
      </div>
+
+     <div class="form-group">
+        <label class="col-lg-4 control-label">Move Original Record back to</label>
+        <div class="col-lg-6" id= "get_steps_div">
+         <select class = "form-control" id="rework_start_step" name="move_riginal_record_back_to" onchange="about_existing_confirmartion(this.value); return false;";> 
+          <option value="">Please Select Step</option>
+          <% @level_steps.each do |stp| %>
+            <option value="<%= stp.id %>" ><%= stp.workflow_station.station_name+' - '+ stp.step_name%></option>
+          <% end %>
+         </select>
+        </div>
+      </div>
+
+      <div class="form-group" id="move_riginal_record_back_div">
+
+      </div>
+
 
     </div>
     <div class='modal-footer'>

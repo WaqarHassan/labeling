@@ -6,6 +6,20 @@ function updateprojectstatusSubmit(){
 	$('#modal').modal('toggle');
 }
 
+function about_existing_confirmartion(val){
+	dataHTML = '';
+	if (val != ""){
+		dataHTML += '<label class="col-lg-4 control-label">What to do with existing confirmations on Original Record?</label>';
+	    dataHTML += '<div class="col-lg-6" id= "get_steps_div">';
+	    dataHTML += '<select class = "form-control" id="" name="reset_type" required >';
+	    dataHTML += '<option value="reset_all">Reset ALL steps after Move Back step</option>';
+	    dataHTML += '<option value="keep_all">Keep ALL confirmations</option>';
+	    dataHTML += '</select>';
+	    dataHTML += '</div>';
+	}
+    $('#move_riginal_record_back_div').html(dataHTML);
+}
+
 function resetSearchResult(){
 	$('.form-control').removeAttr("value")
 	$('#search_form').trigger("reset");

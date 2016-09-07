@@ -191,6 +191,13 @@ class OverviewController < ApplicationController
         reworks.each do |rework|
           rework_components += rework.num_component
         end
+        closed_reworks = L3.where(rework_parent_id: level_object.id, is_closed: true)
+        closed_reworks.each do |clos_rework|
+          closed_reworks_partial = L3.where(rework_parent_id: clos_rework.id, is_closed: false)
+          closed_reworks_partial.each do |closedreworkspartial|
+            rework_components += closedreworkspartial.num_component
+          end
+        end
     end
     @object_num_component = @object.num_component.present? ? @object.num_component : 1
     @object_num_component = @object_num_component.to_i - rework_components.to_i
@@ -259,7 +266,7 @@ class OverviewController < ApplicationController
 
                               # -----------------fulllllllllllllll Rework
      if parent_total_num_component.to_i == num_component_rework.to_i
-      l3_rework.is_full_rework = true
+      l3_object.is_full_rework = true
       l3_rework.status = 'Active'
       l3_object.is_closed = true
       l3_object.status = 'Closed'

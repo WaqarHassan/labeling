@@ -155,6 +155,13 @@
 								    reworks.each do |rework|
 								      rework_components += rework.num_component
 								    end
+								    closed_reworks = L3.where(rework_parent_id: l3.id, is_closed: true)
+							        closed_reworks.each do |clos_rework|
+							          closed_reworks_partial = L3.where(rework_parent_id: clos_rework.id, is_closed: false)
+							          closed_reworks_partial.each do |closedreworkspartial|
+							            rework_components += closedreworkspartial.num_component
+							          end
+							        end
 									comp = l3.num_component.present? ? l3.num_component : 1
 									componenets = comp.to_i - rework_components.to_i %>
 									<tr>

@@ -15,7 +15,7 @@
       <%= f.hidden_field :user_id , :value=> @user_id %>
       <%= f.hidden_field :step_initiating_rework , :value=> @current_step.id %>
       <input type="hidden" name="rework_parent_id" value= "<%=@object.id%>" />
-      <input type="hidden" name="num_component" value= "<%=@object.num_component%>" />
+      <input type="hidden" name="num_component" value= "<%=@object_num_component%>" />
 
         <div class="form-group">
            <label class="col-lg-4 control-label"><%= @workflow.L1 %>: </label>
@@ -92,7 +92,7 @@
        <div class="form-group">
          <label class="col-lg-4 control-label">#Comp</label>
           <div class="col-lg-6">
-            <input type="number" id="comp" class="form-control" name="num_component_rework" value="<%=@object.num_component%>" max="<%=@object.num_component%>">   
+            <input type="number" id="comp" class="form-control" name="num_component_rework" value="<%=@object_num_component%>" max="<%=@object_num_component%>">   
           </div>
      </div>
 

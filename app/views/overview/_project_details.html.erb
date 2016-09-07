@@ -149,11 +149,18 @@
 								  else
 								   l3_rows = l2.l3s  	
 								  end %>
-								<% l3_rows.each do |l3| %>
+								<% l3_rows.each do |l3| 
+									rework_components = 0
+								    reworks = L3.where(rework_parent_id: l3.id, is_closed: false)
+								    reworks.each do |rework|
+								      rework_components += rework.num_component
+								    end
+									comp = l3.num_component.present? ? l3.num_component : 1
+									componenets = comp.to_i - rework_components.to_i %>
 									<tr>
 										<td class="_data "><%= l3.status %></td> 
 										<td class="_data "><%= l3.business_unit %></td> 
-										<td class="_data "><%= l3.num_component %></td> 
+										<td class="_data "><%= componenets %></td> 
 											<% attribute_values_l3_data = l3.attribute_values
 											attributes = []
 											@label_attributes.each do |label_attri| 

@@ -184,6 +184,17 @@ class OverviewController < ApplicationController
     workflow_live_step = WorkflowLiveStep.find(@wf_step_id)
     @rework = ReworkInfo.new
     @object = workflow_live_step.object
+
+    rework_components = 0
+      if @object.class.name == 'L3'
+        reworks = L3.where(rework_parent_id: @object.id, is_closed: false)
+        reworks.each do |rework|
+          rework_components += rework.num_component
+        end
+    end
+    @object_num_component = @object.num_component.present? ? @object.num_component : 1
+    @object_num_component = @object_num_component.to_i - rework_components.to_i
+
     @object_live_steps = @object.workflow_live_steps
     @object_type = workflow_live_step.object_type
     @user_id = current_user.id

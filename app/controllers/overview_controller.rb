@@ -191,7 +191,7 @@ class OverviewController < ApplicationController
         reworks.each do |rework|
           rework_components += rework.num_component
         end
-        closed_reworks = L3.where(rework_parent_id: level_object.id, is_closed: true)
+        closed_reworks = L3.where(rework_parent_id: @object.id, is_closed: true)
         closed_reworks.each do |clos_rework|
           closed_reworks_partial = L3.where(rework_parent_id: clos_rework.id, is_closed: false)
           closed_reworks_partial.each do |closedreworkspartial|

@@ -3,16 +3,23 @@ class StationStep < ActiveRecord::Base
 	has_many :workflow_live_stations
 	has_many :transitions
 
-	def calculate_step_completion(actual_confirmation, comp_attribute_value, lang_attribute_value, hours_per_workday)
+	def calculate_step_completion(actual_confirmation, level_object, lang_attribute_value, hours_per_workday)
 		duration_days = self.duration_days
 		duration_minutes = self.duration_minutes
 		duration_multiplier = self.duration_multiplier
 		comp = 1
 		lang = 1
 
-		if comp_attribute_value.present?
-			comp = comp_attribute_value.num_component.present? ? comp_attribute_value.num_component : 1
-			comp = comp.to_i
+		if level_object.present?
+			rework_components = 0
+		    if level_object.class.name == 'L3'
+			    reworks = L3.where(rework_parent_id: level_object.id, is_closed: false)
+			    reworks.each do |rework|
+			      rework_components += rework.num_component
+			    end
+			end
+			comp = level_object.num_component.present? ? level_object.num_component : 1
+			comp = comp.to_i - rework_components.to_i
 		end
 		if lang_attribute_value.present?
 			lang = lang_attribute_value.value.present? ? lang_attribute_value.value : 1

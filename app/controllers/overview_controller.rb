@@ -246,7 +246,7 @@ class OverviewController < ApplicationController
      l3_rework.rework_parent_id = rework_parent_id
      l3_rework.num_component = num_component_rework
 
-     # -----------------fulllllllllllllll Rework
+                              # -----------------fulllllllllllllll Rework
      if parent_total_num_component.to_i == num_component_rework.to_i
       l3_rework.is_full_rework = true
       l3_rework.status = 'Active'
@@ -256,6 +256,12 @@ class OverviewController < ApplicationController
       AdditionalInfo.create(info_timestamp: Time.now ,object_id: l3_object.id, object_type: rework_object_type, 
         status: 'Closed', reason_code_id: reason.id, work_flow_id: @workflow.id, user_id: current_user.id)
       WorkflowLiveStep.where(object_type: rework_object_type, object_id: rework_parent_id, actual_confirmation: nil).update_all(is_active: false)
+     
+     elsif num_component_rework.to_i < parent_total_num_component.to_i
+                                # -----------------Partial Rework-------------------
+      rework_type = 'partial_rework'                          
+      l3_rework.status = 'Active'
+      reason = ReasonCode.find_by_recording_level('ReworkParent')
      end
 
      l3_object.save!

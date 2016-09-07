@@ -79,7 +79,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 		def do_calculate_eta(wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
 	        pred_max_completion = ''
 	        max_step_completion = ''
-	        if wls.predecessors.present? && !wls.actual_confirmation.present? && wls.is_active?
+	        if wls.predecessors.present? && !wls.actual_confirmation.present? # && wls.is_active?
 	          comp_attribute_value = wls.object #attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
 	          lang_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
 	                                            #check successor---------------------

@@ -443,12 +443,12 @@ class OverviewController < ApplicationController
         end
         #-----------------------end mising predecessors
 
-        WorkflowLiveStep.get_steps_calculate_eta(live_steps_new_rework_object, @workflow,current_user)
         if l3_rework.workflow_live_steps.present?
          new_rework_first_object = l3_rework.workflow_live_steps.where(is_active: true).first
-         new_rework_first_object.actual_confirmation = L1.set_db_datetime_format(rework_date_time)
-         new_rework_first_object.save!
+         actual_confirmation = L1.set_db_datetime_format(rework_date_time)
+         calculate_eta_completion(actual_confirmation, new_rework_first_object)
         end
+
      end
 
      redirect_to root_path, notice: 'Rework Info was successfully created.'

@@ -120,10 +120,11 @@ class OverviewController < ApplicationController
     object_type = params[:object_type]
     object_id = params[:object_id]
 
-    WorkflowLiveStep.where(object_type: object_type, object_id: object_id).update_all(is_active: false, actual_confirmation: nil)
+    WorkflowLiveStep.where(object_type: object_type, object_id: object_id).update_all(is_active: false)
     if live_steps.present?
       live_steps = live_steps.flatten
       WorkflowLiveStep.where(id: live_steps).update_all(is_active: true)
+      WorkflowLiveStep.where(object_type: object_type, object_id: object_id, is_active: false).update_all(actual_confirmation: nil)
     end  
     workflowLiveStep = WorkflowLiveStep.find_by_object_type_and_object_id(object_type, object_id)
     if workflowLiveStep.present?

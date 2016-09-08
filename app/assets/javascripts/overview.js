@@ -37,6 +37,48 @@ function resetSearchResult(){
 }
 
 $(document).ready(function() {
+	console.log('inside overview js')
+	if (Cookies.get('project_ia') && Cookies.get('projectform') ){
+		console.log('Cookie present and gonna get them');
+		project_ia_classes = Cookies.get('project_ia'); 	 
+		projectform_classes = Cookies.get('projectform'); 
+		
+		$('#project_ia').removeClass();
+		$('#projectform').removeClass();
+		$('#project_ia').addClass(project_ia_classes);
+		$('#projectform').addClass(projectform_classes);
+		if($('#projectform').hasClass('collapsed'))
+		{
+			if($('#project_ia').hasClass('collapsed'))
+			{
+				var detail_data = container_width() - 300 ;
+				$('#detail_data').width(detail_data);	
+			}
+			else{
+				var detail_data = container_width() - 300 - 600 ;
+				$('#detail_data').width(detail_data);
+
+			}
+
+		}
+		else
+		{
+			if($('#project_ia').hasClass('collapsed'))
+			{
+				var detail_data = container_width() -250 - 300 ;
+				$('#detail_data').width(detail_data);	
+			}
+			else{
+				var detail_data = container_width() - 300 - 600 - 250 ;
+				$('#detail_data').width(detail_data);
+
+			}
+
+		}
+	}
+});
+
+$(document).ready(function() {
 	//console.log('Inside Overview.js');
 	// if (Cookies.get('project_ia') && Cookies.get('projectform') ){
 	// 	project_ia_classes = Cookies.get('project_ia'); 	 

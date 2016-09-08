@@ -13,23 +13,14 @@ class StationStep < ActiveRecord::Base
 		if level_object.present?
 			rework_components = 0
 		    if level_object.class.name == 'L3'
-			    reworks = L3.where(rework_parent_id: level_object.id, is_closed: false)
-			    reworks.each do |rework|
-			      rework_components += rework.num_component
-			    end
-
-			    closed_reworks = L3.where(rework_parent_id: level_object.id, is_closed: true)
-			    closed_reworks.each do |clos_rework|
-			    	closed_reworks_partial = L3.where(rework_parent_id: clos_rework.id, is_closed: false)
-			    	closed_reworks_partial.each do |closedreworkspartial|
-				      rework_components += closedreworkspartial.num_component
-				    end
-			    end
-
+		    	if level_object.num_component.to_i > 0
+		    		comp = level_object.num_component.to_i - level_object.num_component_rework.to_i
+		    	end
+			else
+				comp = level_object.num_component.present? ? level_object.num_component : 1
 			end
-			comp = level_object.num_component.present? ? level_object.num_component : 1
-			comp = comp.to_i - rework_components.to_i
 		end
+
 		if lang_attribute_value.present?
 			lang = lang_attribute_value.value.present? ? lang_attribute_value.value : 1
 			lang = lang.to_i

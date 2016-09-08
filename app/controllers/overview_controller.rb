@@ -248,7 +248,7 @@ class OverviewController < ApplicationController
      mew_rework_info_object = ReworkInfo.create(rework_info_params)
      
      reset_type = params[:reset_type]
-     move_riginal_record_back_to_step = params[:move_riginal_record_back_to]
+     move_original_record_back_to_step = params[:move_original_record_back_to_step]
 
      rework_date_time = params[:rework_date_time]
 
@@ -258,7 +258,7 @@ class OverviewController < ApplicationController
      num_component_rework = params[:num_component_rework]
      component_already_in_rework = params[:component_already_in_rework]
      component_already_in_rework = component_already_in_rework.present? ? component_already_in_rework : 0
-     rework_start_step = params[:rework_info][:rework_start_step]
+     rework_start_step = params[:rework_start_step]
      remaining_parent_component = parent_total_num_component.to_i - num_component_rework.to_i
 
      l3_object = L3.find(rework_parent_id)
@@ -293,12 +293,14 @@ class OverviewController < ApplicationController
 
      l3_object.save!
      if l3_rework.save!
+        start_workflow_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(rework_start_step,rework_parent_id, rework_object_type)
         mew_rework_info_object.new_rework_id = l3_rework.id
         mew_rework_info_object.new_rework_type = rework_object_type
-        if move_riginal_record_back_to_step.present?
-          mew_rework_info_object.move_riginal_record_back_to_step = move_riginal_record_back_to_step
+        if move_original_record_back_to_step.present?
+          mew_rework_info_object.move_original_record_back_to_step = move_original_record_back_to_step
           mew_rework_info_object.reset_type = reset_type
         end
+        mew_rework_info_object.rework_start_step = start_workflow_live_step.id
         mew_rework_info_object.save!
 
         AdditionalInfo.create(info_timestamp: Time.now ,object_id: l3_rework.id, object_type: rework_object_type, 
@@ -309,11 +311,23 @@ class OverviewController < ApplicationController
           AttributeValue.create(label_attribute_id: lang_attribute_value.label_attribute_id,value: lang_attribute_value.value,
             object_type: lang_attribute_value.object_type, object_id: l3_rework.id)
         end
-        start_workflow_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(rework_start_step,rework_parent_id, rework_object_type)
-        if move_riginal_record_back_to_step.present?
-          original_record_backTO_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(move_riginal_record_back_to_step.to_i,rework_parent_id, rework_object_type)
-          original_record_backTO_live_step.actual_confirmation = L1.set_db_datetime_format(rework_date_time)
+
+        if move_original_record_back_to_step.present?
+          actual_confirmation = L1.set_db_datetime_format(rework_date_time)
+          noOf_comp = l3_object.num_component.to_i - l3_object.num_component_rework.to_i
+          no_of_lang_comp = l3_object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
+          original_record_backTO_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(move_original_record_back_to_step.to_i,rework_parent_id, rework_object_type)
+          original_record_backTO_live_step.actual_confirmation = actual_confirmation
           original_record_backTO_live_step.save!
+                # save log start
+           TimestampLog.create(workflow_live_step_id: original_record_backTO_live_step.id,
+                            actual_confirmation: actual_confirmation,
+                            user_id: current_user.id,
+                            work_flow_id: @workflow.id,
+                            no_of_comp: noOf_comp,
+                            no_of_lang: no_of_lang_comp)
+          # save log end
+
         else
            original_record_backTO_live_step = nil
         end

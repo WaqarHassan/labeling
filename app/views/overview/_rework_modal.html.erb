@@ -13,7 +13,7 @@
       <%= f.hidden_field :object_type , :value=> @object_type %>
       <%= f.hidden_field :object_id , :value=> @object.id %>
       <%= f.hidden_field :user_id , :value=> @user_id %>
-      <%= f.hidden_field :step_initiating_rework , :value=> @current_step.id %>
+      <%= f.hidden_field :step_initiating_rework , :value=> @wf_step_id %>
       <input type="hidden" name="rework_parent_id" value= "<%=@object.id%>" />
       <input type="hidden" name="num_component" value= "<%=@object_num_component%>" />
       <input type="hidden" name="component_already_in_rework" value= "<%=@rework_components%>" />
@@ -75,7 +75,7 @@
       <div class="form-group">
         <label class="col-lg-4 control-label">Start rework at step</label>
         <div class="col-lg-6" id= "get_steps_div">
-         <select class = "form-control" id="rework_start_step" name="rework_info[rework_start_step]" required="required"> 
+         <select class = "form-control" id="rework_start_step" name="rework_start_step" required="required"> 
           <option value="">Please Select Step</option>
           <% @level_steps.each do |stp| %>
             <option value="<%= stp.id %>" ><%= stp.workflow_station.station_name+' - '+ stp.step_name%></option>
@@ -111,7 +111,7 @@
      <div class="form-group">
         <label class="col-lg-4 control-label">Move Original Record back to</label>
         <div class="col-lg-6" id= "get_steps_div">
-         <select class = "form-control" id="rework_start_step" name="move_riginal_record_back_to" onchange="about_existing_confirmartion(this.value); return false;";> 
+         <select class = "form-control" id="rework_start_step" name="move_original_record_back_to_step" onchange="about_existing_confirmartion(this.value); return false;";> 
           <option value="">Please Select Step</option>
           <% @level_steps.each do |stp| %>
             <option value="<%= stp.id %>" ><%= stp.workflow_station.station_name+' - '+ stp.step_name%></option>

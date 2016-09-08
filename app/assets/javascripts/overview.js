@@ -6,6 +6,20 @@ function updateprojectstatusSubmit(){
 	$('#modal').modal('toggle');
 }
 
+function about_existing_confirmartion(val){
+	dataHTML = '';
+	if (val != ""){
+		dataHTML += '<label class="col-lg-4 control-label">What to do with existing confirmations on Original Record?</label>';
+	    dataHTML += '<div class="col-lg-6" id= "get_steps_div">';
+	    dataHTML += '<select class = "form-control" id="" name="reset_type" required >';
+	    dataHTML += '<option value="reset_all">Reset ALL steps after Move Back step</option>';
+	    dataHTML += '<option value="keep_all">Keep ALL confirmations</option>';
+	    dataHTML += '</select>';
+	    dataHTML += '</div>';
+	}
+    $('#move_riginal_record_back_div').html(dataHTML);
+}
+
 function resetSearchResult(){
 	$('.form-control').removeAttr("value")
 	$('#search_form').trigger("reset");
@@ -23,27 +37,52 @@ function resetSearchResult(){
 }
 
 $(document).ready(function() {
-	console.log('inside overview.js');
+
+	console.log('inside overview js')
 	if (Cookies.get('project_ia') && Cookies.get('projectform') ){
-			console.log('Cookie present and gonna get them');
-			project_ia_classes = Cookies.get('project_ia'); 	 
-			projectform_classes = Cookies.get('projectform'); 
-			
-			$('#project_ia').removeClass();
-			$('#projectform').removeClass();
-			$('#project_ia').addClass(project_ia_classes);
-			$('#projectform').addClass(projectform_classes);
-			adjust();
-			
+		console.log('Cookie present and gonna get them');
+		project_ia_classes = Cookies.get('project_ia'); 	 
+		projectform_classes = Cookies.get('projectform'); 
+		
+		$('#project_ia').removeClass();
+		$('#projectform').removeClass();
+		$('#project_ia').addClass(project_ia_classes);
+		$('#projectform').addClass(projectform_classes);
+		if($('#projectform').hasClass('collapsed'))
+		{
+			if($('#project_ia').hasClass('collapsed'))
+			{
+				var detail_data = container_width() - 300 ;
+				$('#detail_data').width(detail_data);	
+			}
+			else{
+				var detail_data = container_width() - 300 - 600 ;
+				$('#detail_data').width(detail_data);
+
+			}
+
 
 		}
 		else
 		{
-			console.log('Cookie not present');
-			var detail_data = container_width() - 250 - 300 - 600 ;
-			console.log('detail_data width = '+detail_data);
-			$('#detail_data').width(detail_data);
+
+			if($('#project_ia').hasClass('collapsed'))
+			{
+				var detail_data = container_width() -250 - 300 ;
+				$('#detail_data').width(detail_data);	
+			}
+			else{
+				var detail_data = container_width() - 300 - 600 - 250 ;
+				$('#detail_data').width(detail_data);
+
+			}
+
 		}
+	}
+});
+
+$(document).ready(function() {
+
 	$('.modal-dialog').draggable({
 	    handle: ".modal-header"
 	});

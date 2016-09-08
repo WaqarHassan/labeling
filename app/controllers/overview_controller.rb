@@ -296,7 +296,7 @@ class OverviewController < ApplicationController
         start_workflow_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(rework_start_step,rework_parent_id, rework_object_type)
         mew_rework_info_object.new_rework_id = l3_rework.id
         mew_rework_info_object.new_rework_type = rework_object_type
-        if move_original_record_back_to_step.present?
+        if move_original_record_back_to_step.present? and parent_total_num_component.to_i != num_component_rework.to_i
           mew_rework_info_object.move_original_record_back_to_step = move_original_record_back_to_step
           mew_rework_info_object.reset_type = reset_type
         end
@@ -312,7 +312,7 @@ class OverviewController < ApplicationController
             object_type: lang_attribute_value.object_type, object_id: l3_rework.id)
         end
 
-        if move_original_record_back_to_step.present?
+        if move_original_record_back_to_step.present? and parent_total_num_component.to_i != num_component_rework.to_i
           actual_confirmation = L1.set_db_datetime_format(rework_date_time)
           noOf_comp = l3_object.num_component.to_i - l3_object.num_component_rework.to_i
           no_of_lang_comp = l3_object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first

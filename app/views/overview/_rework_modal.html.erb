@@ -15,9 +15,11 @@
       <%= f.hidden_field :user_id , :value=> @user_id %>
       <%= f.hidden_field :step_initiating_rework , :value=> @wf_step_id %>
       <input type="hidden" name="rework_parent_id" value= "<%=@object.id%>" />
-      <input type="hidden" name="num_component" value= "<%=@object_num_component%>" />
-      <input type="hidden" name="component_already_in_rework" value= "<%=@rework_components%>" />
+      <input type="hidden" id ="total_num_component" name="num_component" value= "<%=@object_num_component%>" />
+      <input type="hidden" id ="component_already_in_rework" name="component_already_in_rework" value= "<%=@rework_components%>" />
 
+       <div class="form-group" id="full_rework_not_possible">
+       </div>
 
         <div class="form-group">
            <label class="col-lg-4 control-label"><%= @workflow.L1 %>: </label>
@@ -94,7 +96,7 @@
      <div class="form-group">
        <label class="col-lg-4 control-label">#Comp</label>
         <div class="col-lg-6">
-          <input type="number" id="comp" class="form-control" name="num_component_rework" value="<%=@object_num_component%>" max="<%=@object_num_component%>" min="0" >   
+          <input type="number" id="selected_num_comp" class="form-control" name="num_component_rework" value="<%=@object_num_component%>" max="<%=@object_num_component%>" min="0" >   
         </div>
      </div>
 
@@ -128,7 +130,7 @@
     </div>
     <div class='modal-footer'>
       <button class='btn btn-danger' data-dismiss='modal' type='button'>Close</button>
-      <button class='btn save-print-update-edit-btn' type='submit'>Save</button>
+      <button class='btn save-print-update-edit-btn' type='submit' onclick="return can_be_full_rework();">Save</button>
     </div>
     <%end%>
   </div>

@@ -45,6 +45,7 @@ function resetSearchResult(){
 }
 
 $(document).ready(function() {
+
 	console.log('inside overview js')
 	if (Cookies.get('project_ia') && Cookies.get('projectform') ){
 		console.log('Cookie present and gonna get them');
@@ -68,9 +69,11 @@ $(document).ready(function() {
 
 			}
 
+
 		}
 		else
 		{
+
 			if($('#project_ia').hasClass('collapsed'))
 			{
 				var detail_data = container_width() -250 - 300 ;
@@ -87,11 +90,11 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
+
 	$('.modal-dialog').draggable({
 	    handle: ".modal-header"
 	});
 
 });
-
 
 

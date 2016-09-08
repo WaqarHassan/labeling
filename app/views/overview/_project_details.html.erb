@@ -198,9 +198,11 @@
 			<thead>
 				<tr class="main_heading">
 					<% @workflow_stations.each do |station| %>
+					<% if station.station_steps.where(is_visible: true).length > 0 %>
 						<th colspan= <%= station.station_steps.where(is_visible: true).length %> style="text-align:center" >
 							<%= station.station_name %>
 						</th>
+						<% end %>
 					<% end %>
 				</tr>
 				<tr class="sub_heading">

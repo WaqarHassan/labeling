@@ -11,28 +11,6 @@ if (window.jQuery) {
 			$('#project_ia').addClass(project_ia_classes);
 			$('#projectform').addClass(projectform_classes);
 			adjust();
-			// overview_serach_box();
-			// label_attributes_box();
-			// var labelsClassName = $('.project_ia').attr('class');	
-   //   		var className = $('#projectform').attr('class');
-			// if (className=='project-data' && labelsClassName == 'project-data project_ia collapsed project_serach_noDetail'){
-      	 
-			// var detail_data = container_width() - 300 ;
-			// $('#detail_data').width(detail_data);
-
-   //    		}
-   //    		else if (className=='project-data'){
-			// 	var detail_data = container_width() - 300 - 600;
-			// 	$('#detail_data').width(detail_data);
-
-	  // 		}else if (className=='project-data collapsed' && labelsClassName == 'project-data project_ia collapsed project_serach_noDetail'){
-			// 	var detail_data = container_width() - 300 -250  ;
-			// 	$('#detail_data').width(detail_data);
-			// }else
-			// { 
-			// 		var detail_data = container_width() - 250 - 300 - 600 ;
-			// 		$('#detail_data').width(detail_data);
-	  // 		}
 
 		}
 		else
@@ -76,15 +54,16 @@ function overview_serach_box()
 		$('#detail_data').width(detail_data);
 	  }
 	  console.log('=>gonna set Cookies');
-	project_ia_classes = $('#project_ia').attr('class');	 
-	projectform_classes = $('#projectform').attr('class');
+		project_ia_classes = $('#project_ia').attr('class');	 
+		projectform_classes = $('#projectform').attr('class');
 
-	Cookies.set('project_ia', project_ia_classes, { expires: 7 });
-	Cookies.set('projectform', projectform_classes, { expires: 7 });
-	console.log('===>Cookies are set');	  
+		Cookies.set('project_ia', project_ia_classes, { expires: 7 });
+		Cookies.set('projectform', projectform_classes, { expires: 7 });
+		console.log('===>Cookies are set');	  
 }
 function adjust(){
 
+	console.log('Inside Adjust');
 	if($('#projectform').hasClass('collapsed'))
 	{
 		if($('#project_ia').hasClass('collapsed'))
@@ -109,7 +88,6 @@ function adjust(){
 		else{
 			var detail_data = container_width() - 300 - 600 - 250 ;
 			$('#detail_data').width(detail_data);
-
 		}
 
 	}
@@ -139,13 +117,11 @@ function label_attributes_box()
 		$('#detail_data').width(detail_data);
 
 	  }else if( searchclassName == "project-data collapsed" && 
-	  			className == "project-data project_ia collapsed project_serach_noDetail") {
-	  		
+	  		className == "project-data project_ia collapsed project_serach_noDetail") {
 	  		$('#project_ia').removeClass('collapsed');
 	  		$('#project_ia').removeClass('project_serach_noDetail');
 	  		var detail_data = container_width() - 300 - 600;
 			$('#detail_data').width(detail_data);
-
 
 	  }else{	
 	  	 $('#project_ia').removeClass('collapsed');
@@ -162,6 +138,5 @@ function label_attributes_box()
 
 	Cookies.set('project_ia', project_ia_classes, { expires: 7 });
 	Cookies.set('projectform', projectform_classes, { expires: 7 });
-	console.log('======>cookies are set');
-	  	 
+	console.log('======>cookies are set');  	 
 }

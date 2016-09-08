@@ -250,6 +250,8 @@ class OverviewController < ApplicationController
      reset_type = params[:reset_type]
      move_riginal_record_back_to_step = params[:move_riginal_record_back_to]
 
+     rework_date_time = params[:rework_date_time]
+
      rework_parent_id = params[:rework_parent_id]
      rework_object_type = params[:rework_info][:object_type]
      parent_total_num_component = params[:num_component]
@@ -310,6 +312,8 @@ class OverviewController < ApplicationController
         start_workflow_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(rework_start_step,rework_parent_id, rework_object_type)
         if move_riginal_record_back_to_step.present?
           original_record_backTO_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(move_riginal_record_back_to_step.to_i,rework_parent_id, rework_object_type)
+          original_record_backTO_live_step.actual_confirmation = L1.set_db_datetime_format(rework_date_time)
+          original_record_backTO_live_step.save!
         else
            original_record_backTO_live_step = nil
         end
@@ -439,15 +443,12 @@ class OverviewController < ApplicationController
         end
         #-----------------------end mising predecessors
 
-
-      WorkflowLiveStep.get_steps_calculate_eta(live_steps_new_rework_object, @workflow,current_user)
-      if l3_rework.workflow_live_steps.present?
-       workflow_step = l3_rework.workflow_live_steps.where(is_active: true).first
-       if !workflow_step.actual_confirmation.present?
-         session[:open_confirm_modal] = 'open_confirm_modal'
-         session[:workflow_step_id] = workflow_step.id
-       end  
-      end
+        WorkflowLiveStep.get_steps_calculate_eta(live_steps_new_rework_object, @workflow,current_user)
+        if l3_rework.workflow_live_steps.present?
+         new_rework_first_object = l3_rework.workflow_live_steps.where(is_active: true).first
+         new_rework_first_object.actual_confirmation = L1.set_db_datetime_format(rework_date_time)
+         new_rework_first_object.save!
+        end
      end
 
      redirect_to root_path, notice: 'Rework Info was successfully created.'

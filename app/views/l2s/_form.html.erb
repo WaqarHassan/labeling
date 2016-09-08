@@ -82,9 +82,9 @@
                         </div>
                         <div class="col-lg-6">
                         <% if @l2_component.split('|')[1] == 'R' %>
-                            <%= f.input :num_component,:label => false, required: true %>
+                            <%= f.input :num_component,:label => false, required: true, input_html: { min: '0'} %>
                           <%else%>
-                            <%= f.input :num_component,:label => false, required: false %>
+                            <%= f.input :num_component,:label => false, required: false, input_html: { min: '0'}  %>
                           <%end%>
                         </div>
                       </div>
@@ -106,7 +106,7 @@
                               <label for="Active" class="pull-right echo_patinet form-group"><%= att.label %>  </label> 
                             </div>
                             <div class="col-lg-6">
-                              <input type="number" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="form-control" value=<%=attr_field_value%> >
+                              <input type="number" min="0" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="form-control" value=<%=attr_field_value%> >
                             </div>
                          </div>
                       <% when  "dropdown" %>

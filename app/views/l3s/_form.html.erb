@@ -40,7 +40,7 @@
           <div class= "form-group">
             <div class="row">
                <div class="col-lg-4">
-                   <label for = "ecr_name" class="pull-right form-group echo_patinet control-label"> <%=@workflow.L3 %> Name:</label>
+                   <label for = "ecr_name" class="pull-right form-group echo_patinet control-label"> <%=@workflow.L3 %> Name</label>
               </div>
               <div class="col-lg-6">
                 <%= f.input :name ,:label => false,  :input_html =>{id: @show_projects == 'dropdown' ? '' : 'l3_name'}, :required => true %>
@@ -58,7 +58,7 @@
           <div class= "form-group">
             <div class="row">
               <div class="col-lg-4">
-                 <%= f.label :business_unit %>:
+                 <%= f.label :business_unit %>
               </div>
               <div class="col-lg-6">
                 <% if @l3_bu.split('|')[1] == 'R' %>
@@ -85,9 +85,9 @@
                 </div>
                 <div class="col-lg-6">
                 <% if @l3_component.split('|')[1] == 'R' %>
-                    <%= f.input :num_component,:label => false, required: true %>
+                    <%= f.input :num_component,:label => false, required: true, input_html: { min: '0'} %>
                   <%else%>
-                    <%= f.input :num_component,:label => false, required: false %>
+                    <%= f.input :num_component,:label => false, required: false, input_html: { min: '0'}  %>
                   <%end%>
                 </div>
               </div>
@@ -106,16 +106,16 @@
             <% when  "integer" %>
               <div class="row">
                   <div class="col-lg-4">
-                    <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %>: </label> 
+                    <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %> </label> 
                   </div>
                     <div class="col-lg-6">
-                    <input type="number" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="form-control" value=<%= attr_field_value %> >
+                    <input type="number" min="0" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="form-control" value=<%= attr_field_value %> >
                   </div>
                 </div>
             <% when "dropdown"%>
               <div class="row">
                 <div class="col-lg-4">
-                  <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %>: </label> 
+                  <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %> </label> 
                 </div>
                   <div class="col-lg-6">
                    <% if att.is_required? %>
@@ -128,7 +128,7 @@
               <% when "date"%>
                   <div class="row">
                   <div class="col-lg-4">
-                    <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %>: </label> 
+                    <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %> </label> 
                   </div>
                     <div class="col-lg-6">
                     <input type="text" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="datepicker_only form-control" value=<%= attr_field_value.present? ? attr_field_value : Time.now.strftime("%m/%d/%Y") %> >
@@ -138,7 +138,7 @@
               <%else%>
                <div class="row">
                   <div class="col-lg-4">
-                    <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %>: </label> 
+                    <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %> </label> 
                   </div>
                     <div class="col-lg-6">
                     <input type="text" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="form-control" value=<%= attr_field_value %> >

@@ -715,7 +715,7 @@ class OverviewController < ApplicationController
 
                           # calculate step completion for step which id confirmed
       station_step = workflow_live_step.station_step
-      step_completion = station_step.calculate_step_completion(actual_confirmation, comp_attribute_value, lang_attribute_value, hours_per_workday)
+      step_completion = station_step.calculate_step_completion(workflow_live_step, actual_confirmation, comp_attribute_value, lang_attribute_value, hours_per_workday)
 
       workflow_live_step.actual_confirmation = actual_confirmation
       workflow_live_step.step_completion = step_completion
@@ -749,7 +749,7 @@ class OverviewController < ApplicationController
       lang_attribute_value = workflow_live_step.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
 
       station_step = workflow_live_step.station_step
-      step_completion = station_step.calculate_step_completion(actual_confirmation, comp_attribute_value, lang_attribute_value)
+      step_completion = station_step.calculate_step_completion(workflow_live_step, actual_confirmation, comp_attribute_value, lang_attribute_value)
 
       workflow_live_step.actual_confirmation = actual_confirmation
       workflow_live_step.step_completion = step_completion
@@ -766,7 +766,7 @@ class OverviewController < ApplicationController
           if indx == 0
             if pre_workflow_live_step.present? and pre_workflow_live_step.step_completion.present?
                 station_step = wls.station_step
-                step_completion_current = station_step.calculate_step_completion(pre_workflow_live_step.step_completion, comp_attribute_value, lang_attribute_value)
+                step_completion_current = station_step.calculate_step_completion(pre_workflow_live_step, pre_workflow_live_step.step_completion, comp_attribute_value, lang_attribute_value)
                 wls.eta = pre_workflow_live_step.step_completion
                 wls.step_completion = step_completion_current
                 wls.save!
@@ -775,7 +775,7 @@ class OverviewController < ApplicationController
             if pre_workflow_live_step.present? and pre_workflow_live_step.step_completion.present?
               if DateTime.parse(pre_workflow_live_step.step_completion.to_s) > DateTime.parse(wls.eta.to_s)
                 station_step = wls.station_step
-                step_completion_current = station_step.calculate_step_completion(pre_workflow_live_step.step_completion, comp_attribute_value, lang_attribute_value)
+                step_completion_current = station_step.calculate_step_completion(pre_workflow_live_step, pre_workflow_live_step.step_completion, comp_attribute_value, lang_attribute_value)
                 wls.eta = pre_workflow_live_step.step_completion
                 wls.step_completion = step_completion_current
                 wls.save!

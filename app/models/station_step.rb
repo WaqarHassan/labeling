@@ -3,7 +3,7 @@ class StationStep < ActiveRecord::Base
 	has_many :workflow_live_stations
 	has_many :transitions
 
-	def calculate_step_completion(actual_confirmation, level_object, lang_attribute_value, hours_per_workday)
+	def calculate_step_completion(live_step, actual_confirmation, level_object, lang_attribute_value, hours_per_workday)
 		duration_days = self.duration_days
 		duration_minutes = self.duration_minutes
 		duration_multiplier = self.duration_multiplier
@@ -39,6 +39,11 @@ class StationStep < ActiveRecord::Base
 		else
 			number_days = numberDays
 			number_minutes = numberMinute
+		end
+
+		if !live_step.is_active?
+			number_days = 0
+			number_minutes = 0
 		end
 
 						# Covnert minutes to hours and minutes

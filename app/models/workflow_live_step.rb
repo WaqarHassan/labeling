@@ -98,10 +98,10 @@ class WorkflowLiveStep < ActiveRecord::Base
 	          predecessors_step_ojbets.each_with_index do |pso, indx|
 	            if indx == 0 and pso.step_completion.present?
 	              station_step = wls.station_step
-	              max_step_completion = station_step.calculate_step_completion(pso.step_completion, comp_attribute_value, lang_attribute_value, hours_per_workday)
+	              max_step_completion = station_step.calculate_step_completion(pso, pso.step_completion, comp_attribute_value, lang_attribute_value, hours_per_workday)
 	            elsif pso.step_completion.present?
 	              station_step = wls.station_step
-	              step_completion_other = station_step.calculate_step_completion(pso.step_completion, comp_attribute_value, lang_attribute_value, hours_per_workday)
+	              step_completion_other = station_step.calculate_step_completion(pso, pso.step_completion, comp_attribute_value, lang_attribute_value, hours_per_workday)
 	                if DateTime.parse(step_completion_other.to_s) > DateTime.parse(max_step_completion.to_s)
 	                  max_step_completion = step_completion_other 
 	                end
@@ -130,6 +130,15 @@ class WorkflowLiveStep < ActiveRecord::Base
 					          		no_of_comp: no_of_comp)
 	          end
 	          # save log end
+	        elsif wls.predecessors.present? && wls.actual_confirmation.present?
+	          comp_attribute_value = wls.object
+	          lang_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
+	          
+			  station_step = wls.station_step
+		      step_completion = station_step.calculate_step_completion(wls, wls.actual_confirmation, comp_attribute_value, lang_attribute_value, hours_per_workday)
+
+		      wls.step_completion = step_completion
+      		  wls.save!
 	        end
 	    end
 

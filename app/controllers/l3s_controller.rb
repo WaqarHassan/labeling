@@ -62,6 +62,7 @@ class L3sController < ApplicationController
     end
     @l3 = L3.new(l3_params)
     @l3.user_id = current_user.id
+    @l3.is_main_record = true
     if @l3.save!
       if params[:attr].present?
         AttributeValue.create_attribute_values(params[:attr], @l3, 'L3') 

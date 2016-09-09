@@ -14,7 +14,7 @@ class StationStep < ActiveRecord::Base
 			rework_components = 0
 		    if level_object.class.name == 'L3'
 		    	if level_object.num_component.to_i > 0
-		    		comp = level_object.num_component.to_i - level_object.num_component_rework.to_i
+		    		comp = level_object.num_component.to_i - level_object.num_component_in_rework.to_i
 		    	end
 			else
 				comp = level_object.num_component.present? ? level_object.num_component : 1

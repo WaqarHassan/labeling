@@ -185,7 +185,7 @@ class OverviewController < ApplicationController
     workflow_live_step = WorkflowLiveStep.find(@wf_step_id)
     @rework = ReworkInfo.new
     @object = workflow_live_step.object
-    @has_open_partial_rework = is_has_open_partial_rework(@object.id)
+    @can_merge_back = can_merge_back_with_parent(@object)
 
     rework_components = 0
       if @object.class.name == 'L3'
@@ -247,24 +247,30 @@ class OverviewController < ApplicationController
 
    #POST rework Modal
   def create_rework_info
+    merge_back_partial_with_parent = params[:merge_back_partial_with_parent]
+    rework_object_type = params[:rework_info][:object_type]
+    rework_date_time = params[:rework_date_time]
+
+    if merge_back_partial_with_parent.present? and merge_back_partial_with_parent == "merge_back_partial_with_parent"
+      partial_to_merge_id = params[:partial_to_merge_id]
+      merge_partial_with_parent(partial_to_merge_id, rework_object_type, rework_date_time)
+    else  
      mew_rework_info_object = ReworkInfo.create(rework_info_params)
      
      reset_type = params[:reset_type]
      move_original_record_back_to_step = params[:move_original_record_back_to_step]
-     rework_date_time = params[:rework_date_time]
      rework_parent_id = params[:rework_parent_id]
-     rework_object_type = params[:rework_info][:object_type]
      parent_total_num_component = params[:num_component]
-     num_component_rework = params[:num_component_rework]
+     num_component_in_rework = params[:num_component_in_rework]
      component_already_in_rework = params[:component_already_in_rework]
      rework_start_step = params[:rework_start_step]
      component_already_in_rework = component_already_in_rework.present? ? component_already_in_rework : 0
-     remaining_parent_component = parent_total_num_component.to_i - num_component_rework.to_i
+     remaining_parent_component = parent_total_num_component.to_i - num_component_in_rework.to_i
 
      # find parent of rework
      l3_object = L3.find(rework_parent_id)
      l3_rework_name = get_rework_name(l3_object.name)
-     l3_object.num_component_rework = num_component_rework.to_i + component_already_in_rework.to_i
+     l3_object.num_component_in_rework = num_component_in_rework.to_i + component_already_in_rework.to_i
 
      # create new rework
      l3_rework = L3.new
@@ -274,11 +280,12 @@ class OverviewController < ApplicationController
      l3_rework.business_unit = l3_object.business_unit
      l3_rework.l2_id = l3_object.l2_id
      l3_rework.rework_parent_id = rework_parent_id
-     l3_rework.num_component = num_component_rework
+     l3_rework.num_component = num_component_in_rework
      reason = ReasonCode.find_by_recording_level('ReworkParent')
+     reason_id = reason.present? ? reason.id : nil
 
      # -----------------if fulllllllllllllll Rework
-     if parent_total_num_component.to_i == num_component_rework.to_i
+     if parent_total_num_component.to_i == num_component_in_rework.to_i
       l3_object.is_full_rework = true
       l3_object.is_closed = true
       l3_object.status = 'Closed'
@@ -290,12 +297,12 @@ class OverviewController < ApplicationController
       end
         
       AdditionalInfo.create(info_timestamp: Time.now ,object_id: l3_object.id, object_type: rework_object_type, 
-        status: 'Closed', reason_code_id: reason.id, work_flow_id: @workflow.id, user_id: current_user.id)
-    
+        status: 'Closed', reason_code_id: reason_id, work_flow_id: @workflow.id, user_id: current_user.id)
+
       WorkflowLiveStep.where(object_type: rework_object_type, object_id: rework_parent_id, actual_confirmation: nil).update_all(is_active: false)
      
       # -----------------else Partial Rework-------------------
-     elsif num_component_rework.to_i < parent_total_num_component.to_i
+     elsif num_component_in_rework.to_i < parent_total_num_component.to_i
       rework_type = 'partial_rework' 
 
 
@@ -314,7 +321,7 @@ class OverviewController < ApplicationController
         mew_rework_info_object.new_rework_type = rework_object_type
 
         # save reset type and back record if partial rework and move original record back to selected
-        if move_original_record_back_to_step.present? and parent_total_num_component.to_i != num_component_rework.to_i
+        if move_original_record_back_to_step.present? and parent_total_num_component.to_i != num_component_in_rework.to_i
           mew_rework_info_object.move_original_record_back_to_step = move_original_record_back_to_step
           mew_rework_info_object.reset_type = reset_type
         end
@@ -329,8 +336,8 @@ class OverviewController < ApplicationController
         end
 
         # change Actual confirmation and log timestap if partial rework and move original record back to selected
-        if move_original_record_back_to_step.present? and parent_total_num_component.to_i != num_component_rework.to_i
-          noOf_comp = l3_object.num_component.to_i - l3_object.num_component_rework.to_i
+        if move_original_record_back_to_step.present? and parent_total_num_component.to_i != num_component_in_rework.to_i
+          noOf_comp = l3_object.num_component.to_i - l3_object.num_component_in_rework.to_i
           no_of_lang_comp = l3_object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
           
           # change actual confirmation
@@ -369,7 +376,7 @@ class OverviewController < ApplicationController
           end
 
           # reset the confirmation of parent record on the basis of RESET FILTER 
-          if parent_total_num_component.to_i != num_component_rework.to_i and original_record_backTO_live_step.present?
+          if parent_total_num_component.to_i != num_component_in_rework.to_i and original_record_backTO_live_step.present?
             if reset_type == 'keep_all' and original_rework.id > original_record_backTO_live_step.id
               original_rework.actual_confirmation = original_rework.actual_confirmation
             elsif reset_type == 'reset_all' and original_rework.id > original_record_backTO_live_step.id
@@ -498,9 +505,45 @@ class OverviewController < ApplicationController
      end
 
      redirect_to root_path, notice: 'Rework Info was successfully created.'
+    end
   end
 
-  def merge_back
+  def merge_partial_with_parent(partial_to_merge_id, rework_object_type, merge_back_time)
+    if rework_object_type == 'L3'
+      @partial_ready_to_merge = L3.find_by_id(partial_to_merge_id)
+      merge_back_with_id = @partial_ready_to_merge.merge_back_with_id
+      @merge_back_with = L3.find_by_id(merge_back_with_id)
+    end
+
+    # reset the num of comp in parent
+    num_component_merge_back = @partial_ready_to_merge.num_component
+    num_comp_in_parent = @merge_back_with.num_component
+    num_component_in_rework = @merge_back_with.num_component_in_rework
+    @merge_back_with.num_component = num_comp_in_parent.to_i + num_component_merge_back.to_i
+    @merge_back_with.num_component_in_rework = num_component_in_rework.to_i - num_component_merge_back.to_i
+    @merge_back_with.save!
+
+    # close the partial
+    @partial_ready_to_merge.is_main_record = false
+    @partial_ready_to_merge.is_closed = true
+    @partial_ready_to_merge.status = 'Closed'
+    if @partial_ready_to_merge.save
+
+      # save log of rework done
+      reason = ReasonCode.find_by_recording_level('ReworkMergedBack')
+      reason_id = reason.present? ? reason.id : nil
+      formated_merge_back_time = L1.set_db_datetime_format(merge_back_time)
+      AdditionalInfo.create(info_timestamp: formated_merge_back_time ,object_id: partial_to_merge_id, object_type: rework_object_type, 
+        status: 'Closed', reason_code_id: reason_id, work_flow_id: @workflow.id, user_id: current_user.id)
+
+      # recalculates the ETAS
+      work_flowLive_steps = @merge_back_with.workflow_live_steps
+      if work_flowLive_steps.present?
+        workflowLiveStep = work_flowLive_steps.first
+        WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow, current_user)
+      end
+    end
+
     redirect_to root_path, notice: 'Partial Merged Back successfully.'
   end
     #GET task Confirmation
@@ -724,12 +767,17 @@ class OverviewController < ApplicationController
 
   private
 
-    def is_has_open_partial_rework(object_id)
-      parent_reworked = L3.find_by_rework_parent_id_and_is_closed(object_id, true)
-      if parent_reworked.present?
-        return true
-      else
+    def can_merge_back_with_parent(object)
+      has_open_partial = L3.find_by_rework_parent_id_and_is_closed(object.id, false)
+      if has_open_partial.present?
         return false
+      else
+        has_open_parent = L3.find_by_id_and_is_closed(object.merge_back_with_id, false)
+        if has_open_parent.present?
+          return true
+        else
+          return false
+        end  
       end  
     end
 

@@ -17,6 +17,8 @@
       <input type="hidden" name="rework_parent_id" value= "<%=@object.id%>" />
       <input type="hidden" id ="total_num_component" name="num_component" value= "<%=@object_num_component%>" />
       <input type="hidden" id ="component_already_in_rework" name="component_already_in_rework" value= "<%=@rework_components%>" />
+      <input type="hidden" id="merge_back_partial_with_parent" name="merge_back_partial_with_parent" />
+      <input type="hidden" name="partial_to_merge_id" value= "<%=@object.id%>" />
 
        <div class="form-group" id="full_rework_not_possible">
        </div>
@@ -96,7 +98,7 @@
      <div class="form-group">
        <label class="col-lg-4 control-label">#Comp</label>
         <div class="col-lg-6">
-          <input type="number" id="selected_num_comp" class="form-control" name="num_component_rework" value="<%=@object_num_component%>" max="<%=@object_num_component%>" min="0" >   
+          <input type="number" id="selected_num_comp" class="form-control" name="num_component_in_rework" value="<%=@object_num_component%>" max="<%=@object_num_component%>" min="0" >   
         </div>
      </div>
 
@@ -121,16 +123,13 @@
          </select>
         </div>
       </div>
-
       <div class="form-group" id="move_riginal_record_back_div">
-
       </div>
-
 
     </div>
     <div class='modal-footer'>
-      <% if !@has_open_partial_rework.present? %>
-        <%= link_to 'Rework done – merge back', merge_back_path(@wf_step_id), {:remote => true, "data-dismiss" => "modal", :class=>'btn save-print-update-edit-btn', :style=>"float: left;"} %>
+      <% if @can_merge_back.present? %>
+        <button class='btn save-print-update-edit-btn' type='submit' style="float: left;" onclick="return set_partial_merger();">Rework done – merge back</button>
       <% else %>
         <%= link_to 'Rework done – merge back', 'javascript:void(0)', {:remote => true, :class=>'btn save-print-update-edit-btn', :style=>"float: left;", :disabled=>true } %>
       <% end %>

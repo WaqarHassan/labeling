@@ -1,6 +1,11 @@
 
 console.log('main js working........');
 
+function set_partial_merger(){
+	$('#rework_info_reason').removeAttr("required");
+	$('#rework_start_step').removeAttr("required");
+	$('#merge_back_partial_with_parent').val('merge_back_partial_with_parent');
+}
 function can_be_full_rework(){
 	selected_num_comp = $('#selected_num_comp').val();
 	total_num_component = $('#total_num_component').val();

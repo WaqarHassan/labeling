@@ -185,6 +185,7 @@ class OverviewController < ApplicationController
     workflow_live_step = WorkflowLiveStep.find(@wf_step_id)
     @rework = ReworkInfo.new
     @object = workflow_live_step.object
+    @has_open_partial_rework = is_has_open_partial_rework(@object.id)
 
     rework_components = 0
       if @object.class.name == 'L3'
@@ -487,6 +488,9 @@ class OverviewController < ApplicationController
      redirect_to root_path, notice: 'Rework Info was successfully created.'
   end
 
+  def merge_back
+    redirect_to root_path, notice: 'Partial Merged Back successfully.'
+  end
     #GET task Confirmation
   def open_confirm_modal
     session.delete(:open_confirm_modal)
@@ -707,6 +711,15 @@ class OverviewController < ApplicationController
   end
 
   private
+
+    def is_has_open_partial_rework(object_id)
+      parent_reworked = L3.find_by_rework_parent_id_and_is_closed(object_id, true)
+      if parent_reworked.present?
+        return true
+      else
+        return false
+      end  
+    end
 
     def get_rework_name(object_name, indx = 1)
       parent_object_name = object_name.split('-R')[0]

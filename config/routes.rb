@@ -77,6 +77,7 @@ Rails.application.routes.draw do
   get '/overview/get_reasons/:l_type' => 'overview#get_reasons', as:'get_reasons'
   get '/overview/update_workflow/:object_type/:object_id' => 'overview#update_workflow', as: 'update_workflow'
   post '/overview/workflow_update' => 'overview#workflow_update', as: 'workflow_update'
+  get '/overview/merge_back/:wls_id' => 'overview#merge_back', as:'merge_back'
 
  
   post '/overview/update_task_confirmation' =>  'overview#update_task_confirmation', as: 'update_task_confirmation'

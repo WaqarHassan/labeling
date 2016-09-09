@@ -282,13 +282,25 @@ class OverviewController < ApplicationController
       l3_object.is_full_rework = true
       l3_object.is_closed = true
       l3_object.status = 'Closed'
+      l3_object.is_main_record = false
+      l3_rework.is_main_record = true
+
+      if l3_object.merge_back_with_id.present?
+        l3_rework.merge_back_with_id = l3_object.merge_back_with_id
+      end
+        
       AdditionalInfo.create(info_timestamp: Time.now ,object_id: l3_object.id, object_type: rework_object_type, 
         status: 'Closed', reason_code_id: reason.id, work_flow_id: @workflow.id, user_id: current_user.id)
+    
       WorkflowLiveStep.where(object_type: rework_object_type, object_id: rework_parent_id, actual_confirmation: nil).update_all(is_active: false)
      
       # -----------------else Partial Rework-------------------
      elsif num_component_rework.to_i < parent_total_num_component.to_i
-      rework_type = 'partial_rework'                          
+      rework_type = 'partial_rework' 
+
+
+      l3_rework.merge_back_with_id = rework_parent_id  
+
      end
 
      l3_object.save!

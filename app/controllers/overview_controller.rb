@@ -180,7 +180,7 @@ class OverviewController < ApplicationController
   end
 
   #GET rework Modal
-   def open_rework_modal
+  def open_rework_modal
     @wf_step_id = params[:wf_step_id]
     workflow_live_step = WorkflowLiveStep.find(@wf_step_id)
     @rework = ReworkInfo.new
@@ -242,61 +242,65 @@ class OverviewController < ApplicationController
       format.html
       format.js
     end
-   end
+  end
 
    #POST rework Modal
-   def create_rework_info
+  def create_rework_info
      mew_rework_info_object = ReworkInfo.create(rework_info_params)
      
      reset_type = params[:reset_type]
      move_original_record_back_to_step = params[:move_original_record_back_to_step]
-
      rework_date_time = params[:rework_date_time]
-
      rework_parent_id = params[:rework_parent_id]
      rework_object_type = params[:rework_info][:object_type]
      parent_total_num_component = params[:num_component]
      num_component_rework = params[:num_component_rework]
      component_already_in_rework = params[:component_already_in_rework]
-     component_already_in_rework = component_already_in_rework.present? ? component_already_in_rework : 0
      rework_start_step = params[:rework_start_step]
+     component_already_in_rework = component_already_in_rework.present? ? component_already_in_rework : 0
      remaining_parent_component = parent_total_num_component.to_i - num_component_rework.to_i
 
+     # find parent of rework
      l3_object = L3.find(rework_parent_id)
      l3_rework_name = get_rework_name(l3_object.name)
      l3_object.num_component_rework = num_component_rework.to_i + component_already_in_rework.to_i
 
+     # create new rework
      l3_rework = L3.new
      l3_rework.user_id = current_user.id
      l3_rework.name = l3_rework_name
+     l3_rework.status = 'Active'
      l3_rework.business_unit = l3_object.business_unit
      l3_rework.l2_id = l3_object.l2_id
      l3_rework.rework_parent_id = rework_parent_id
      l3_rework.num_component = num_component_rework
+     reason = ReasonCode.find_by_recording_level('ReworkParent')
 
-                              # -----------------fulllllllllllllll Rework
+     # -----------------if fulllllllllllllll Rework
      if parent_total_num_component.to_i == num_component_rework.to_i
       l3_object.is_full_rework = true
-      l3_rework.status = 'Active'
       l3_object.is_closed = true
       l3_object.status = 'Closed'
-      reason = ReasonCode.find_by_recording_level('ReworkParent')
       AdditionalInfo.create(info_timestamp: Time.now ,object_id: l3_object.id, object_type: rework_object_type, 
         status: 'Closed', reason_code_id: reason.id, work_flow_id: @workflow.id, user_id: current_user.id)
       WorkflowLiveStep.where(object_type: rework_object_type, object_id: rework_parent_id, actual_confirmation: nil).update_all(is_active: false)
      
+      # -----------------else Partial Rework-------------------
      elsif num_component_rework.to_i < parent_total_num_component.to_i
-                                # -----------------Partial Rework-------------------
       rework_type = 'partial_rework'                          
-      l3_rework.status = 'Active'
-      reason = ReasonCode.find_by_recording_level('ReworkParent')
      end
 
      l3_object.save!
      if l3_rework.save!
+         # create archive info of new rework
+        AdditionalInfo.create(info_timestamp: Time.now ,object_id: l3_rework.id, object_type: rework_object_type, 
+        status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
+
         start_workflow_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(rework_start_step,rework_parent_id, rework_object_type)
         mew_rework_info_object.new_rework_id = l3_rework.id
         mew_rework_info_object.new_rework_type = rework_object_type
+
+        # save reset type and back record if partial rework and move original record back to selected
         if move_original_record_back_to_step.present? and parent_total_num_component.to_i != num_component_rework.to_i
           mew_rework_info_object.move_original_record_back_to_step = move_original_record_back_to_step
           mew_rework_info_object.reset_type = reset_type
@@ -304,35 +308,37 @@ class OverviewController < ApplicationController
         mew_rework_info_object.rework_start_step = start_workflow_live_step.id
         mew_rework_info_object.save!
 
-        AdditionalInfo.create(info_timestamp: Time.now ,object_id: l3_rework.id, object_type: rework_object_type, 
-        status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
-
-        lang_attribute_value = l3_object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
-        if lang_attribute_value.present?
-          AttributeValue.create(label_attribute_id: lang_attribute_value.label_attribute_id,value: lang_attribute_value.value,
-            object_type: lang_attribute_value.object_type, object_id: l3_rework.id)
+        # copy all parent attributes to new rewwork 
+        parent_lang_attribute_values = l3_object.attribute_values
+        parent_lang_attribute_values.each do |lang_attributeValue|
+          AttributeValue.create(label_attribute_id: lang_attributeValue.label_attribute_id,value: lang_attributeValue.value,
+            object_type: lang_attributeValue.object_type, object_id: l3_rework.id)
         end
 
+        # change Actual confirmation and log timestap if partial rework and move original record back to selected
         if move_original_record_back_to_step.present? and parent_total_num_component.to_i != num_component_rework.to_i
-          actual_confirmation = L1.set_db_datetime_format(rework_date_time)
           noOf_comp = l3_object.num_component.to_i - l3_object.num_component_rework.to_i
           no_of_lang_comp = l3_object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
+          
+          # change actual confirmation
+          actual_confirmation = L1.set_db_datetime_format(rework_date_time)
           original_record_backTO_live_step = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(move_original_record_back_to_step.to_i,rework_parent_id, rework_object_type)
           original_record_backTO_live_step.actual_confirmation = actual_confirmation
           original_record_backTO_live_step.save!
-                # save log start
+          
+          # save timestamp log
            TimestampLog.create(workflow_live_step_id: original_record_backTO_live_step.id,
                             actual_confirmation: actual_confirmation,
                             user_id: current_user.id,
                             work_flow_id: @workflow.id,
                             no_of_comp: noOf_comp,
                             no_of_lang: no_of_lang_comp)
-          # save log end
 
         else
            original_record_backTO_live_step = nil
         end
 
+        # copy parent live steps for new rework
         live_steps_new_rework_object = nil
         rework_live_steps = WorkflowLiveStep.where(object_type: rework_object_type, object_id: rework_parent_id)
         rework_live_steps.each do |original_rework|
@@ -349,6 +355,7 @@ class OverviewController < ApplicationController
             live_steps_new_rework.is_active = false
           end
 
+          # reset the confirmation of parent record on the basis of RESET FILTER 
           if parent_total_num_component.to_i != num_component_rework.to_i and original_record_backTO_live_step.present?
             if reset_type == 'keep_all' and original_rework.id > original_record_backTO_live_step.id
               original_rework.actual_confirmation = original_rework.actual_confirmation
@@ -359,6 +366,19 @@ class OverviewController < ApplicationController
           end
 
           if live_steps_new_rework.save!
+            # save timestamp log
+            numberOfLangComp = 0
+            noOfLangComp = l3_rework.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
+            if noOfLangComp.present?
+              numberOfLangComp = noOfLangComp.value
+            end
+            TimestampLog.create(workflow_live_step_id: live_steps_new_rework.id,
+                            actual_confirmation: live_steps_new_rework.actual_confirmation,
+                            user_id: current_user.id,
+                            work_flow_id: @workflow.id,
+                            no_of_comp: l3_rework.num_component,
+                            no_of_lang: numberOfLangComp)
+
             predecessor = live_steps_new_rework.predecessors
             step_predecessor = WorkflowLiveStep.where("id in (#{predecessor})")
             predecessor_list = ''
@@ -379,7 +399,7 @@ class OverviewController < ApplicationController
           end
         end
 
-          #-----------------------start mising predecessors
+        #-----------------------start mising predecessors L2
         @l3 = l3_object 
         workflow_live_steps_empty_pred = WorkflowLiveStep.where(object_id: @l3.l2.id, object_type: 'L2')
         workflow_live_steps_empty_pred.each do |pred_stp|
@@ -417,9 +437,8 @@ class OverviewController < ApplicationController
           end
           pred_stp.update(predecessors: predecessors_step_empty)
         end
-        #-----------------------end mising predecessors
 
-        #-----------------------start mising predecessors
+        #-----------------------start mising predecessors for L1
         workflow_live_steps_empty_pred = WorkflowLiveStep.where(object_id: @l3.l2.l1.id, object_type: 'L1')
         workflow_live_steps_empty_pred.each do |pred_stp|
           predecessors = Transition.where(station_step_id: pred_stp.station_step_id)
@@ -456,7 +475,6 @@ class OverviewController < ApplicationController
           end
           pred_stp.update(predecessors: predecessors_step_empty)
         end
-        #-----------------------end mising predecessors
 
         if l3_rework.workflow_live_steps.present?
          new_rework_first_object = l3_rework.workflow_live_steps.where(is_active: true).first
@@ -467,7 +485,7 @@ class OverviewController < ApplicationController
      end
 
      redirect_to root_path, notice: 'Rework Info was successfully created.'
-   end
+  end
 
     #GET task Confirmation
   def open_confirm_modal

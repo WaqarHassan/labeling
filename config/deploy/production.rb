@@ -1,5 +1,5 @@
 
-set :branch, "partial_merge"
+set :branch, "master"
 
 # server-based syntax
 # ======================

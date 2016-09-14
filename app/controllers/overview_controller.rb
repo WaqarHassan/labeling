@@ -289,12 +289,10 @@ class OverviewController < ApplicationController
       l3_object.is_full_rework = true
       l3_object.is_closed = true
       l3_object.status = 'Closed'
+      l3_rework.is_main_record = l3_object.is_main_record
       l3_object.is_main_record = false
-      l3_rework.is_main_record = true
-
-      if l3_object.merge_back_with_id.present?
-        l3_rework.merge_back_with_id = l3_object.merge_back_with_id
-      end
+      l3_rework.merge_back_with_id = l3_object.merge_back_with_id
+      l3_object.merge_back_with_id = nil
         
       AdditionalInfo.create(info_timestamp: Time.now ,object_id: l3_object.id, object_type: rework_object_type, 
         status: 'Closed', reason_code_id: reason_id, work_flow_id: @workflow.id, user_id: current_user.id)
@@ -387,17 +385,17 @@ class OverviewController < ApplicationController
 
           if live_steps_new_rework.save!
             # save timestamp log
-            numberOfLangComp = 0
-            noOfLangComp = l3_rework.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
-            if noOfLangComp.present?
-              numberOfLangComp = noOfLangComp.value
-            end
-            TimestampLog.create(workflow_live_step_id: live_steps_new_rework.id,
-                            actual_confirmation: live_steps_new_rework.actual_confirmation,
-                            user_id: current_user.id,
-                            work_flow_id: @workflow.id,
-                            no_of_comp: l3_rework.num_component,
-                            no_of_lang: numberOfLangComp)
+            # numberOfLangComp = 0
+            # noOfLangComp = l3_rework.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
+            # if noOfLangComp.present?
+            #   numberOfLangComp = noOfLangComp.value
+            # end
+            # TimestampLog.create(workflow_live_step_id: live_steps_new_rework.id,
+            #                 actual_confirmation: live_steps_new_rework.actual_confirmation,
+            #                 user_id: current_user.id,
+            #                 work_flow_id: @workflow.id,
+            #                 no_of_comp: l3_rework.num_component,
+            #                 no_of_lang: numberOfLangComp)
 
             predecessor = live_steps_new_rework.predecessors
             step_predecessor = WorkflowLiveStep.where("id in (#{predecessor})")
@@ -519,14 +517,16 @@ class OverviewController < ApplicationController
     num_component_merge_back = @partial_ready_to_merge.num_component
     num_comp_in_parent = @merge_back_with.num_component
     num_component_in_rework = @merge_back_with.num_component_in_rework
-    @merge_back_with.num_component = num_comp_in_parent.to_i + num_component_merge_back.to_i
+    #@merge_back_with.num_component = num_comp_in_parent.to_i + num_component_merge_back.to_i
     @merge_back_with.num_component_in_rework = num_component_in_rework.to_i - num_component_merge_back.to_i
     @merge_back_with.save!
 
     # close the partial
     @partial_ready_to_merge.is_main_record = false
     @partial_ready_to_merge.is_closed = true
+    @partial_ready_to_merge.num_component_in_rework = 0
     @partial_ready_to_merge.status = 'Closed'
+    @partial_ready_to_merge.merge_back_with_id = nil
     if @partial_ready_to_merge.save
 
       # save log of rework done
@@ -540,6 +540,7 @@ class OverviewController < ApplicationController
       work_flowLive_steps = @merge_back_with.workflow_live_steps
       if work_flowLive_steps.present?
         workflowLiveStep = work_flowLive_steps.first
+        @partial_ready_to_merge.workflow_live_steps.where(actual_confirmation: nil).update_all(is_active: false)
         WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow, current_user)
       end
     end

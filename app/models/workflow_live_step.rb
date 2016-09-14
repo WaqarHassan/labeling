@@ -113,22 +113,22 @@ class WorkflowLiveStep < ActiveRecord::Base
 	          wls.save!
 
 	          # save log start
-	          no_of_comp = nil
-      		  no_of_lang = nil
-      		  if comp_attribute_value.present?
-        	  	  no_of_comp = comp_attribute_value.num_component
-      		  end
-		      if lang_attribute_value.present?
-		          no_of_lang = lang_attribute_value.value
-		      end
-	          if current_eta != wls.eta
-	          	TimestampLog.create(workflow_live_step_id: wls.id, 
-					          		eta: wls.eta,
-					          		user_id: current_user.id,
-					          		work_flow_id: workflow.id,
-					          		no_of_lang: no_of_lang,
-					          		no_of_comp: no_of_comp)
-	          end
+	       #    no_of_comp = nil
+      		#   no_of_lang = nil
+      		#   if comp_attribute_value.present?
+        # 	  	  no_of_comp = comp_attribute_value.num_component
+      		#   end
+		      # if lang_attribute_value.present?
+		      #     no_of_lang = lang_attribute_value.value
+		      # end
+	       #    if current_eta != wls.eta
+	       #    	TimestampLog.create(workflow_live_step_id: wls.id, 
+					   #        		eta: wls.eta,
+					   #        		user_id: current_user.id,
+					   #        		work_flow_id: workflow.id,
+					   #        		no_of_lang: no_of_lang,
+					   #        		no_of_comp: no_of_comp)
+	       #    end
 	          # save log end
 	        elsif wls.predecessors.present? && wls.actual_confirmation.present?
 	          comp_attribute_value = wls.object

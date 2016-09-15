@@ -15,7 +15,11 @@
           <div class="form-group">
             <label class="col-lg-4 control-label"> <%= @workflow.L1 %> Name  </label>
               <div class="col-lg-6">
-                <%=  link_to @l1.name, edit_l1_path(@l1.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_l1_modal' , "data-dismiss" => "modal"} %>
+                <% if @l1.status.downcase! == 'cancel' %>
+                  <%= link_to @l1.name, 'javascript:void(0)', title: 'Closed and Canceled level are not editable!' %>
+                <% else %>
+                  <%= link_to @l1.name, edit_l1_path(@l1.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_l1_modal' , "data-di` smiss" => "modal"} %>
+                <% end %>  
               </div>
           </div>
 
@@ -29,7 +33,11 @@
           <div class="form-group">
             <label class="col-lg-4 control-label"> <%= @workflow.L2 %> Name </label>
               <div class="col-lg-6">
-                <%=  link_to @l2.name, edit_l2_path(@l2.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#l2_update_popup' , "data-dismiss" => "modal"} %>
+                <% if @l2.status.downcase! == 'cancel' %>
+                  <%= link_to @l2.name, 'javascript:void(0)', title: 'Closed and Canceled level are not editable!' %>
+                <% else %>
+                  <%= link_to @l2.name, edit_l2_path(@l2.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#l2_update_popup' , "data-dismiss" => "modal"} %>
+                <% end %>
               </div>
           </div>
 
@@ -42,7 +50,11 @@
           <div class="form-group">
             <label class="col-lg-4 control-label"> <%= @workflow.L3 %> Name </label>
               <div class="col-lg-6">
-                <%=  link_to @l3.name, edit_l3_path(@l3.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#l3_update_popup' , "data-dismiss" => "modal"} %>
+                <% if @l3.is_closed? || @l3.status.downcase! == 'cancel' %>
+                  <%= link_to @l3.name, 'javascript:void(0)', title: 'Closed and Canceled level are not editable!' %>
+                <% else %>
+                  <%= link_to @l3.name, edit_l3_path(@l3.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#l3_update_popup' , "data-dismiss" => "modal"} %>
+                <% end %>
               </div>
           </div>
 

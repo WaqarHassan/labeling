@@ -148,16 +148,30 @@ class OverviewController < ApplicationController
         if params[:additional_info][:object_type] == 'L1'
           l1 = L1.find(params[:additional_info][:object_id])
           l1.update(status: params[:additional_info][:status])
+          if l1.status.downcase! == 'cancel'
+            WorkflowLiveStep.where(object_type: 'L1', object_id: l1.id, actual_confirmation: nil).update_all(is_active: false)
+          else
+            WorkflowLiveStep.where(object_type: 'L1', object_id: l1.id, actual_confirmation: nil).update_all(is_active: true)
+          end
         elsif params[:additional_info][:object_type] == 'L2'
            l2 = L2.find(params[:additional_info][:object_id])
            l2.update(status: params[:additional_info][:status])
+           if l2.status.downcase! == 'cancel'
+             WorkflowLiveStep.where(object_type: 'L2', object_id: l2.id, actual_confirmation: nil).update_all(is_active: false)
+           else
+             WorkflowLiveStep.where(object_type: 'L2', object_id: l2.id, actual_confirmation: nil).update_all(is_active: true)
+           end
         elsif params[:additional_info][:object_type] == 'L3'
            l3 = L3.find(params[:additional_info][:object_id])
-          l3.update(status: params[:additional_info][:status])
+           l3.update(status: params[:additional_info][:status])
+           if l3.status.downcase! == 'cancel'
+             WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
+           else
+             WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: true)
+           end
         end
       end
-     
-      #abort()
+
       redirect_to root_path, notice: 'Additional Info was successfully created.'
    end
   def get_reasons

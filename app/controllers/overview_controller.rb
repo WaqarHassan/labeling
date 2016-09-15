@@ -783,7 +783,7 @@ class OverviewController < ApplicationController
   private
 
     def can_merge_back_with_parent(object)
-      has_open_partial = L3.find_by_rework_parent_id_and_is_closed(object.id, false)
+      has_open_partial = L3.find_by_merge_back_with_id_and_is_closed(object.id, false)
       if has_open_partial.present?
         return false
       else

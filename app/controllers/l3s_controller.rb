@@ -182,8 +182,7 @@ class L3sController < ApplicationController
       if workflowLiveStep.present?
         WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
       end
-
-      AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l3.id,object_type: 'L3' , status: @l3.status, user_id: current_user.id)
+      AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l3.id,object_type: 'L3', status: @l3.status, user_id: current_user.id)
 
       if @l3.workflow_live_steps.present?
        workflow_step = @l3.workflow_live_steps.first

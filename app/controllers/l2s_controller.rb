@@ -139,12 +139,17 @@ class L2sController < ApplicationController
         WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
       end
 
+       db_info_timestamp = nil
+       accept_reject_date = params[:accept_reject_date]
+       if accept_reject_date.present?
+        db_info_timestamp = L1.set_db_datetime_format(accept_reject_date)
+       end
        additional_info_id = AdditionalInfo.create(work_flow_id: @workflow.id, 
                                                   object_id: @l2.id,
                                                   object_type: 'L2' ,
                                                   status: @l2.status,
                                                   user_id: current_user.id,
-                                                  info_timestamp: params[:accept_reject_date]) 
+                                                  info_timestamp: db_info_timestamp) 
 
        session[:additional_info_id] = additional_info_id.id
 

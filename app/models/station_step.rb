@@ -60,6 +60,21 @@ class StationStep < ActiveRecord::Base
 		end
 		
 		return  actual_confirmation_time + reminaing_minutes.minutes
+
+		# end_of_day = workflow.end_of_day.to_time.strftime( "%I %M %p" )
+		# calculated_end_of_day = actual_confirmation_time + reminaing_minutes.minutes
+		# if calculated_end_of_day > end_of_day
+		# 	extra_seconds = calculated_end_of_day.to_time.strftime( "%I %M %p" ) - end_of_day.to_time.strftime( "%I %M %p" ))
+		# 	extra_minutes = extra_seconds/3600
+		# 	actual_confirmation = actual_confirmation_time + reminaing_minutes.minutes
+		# 	actual_confirmation = actual_confirmation.to_time.strftime('%Y-%m-%d %H:%M')
+		# 	actual_confirmationTime = Time.parse(actual_confirmation)
+		# 	actual_confirmation_time =  0.business_hours.after(actual_confirmationTime)
+		# 	return actual_confirmation_time + extra_minutes
+		# else
+		# 	return calculated_end_of_day
+		# end
 	end
 	
 end
+

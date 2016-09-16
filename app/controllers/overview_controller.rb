@@ -832,7 +832,11 @@ class OverviewController < ApplicationController
       no_of_comp = nil
       no_of_lang = nil
       if comp_attribute_value.present?
-        no_of_comp = comp_attribute_value.num_component
+        if comp_attribute_value.class.name == 'L3'
+          no_of_comp = comp_attribute_value.num_component.to_i - comp_attribute_value.num_component_in_rework.to_i
+        else
+          no_of_comp = comp_attribute_value.num_component.to_i
+        end
       end
       if lang_attribute_value.present?
           no_of_lang = lang_attribute_value.value

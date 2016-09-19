@@ -130,8 +130,8 @@
     <div class='modal-footer'>
       <% if @can_merge_back.present? %>
         <button class='btn save-print-update-edit-btn' type='submit' style="float: left;" onclick="return set_partial_merger();">Rework done – merge back</button>
-      <% elsif @show_merge_button == 'parent present' %>
-        <%= link_to 'Rework done – merge back', 'javascript:void(0)', {:remote => true, :class=>'btn save-print-update-edit-btn', title: "“Record cannot be merged back.Subordinate Rework record(s) still open.”" ,:style=>"float: left; background-color: grey !important;", :disabled=>true } %>
+      <% elsif @show_merge_button_disable.present? %>
+        <%= link_to 'Rework done – merge back', 'javascript:void(0)', {:remote => true, :class=>'btn save-print-update-edit-btn', title: "Record cannot be merged back.&#013;Subordinate Rework record(s) still open.".html_safe  ,:style=>"float: left; background-color: grey !important;", :disabled=>true } %>
       <% end %>
 
       <button class='btn btn-danger' data-dismiss='modal' type='button'>Close</button>

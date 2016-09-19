@@ -275,14 +275,11 @@ class OverviewController < ApplicationController
       @l3 = L3.find(workflow_live_step.object_id)
     end  
 
-    @show_merge_button = ''
-    is_parent = L3.where(rework_parent_id: @l3.id)
-
-    if  is_parent.present?
-       @show_merge_button = 'parent present'
+    @show_merge_button_disable = true
+    if @l3.is_main_record.present?
+      @show_merge_button_disable = false 
     end
       
-
     respond_to do |format|
       format.html
       format.js

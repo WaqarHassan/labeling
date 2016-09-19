@@ -6,6 +6,7 @@ class L2 < ActiveRecord::Base
 	has_many :activity_logs, as: :object
 	has_many :attribute_values, as: :object
 	has_many :additional_info, as: :object
+	has_many :timestamp_logs, -> { order 'actual_confirmation desc' }, through: :workflow_live_steps
 
 	validates :name, uniqueness: {:message => "must be unique!" }
 end

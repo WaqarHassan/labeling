@@ -1,6 +1,7 @@
 class WorkflowLiveStep < ActiveRecord::Base
 	belongs_to :object, polymorphic: true
 	belongs_to :station_step
+	has_many :timestamp_logs
 
 	class << self
 

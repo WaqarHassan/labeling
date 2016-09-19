@@ -5,5 +5,6 @@ class L3 < ActiveRecord::Base
 	has_many :attribute_values, as: :object
 	validates :name, uniqueness: {:message => "must be unique!" }
 	has_many :additional_info, as: :object
+	has_many :timestamp_logs, through: :workflow_live_steps
 
 end

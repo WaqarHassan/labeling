@@ -676,6 +676,7 @@ class OverviewController < ApplicationController
     @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
+    #show all search result link on search box 
     l1_list = params[:l1_id].split('_')
     session[:filter_object_id] = l1_list
     session[:filter_object_type] = 'L1'

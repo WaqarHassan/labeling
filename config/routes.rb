@@ -55,6 +55,11 @@ Rails.application.routes.draw do
     end
   end
   
+  get '/reports/l1_report/:l1_id' => 'reports#l1_report' , as: 'l1_report'
+  get '/reports/l2_report/:l2_id' => 'reports#l2_report' , as: 'l2_report'
+  get '/reports/l1_report/:l3_id' => 'reports#l3_report' , as: 'l3_report'
+  post '/reports/search' => 'reports#search' , as: 'reports_search' 
+
   get '/overview/open_info_modal_l1/:l1_id' => 'overview#open_info_modal_l1', as: 'open_info_modal_l1'
   
   get '/overview/open_info_modal_l2/:l2_id' => 'overview#open_info_modal_l2', as: 'open_info_modal_l2'

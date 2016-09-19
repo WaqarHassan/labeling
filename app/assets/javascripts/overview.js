@@ -111,6 +111,11 @@ $(document).ready(function() {
 
 		}
 	}
+		var report_data = container_width() - 250 -20 ;
+		console.log('======> setting width of reports <======');
+		$('#report_data').width(report_data);
+
+
 });
 
 $(document).ready(function() {

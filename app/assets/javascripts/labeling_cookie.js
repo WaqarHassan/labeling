@@ -119,7 +119,7 @@ function label_attributes_box()
 	  }else if( searchclassName == "project-data collapsed" && 
 	  		className == "project-data project_ia collapsed project_serach_noDetail") {
 	  		$('#project_ia').removeClass('collapsed');
-	  		$('#project_ia').removeClass('project_serach_noDetail');
+ 	  		$('#project_ia').removeClass('project_serach_noDetail');
 	  		var detail_data = container_width() - 300 - 600;
 			$('#detail_data').width(detail_data);
 

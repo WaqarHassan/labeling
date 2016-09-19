@@ -189,8 +189,9 @@ class L2sController < ApplicationController
 
       if params[:l2][:status].present?
         time_stamp =  nil
-        if params[:l2][:status] == 'Rejected'
-          time_stamp =  params[:accept_reject_date]
+        accept_reject_date = params[:accept_reject_date]
+        if accept_reject_date.present?
+          time_stamp =  L1.set_db_datetime_format(accept_reject_date)
         end
            additional_info_id = AdditionalInfo.create(work_flow_id: @workflow.id,
                               object_id: @l2.id,

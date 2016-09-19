@@ -81,7 +81,7 @@
         <div class="col-lg-6" id= "get_steps_div">
          <select class = "form-control" id="rework_start_step" name="rework_start_step" required="required"> 
           <option value="">Please Select Step</option>
-          <% @level_steps.each do |stp| %>
+          <% @level_steps.reverse_each do |stp| %>
             <option value="<%= stp.id %>" ><%= stp.workflow_station.station_name+' - '+ stp.step_name%></option>
           <% end %>
          </select>
@@ -130,8 +130,8 @@
     <div class='modal-footer'>
       <% if @can_merge_back.present? %>
         <button class='btn save-print-update-edit-btn' type='submit' style="float: left;" onclick="return set_partial_merger();">Rework done – merge back</button>
-      <% else %>
-        <%= link_to 'Rework done – merge back', 'javascript:void(0)', {:remote => true, :class=>'btn save-print-update-edit-btn', :style=>"float: left;", :disabled=>true } %>
+      <% elsif @show_merge_button == 'parent present' %>
+        <%= link_to 'Rework done – merge back', 'javascript:void(0)', {:remote => true, :class=>'btn save-print-update-edit-btn', title: "“Record cannot be merged back.Subordinate Rework record(s) still open.”" ,:style=>"float: left; background-color: grey !important;", :disabled=>true } %>
       <% end %>
 
       <button class='btn btn-danger' data-dismiss='modal' type='button'>Close</button>

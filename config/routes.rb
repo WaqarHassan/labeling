@@ -85,6 +85,8 @@ Rails.application.routes.draw do
   
   get '/overview' => 'overview#index', as: 'overview_home'
   post '/overview/search' => 'overview#search' , as: 'overview_search' 
+  get '/overview/eta_refresh/:l1_id' => 'overview#eta_refresh', as:'eta_refresh'
+
 
   # Dummy preview pages for testing.
   get '/p/test' => 'pages#test', as: 'test'

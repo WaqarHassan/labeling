@@ -60,6 +60,27 @@ class OverviewController < ApplicationController
       format.js
     end
    end
+   #force refresh eta , from additional info pop up
+   def eta_refresh
+    l1_id = params[:l1_id]
+    workflowLiveStep = WorkflowLiveStep.find_by_object_id_and_object_type(l1_id,'L1')
+
+    if !workflowLiveStep.present?
+        l1 = L1.find(params[:l1_id])
+
+        if l1.l2s.present?
+          l2 = l1.l2s.first
+          workflowLiveStep = WorkflowLiveStep.find_by_object_id_and_object_type(l2.id,'L2')
+        end
+
+    end
+
+    if workflowLiveStep.present?
+      WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
+    end
+     redirect_to root_path, notice: 'ETAs Refreshed successfully created.'
+
+   end
 
    def open_info_modal_l2
     @type = 'L2'
@@ -232,16 +253,16 @@ class OverviewController < ApplicationController
       if level_station.id == @current_station.id
         level_station.station_steps.where("is_visible=#{true} and recording_level='#{workflow_live_step.object_type}' and sequence <= #{@current_step.sequence}").order(:sequence).each do |stp|
          liveStepObject = @object_live_steps.find{|live_step| live_step.station_step_id == stp.id }
-          if liveStepObject.is_active?
+          
             @level_steps << stp
-          end
+         
         end
       else
         level_station.station_steps.where("is_visible=#{true} and recording_level='#{workflow_live_step.object_type}'").order(:sequence).each do |stp|
           liveStepObject = @object_live_steps.find{|live_step| live_step.station_step_id == stp.id }
-          if liveStepObject.is_active?
+         
             @level_steps << stp
-          end
+         
         end
       end  
     end
@@ -253,6 +274,15 @@ class OverviewController < ApplicationController
     elsif workflow_live_step.object_type == 'L3'
       @l3 = L3.find(workflow_live_step.object_id)
     end  
+
+    @show_merge_button = ''
+    is_parent = L3.where(rework_parent_id: @l3.id)
+
+    if  is_parent.present?
+       @show_merge_button = 'parent present'
+    end
+      
+
     respond_to do |format|
       format.html
       format.js

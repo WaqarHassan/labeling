@@ -6,7 +6,5 @@ class ReportsController < ApplicationController
 
 	def entire_history
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
-
 	end
-
 end

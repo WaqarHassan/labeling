@@ -10,6 +10,62 @@ class ReportsController < ApplicationController
 			@task_confirmation = false
 			serach_result = search
 			if serach_result.present?
+				l2_name = ''
+				l1_name = ''
+				l1_list = ''
+				@l2_list = ''
+				@l3_list = ''
+				serach_result.each do |result|
+				  	if l1_name != result['l1_name']
+				  		l1_name = result['l1_name']
+				  		l1_list += result['l1_id'].to_s+'_' 
+				  	end
+
+				  	if l2_name != result['l2_name'] && result['l2_id'].presence
+				  		l2_name = result['l2_name']
+				  		@l2_list += result['l2_id'].to_s+'_' 
+				  	end	
+
+				  	if result['l3_id'].presence
+				  		@l3_list += result['l3_id'].to_s+'_' 
+				  	end	
+			  	end
+
+			  	l1_list = l1_list.split('_')
+				@l2_list = @l2_list.split('_')
+			    @l3_list = @l3_list.split('_')
+				@report_l1s = L1.where(id: [l1_list])
+
+				@report_l1s.each do |l1|
+					if l1.timestamp_logs.present?
+						@task_confirmation = true
+					end
+					@l2_list_objects = l1.l2s.where(id: [@l2_list])
+					@l2_list_objects.each do |l2|
+						if l2.timestamp_logs
+							@task_confirmation = true
+						end
+							@l3_list_objects = l2.l3s.where(id: [@l3_list])
+							@l3_list_objects.each do |l3|
+								if l3.timestamp_logs
+									@task_confirmation = true
+								end
+							end	
+					end
+				end	
+
+			end
+		end
+	end
+
+	def handoff
+		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+		if request.post?
+			@entir_history = []
+			@task_confirmation = false
+			@l1s_name = []
+			serach_result = search
+			if serach_result.present?
 				l1_name = ''
 				l1_list = ''
 				serach_result.each do |result|
@@ -19,22 +75,6 @@ class ReportsController < ApplicationController
 				  	end	
 			  	end
 				@report_l1s = L1.where(id: [l1_list])
-
-				@report_l1s.each do |l1|
-					if l1.timestamp_logs.present?
-						@task_confirmation = true
-					end	
-					l1.l2s.each do |l2|
-						if l2.timestamp_logs
-							@task_confirmation = true
-						end
-						l2.l3s.each do |l3|
-							if l3.timestamp_logs
-								@task_confirmation = true
-							end
-						end	
-					end
-				end	
 			end
 		end
 	end

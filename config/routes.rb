@@ -56,11 +56,11 @@ Rails.application.routes.draw do
   end
 
 
-  get '/overview/open_info_modal_l1/:l1_id' => 'overview#open_info_modal_l1', as: 'open_info_modal_l1'
+  get '/overview/open_info_modal_l1/:l1_id(/:report_info)' => 'overview#open_info_modal_l1', as: 'open_info_modal_l1'
   
-  get '/overview/open_info_modal_l2/:l2_id' => 'overview#open_info_modal_l2', as: 'open_info_modal_l2'
+  get '/overview/open_info_modal_l2/:l2_id(/:report_info)' => 'overview#open_info_modal_l2', as: 'open_info_modal_l2'
 
-  get '/overview/open_info_modal_l3/:l3_id' => 'overview#open_info_modal_l3', as: 'open_info_modal_l3'
+  get '/overview/open_info_modal_l3/:l3_id(/:report_info)' => 'overview#open_info_modal_l3', as: 'open_info_modal_l3'
   
   get '/overview/open_rework_modal(/:wf_step_id)(/:l2_id)' => 'overview#open_rework_modal', as: 'open_rework_modal'
   get '/overview/open_confirm_modal(/:wf_step_id)' => 'overview#open_confirm_modal', as: 'open_confirm_modal'
@@ -83,6 +83,7 @@ Rails.application.routes.draw do
   get '/overview/update_workflow/:object_type/:object_id' => 'overview#update_workflow', as: 'update_workflow'
   post '/overview/workflow_update' => 'overview#workflow_update', as: 'workflow_update'
   get '/overview/merge_back/:wls_id' => 'overview#merge_back', as:'merge_back'
+  post '/overview' => 'overview#index', as:'reports_to_overview'
 
  
   post '/overview/update_task_confirmation' =>  'overview#update_task_confirmation', as: 'update_task_confirmation'

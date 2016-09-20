@@ -6,7 +6,25 @@ class OverviewController < ApplicationController
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
 
-    if session[:filter_object_type] == 'L1' 
+    if request.post? and params[:object_id].present?
+      if params[:object_type] == 'L1'
+        @l1s = @workflow.l1s.where(id: [params[:object_id]])
+
+      elsif params[:object_type] == 'L2'
+        @show_search_result_l2 = 'filter_type_l2'
+        @l2_records = L2.where(id: params[:object_id])
+        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+
+      elsif params[:object_type] == 'L3'
+        @show_search_result_l2 = 'filter_type_l2'
+        @show_search_result_l3 = 'filter_type_l3'
+        l3 = L3.find(params[:object_id])
+        ll2 = l3.l2
+        @l3_records = L3.where(id: l3.id)
+        @l2_records = L2.where(id: @l3_records.first.l2_id)
+        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+      end    
+    elsif session[:filter_object_type] == 'L1'
       @l1s = @workflow.l1s.where(id: [session[:filter_object_id]])
   
     elsif session[:filter_object_type] == 'L2'
@@ -24,11 +42,9 @@ class OverviewController < ApplicationController
       @l3_records = L3.where(id: l3.id)
       @l2_records = L2.where(id: @l3_records.first.l2_id)
       @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
-
     else
       @l1s = @workflow.l1s.where(status: 'Active').order(:id)       
     end
-     
 
     if session[:wildcard].present?
       @wildcard = session[:wildcard]
@@ -43,6 +59,7 @@ class OverviewController < ApplicationController
 	end
 
   def open_info_modal_l1
+    @report_info = params[:report_info]
     @type = 'L1' 
     @l1 = L1.find(params[:l1_id])
     @status_ = @l1.status
@@ -62,6 +79,7 @@ class OverviewController < ApplicationController
    end
 
    def open_info_modal_l2
+    @report_info = params[:report_info]
     @type = 'L2'
     @l2 = L2.find(params[:l2_id])
     @status_ = @l2.status
@@ -80,6 +98,7 @@ class OverviewController < ApplicationController
    end
 
    def open_info_modal_l3
+    @report_info = params[:report_info]
     @type = 'L3'
     @l3 = L3.find(params[:l3_id])
     @status_ = @l3.status
@@ -172,7 +191,13 @@ class OverviewController < ApplicationController
         end
       end
 
-      redirect_to root_path, notice: 'Additional Info was successfully created.'
+      if params[:report_info].present? and params[:report_info] == 'report_info'
+        respond_to do |format|
+          format.json { render json: {status: 'success', message: 'Note added successfully'}, status: 200 }
+        end
+      else
+        redirect_to root_path, notice: 'Additional Info was successfully created.'
+      end
    end
   def get_reasons
     @reasons = ReasonCode.where(status: params[:additional_info][:status],

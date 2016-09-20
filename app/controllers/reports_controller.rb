@@ -7,9 +7,7 @@ class ReportsController < ApplicationController
 	def entire_history
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
 		if request.post?
-			@entir_history = []
 			@task_confirmation = false
-			@l1s_name = []
 			serach_result = search
 			if serach_result.present?
 				l1_name = ''
@@ -43,7 +41,21 @@ class ReportsController < ApplicationController
 
 	def current_status
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
-
+		if request.post?
+			@task_confirmation = false
+			serach_result = search
+			if serach_result.present?
+				l1_name = ''
+				l1_list = ''
+				serach_result.each do |result|
+				  	if l1_name != result['l1_name']
+				  		l1_name = result['l1_name']
+				  		l1_list += result['l1_id'].to_s+'_' 
+				  	end	
+			  	end
+			  	@report_l1s = L1.where(id: [l1_list])
+			end
+		end
 
 		
 	end

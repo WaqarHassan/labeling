@@ -55,27 +55,45 @@ class ReportsController < ApplicationController
 							end	
 					end
 				end	
-
 			end
 		end
 	end
 
 	def handoff
+		@task_confirmation = true
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
 		if request.post?
+			@filter_stations = '1,7,5,17,19'
+			@filtered_station_steps = StationStep.where("id in (#{@filter_stations})").order(:sequence)
 			@entir_history = []
 			@task_confirmation = false
 			@l1s_name = []
 			serach_result = search
 			if serach_result.present?
+				l2_name = ''
 				l1_name = ''
 				l1_list = ''
+				@l2_list = ''
+				@l3_list = ''
 				serach_result.each do |result|
 				  	if l1_name != result['l1_name']
 				  		l1_name = result['l1_name']
 				  		l1_list += result['l1_id'].to_s+'_' 
+				  	end
+
+				  	if l2_name != result['l2_name'] && result['l2_id'].presence
+				  		l2_name = result['l2_name']
+				  		@l2_list += result['l2_id'].to_s+'_' 
+				  	end	
+
+				  	if result['l3_id'].presence
+				  		@l3_list += result['l3_id'].to_s+'_' 
 				  	end	
 			  	end
+
+			  	l1_list = l1_list.split('_')
+				@l2_list = @l2_list.split('_')
+			    @l3_list = @l3_list.split('_')
 				@report_l1s = L1.where(id: [l1_list])
 			end
 		end

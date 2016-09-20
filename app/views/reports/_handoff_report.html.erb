@@ -53,7 +53,7 @@
               </tr>
             <% end %>
 
-        <% l1.l2s.where(id: [@l2_list]).each do |l2| %>
+        <% l1.l2s.each do |l2| %>
           <% l2.timestamp_logs.each do |l2_timestamp_log| %>
             <tr>
               <td></td>
@@ -75,7 +75,7 @@
             </tr>
           <% end %>  
 
-        <% l2.l3s.where(id: [@l3_list]).each do |l3| %>
+        <% l2.l3s.each do |l3| %>
           <% l3.timestamp_logs.each do |l3_timestamp_log| %>
             <tr>
               <td></td>
@@ -112,5 +112,4 @@
     .container{
         background-color: #fff;    
     }
-  </style>  
-
+  </style>

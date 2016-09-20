@@ -1,6 +1,5 @@
 <div class="report-data" id ="report_data">
   <table class="table table-bordered">
-  <% if @task_confirmation.present? %> 
     <thead>
       <tr>
         <th><%= @workflow.L1 %></th>
@@ -15,11 +14,29 @@
       </tr>
     </thead>
 
-    <tbody>
+  <tbody>
       <% @report_l1s.each do |l1| %>
+        <tr>
+          <td>
+            <%= link_to l1.name, open_info_modal_l1_path(l1.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+            <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+              <%= hidden_field_tag 'object_type', 'L1' %>
+              <%= hidden_field_tag 'object_id', l1.id %>
+              <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                  <span class="glyphicon glyphicon-new-window"></span>
+              <% end %>
+            <% end %>
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
 
-        <% l1.l2s.each do |l2| %>
-          <% l2.timestamp_logs.each do |l2_timestamp_log| %>
+        <% l1.l2s.where(id: [@l2_list]).each do |l2| %>
             <tr>
               <td></td>
               <td>
@@ -33,45 +50,51 @@
                 <% end %>
               </td>
               <td></td>
-              <td><%= l2_timestamp_log.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") %></td>
-              <td><%= l2_timestamp_log.workflow_live_step.station_step.step_name %></td>
-              <td><%= l2_timestamp_log.workflow_live_step.station_step.workflow_station.station_name %></td>
-              <td><%= l2.num_component %></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
             </tr>
-          <% end %>  
-
-        <% l2.l3s.each do |l3| %>
-          <% l3.timestamp_logs.each do |l3_timestamp_log| %>
-            <tr>
-              <td></td>
-              <td></td>
-              <td>                  
-                <%= link_to l3.name, open_info_modal_l3_path(l3.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
-                <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+            
+        <% l2.l3s.where(id: [@l3_list]).each do |l3| %>
+          <% wf_live_step = l3.get_farthest_to_the_right_confirmation(l3.id) %>
+              <tr>
+                <td></td>
+                <td></td>
+                <td>                  
+                  <%= link_to l3.name, open_info_modal_l3_path(l3.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                  <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
                   <%= hidden_field_tag 'object_type', 'L3' %>
                   <%= hidden_field_tag 'object_id', l3.id %>
                   <%= button_tag(type: "submit", class: "btn report_main_link") do %>
-                      <span class="glyphicon glyphicon-new-window"></span>
+                    <span class="glyphicon glyphicon-new-window"></span>
+                    <% end %>
                   <% end %>
-                <% end %>
-              </td>
-          
-              <td><%= l3_timestamp_log.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") %></td>
-              <td><%= l3_timestamp_log.workflow_live_step.station_step.step_name %></td>
-              <td><%= l3_timestamp_log.workflow_live_step.station_step.workflow_station.station_name %></td>
-              <td><%= l3.num_component %></td>
-            </tr>
-          <% end %>
-              <% end %>    
+                </td>
+                <td><%= wf_live_step.station_step.workflow_station.station_name %></td>
+                <td><%= wf_live_step.station_step.step_name %></td>
+                
+                <% if wf_live_step.actual_confirmation.present? %>
+                  <td><%= wf_live_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") %></td>
+                  <td></td>
+                <%elsif wf_live_step.eta.present? %>
+                  <td></td>
+                  <td><%= wf_live_step.eta.strftime("%m/%d/%Y %I:%M %p") %></td>
+                <%else%>
+                  <td></td>
+                  <td></td>
+                <%end%>
+
+                <td><%= l3.num_component %></td>
+              </tr>
+          <% end %>    
         <% end %>
 
       <% end %>  
     </tbody>
 
   </table>
-  <%else %>
-    <div class="alert alert-info"> No Task Confirmations found </a>
-  <% end %>
 </div>
 
   <style type="text/css">

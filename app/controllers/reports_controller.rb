@@ -41,6 +41,12 @@ class ReportsController < ApplicationController
 		end
 	end
 
+	def current_status
+		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+
+
+		
+	end
   	private
 
 		def search 

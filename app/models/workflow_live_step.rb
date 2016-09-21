@@ -3,6 +3,21 @@ class WorkflowLiveStep < ActiveRecord::Base
 	belongs_to :station_step
 	has_many :timestamp_logs
 
+    def get_latest_timestamp_log
+    	step_timestamp = ''
+    	timestampLog = self.timestamp_logs.order(id: :desc).first
+    	if timestampLog.present?
+    		step_timestamp = timestampLog.actual_confirmation.strftime("%m/%d/%Y %I:%M %p")
+    	else
+    		if self.eta.present?
+    			step_timestamp = self.eta.strftime("%m/%d/%Y %I:%M %p")
+    			step_timestamp = 'ETA '+step_timestamp
+    		end
+    	end
+
+    	return step_timestamp	
+    end
+
 	class << self
 
 		def get_steps_calculate_eta(workflow_live_step,workflow,current_user)

@@ -63,7 +63,18 @@ class ReportsController < ApplicationController
 		@task_confirmation = true
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
 		if request.post?
-			@filter_stations = '1,7,5,17,19'
+
+			#get filter steps from config
+			@filter_stations = ''
+			workflow_name = @workflow.name.upcase
+			config_filter_steps = FILTERSTEPS['filter_steps'][workflow_name]
+			config_filter_steps.each do |stps|
+				@filter_stations +=  ','+stps['step_id'].to_s
+			end
+			if @filter_stations != ''
+				@filter_stations.slice!(0)
+			end
+
 			@filtered_station_steps = StationStep.where("id in (#{@filter_stations})").order(:sequence)
 			@entir_history = []
 			@task_confirmation = false

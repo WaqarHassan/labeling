@@ -43,7 +43,6 @@ class L2 < ActiveRecord::Base
   		horw_value = horw.value
   	end	
   	return horw_value
-
   end
 
 end

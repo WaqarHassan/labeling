@@ -70,6 +70,16 @@ class L1 < ActiveRecord::Base
     	datetime_formated = datetime_obj.strftime('%Y-%m-%d %H:%M')
     	return datetime_formated
     end
+    def set_db_date_format(date)
+
+      date_value_split = date.split('/')
+      date_value_ordered = date_value_split[2]+'-'+date_value_split[0]+'-'+date_value_split[1]
+
+      date_obj = date_value_ordered.to_datetime
+
+      date_formated = date_obj.strftime('%Y-%m-%d')
+      return date_formated
+    end
 
   end
 

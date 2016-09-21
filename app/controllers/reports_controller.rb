@@ -88,6 +88,10 @@ class ReportsController < ApplicationController
 	end
 	def daily_activity
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+		if request.post?
+			date = L1.set_db_date_format(params[:daily_report_date])
+			@logs = TimestampLog.where("STR_TO_DATE( '#{date}', '%Y-%m-%d') = STR_TO_DATE(created_at, '%Y-%m-%d')")
+		end
 	end
 	def handoff
 		@task_confirmation = true

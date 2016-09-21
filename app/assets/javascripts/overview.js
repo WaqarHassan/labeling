@@ -1,6 +1,5 @@
 
 console.log('main js working........');
-
 function set_partial_merger(){
 	$('#rework_info_reason').removeAttr("required");
 	$('#rework_start_step').removeAttr("required");
@@ -17,10 +16,8 @@ function can_be_full_rework(){
 		dataHTMLREWORK += 'Full Rework is not allowed because it has already open reworks';
 		dataHTMLREWORK += '</div>';
 		$('#full_rework_not_possible').html(dataHTMLREWORK);
-		console.log('not');
 		return false;
 	}else{
-		console.log('yes');
 		return true;
 	}
 }
@@ -70,9 +67,7 @@ function resetSearchResult(){
 
 $(document).ready(function() {
 
-	console.log('inside overview js')
 	if (Cookies.get('project_ia') && Cookies.get('projectform') ){
-		console.log('Cookie present and gonna get them');
 		project_ia_classes = Cookies.get('project_ia'); 	 
 		projectform_classes = Cookies.get('projectform'); 
 		
@@ -92,8 +87,6 @@ $(document).ready(function() {
 				$('#detail_data').width(detail_data);
 
 			}
-
-
 		}
 		else
 		{
@@ -108,17 +101,37 @@ $(document).ready(function() {
 				$('#detail_data').width(detail_data);
 
 			}
-
 		}
 	}
+		var report_data = container_width() - 250 -20 ;
+		$('#report_data').width(report_data);
 });
 
 $(document).ready(function() {
-
+		
+	$('.datepicker_only').datepicker({format: 'mm/dd/yyyy' , autoclose: true });
 	$('.modal-dialog').draggable({
 	    handle: ".modal-header"
 	});
 
 });
+
+function handoff_show_hide()
+{
+     var className = $('#handoff_projectform').attr('class');
+
+      if (className=='handoff-project-data'){
+      	$('#handoff_projectform').addClass('collapsed');
+		$('#handoff_report_data').width('100%');
+	  }else{
+	  	$('#handoff_projectform').removeClass('collapsed'); 
+		var handoff_report_data = $('#handoff_report_data').width() - 250 ;
+		$('#handoff_report_data').width(handoff_report_data);
+	  }
+		// handoff_projectform_class = $('#handoff_projectform').attr('class');	 
+		// handoff_report_data_width = $('#handoff_report_data').width();
+		// Cookies.set('handoff_projectform_class', handoff_projectform_class, { expires: 7 });
+		// Cookies.set('handoff_report_data_width', handoff_report_data_width, { expires: 7 });
+}
 
 

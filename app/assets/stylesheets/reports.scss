@@ -1,0 +1,56 @@
+// Place all the styles related to the reports controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.daily-report-data{width: 100%; }
+.daily-report-data th { font-weight: bold; }
+.daily-report-data td a { color: #337ab7; }
+
+.handoff-report-data { float: left; position: relative; width: 78%; }
+.handoff-project-data { width:250px; float:left; position:relative;}
+.handoff-project-data.collapsed { width:0% ;}
+.handoff-project-data.collapsed .collapsed-icon { background:image-url("col_exp.png") no-repeat; opacity: 0.62;}
+.handoff-project-data .collapsed-icon { background:image-url("col_exp.png") no-repeat; opacity: 0.62;}
+.handoff-project-data.project_ia table { border-right: medium none; table-layout: fixed; }
+.handoff-project-data.project_ia table { border-right: medium none; table-layout: fixed; }
+.handoff-report-data th { font-weight: bold; }
+.handoff-report-data td a { color: #337ab7; }
+.btn.report_main_link, .btn.report_main_link:hover { margin: 0; padding: 0; }
+
+.glyphicon.glyphicon-new-window{ color: #337ab7; }
+
+.link_to_main_page {
+    float: right;
+}
+
+.row.daily_activity_date {
+    margin-bottom: 15px;
+}
+
+.daily-alert-report {
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    color: #31708f;
+    float: right;
+    width: 100%;
+}
+
+.alert-report {
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    color: #31708f;
+    float: right;
+    width: 77%;
+}
+.report_heading h4 {
+    background-color: transparent;
+    border-bottom: medium none;
+    color: rgb(80, 87, 89);
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin: 0;
+    padding: 8px 0 0;
+    text-transform: uppercase;
+    text-align: center
+}

@@ -1,0 +1,107 @@
+<div class="row">
+  <div class="col-lg-12 col-sm-12 report_heading"> 
+    <h4>ENTIRE HISTORY</h4>
+  </div>
+</div>
+<div class='clearfix'></div> 
+<div class='data-main'>
+
+	<div class="handoff-project-data" id="handoff_projectform">
+	 <a href="#" class="collapsed-icon" title="Search form show/hide" onclick="handoff_show_hide(); return false;"></a>
+		<div style="overflow:hidden;">
+			<%= form_tag entire_history_reports_path, remote: true, :id => 'search_form', :class => 'form-horizontal'  do %>
+				<div class="project-form">
+						<div class="project-fields">
+								<div class="row">
+									<div class="col-lg-2"></div>
+									<div class="col-lg-5">
+										Like (wildcard)
+									</div>
+									<div class="col-lg-5">
+										Exact
+									</div>
+								</div>
+						</div>
+						<div class="project-fields">
+								<div class="row">
+									<div class="col-lg-2">
+										BU:
+									</div>
+										<div class="col-lg-5">
+											<input type="text" name="wildcard[business_unit]" class="form-control" 
+											value= <%= @wildcard.present? ? @wildcard['business_unit'] : '' %> >
+										</div>
+										<div class="col-lg-5">
+											<input type="text" name="exact[business_unit]" class="form-control"
+											value= <%= @exact.present? ? @exact['business_unit'] : '' %>  >
+										</div>
+									</div>
+							</div>
+							<div class="project-fields">
+								<div class="row">
+									<div class="col-lg-2">
+										<%= @workflow.L1 %>
+									</div>
+										<div class="col-lg-10">
+												<input type="text" name="wildcard[l1]" class="form-control"
+												value= <%= @wildcard.present? ? @wildcard['l1'] : '' %> >
+											</div>
+									</div>
+							</div>
+							<div class="project-fields">
+								<div class="row">
+									<div class="col-lg-2">
+										<%= @workflow.L2 %>
+									</div>
+										<div class="col-lg-5">
+												<input type="text" name="wildcard[l2]" class="form-control"
+												value= <%= @wildcard.present? ? @wildcard['l2'] : '' %> >
+											</div>
+											<div class="col-lg-5">
+												<input type="text" name="exact[l2]" class="form-control"
+												value= <%= @exact.present? ? @exact['l2'] : '' %> >
+											</div>
+									</div>
+							</div>
+							<div class="project-fields">
+								<div class="row">
+									<div class="col-lg-2">
+										<%= @workflow.L3 %>
+									</div>
+										<div class="col-lg-5">
+												<input type="text" name="wildcard[l3]" class="form-control"
+												value= <%= @wildcard.present? ? @wildcard['l3'] : '' %> >
+											</div>
+											<div class="col-lg-5">
+												<input type="text" name="exact[l3]" class="form-control"
+												value= <%= @exact.present? ? @exact['l3'] : '' %> >
+											</div>
+									</div>
+							</div>
+							<div class="project-fields">
+								<div class="row">
+									<div class="col-lg-2">
+									</div>
+										<div class="col-lg-5">
+												<input type="submit" value="Search" class="btn save-print-update-edit-btn">
+											</div>
+											<div class="col-lg-5">
+												<a href="/overview/clear_search" data-remote="true" 
+												onclick="resetSearchResult();" class="btn btn-danger">Clear</a>
+											</div>
+									</div>
+							</div>
+				</div>
+			<% end %>  
+		</div>
+	</div>
+
+	<div id="report_search_result_div">
+		<div class="alert alert-report"> Do serach to view your report! </div>
+	</div> 
+</div>
+  <style type="text/css">
+    .container{
+        background-color: #fff;    
+    }
+  </style>		

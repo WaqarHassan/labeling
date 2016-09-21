@@ -6,6 +6,7 @@ class L1 < ActiveRecord::Base
   has_many :workflow_live_steps, as: :object
   has_many :attribute_values, as: :object
   has_many :additional_info, as: :object
+  has_many :timestamp_logs, -> { order 'actual_confirmation desc' }, through: :workflow_live_steps
   validates :name, uniqueness: true
   #validate :uniqueness_of_name
   #validates :name, uniqueness: {:message => "must be unique!" }
@@ -15,6 +16,41 @@ class L1 < ActiveRecord::Base
    unless existing_record.nil?
      errors.add(:name, "Record #{existing_record.id} already has the name #{name}")
    end
+  end
+
+  def get_searched_l2_objects(l2_list)
+    L2.where(id: [l2_list], l1_id: self.id)
+  end
+  
+  def get_workflow_live_steps(filter_stations)
+    self.workflow_live_steps.where("station_step_id in (#{filter_stations})")
+  end
+
+  def get_num_lang
+    num_lang_value = ''
+    num_lang = self.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
+    if num_lang.present?
+      num_lang_value = num_lang.value
+    end 
+    return num_lang_value
+  end
+
+  def get_comp_type
+    comp_type_value = ''
+    comp_type = self.attribute_values.joins(:label_attribute).where("label_attributes.short_label like '%Comp Type%'").first
+    if comp_type.present?
+      comp_type_value = comp_type.value
+    end 
+    return comp_type_value
+  end
+
+  def get_horw
+    horw_value = ''
+    horw = self.attribute_values.joins(:label_attribute).where("label_attributes.short_label='Horw'").first
+    if horw.present?
+      horw_value = horw.value
+    end 
+    return horw_value
   end
 
   class << self
@@ -33,6 +69,16 @@ class L1 < ActiveRecord::Base
 
     	datetime_formated = datetime_obj.strftime('%Y-%m-%d %H:%M')
     	return datetime_formated
+    end
+    def set_db_date_format(date)
+
+      date_value_split = date.split('/')
+      date_value_ordered = date_value_split[2]+'-'+date_value_split[0]+'-'+date_value_split[1]
+
+      date_obj = date_value_ordered.to_datetime
+
+      date_formated = date_obj.strftime('%Y-%m-%d')
+      return date_formated
     end
 
   end

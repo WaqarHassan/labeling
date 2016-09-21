@@ -1,0 +1,80 @@
+<% if @logs.present? %>
+  <div class="daily-report-data" id ="handoffreportdata">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th><%= @workflow.L1 %></th>
+          <th><%= @workflow.L2 %></th>
+          <th><%= @workflow.L3 %></th>
+          
+          <th>Updated On</th>
+          <th>Updated By</th>
+          <th>Timestamp</th>
+          <th>Station</th>
+          <th>Step</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @logs.each do |log| %>
+          <tr>
+            <%if log.workflow_live_step.object_type == "L1"%>
+              <td>
+                <%= link_to log.workflow_live_step.object.name, open_info_modal_l1_path(log.workflow_live_step.object.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                  <%= hidden_field_tag 'object_type', 'L1' %>
+                  <%= hidden_field_tag 'object_id', log.workflow_live_step.object.id %>
+                  <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                  <span class="glyphicon glyphicon-new-window"></span>
+                  <% end %>
+                <% end %>
+              </td>
+              <td></td>
+              <td></td>
+            <%elsif log.workflow_live_step.object_type == "L2"%>
+              <td></td>
+              <td>                  
+               <%= link_to log.workflow_live_step.object.name, open_info_modal_l2_path(log.workflow_live_step.object.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                  <%= hidden_field_tag 'object_type', 'L2' %>
+                  <%= hidden_field_tag 'object_id', log.workflow_live_step.object.id %>
+                  <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                      <span class="glyphicon glyphicon-new-window"></span>
+                  <% end %>
+                <% end %>
+              </td>
+              <td></td>
+            <%elsif log.workflow_live_step.object_type == "L3"%>
+              <td></td>
+              <td></td>
+              <td>                  
+                <%= link_to log.workflow_live_step.object.name, open_info_modal_l3_path(log.workflow_live_step.object.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                  <%= hidden_field_tag 'object_type', 'L3' %>
+                  <%= hidden_field_tag 'object_id', log.workflow_live_step.object.id %>
+                  <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                      <span class="glyphicon glyphicon-new-window"></span>
+                  <% end %>
+                <% end %>
+              </td>
+            <%end%>
+            <td><%=log.updated_at.strftime("%m/%d/%Y %I:%M %p")%></td>
+            <td><%=log.user.first_name%></td>
+            <td><%=log.actual_confirmation.strftime("%m/%d/%Y %I:%M %p")%></td>
+            <td><%=log.workflow_live_step.station_step.workflow_station.station_name%></td>
+            <td><%=log.workflow_live_step.station_step.step_name%></td>
+          </tr>
+        <%end%>      
+      </tbody>
+
+    </table>
+  </div>
+<% else %>
+  <div class="alert alert-info"> No Result Found! </a>
+<% end %>
+  <style type="text/css">
+    .container{
+        background-color: #fff;    
+    }
+  </style>  
+

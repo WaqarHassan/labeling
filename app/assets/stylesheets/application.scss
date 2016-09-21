@@ -17,6 +17,7 @@
 @import "bootstrap-datetimepicker";
 @import "lb_style.scss";
 @import "datepicker";
+@import "reports";
 
 // Plugins
 @import 'nprogress';
@@ -540,4 +541,8 @@ label.string, label.integer {
 
 .col-lg-6 > a {
     text-decoration: none;
+}
+.center {
+    margin: auto;
+    width: 13%;
 }

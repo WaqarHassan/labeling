@@ -1,6 +1,5 @@
 if (window.jQuery) {  
 	$(document).ready(function() {
-		console.log('inside labeling_Cookie.js')
 		if (Cookies.get('project_ia') && Cookies.get('projectform') ){
 			console.log('Cookie present and gonna get them');
 			project_ia_classes = Cookies.get('project_ia'); 	 
@@ -15,7 +14,6 @@ if (window.jQuery) {
 		}
 		else
 		{
-			console.log('Cookie not present');
 			var detail_data = container_width() - 250 - 300 - 600 ;
 			console.log('detail_data width = '+detail_data);
 			$('#detail_data').width(detail_data);
@@ -27,7 +25,6 @@ function container_width(){
 }
 function overview_serach_box()
 {
-	console.log('inside overview_serach_box');
 	 var labelsClassName = $('.project_ia').attr('class');	
      var className = $('#projectform').attr('class');
 
@@ -53,17 +50,14 @@ function overview_serach_box()
 		var detail_data = container_width() - 250 - 300 - 600 ;
 		$('#detail_data').width(detail_data);
 	  }
-	  console.log('=>gonna set Cookies');
 		project_ia_classes = $('#project_ia').attr('class');	 
 		projectform_classes = $('#projectform').attr('class');
 
 		Cookies.set('project_ia', project_ia_classes, { expires: 7 });
 		Cookies.set('projectform', projectform_classes, { expires: 7 });
-		console.log('===>Cookies are set');	  
 }
 function adjust(){
 
-	console.log('Inside Adjust');
 	if($('#projectform').hasClass('collapsed'))
 	{
 		if($('#project_ia').hasClass('collapsed'))
@@ -95,7 +89,6 @@ function adjust(){
 }
 function label_attributes_box()
 {
-	console.log('inside label_attributes_box');
 	 var searchclassName = $('#projectform').attr('class');	
      var className = $('.project_ia').attr('class');
 
@@ -132,11 +125,9 @@ function label_attributes_box()
 		$('#detail_data').width(detail_data);
 
 	  }
-	  console.log('=>gonna set Cookies');
 	project_ia_classes = $('#project_ia').attr('class');	 
 	projectform_classes = $('#projectform').attr('class');
 
 	Cookies.set('project_ia', project_ia_classes, { expires: 7 });
-	Cookies.set('projectform', projectform_classes, { expires: 7 });
-	console.log('======>cookies are set');  	 
+	Cookies.set('projectform', projectform_classes, { expires: 7 });	 
 }

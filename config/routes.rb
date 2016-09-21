@@ -49,11 +49,23 @@ Rails.application.routes.draw do
     resources :authentications, path: 'accounts'
   end
 
-  get '/overview/open_info_modal_l1/:l1_id' => 'overview#open_info_modal_l1', as: 'open_info_modal_l1'
-  
-  get '/overview/open_info_modal_l2/:l2_id' => 'overview#open_info_modal_l2', as: 'open_info_modal_l2'
+  resources :reports, only: :index do
+    collection do
+      match 'entire-history', via: [:get, :post]
 
-  get '/overview/open_info_modal_l3/:l3_id' => 'overview#open_info_modal_l3', as: 'open_info_modal_l3'
+      match 'current-status', via: [:get, :post]
+
+      match 'handoff', via: [:get, :post]
+      match 'daily-activity', via: [:get, :post]
+    end
+  end
+
+
+  get '/overview/open_info_modal_l1/:l1_id(/:report_info)' => 'overview#open_info_modal_l1', as: 'open_info_modal_l1'
+  
+  get '/overview/open_info_modal_l2/:l2_id(/:report_info)' => 'overview#open_info_modal_l2', as: 'open_info_modal_l2'
+
+  get '/overview/open_info_modal_l3/:l3_id(/:report_info)' => 'overview#open_info_modal_l3', as: 'open_info_modal_l3'
   
   get '/overview/open_rework_modal(/:wf_step_id)(/:l2_id)' => 'overview#open_rework_modal', as: 'open_rework_modal'
   get '/overview/open_confirm_modal(/:wf_step_id)' => 'overview#open_confirm_modal', as: 'open_confirm_modal'
@@ -61,8 +73,6 @@ Rails.application.routes.draw do
   get '/overview/add_project_modal' => 'overview#add_project_modal', as: 'add_project_modal' 
   get '/overview/add_ecr_modal/:id' => 'overview#add_ecr_modal', as: 'add_ecr_modal'
   get '/overview/add_ia_list_modal' => 'overview#add_ia_list_modal', as: 'add_ia_list_modal'
-
-  #get '/overview/l1_status_popup/:id' => 'overview#l1_status_popup', as: 'l1_status_popup'
 
   get '/overview/update_workflow_status/:workflow_id' => 'overview#update_workflow_status', as: 'update_workflow_status'
   get '/overview/project_deatils_l1/:l1_id' => 'overview#project_deatils_l1', as: 'project_deatils_l1'
@@ -78,6 +88,7 @@ Rails.application.routes.draw do
   get '/overview/update_workflow/:object_type/:object_id' => 'overview#update_workflow', as: 'update_workflow'
   post '/overview/workflow_update' => 'overview#workflow_update', as: 'workflow_update'
   get '/overview/merge_back/:wls_id' => 'overview#merge_back', as:'merge_back'
+  post '/overview' => 'overview#index', as:'reports_to_overview'
 
  
   post '/overview/update_task_confirmation' =>  'overview#update_task_confirmation', as: 'update_task_confirmation'

@@ -65,4 +65,5 @@ module Labeling
   end
 end
 
+FILTERSTEPS = YAML.load_file("config/handoff_report.yml")
 require File.expand_path('../settings', __FILE__)

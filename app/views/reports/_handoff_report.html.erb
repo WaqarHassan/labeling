@@ -1,4 +1,4 @@
-<div class="report-data" id ="report_data">
+<div class="handoff-report-data" id ="handoff_report_data">
   <% if @report_l1s.present? %>
     <table class="table table-bordered">
       <thead>
@@ -7,7 +7,7 @@
           <th><%= @workflow.L2 %></th>
           <th><%= @workflow.L3 %></th>
           <% @filtered_station_steps.each do |station_step| %>
-            <th style="width: 85px;" ><%= station_step.step_name %></th>
+            <th style="width: 110px;" ><%= station_step.step_name %></th>
           <% end %>
           <th>#Comp</th>
           <th>Comp. Type</th>
@@ -128,3 +128,5 @@
         background-color: #fff;    
     }
   </style>
+
+  <%= javascript_include_tag "reports" %>   

@@ -1,4 +1,4 @@
-<div class="report-data" id ="report_data">
+<div class="handoff-report-data" id ="handoff_report_data">
   <table class="table table-bordered">
   <% if @task_confirmation.present? %> 
     <thead>
@@ -112,5 +112,7 @@
     .container{
         background-color: #fff;    
     }
-  </style>  
+  </style> 
+
+  <%= javascript_include_tag "reports" %>    
 

@@ -1,8 +1,14 @@
+<div class="row">
+  <div class="col-lg-12 col-sm-12 report_heading"> 
+    <h4>CURRENT STATUS</h4>
+  </div>
+</div>
+
 <div class='clearfix'></div> 
 <div class='data-main'>
 
-	<div class="project-data" id="projectform">
-	 <a href="#" class="collapsed-icon" title="Search form show/hide" onclick="overview_serach_box(); return false;"></a>
+	<div class="handoff-project-data" id="handoff_projectform">
+	 <a href="#" class="collapsed-icon" title="Search form show/hide" onclick="handoff_show_hide(); return false;"></a>
 		<div style="overflow:hidden;">
 			<%= form_tag current_status_reports_path, remote: true, :id => 'search_form', :class => 'form-horizontal'  do %>
 				<div class="project-form">

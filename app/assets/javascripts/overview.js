@@ -119,7 +119,8 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-
+	
+	$('.datepicker_only').datepicker({format: 'mm/dd/yyyy' , autoclose: true });
 	$('.modal-dialog').draggable({
 	    handle: ".modal-header"
 	});

@@ -7,6 +7,18 @@ class L3 < ActiveRecord::Base
 	has_many :additional_info, as: :object
 	has_many :timestamp_logs, through: :workflow_live_steps
 
+	def get_farthest_to_the_right_confirmation(l3_id)
+
+		wf_live_step = L3.find_by_id(l3_id).workflow_live_steps.where.not( actual_confirmation: nil).order('id DESC').first
+
+			if !wf_live_step.present?
+				wf_live_step = L3.find_by_id(l3_id).workflow_live_steps.first
+
+			end
+					
+			return wf_live_step
+	end
+
   def get_workflow_live_steps(filter_stations)
     self.workflow_live_steps.where("station_step_id in (#{filter_stations})")
   end
@@ -37,6 +49,5 @@ class L3 < ActiveRecord::Base
   	end	
   	return horw_value
   end
-
 
 end

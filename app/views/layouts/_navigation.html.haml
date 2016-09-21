@@ -16,7 +16,11 @@
           %b.caret
         %ul.dropdown-menu.setting_menu
           %li= link_to 'ENTIRE HISTORY ', entire_history_reports_path, :class => 'add_links'
+          %li= link_to 'CURRENT STATUS ', current_status_reports_path, :class => 'add_links'
           %li= link_to 'HANDOFF ', handoff_reports_path, :class => 'add_links'
+          %li= link_to 'DAILY ACTIVITY ', daily_activity_reports_path, :class => 'add_links'
+
+
 
       %li.dropdown
         %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}

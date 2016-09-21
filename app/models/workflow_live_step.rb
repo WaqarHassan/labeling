@@ -81,14 +81,16 @@ class WorkflowLiveStep < ActiveRecord::Base
 		def calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
 	      live_steps_qry_result.each do |lsr|
 	      	wls = WorkflowLiveStep.find_by_id(lsr["id"])
-	      	if wls.object_type == 'L3'
-	      		if wls.object.is_closed?
-	      		else
+	      	if wls.object.present?
+		      	if wls.object_type == 'L3'
+		      		if wls.object.is_closed?
+		      		else
+		      			do_calculate_eta(wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
+		      		end
+		      	else
 	      			do_calculate_eta(wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
-	      		end
-	      	else
-      			do_calculate_eta(wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
-	      	end	
+		      	end	
+		    end 	
 	      end
     	end
 

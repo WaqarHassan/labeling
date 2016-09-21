@@ -7,22 +7,29 @@
 <div class='clearfix'></div> 
 <div class='data-main'>
 
-	<div class="form-group">
-         <div class="col-lg-5 pull-left">
-           <input type="text" class="datepicker_only form-control" id="datetimepicker_now" name="additional_info[info_timestamp]" required="" value="Please Select Date"  aria-required="true">
-         </div>
-         <div class="col-lg-3 pull-left">
-          <button class="btn btn-primary pull-left" >Search</button>
-         </div>
-         
-     </div>
-
-	<div id="daily_activity_report_search_result_div">
-		<div class="alert alert-report"> Do serach to view your report! </div>
-	</div> 
+  <%= form_tag daily_activity_reports_path, remote: true, :id => 'search_form', :class => 'form-horizontal'  do %>
+    <div class="row">
+      <div class="col-lg-3"></div>
+      <div class="col-lg-3">
+        <input type="text" class="datepicker_only form-control" id="datepicker_now" name = "daily_report_date" placeholder="Please Select Date"  aria-required="true">
+      </div>
+      <div class="col-lg-3">
+        <button type="submit" class="btn btn-primary">Select</button>
+      </div>
+      <div class="col-lg-3"></div>
+    </div>
+  <%end%>
+    <div id="daily_activity_report_search_result_div">
+		 <!--  <div class="alert alert-report"> Do serach to view your report! </div> -->
+    </div> 
 </div>
   <style type="text/css">
     .container{
         background-color: #fff;    
     }
   </style>		
+  <script type="text/javascript">
+      $('.datepicker_only').datepicker({format: 'mm/dd/yyyy' , autoclose: true });
+
+
+  </script>

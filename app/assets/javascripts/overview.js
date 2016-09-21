@@ -1,6 +1,5 @@
 
 console.log('main js working........');
-
 function set_partial_merger(){
 	$('#rework_info_reason').removeAttr("required");
 	$('#rework_start_step').removeAttr("required");
@@ -109,7 +108,7 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-	
+		
 	$('.datepicker_only').datepicker({format: 'mm/dd/yyyy' , autoclose: true });
 	$('.modal-dialog').draggable({
 	    handle: ".modal-header"

@@ -214,7 +214,7 @@ class OverviewController < ApplicationController
 
       if params[:report_info].present? and params[:report_info] == 'report_info'
         respond_to do |format|
-          format.json { render json: {status: 'success', message: 'Note added successfully'}, status: 200 }
+          format.json { render json: {status: 'success', message: 'Note added successfully', report_info: 'report_info'}, status: 200 }
         end
       else
         redirect_to root_path, notice: 'Additional Info was successfully created.'

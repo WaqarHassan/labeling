@@ -2,6 +2,10 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.daily-report-data{width: 100%; }
+.daily-report-data th { font-weight: bold; }
+.daily-report-data td a { color: #337ab7; }
+
 .handoff-report-data { float: left; position: relative; width: 78%; }
 .handoff-project-data { width:250px; float:left; position:relative;}
 .handoff-project-data.collapsed { width:0% ;}
@@ -17,6 +21,18 @@
 
 .link_to_main_page {
     float: right;
+}
+
+.row.daily_activity_date {
+    margin-bottom: 15px;
+}
+
+.daily-alert-report {
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    color: #31708f;
+    float: right;
+    width: 100%;
 }
 
 .alert-report {

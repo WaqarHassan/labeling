@@ -51,12 +51,12 @@ Rails.application.routes.draw do
 
   resources :reports, only: :index do
     collection do
-      match 'entire_history', via: [:get, :post]
+      match 'entire-history', via: [:get, :post]
 
-      match 'current_status', via: [:get, :post]
+      match 'current-status', via: [:get, :post]
 
       match 'handoff', via: [:get, :post]
-      match 'daily_activity', via: [:get, :post]
+      match 'daily-activity', via: [:get, :post]
     end
   end
 

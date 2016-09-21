@@ -58,7 +58,7 @@
             </tr>
             
         <% l2.l3s.where(id: [@l3_list]).each do |l3| %>
-          <% wf_live_step = l3.get_farthest_to_the_right_confirmation(l3.id) %>
+          <% wf_live_step = l3.get_farthest_to_the_right_confirmation %>
               <tr>
                 <td></td>
                 <td></td>
@@ -84,7 +84,7 @@
                 <%else%>
                   <td></td>
                   <td></td>
-                <%end%>
+                <%end%> 
 
                 <td><%= l3.num_component %></td>
               </tr>

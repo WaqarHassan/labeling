@@ -1,24 +1,29 @@
 <div class="report-data" id ="report_data">
   <table class="table table-bordered">
-  <% if @task_confirmation.present? %> 
+  <% # if @task_confirmation.present? %> 
     <thead>
       <tr>
         <th><%= @workflow.L1 %></th>
         <th><%= @workflow.L2 %></th>
         <th><%= @workflow.L3 %></th>
-        <th>DATE</th>
-        <th>Station</th>
-        <th>Step</th>
+        <% @filtered_station_steps.each do |station_step| %>
+          <th><%= station_step.step_name %></th>
+        <% end %>
         <th>#Comp</th>
+        <th>Comp. Type</th>
+        <th>BU</th>
+        <th>#Lang</th>
+        <th>Status</th>
+        <th>Horw</th>
       </tr>
     </thead>
 
     <tbody>
       <% @report_l1s.each do |l1| %>
 
-          <% l1_timestamp_logs = l1.timestamp_logs
-            if l1_timestamp_logs.present?
-              l1_timestamp_logs.each do |l1_timestamp_log| %>
+          <% filtered_l1_live_stpes = l1.get_workflow_live_steps(@filter_stations)
+            if filtered_l1_live_stpes.present?
+              filtered_l1_live_stpes.each do |filtered_l1_live_stp| %>
                 <tr>
                   <td>
                     <%= link_to l1.name, open_info_modal_l1_path(l1.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
@@ -26,10 +31,17 @@
                   </td>
                   <td></td>
                   <td></td>
-                  <td><%= l1_timestamp_log.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") %></td>
-                  <td><%= l1_timestamp_log.workflow_live_step.station_step.step_name %></td>
-                  <td><%= l1_timestamp_log.workflow_live_step.station_step.workflow_station.station_name %></td>
+                  <td><%= filtered_l1_live_stp.actual_confirmation %></td>
+                  <td><%= filtered_l1_live_stp.station_step.step_name %></td>
+                  <td><%= filtered_l1_live_stp.station_step.workflow_station.station_name %></td>
                   <td><%= l1.num_component %></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                 </tr>
               <% end %>  
             <% else %>
@@ -50,11 +62,18 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
               </tr>
             <% end %>
 
-        <% l1.l2s.each do |l2| %>
-          <% l2.timestamp_logs.each do |l2_timestamp_log| %>
+        <% l1.get_searched_l2_objects(@l2_list).each do |l2| %>
+          <% filtered_l2_live_stpes = l2.get_workflow_live_steps(@filter_stations) %>
             <tr>
               <td></td>
               <td>
@@ -68,15 +87,25 @@
                 <% end %>
               </td>
               <td></td>
-              <td><%= l2_timestamp_log.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") %></td>
-              <td><%= l2_timestamp_log.workflow_live_step.station_step.step_name %></td>
-              <td><%= l2_timestamp_log.workflow_live_step.station_step.workflow_station.station_name %></td>
-              <td><%= l2.num_component %></td>
+              <% @filtered_station_steps.each do |station_step| 
+                workflow_live_step = filtered_l2_live_stpes.find{|wkls| wkls.station_step_id == station_step.id }
+                %>
+                <td>
+                  <% if workflow_live_step.present? %>
+                    <%=workflow_live_step.eta%>
+                  <% end %>
+                </td>
+              <% end %>
+              <td><%=l2.num_component%></td>
+              <td><%= l2.get_comp_type %></td>
+              <td><%=l2.business_unit%></td>
+              <td><%= l2.get_num_lang %></td>
+              <td><%=l2.status%></td>
+              <td><%= l2.get_horw %></td>
             </tr>
-          <% end %>  
 
-        <% l2.l3s.each do |l3| %>
-          <% l3.timestamp_logs.each do |l3_timestamp_log| %>
+        <% l2.get_searched_l3_objects(@l3_list).each do |l3| %>
+          <% filtered_l3_live_stpes = l3.get_workflow_live_steps(@filter_stations) %>
             <tr>
               <td></td>
               <td></td>
@@ -90,22 +119,32 @@
                   <% end %>
                 <% end %>
               </td>
-              <td><%= l3_timestamp_log.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") %></td>
-              <td><%= l3_timestamp_log.workflow_live_step.station_step.step_name %></td>
-              <td><%= l3_timestamp_log.workflow_live_step.station_step.workflow_station.station_name %></td>
-              <td><%= l3.num_component %></td>
+              <% @filtered_station_steps.each do |station_step| 
+                workflow_live_step = filtered_l3_live_stpes.find{|wkls| wkls.station_step_id == station_step.id }
+                %>
+                <td>
+                  <% if workflow_live_step.present? %>
+                    <%=workflow_live_step.eta%>
+                  <% end %>
+                </td>
+              <% end %>
+              <td><%= l3.num_component%></td>
+              <td><%= l3.get_comp_type %></td>
+              <td><%= l3.business_unit%></td>
+              <td><%= l3.get_num_lang %></td>
+              <td><%= l3.status%></td>
+              <td><%= l3.get_horw %></td>
             </tr>
-          <% end %>
-              <% end %>    
+          <% end %> 
         <% end %>
 
       <% end %>  
     </tbody>
 
   </table>
-  <%else %>
+  <% #else %>
     <div class="alert alert-info"> No Task Confirmations found </a>
-  <% end %>
+  <% # end %>
 </div>
 
   <style type="text/css">

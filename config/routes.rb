@@ -56,6 +56,7 @@ Rails.application.routes.draw do
       match 'current_status', via: [:get, :post]
 
       match 'handoff', via: [:get, :post]
+      match 'daily_activity', via: [:get, :post]
     end
   end
 

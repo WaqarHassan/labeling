@@ -86,7 +86,9 @@ class ReportsController < ApplicationController
 				@report_l1s = L1.where(id: [l1_list])
 			end
 		end
-
+	end
+	def daily_activity
+		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
 	end
 	def handoff
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)

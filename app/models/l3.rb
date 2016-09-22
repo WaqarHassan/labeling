@@ -12,7 +12,7 @@ class L3 < ActiveRecord::Base
 		wf_live_step = self.workflow_live_steps.where.not( actual_confirmation: nil).order('workflow_live_steps.id DESC').first
 
 			if !wf_live_step.present?
-				wf_live_step = L3.find_by_id(l3_id).workflow_live_steps.first
+				wf_live_step = self.workflow_live_steps.first
 
 			end
 					

@@ -54,3 +54,12 @@
     text-transform: uppercase;
     text-align: center
 }
+.table.dataTable thead th, table.dataTable thead td {
+     border-bottom: 1px none !important;
+}
+.table.dataTable.no-footer{
+    border-bottom: 1px solid #eee !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0 !important;
+}

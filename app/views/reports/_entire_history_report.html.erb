@@ -1,5 +1,5 @@
 <div class="handoff-report-data" id ="handoff_report_data">
-  <table class="table table-bordered">
+  <table id = "entire_history_report" class="table table-bordered">
   <% if @task_confirmation.present? %> 
     <thead>
       <tr>
@@ -56,7 +56,7 @@
         <% l1.get_searched_l2_objects(@l2_list).each do |l2| %>
           <% l2.timestamp_logs.each do |l2_timestamp_log| %>
             <tr>
-              <td></td>
+              <td><%=l1.name%></td>
               <td>
                 <%= link_to l2.name, open_info_modal_l2_path(l2.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
                 <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
@@ -78,8 +78,8 @@
         <% l2.get_searched_l3_objects(@l3_list).each do |l3| %>
           <% l3.timestamp_logs.each do |l3_timestamp_log| %>
             <tr>
-              <td></td>
-              <td></td>
+              <td><%=l1.name%></td>
+              <td><%=l2.name%></td>
               <td>                  
                 <%= link_to l3.name, open_info_modal_l3_path(l3.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
                 <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>

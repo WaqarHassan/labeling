@@ -76,11 +76,11 @@
                 <td><%= wf_live_step.station_step.step_name %></td>
                 
                 <% if wf_live_step.actual_confirmation.present? %>
-                  <td><%= wf_live_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") %></td>
+                  <td><%= wf_live_step.actual_confirmation.strftime("%m/%d/%y %I:%M %p") %></td>
                   <td></td>
                 <%elsif wf_live_step.eta.present? %>
                   <td></td>
-                  <td><%= wf_live_step.eta.strftime("%m/%d/%Y %I:%M %p") %></td>
+                  <td><%= wf_live_step.eta.strftime("%m/%d/%y %I:%M %p") %></td>
                 <%else%>
                   <td></td>
                   <td></td>

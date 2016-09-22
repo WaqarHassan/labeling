@@ -7,6 +7,7 @@ class WorkFlow < ActiveRecord::Base
 	has_many :additional_infos
 	has_many :holidays
 	has_many :reason_codes
+	has_many :report_filter_steps
 
 		class << self
 			

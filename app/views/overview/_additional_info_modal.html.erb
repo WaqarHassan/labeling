@@ -112,9 +112,9 @@
                 %>
 
                   <% if add_info.status.present? %>
-                    <%= add_info.status+" by "+user_name+" on "+creation_time.strftime("%m/%d/%Y %I:%M %p")  %>
+                    <%= add_info.status+" by "+user_name+" on "+creation_time.strftime("%m/%d/%y %I:%M %p")  %>
                   <% else %> 
-                    <%= "By "+user_name+" on "+creation_time.strftime("%m/%d/%Y %I:%M %p")  %>
+                    <%= "By "+user_name+" on "+creation_time.strftime("%m/%d/%y %I:%M %p")  %>
                   <% end %> 
                     <br>
                   <% if add_info.workflow_station.present? %>

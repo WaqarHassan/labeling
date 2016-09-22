@@ -2,6 +2,7 @@ class StationStep < ActiveRecord::Base
 	belongs_to :workflow_station
 	has_many :workflow_live_stations
 	has_many :transitions
+	has_many :report_filter_steps
 
 	def calculate_step_completion(live_step, actual_confirmation, level_object, lang_attribute_value, hours_per_workday)
 		duration_days = self.duration_days

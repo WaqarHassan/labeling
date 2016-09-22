@@ -6,8 +6,8 @@
           <th><%= @workflow.L1 %></th>
           <th><%= @workflow.L2 %></th>
           <th><%= @workflow.L3 %></th>
-          <% @filtered_station_steps.each do |station_step| %>
-            <th style="width: 110px;" ><%= station_step.step_name %></th>
+          <% @filtered_station_steps.each do |filtered_station_step| %>
+            <th style="width: 110px;" ><%= filtered_station_step.station_step.workflow_station.station_name %> - <%= filtered_station_step.station_step.step_name %></th>
           <% end %>
           <th>#Comp</th>
           <th>Comp. Type</th>
@@ -21,7 +21,7 @@
       <tbody>
         <% @report_l1s.each do |l1| %>
 
-            <% filtered_l1_live_stpes = l1.get_workflow_live_steps(@filter_stations) %>
+            <% filtered_l1_live_stpes = l1.get_workflow_live_steps(@filtered_steps) %>
                 <tr>
                   <td>
                     <%= link_to l1.name, open_info_modal_l1_path(l1.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
@@ -35,13 +35,13 @@
                   </td>
                   <td></td>
                   <td></td>
-                  <% @filtered_station_steps.each do |station_step| 
-                    workflow_live_step = filtered_l1_live_stpes.find{|wkls| wkls.station_step_id == station_step.id }
-                    step_timestamp = ''
+                  <% @filtered_station_steps.each do |filtered_station_step| 
+                    workflow_live_step = filtered_l1_live_stpes.find{|wkls| wkls.station_step_id == filtered_station_step.station_step_id }
+                    step_timestamp = ['','']
                     if workflow_live_step.present?
                       step_timestamp = workflow_live_step.get_latest_timestamp_log
                     end %>
-                    <td><%=step_timestamp%></td>
+                    <td class="<%=step_timestamp[1]%>" ><%=step_timestamp[0]%></td>
                   <% end %>
                   <td><%= l1.num_component%></td>
                   <td><%= l1.get_comp_type %></td>
@@ -52,7 +52,7 @@
                 </tr>
 
           <% l1.get_searched_l2_objects(@l2_list).each do |l2| %>
-            <% filtered_l2_live_stpes = l2.get_workflow_live_steps(@filter_stations) %>
+            <% filtered_l2_live_stpes = l2.get_workflow_live_steps(@filtered_steps) %>
               <tr>
                 <td></td>
                 <td>
@@ -66,13 +66,13 @@
                   <% end %>
                 </td>
                 <td></td>
-                <% @filtered_station_steps.each do |station_step| 
-                  workflow_live_step = filtered_l2_live_stpes.find{|wkls| wkls.station_step_id == station_step.id }
-                  step_timestamp = ''
+                <% @filtered_station_steps.each do |filtered_station_step| 
+                  workflow_live_step = filtered_l2_live_stpes.find{|wkls| wkls.station_step_id == filtered_station_step.station_step_id }
+                  step_timestamp = ['','']
                   if workflow_live_step.present?
                     step_timestamp = workflow_live_step.get_latest_timestamp_log
                   end %>
-                  <td><%=step_timestamp%></td>
+                  <td class="<%=step_timestamp[1]%>" ><%=step_timestamp[0]%></td>
                 <% end %>
                 <td><%=l2.num_component%></td>
                 <td><%= l2.get_comp_type %></td>
@@ -83,7 +83,7 @@
               </tr>
 
           <% l2.get_searched_l3_objects(@l3_list).each do |l3| %>
-            <% filtered_l3_live_stpes = l3.get_workflow_live_steps(@filter_stations) %>
+            <% filtered_l3_live_stpes = l3.get_workflow_live_steps(@filtered_steps) %>
               <tr>
                 <td></td>
                 <td></td>
@@ -97,13 +97,13 @@
                     <% end %>
                   <% end %>
                 </td>
-                <% @filtered_station_steps.each do |station_step| 
-                  workflow_live_step = filtered_l3_live_stpes.find{|wkls| wkls.station_step_id == station_step.id }
-                  step_timestamp = ''
+                <% @filtered_station_steps.each do |filtered_station_step| 
+                  workflow_live_step = filtered_l3_live_stpes.find{|wkls| wkls.station_step_id == filtered_station_step.station_step_id }
+                  step_timestamp = ['','']
                   if workflow_live_step.present?
                     step_timestamp = workflow_live_step.get_latest_timestamp_log
                   end %>
-                  <td><%=step_timestamp%></td>
+                  <td class="<%=step_timestamp[1]%>" ><%=step_timestamp[0]%></td>
                 <% end %>  
                 <td><%= l3.num_component%></td>
                 <td><%= l3.get_comp_type %></td>

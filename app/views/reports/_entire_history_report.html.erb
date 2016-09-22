@@ -26,7 +26,7 @@
                   </td>
                   <td></td>
                   <td></td>
-                  <td><%= l1_timestamp_log.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") %></td>
+                  <td><%= l1_timestamp_log.actual_confirmation.strftime("%m/%d/%y %I:%M %p") %></td>
                   <td><%= l1_timestamp_log.workflow_live_step.station_step.step_name %></td>
                   <td><%= l1_timestamp_log.workflow_live_step.station_step.workflow_station.station_name %></td>
                   <td><%= l1.num_component %></td>
@@ -68,7 +68,7 @@
                 <% end %>
               </td>
               <td></td>
-              <td><%= l2_timestamp_log.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") %></td>
+              <td><%= l2_timestamp_log.actual_confirmation.strftime("%m/%d/%y %I:%M %p") %></td>
               <td><%= l2_timestamp_log.workflow_live_step.station_step.step_name %></td>
               <td><%= l2_timestamp_log.workflow_live_step.station_step.workflow_station.station_name %></td>
               <td><%= l2.num_component %></td>
@@ -90,7 +90,7 @@
                   <% end %>
                 <% end %>
               </td>
-              <td><%= l3_timestamp_log.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") %></td>
+              <td><%= l3_timestamp_log.actual_confirmation.strftime("%m/%d/%y %I:%M %p") %></td>
               <td><%= l3_timestamp_log.workflow_live_step.station_step.step_name %></td>
               <td><%= l3_timestamp_log.workflow_live_step.station_step.workflow_station.station_name %></td>
               <td><%= l3.num_component %></td>

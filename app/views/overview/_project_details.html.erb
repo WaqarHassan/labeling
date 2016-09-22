@@ -247,9 +247,9 @@
 										<% if workflow_live_step.actual_confirmation.blank? and workflow_live_step.eta.blank? %>
 											<%= link_to 'Not Started' , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 										<% elsif workflow_live_step.actual_confirmation.present? %>
-											<%= link_to workflow_live_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") ,  'javascript:void(0)' %>
+											<%= link_to workflow_live_step.actual_confirmation.strftime("%m/%d/%y %I:%M %p") ,  'javascript:void(0)' %>
 										<% elsif workflow_live_step.eta.present? %>
-											<%= link_to "ETA "+workflow_live_step.eta.strftime("%m/%d/%Y %I:%M %p") , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
+											<%= link_to "ETA "+workflow_live_step.eta.strftime("%m/%d/%y %I:%M %p") , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 										<% end %> 
 									</td>
 							 <% else %>
@@ -285,9 +285,9 @@
 											<% if workflow_live_step.actual_confirmation.blank? and workflow_live_step.eta.blank? %>
 												<%= link_to 'Not Started' , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 											<% elsif workflow_live_step.actual_confirmation.present? %>
-												<%= link_to workflow_live_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p") ,  'javascript:void(0)' %>
+												<%= link_to workflow_live_step.actual_confirmation.strftime("%m/%d/%y %I:%M %p") ,  'javascript:void(0)' %>
 											<% elsif workflow_live_step.eta.present? %>
-												<%= link_to "ETA "+workflow_live_step.eta.strftime("%m/%d/%Y %I:%M %p") , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
+												<%= link_to "ETA "+workflow_live_step.eta.strftime("%m/%d/%y %I:%M %p") , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 											<% end %> 
 										</td>
 								 <% else %>
@@ -326,12 +326,12 @@
 													<%= link_to 'Not Started' , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 												<% elsif workflow_live_step.actual_confirmation.present? %>
 													<% if workflow_live_step.object.is_closed? %>
-													<%= link_to workflow_live_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p"), 'javascript:void(0)' %>
+													<%= link_to workflow_live_step.actual_confirmation.strftime("%m/%d/%y %I:%M %p"), 'javascript:void(0)' %>
 													<% else %>
-													<%= link_to workflow_live_step.actual_confirmation.strftime("%m/%d/%Y %I:%M %p"), open_rework_modal_path(workflow_live_step.id, l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
+													<%= link_to workflow_live_step.actual_confirmation.strftime("%m/%d/%y %I:%M %p"), open_rework_modal_path(workflow_live_step.id, l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#rework_modal_popup'} %>
 													<% end %>
 												<% elsif workflow_live_step.eta.present? %>
-													<%= link_to "ETA "+workflow_live_step.eta.strftime("%m/%d/%Y %I:%M %p") , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
+													<%= link_to "ETA "+workflow_live_step.eta.strftime("%m/%d/%y %I:%M %p") , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 												<% end %> 
 											</td>
 									<%  else %>

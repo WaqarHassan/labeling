@@ -5,17 +5,26 @@ class WorkflowLiveStep < ActiveRecord::Base
 
     def get_latest_timestamp_log
     	step_timestamp = ''
-    	timestampLog = self.timestamp_logs.order(id: :desc).first
-    	if timestampLog.present?
-    		step_timestamp = timestampLog.actual_confirmation.strftime("%m/%d/%Y %I:%M %p")
-    	else
-    		if self.eta.present?
-    			step_timestamp = self.eta.strftime("%m/%d/%Y %I:%M %p")
-    			step_timestamp = 'ETA '+step_timestamp
-    		end
-    	end
+    	table_td_class = ''
+    	if self.is_active?
+	    	timestampLog = self.timestamp_logs.order(id: :desc).first
+	    	if timestampLog.present?
+	    		step_timestamp = timestampLog.actual_confirmation.strftime("%m/%d/%y %I:%M %p")
+	    		table_td_class = 'report_actual_confirmation'
+	    	else
+	    		if self.eta.present?
+	    			step_timestamp = self.eta.strftime("%m/%d/%y %I:%M %p")
+	    			step_timestamp = 'ETA '+step_timestamp
+	    			if DateTime.parse(Time.now.to_s) > DateTime.parse(self.eta.to_s)
+						table_td_class = 'report_eta_light_red'
+					end
+	    		end
+	    	end
+	    else
+	    	step_timestamp = 'N/A'
+	    end	
 
-    	return step_timestamp	
+    	return [step_timestamp, table_td_class]	
     end
 
 	class << self

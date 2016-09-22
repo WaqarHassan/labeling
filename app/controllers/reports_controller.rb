@@ -6,9 +6,22 @@ class ReportsController < ApplicationController
 
 	def entire_history
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
-		if request.post?
+	    if session[:report_wildcard].present?
+	      @wildcard = session[:report_wildcard]
+	    end
+	    if session[:report_exact].present?
+	      @exact = session[:report_exact]
+	    end
+
+		if request.post? or session[:report_q_string].present?
 			@task_confirmation = false
-			serach_result = search
+			if request.post?
+				serach_result = search
+			else
+			  	q_string = session[:report_q_string]
+				serach_result = WorkFlow.search(q_string)
+			end	
+
 			if serach_result.present?
 				l2_name = ''
 				l1_name = ''
@@ -58,8 +71,21 @@ class ReportsController < ApplicationController
 	end
 	def current_status
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
-		if request.post?
-			serach_result = search
+	    if session[:report_wildcard].present?
+	      @wildcard = session[:report_wildcard]
+	    end
+	    if session[:report_exact].present?
+	      @exact = session[:report_exact]
+	    end
+
+		if request.post? or session[:report_q_string].present?
+			if request.post?
+				serach_result = search
+			else
+			  	q_string = session[:report_q_string]
+				serach_result = WorkFlow.search(q_string)
+			end	
+
 			if serach_result.present?
 				l2_name = ''
 				l1_name = ''
@@ -86,34 +112,57 @@ class ReportsController < ApplicationController
 			end
 		end
 	end
+
 	def daily_activity
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
-		if request.post?
-			date = L1.set_db_date_format(params[:daily_report_date])
+		if request.post? or session[:daily_activity_report_date].present?
+			if request.post?
+				@daily_report_date = params[:daily_report_date]
+				session[:daily_activity_report_date] = @daily_report_date
+			else
+				@daily_report_date = session[:daily_activity_report_date]
+			end
+			date = L1.set_db_date_format(@daily_report_date)
 			@logs = TimestampLog.where("STR_TO_DATE( '#{date}', '%Y-%m-%d') = STR_TO_DATE(created_at, '%Y-%m-%d')")
 		end
 	end
+
 	def handoff
 		@task_confirmation = true
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
-		if request.post?
+	    if session[:report_wildcard].present?
+	      @wildcard = session[:report_wildcard]
+	    end
+	    if session[:report_exact].present?
+	      @exact = session[:report_exact]
+	    end
 
+		if request.post? or session[:report_q_string].present?
 			#get filter steps from config
-			@filter_stations = ''
-			workflow_name = @workflow.name.upcase
-			config_filter_steps = FILTERSTEPS['filter_steps'][workflow_name]
-			config_filter_steps.each do |stps|
-				@filter_stations +=  ','+stps['step_id'].to_s
-			end
-			if @filter_stations != ''
-				@filter_stations.slice!(0)
+			@filtered_steps = ''
+			@filtered_station_steps = @workflow.report_filter_steps.order(:sequence)
+			if @filtered_station_steps.present?
+				@filtered_station_steps.each do |stps|
+					@filtered_steps+=  ','+stps.station_step_id.to_s
+				end
+				if @filtered_steps != ''
+					@filtered_steps.slice!(0)
+				end
+			else	
+				@filtered_station_steps = []
 			end
 
-			@filtered_station_steps = StationStep.where("id in (#{@filter_stations})").order(:sequence)
 			@entir_history = []
 			@task_confirmation = false
 			@l1s_name = []
-			serach_result = search
+			
+			if request.post?
+				serach_result = search
+			else
+			  	q_string = session[:report_q_string]
+				serach_result = WorkFlow.search(q_string)
+			end	
+
 			if serach_result.present?
 				l2_name = ''
 				l1_name = ''

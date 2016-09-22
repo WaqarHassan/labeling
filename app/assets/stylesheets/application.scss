@@ -507,6 +507,14 @@ label.string, label.integer {
 .eta_light_red a{
     color: red !important;
 }
+.report_eta_light_red{
+    background-color: #ffe6e6;
+    color: red;
+}
+.report_actual_confirmation{
+    background-color: #c1f0c1;
+    color: green ;
+}
 
 .na {
     background-color: #eff5f5;

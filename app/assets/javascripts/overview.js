@@ -64,6 +64,11 @@ function resetSearchResult(){
 	dataHtml += '</div>';
 	$('#search_result_div').html(dataHtml);
 }
+function resetReportSearch(){
+	$('.form-control').removeAttr("value")
+	$('#search_form').trigger("reset");
+}
+
 
 $(document).ready(function() {
 

@@ -114,6 +114,7 @@ class ReportsController < ApplicationController
 	end
 
 	def daily_activity
+		@work_flows = WorkFlow.where(is_active: true)
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
 		if request.post? or session[:daily_activity_report_date].present?
 			if request.post?
@@ -123,7 +124,15 @@ class ReportsController < ApplicationController
 				@daily_report_date = session[:daily_activity_report_date]
 			end
 			date = L1.set_db_date_format(@daily_report_date)
-			@logs = TimestampLog.where("STR_TO_DATE( '#{date}', '%Y-%m-%d') = STR_TO_DATE(created_at, '%Y-%m-%d')")
+			q_string = "STR_TO_DATE( '#{date}', '%Y-%m-%d') = STR_TO_DATE(created_at, '%Y-%m-%d')"
+			workflow = params[:work_flow]
+			if workflow.present?
+				#abort(workflow)
+				q_string += "and work_flow_id = #{workflow}"
+			else
+				q_string += "and work_flow_id = 1"
+			end
+			@logs = TimestampLog.where(q_string)
 		end
 	end
 

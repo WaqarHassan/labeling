@@ -1,6 +1,8 @@
 
 $(document).ready(function() {
 	var handoff_report_data = $('.data-main').width() - 250 ;
+  console.log($('.data-main').width());
+  
 	$('#handoff_report_data').width(handoff_report_data);
 
 	 if($("#current_status_report").length){

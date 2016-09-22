@@ -58,9 +58,9 @@
                 <% end %>
               </td>
             <%end%>
-            <td><%=log.updated_at.strftime("%m/%d/%y %I:%M %p")%></td>
+            <td><%=log.updated_at.strftime("%m/%d/%Y %I:%M %p")%></td>
             <td><%=log.user.first_name%></td>
-            <td><%=log.actual_confirmation.strftime("%m/%d/%y %I:%M %p")%></td>
+            <td><%=log.actual_confirmation.strftime("%m/%d/%Y %I:%M %p")%></td>
             <td><%=log.workflow_live_step.station_step.workflow_station.station_name%></td>
             <td><%=log.workflow_live_step.station_step.step_name%></td>
           </tr>

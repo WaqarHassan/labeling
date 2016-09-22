@@ -9,13 +9,15 @@
 
   <%= form_tag daily_activity_reports_path, remote: true, :id => 'search_form', :class => 'form-horizontal'  do %>
     <div class="row daily_activity_date">
+        <div class="col-lg-2">
+          <%= select_tag "work_flow", options_from_collection_for_select(@work_flows, 'id', 'name',@work_flows),{include_blank: "Please Select Workflow", :class=>'form-control pnd-reqst pull-left'}  %> 
+        </div>
       <div class="col-lg-2">
-        <input type="text" class="datepicker_only form-control" id="datepicker_now" name = "daily_report_date" placeholder="Please Select Date"  aria-required="true">
+        <input type="text" class="datepicker_only form-control" id="datepicker_now" name = "daily_report_date" placeholder="Please Select Date"  required>
       </div> 
       <div class="col-lg-2">
         <button type="submit" class="btn btn-primary">Search</button>
       </div>
-      <div class="col-lg-3"></div>
     </div>
   <%end%>
     <div id="daily_activity_report_search_result_div">

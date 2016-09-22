@@ -1,6 +1,6 @@
 <% if @logs.present? %>
   <div class="daily-report-data" id ="handoffreportdata">
-    <table class="table table-bordered">
+    <table id = "daily_activity_report" class="table table-bordered">
       <thead>
         <tr>
           <th><%= @workflow.L1 %></th>
@@ -32,7 +32,7 @@
               <td></td>
               <td></td>
             <%elsif log.workflow_live_step.object_type == "L2"%>
-              <td></td>
+              <td><%=log.workflow_live_step.object.l1.name%></td>
               <td>                  
                <%= link_to log.workflow_live_step.object.name, open_info_modal_l2_path(log.workflow_live_step.object.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
                 <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
@@ -45,8 +45,8 @@
               </td>
               <td></td>
             <%elsif log.workflow_live_step.object_type == "L3"%>
-              <td></td>
-              <td></td>
+              <td><%=log.workflow_live_step.object.l2.l1.name%></td>
+              <td><%=log.workflow_live_step.object.l2.name%></td>
               <td>                  
                 <%= link_to log.workflow_live_step.object.name, open_info_modal_l3_path(log.workflow_live_step.object.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
                 <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
@@ -77,4 +77,6 @@
         background-color: #fff;    
     }
   </style>  
+
+   <%= javascript_include_tag "reports" %>   
 

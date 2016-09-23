@@ -14,92 +14,75 @@
     </thead>
 
     <tbody>
-      <% @report_l1s.each do |l1| %>
-
-          <% l1_timestamp_logs = l1.timestamp_logs
-            if l1_timestamp_logs.present?
-              l1_timestamp_logs.each do |l1_timestamp_log| %>
+      <% if @serach_result.present?
+          l2_name = ''
+          l1_name = ''
+          l1_list = ''
+          l2_list = ''
+          l3_list = ''
+          @serach_result.each do |result|
+              if l1_name != result['l1_name']
+                l1_name = result['l1_name'] 
+                @l1_results = @report_serach_result.select{|report| report['object_type'] == 'L1' and report['l1_id'] == result['l1_id'] }%>
                 <tr>
                   <td>
-                    <%= link_to l1.name, open_info_modal_l1_path(l1.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                    <%= link_to result['l1_name'], open_info_modal_l1_path(result['l1_id']),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
                     <a href="/" aria-hidden="true" class="glyphicon glyphicon-new-window"></a> 
                   </td>
                   <td></td>
                   <td></td>
-                  <td><%= l1_timestamp_log.actual_confirmation.strftime("%m/%d/%y %I:%M %p") %></td>
-                  <td><%= l1_timestamp_log.workflow_live_step.station_step.step_name %></td>
-                  <td><%= l1_timestamp_log.workflow_live_step.station_step.workflow_station.station_name %></td>
-                  <td><%= l1.num_component %></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+
                 </tr>
-              <% end %>  
-            <% else %>
-              <tr>
-                <td>
-                  <%= link_to l1.name, open_info_modal_l1_path(l1.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
-                  <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
-                    <%= hidden_field_tag 'object_type', 'L1' %>
-                    <%= hidden_field_tag 'object_id', l1.id %>
-                    <%= button_tag(type: "submit", class: "btn report_main_link") do %>
-                        <span class="glyphicon glyphicon-new-window"></span>
-                    <% end %>
-                  <% end %>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            <% end %>
+             <% end
 
-        <% l1.get_searched_l2_objects(@l2_list).each do |l2| %>
-          <% l2.timestamp_logs.each do |l2_timestamp_log| %>
-            <tr>
-              <td><%=l1.name%></td>
-              <td>
-                <%= link_to l2.name, open_info_modal_l2_path(l2.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
-                <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
-                  <%= hidden_field_tag 'object_type', 'L2' %>
-                  <%= hidden_field_tag 'object_id', l2.id %>
-                  <%= button_tag(type: "submit", class: "btn report_main_link") do %>
-                      <span class="glyphicon glyphicon-new-window"></span>
-                  <% end %>
-                <% end %>
-              </td>
-              <td></td>
-              <td><%= l2_timestamp_log.actual_confirmation.strftime("%m/%d/%y %I:%M %p") %></td>
-              <td><%= l2_timestamp_log.workflow_live_step.station_step.step_name %></td>
-              <td><%= l2_timestamp_log.workflow_live_step.station_step.workflow_station.station_name %></td>
-              <td><%= l2.num_component %></td>
-            </tr>
-          <% end %>  
+              if l2_name != result['l2_name'] && result['l2_id'].presence
+                l2_name = result['l2_name'] 
+                @l2_results = WorkFlow.do_search_report(@report_serach_result, 'L2', result['l2_id'], 'l2_id')
+                if @l2_results.present?
+                   @l2_results.each do |l2_result| %>
+                    <tr>
+                      <td><%= l2_result['l1_name'] %></td>
+                      <td>
+                        <%= link_to l2_result['l2_name'], open_info_modal_l2_path(l2_result['l2_id']),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                        <a href="/" aria-hidden="true" class="glyphicon glyphicon-new-window"></a> 
+                      </td>
+                      <td></td>
+                      <td><%= l2_result['actual_confirmation'].strftime("%m/%d/%y %I:%M %p") %></td>
+                      <td><%= l2_result['step'] %></td>
+                      <td><%= l2_result['station'] %></td>
+                      <td><%= l2_result['l2_num_component'] %></td>
 
-        <% l2.get_searched_l3_objects(@l3_list).each do |l3| %>
-          <% l3.timestamp_logs.each do |l3_timestamp_log| %>
-            <tr>
-              <td><%=l1.name%></td>
-              <td><%=l2.name%></td>
-              <td>                  
-                <%= link_to l3.name, open_info_modal_l3_path(l3.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
-                <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
-                  <%= hidden_field_tag 'object_type', 'L3' %>
-                  <%= hidden_field_tag 'object_id', l3.id %>
-                  <%= button_tag(type: "submit", class: "btn report_main_link") do %>
-                      <span class="glyphicon glyphicon-new-window"></span>
-                  <% end %>
-                <% end %>
-              </td>
-              <td><%= l3_timestamp_log.actual_confirmation.strftime("%m/%d/%y %I:%M %p") %></td>
-              <td><%= l3_timestamp_log.workflow_live_step.station_step.step_name %></td>
-              <td><%= l3_timestamp_log.workflow_live_step.station_step.workflow_station.station_name %></td>
-              <td><%= l3.num_component %></td>
-            </tr>
-          <% end %>
-              <% end %>    
-        <% end %>
+                    </tr>
+                  <% end 
+                end 
+             end 
 
-      <% end %>  
+              if result['l3_id'].presence 
+                @l3_results = WorkFlow.do_search_report(@report_serach_result, 'L3', result['l3_id'], 'l3_id')
+                if @l3_results.present?
+                   @l3_results.each do |l3_result| %>
+                    <tr>
+                      <td><%= l3_result['l1_name'] %></td>
+                      <td><%= l3_result['l2_name'] %></td>
+                      <td>
+                        <%= link_to l3_result['l3_name'], open_info_modal_l3_path(l3_result['l3_id']),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                        <a href="/" aria-hidden="true" class="glyphicon glyphicon-new-window"></a> 
+                      </td>
+                      <td><%= l3_result['actual_confirmation'].strftime("%m/%d/%y %I:%M %p") %></td>
+                      <td><%= l3_result['step'] %></td>
+                      <td><%= l3_result['station'] %></td>
+                      <td><%= l3_result['l3_num_component'] %></td>
+                    </tr>
+                   <% end 
+                end 
+              end 
+            end
+        end %>
+ 
     </tbody>
 
   </table>

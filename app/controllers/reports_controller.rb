@@ -320,7 +320,7 @@ class ReportsController < ApplicationController
 		      serach_result = WorkFlow.search(q_string)
 		    end
 
-		    return serach_result
+		    return [serach_result, q_string] 
 		end	
 
 end

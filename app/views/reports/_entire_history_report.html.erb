@@ -34,7 +34,7 @@
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td></td>
+                  <td><%=result['l1_id']%></td>
 
                 </tr>
              <% end
@@ -54,7 +54,7 @@
                       <td><%= l2_result['actual_confirmation'].strftime("%m/%d/%y %I:%M %p") %></td>
                       <td><%= l2_result['step'] %></td>
                       <td><%= l2_result['station'] %></td>
-                      <td><%= l2_result['l2_num_component'] %></td>
+                      <td><%= l2_result['l2_id'] %></td>
 
                     </tr>
                   <% end 
@@ -75,7 +75,7 @@
                       <td><%= l3_result['actual_confirmation'].strftime("%m/%d/%y %I:%M %p") %></td>
                       <td><%= l3_result['step'] %></td>
                       <td><%= l3_result['station'] %></td>
-                      <td><%= l3_result['l3_num_component'] %></td>
+                      <td><%= l3_result['l3_id'] %></td>
                     </tr>
                    <% end 
                 end 

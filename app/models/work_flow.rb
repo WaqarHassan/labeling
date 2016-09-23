@@ -40,7 +40,7 @@ class WorkFlow < ActiveRecord::Base
 
 			def do_search_report (report_serach_result, object_type, object_id, ll_id)
 				report_serach_unique = report_serach_result.select{|report| report['object_type'] == object_type and report[ll_id] == object_id }
-				return report_serach_unique.uniq{|x| x['actual_confirmation']}
+				return report_serach_unique.uniq{|x| x['log_id']}
 			end
 		end
 end

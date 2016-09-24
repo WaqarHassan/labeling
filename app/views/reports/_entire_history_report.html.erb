@@ -1,6 +1,6 @@
 <div class="handoff-report-data" id ="handoff_report_data">
   <table id = "entire_history_report" class="table table-bordered">
-  <% if @task_confirmation.present? %> 
+  <% if @report_serach_result.present? %> 
     <thead>
       <tr>
         <th><%= @workflow.L1 %></th>
@@ -23,21 +23,49 @@
           @serach_result.each do |result|
               if l1_name != result['l1_name']
                 l1_name = result['l1_name'] 
-                @l1_results = @report_serach_result.select{|report| report['object_type'] == 'L1' and report['l1_id'] == result['l1_id'] }%>
-                <tr>
-                  <td>
-                    <%= link_to result['l1_name'], open_info_modal_l1_path(result['l1_id']),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
-                    <a href="/" aria-hidden="true" class="glyphicon glyphicon-new-window"></a> 
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td><%=result['l1_id']%></td>
-
-                </tr>
-             <% end
+                @l1_results = WorkFlow.do_search_report(@report_serach_result, 'L1', result['l1_id'], 'l1_id')
+                if @l1_results.present? 
+                  @l1_results.each do |l1_result| %>
+                    <tr>
+                      <td>
+                        <%= link_to l1_result['l1_name'], open_info_modal_l1_path(l1_result['l1_id'],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                        <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                        <%= hidden_field_tag 'object_type', 'L1' %>
+                        <%= hidden_field_tag 'object_id', l1_result['l1_id'] %>
+                        <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                            <span class="glyphicon glyphicon-new-window"></span>
+                        <% end %>
+                      <% end %>
+                      </td>
+                      <td></td>
+                      <td></td>
+                      <td><%= l1_result['actual_confirmation'].strftime("%m/%d/%y %I:%M %p") %></td>
+                      <td><%= l1_result['step'] %></td>
+                      <td><%= l1_result['station'] %></td>
+                      <td><%= l1_result['l1_num_component'] %></td>
+                    </tr>
+                  <% end %>
+                <% else %>
+                    <tr>
+                      <td>
+                        <%= link_to result['l1_name'], open_info_modal_l1_path(result['l1_id'],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                        <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                        <%= hidden_field_tag 'object_type', 'L1' %>
+                        <%= hidden_field_tag 'object_id', result['l1_id'] %>
+                        <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                            <span class="glyphicon glyphicon-new-window"></span>
+                        <% end %>
+                      <% end %>
+                      </td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+             <% end 
+              end
 
               if l2_name != result['l2_name'] && result['l2_id'].presence
                 l2_name = result['l2_name'] 
@@ -47,14 +75,20 @@
                     <tr>
                       <td><%= l2_result['l1_name'] %></td>
                       <td>
-                        <%= link_to l2_result['l2_name'], open_info_modal_l2_path(l2_result['l2_id']),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
-                        <a href="/" aria-hidden="true" class="glyphicon glyphicon-new-window"></a> 
+                        <%= link_to l2_result['l2_name'], open_info_modal_l2_path(l2_result['l2_id'],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                        <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                        <%= hidden_field_tag 'object_type', 'L2' %>
+                        <%= hidden_field_tag 'object_id', l2_result['l2_id'] %>
+                        <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                            <span class="glyphicon glyphicon-new-window"></span>
+                        <% end %>
+                      <% end %>
                       </td>
                       <td></td>
                       <td><%= l2_result['actual_confirmation'].strftime("%m/%d/%y %I:%M %p") %></td>
                       <td><%= l2_result['step'] %></td>
                       <td><%= l2_result['station'] %></td>
-                      <td><%= l2_result['l2_id'] %></td>
+                      <td><%= l2_result['l2_num_component'] %></td>
 
                     </tr>
                   <% end 
@@ -69,13 +103,19 @@
                       <td><%= l3_result['l1_name'] %></td>
                       <td><%= l3_result['l2_name'] %></td>
                       <td>
-                        <%= link_to l3_result['l3_name'], open_info_modal_l3_path(l3_result['l3_id']),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
-                        <a href="/" aria-hidden="true" class="glyphicon glyphicon-new-window"></a> 
+                        <%= link_to l3_result['l3_name'], open_info_modal_l3_path(l3_result['l3_id'],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                        <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                        <%= hidden_field_tag 'object_type', 'L3' %>
+                        <%= hidden_field_tag 'object_id', l3_result['l3_id'] %>
+                        <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                            <span class="glyphicon glyphicon-new-window"></span>
+                        <% end %>
+                      <% end %>
                       </td>
                       <td><%= l3_result['actual_confirmation'].strftime("%m/%d/%y %I:%M %p") %></td>
                       <td><%= l3_result['step'] %></td>
                       <td><%= l3_result['station'] %></td>
-                      <td><%= l3_result['l3_id'] %></td>
+                      <td><%= l3_result['l3_num_component'] %></td>
                     </tr>
                    <% end 
                 end 

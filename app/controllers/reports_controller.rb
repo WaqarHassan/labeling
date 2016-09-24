@@ -4,71 +4,6 @@ class ReportsController < ApplicationController
 	def index
 	end
 
-	def entire_history_aaaa
-		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
-	    if session[:report_wildcard].present?
-	      @wildcard = session[:report_wildcard]
-	    end
-	    if session[:report_exact].present?
-	      @exact = session[:report_exact]
-	    end
-
-		if request.post? or session[:report_q_string].present?
-			@task_confirmation = false
-			if request.post?
-				serach_result = search
-			else
-			  	q_string = session[:report_q_string]
-				serach_result = WorkFlow.search(q_string)
-			end	
-
-			if serach_result.present?
-				l2_name = ''
-				l1_name = ''
-				l1_list = ''
-				@l2_list = ''
-				@l3_list = ''
-				serach_result.each do |result|
-				  	if l1_name != result['l1_name']
-				  		l1_name = result['l1_name']
-				  		l1_list += result['l1_id'].to_s+'_' 
-				  	end
-
-				  	if l2_name != result['l2_name'] && result['l2_id'].presence
-				  		l2_name = result['l2_name']
-				  		@l2_list += result['l2_id'].to_s+'_' 
-				  	end	
-
-				  	if result['l3_id'].presence
-				  		@l3_list += result['l3_id'].to_s+'_' 
-				  	end	
-			  	end
-
-			  	l1_list = l1_list.split('_')
-				@l2_list = @l2_list.split('_')
-			    @l3_list = @l3_list.split('_')
-				@report_l1s = L1.where(id: [l1_list])
-
-				@report_l1s.each do |l1|
-					if l1.timestamp_logs.present?
-						@task_confirmation = true
-					end
-					@l2_list_objects = l1.l2s.where(id: [@l2_list])
-					@l2_list_objects.each do |l2|
-						if l2.timestamp_logs
-							@task_confirmation = true
-						end
-							@l3_list_objects = l2.l3s.where(id: [@l3_list])
-							@l3_list_objects.each do |l3|
-								if l3.timestamp_logs
-									@task_confirmation = true
-								end
-							end	
-					end
-				end	
-			end
-		end
-	end
 	def entire_history
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
 	    if session[:report_wildcard].present?
@@ -82,61 +17,19 @@ class ReportsController < ApplicationController
 			@task_confirmation = false
 			if request.post?
 				@serach_result = search[0]
-				@report_serach_result = WorkFlow.report_search(search[1])
+				if search[1] != ''
+					@report_serach_result = WorkFlow.report_search(search[1])
+				end	
 			else
 			  	q_string = session[:report_q_string]
-				@serach_result = WorkFlow.search(q_string)
-				@report_serach_result = WorkFlow.report_search(q_string)
+			  	if q_string != ''
+					@serach_result = WorkFlow.search(q_string)
+					@report_serach_result = WorkFlow.report_search(q_string)
+				end
 			end	
-
-			if @serach_result.present?
-				l2_name = ''
-				l1_name = ''
-				l1_list = ''
-				l2_list = ''
-				l3_list = ''
-				@serach_result.each do |result|
-				  	if l1_name != result['l1_name']
-				  		l1_name = result['l1_name']
-				  		l1_list += result['l1_id'].to_s+'_' 
-				  	end
-
-				  	if l2_name != result['l2_name'] && result['l2_id'].presence
-				  		l2_name = result['l2_name']
-				  		l2_list += result['l2_id'].to_s+'_' 
-				  	end	
-
-				  	if result['l3_id'].presence
-				  		l3_list += result['l3_id'].to_s+'_' 
-				  	end	
-			  	end
-
-			  	@l1_list = l1_list.split('_')
-				@l2_list = l2_list.split('_')
-			    @l3_list = l3_list.split('_')
-			    @task_confirmation = true
-				#@report_l1s = L1.where(id: [l1_list])
-
-				# @report_l1s.each do |l1|
-				# 	if l1.timestamp_logs.present?
-				# 		@task_confirmation = true
-				# 	end
-				# 	@l2_list_objects = l1.l2s.where(id: [@l2_list])
-				# 	@l2_list_objects.each do |l2|
-				# 		if l2.timestamp_logs
-				# 			@task_confirmation = true
-				# 		end
-				# 			@l3_list_objects = l2.l3s.where(id: [@l3_list])
-				# 			@l3_list_objects.each do |l3|
-				# 				if l3.timestamp_logs
-				# 					@task_confirmation = true
-				# 				end
-				# 			end	
-				# 	end
-				# end	
-			end
 		end
 	end
+	
 	def current_status
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
 	    if session[:report_wildcard].present?
@@ -214,6 +107,34 @@ class ReportsController < ApplicationController
 	      @exact = session[:report_exact]
 	    end
 
+	    @filtered_station_steps = @workflow.report_filter_steps.eager_load(:station_step => [:workflow_station]).order(:sequence)
+		if request.post? or session[:report_q_string].present?
+			@task_confirmation = false
+			if request.post?
+				@serach_result = search[0]
+				if search[1] != ''
+					@report_serach_result = WorkFlow.handoff_report_search(search[1], @workflow.id)
+				end	
+			else
+			  	q_string = session[:report_q_string]
+			  	if q_string != ''
+					@serach_result = WorkFlow.search(q_string)
+					@report_serach_result = WorkFlow.handoff_report_search(q_string, @workflow.id)
+				end
+			end	
+		end
+	end
+
+	def handoff_aaa
+		@task_confirmation = true
+		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+	    if session[:report_wildcard].present?
+	      @wildcard = session[:report_wildcard]
+	    end
+	    if session[:report_exact].present?
+	      @exact = session[:report_exact]
+	    end
+
 		if request.post? or session[:report_q_string].present?
 			#get filter steps from config
 			@filtered_steps = ''
@@ -233,6 +154,54 @@ class ReportsController < ApplicationController
 			@task_confirmation = false
 			@l1s_name = []
 			
+			if request.post?
+				serach_result = search[0]
+			else
+			  	q_string = session[:report_q_string]
+				serach_result = WorkFlow.search(q_string)
+			end	
+
+			if serach_result.present?
+				l2_name = ''
+				l1_name = ''
+				l1_list = ''
+				@l2_list = ''
+				@l3_list = ''
+				serach_result.each do |result|
+				  	if l1_name != result['l1_name']
+				  		l1_name = result['l1_name']
+				  		l1_list += result['l1_id'].to_s+'_' 
+				  	end
+
+				  	if l2_name != result['l2_name'] && result['l2_id'].presence
+				  		l2_name = result['l2_name']
+				  		@l2_list += result['l2_id'].to_s+'_' 
+				  	end	
+
+				  	if result['l3_id'].presence
+				  		@l3_list += result['l3_id'].to_s+'_' 
+				  	end	
+			  	end
+
+			  	l1_list = l1_list.split('_')
+				@l2_list = @l2_list.split('_')
+			    @l3_list = @l3_list.split('_')
+				@report_l1s = L1.where(id: [l1_list])
+			end
+		end
+	end
+
+	def entire_history_aaaa
+		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+	    if session[:report_wildcard].present?
+	      @wildcard = session[:report_wildcard]
+	    end
+	    if session[:report_exact].present?
+	      @exact = session[:report_exact]
+	    end
+
+		if request.post? or session[:report_q_string].present?
+			@task_confirmation = false
 			if request.post?
 				serach_result = search
 			else
@@ -266,6 +235,24 @@ class ReportsController < ApplicationController
 				@l2_list = @l2_list.split('_')
 			    @l3_list = @l3_list.split('_')
 				@report_l1s = L1.where(id: [l1_list])
+
+				@report_l1s.each do |l1|
+					if l1.timestamp_logs.present?
+						@task_confirmation = true
+					end
+					@l2_list_objects = l1.l2s.where(id: [@l2_list])
+					@l2_list_objects.each do |l2|
+						if l2.timestamp_logs
+							@task_confirmation = true
+						end
+							@l3_list_objects = l2.l3s.where(id: [@l3_list])
+							@l3_list_objects.each do |l3|
+								if l3.timestamp_logs
+									@task_confirmation = true
+								end
+							end	
+					end
+				end	
 			end
 		end
 	end

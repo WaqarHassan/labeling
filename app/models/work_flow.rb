@@ -111,5 +111,26 @@ class WorkFlow < ActiveRecord::Base
 				reportSerachUnique = report_serach_result.find{|wl| wl['object_type'] == object_type and wl[ll_id] == object_id }
 				return reportSerachUnique
 			end
+
+
+			def daily_report_serach(q_string)
+				daily_report_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name, 
+								station_steps.step_name as step, workflow_stations.station_name as station, wls.object_type, 
+								timestamp_logs.actual_confirmation, timestamp_logs.updated_at, timestamp_logs.user_id, users.first_name as updated_by, timestamp_logs.id as log_id
+								from l1s
+								left join l2s on l1s.id = l2s.l1_id
+								left join l3s on l3s.l2_id=l2s.id
+								inner join workflow_live_steps as wls on (wls.object_id = l1s.id and wls.object_type = 'L1') 
+								                               or (wls.object_id = l2s.id  and wls.object_type = 'L2') 
+								                               or (wls.object_id = l3s.id  and wls.object_type = 'L3')
+								inner join station_steps on wls.station_step_id = station_steps.id
+								inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
+								inner join timestamp_logs on wls.id = timestamp_logs.workflow_live_step_id
+								inner join users on timestamp_logs.user_id = users.id
+								where #{q_string}
+								order by l1s.name, l2s.name, l3s.name"
+				daily_report_serach_result = ActiveRecord::Base.connection.select_all daily_report_sql_query
+                return daily_report_serach_result
+			end
 		end
 end

@@ -85,13 +85,36 @@ class ReportsController < ApplicationController
 				@daily_report_date = session[:daily_activity_report_date]
 			end
 			date = L1.set_db_date_format(@daily_report_date)
+			q_string = "STR_TO_DATE( '#{date}', '%Y-%m-%d') = STR_TO_DATE(timestamp_logs.created_at, '%Y-%m-%d')"
+			workflow = params[:work_flow]
+			if workflow.present?
+				@searched_work_flow = workflow
+				q_string += "and timestamp_logs.work_flow_id = #{workflow}"
+			else
+				@searched_work_flow = @workflow.id
+				q_string += "and timestamp_logs.work_flow_id = #{@workflow.id}"
+			end
+			@report_serach_result = WorkFlow.daily_report_serach(q_string)
+		end
+	end
+
+	def daily_activity_aaa
+		@work_flows = WorkFlow.where(is_active: true)
+		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+		if request.post? or session[:daily_activity_report_date].present?
+			if request.post?
+				@daily_report_date = params[:daily_report_date]
+				session[:daily_activity_report_date] = @daily_report_date
+			else
+				@daily_report_date = session[:daily_activity_report_date]
+			end
+			date = L1.set_db_date_format(@daily_report_date)
 			q_string = "STR_TO_DATE( '#{date}', '%Y-%m-%d') = STR_TO_DATE(created_at, '%Y-%m-%d')"
 			workflow = params[:work_flow]
 			if workflow.present?
-				#abort(workflow)
 				q_string += "and work_flow_id = #{workflow}"
 			else
-				q_string += "and work_flow_id = 1"
+				q_string += "and work_flow_id = #{@workflow.id}"
 			end
 			@logs = TimestampLog.where(q_string)
 		end

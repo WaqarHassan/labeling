@@ -62,8 +62,8 @@ class WorkFlow < ActiveRecord::Base
 							                               or (workflow_live_steps.object_id = l3s.id  and workflow_live_steps.object_type = 'L3')
 							inner join station_steps on workflow_live_steps.station_step_id = station_steps.id
 							inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
-           					where #{q_string} order by l1s.name, l2s.name, l3s.name "
-           					#
+           					where #{q_string} "
+           					# order by l1s.name, l2s.name, l3s.name
 				report_serach_result = ActiveRecord::Base.connection.select_all report_sql_query
                 return report_serach_result
 			end 

@@ -70,7 +70,9 @@ class WorkflowLiveStep < ActiveRecord::Base
 	        l3sLastLiveStep = []
 	        l2.l3s.each do |l3|
 	          workflow_live_steps_l3 = WorkflowLiveStep.where(object_id: l3.id, object_type: 'L3').order(:id)
-	          l3sLastLiveStep << workflow_live_steps_l3.last
+	          if !l3.is_closed
+	          	l3sLastLiveStep << workflow_live_steps_l3.last
+	      	  end
 	          workflow_live_steps_l3.each do |wls_l3|  
 	            workflow_live_step_for_eta_ids << wls_l3
 	          end

@@ -38,40 +38,20 @@ class ReportsController < ApplicationController
 	    if session[:report_exact].present?
 	      @exact = session[:report_exact]
 	    end
-
-		if request.post? or session[:report_q_string].present?
-			if request.post?
-				serach_result = search
-			else
-			  	q_string = session[:report_q_string]
-				serach_result = WorkFlow.search(q_string)
-			end	
-			     @task_confirmation = true
-			if serach_result.present?
-				l2_name = ''
-				l1_name = ''
-				l1_list = ''
-				@l2_list = ''
-				@l3_list = ''
-				serach_result.each do |result|
-				  	if l1_name != result['l1_name']
-				  		l1_name = result['l1_name']
-				  		l1_list += result['l1_id'].to_s+'_' 
-				  	end	
-				  	if l2_name != result['l2_name'] && result['l2_id'].presence
-				  		l2_name = result['l2_name']
-				  		@l2_list += result['l2_id'].to_s+'_' 
-				  	end
-				  	if result['l3_id'].presence
-				  		@l3_list += result['l3_id'].to_s+'_' 
-				  	end		
-			  	end
-			    l1_list = l1_list.split('_')
-				@l2_list = @l2_list.split('_')
-			    @l3_list = @l3_list.split('_')
-				@report_l1s = L1.where(id: [l1_list])
-			end
-		end
+	    if request.post? or session[:report_q_string].present?
+  			if request.post?
+ 				@serach_result = search[0]
+ 				if search[1] != ''
+  					@report_serach_result = WorkFlow.current_report_search(search[1])
+ 				end
+  			else
+  			  	q_string = session[:report_q_string]
+  			  	if q_string != ''
+	  				@serach_result = WorkFlow.search(q_string)
+	  				@report_serach_result = WorkFlow.current_report_search(q_string)
+	  			end
+  			end	
+  		end
 	end
 
 	def current_status_aaa
@@ -86,14 +66,16 @@ class ReportsController < ApplicationController
 		if request.post? or session[:report_q_string].present?
 			if request.post?
 				@serach_result = search[0]
-				@report_serach_result = WorkFlow.current_report_search(search[1])
+				if search[1] != ''
+					@report_serach_result = WorkFlow.current_report_search(search[1])
+				end
 			
 			else
 			  	q_string = session[:report_q_string]
-			  	puts '[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[['
-			  	puts q_string
-				@serach_result = WorkFlow.search(q_string)
-				@report_serach_result = WorkFlow.current_report_search(q_string)
+			  	if q_string != ''
+					@serach_result = WorkFlow.search(q_string)
+					@report_serach_result = WorkFlow.current_report_search(q_string)
+				end
 			end	
 		end
 	end

@@ -76,7 +76,6 @@ class WorkFlow < ActiveRecord::Base
 				report_serach_confirmation = report_serach_result.select{|report| report['object_type'] == object_type and report[ll_id] == object_id }
 
 				 actual_confirmation_row = report_serach_confirmation.select{|ac| ac['actual_confirmation'].present? }
-				 puts "-------------------------------------------"
 				 puts actual_confirmation_row
 
 				 if actual_confirmation_row.present?
@@ -85,8 +84,6 @@ class WorkFlow < ActiveRecord::Base
 				 else
 				 	aa =  report_serach_confirmation.sort_by { |k| k["wls_id"] }.first
 				 end
-				 puts '==================================='
-				 puts aa
 				 return aa
  	
 			end

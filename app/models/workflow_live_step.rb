@@ -113,7 +113,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 						      	l3_object.save!
 
 						      	# check any step, which are not confirmed
-							    is_any_step_without_actual = WorkflowLiveStep.where(object_id: l3_last_live_step.object_id, object_type: l3_last_live_step.object_type, actual_confirmation: nil)  	
+    							is_any_step_without_actual = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.object_id= #{l3_last_live_step.object_id} and workflow_live_steps.object_type = '#{l3_last_live_step.object_type}' and workflow_live_steps.actual_confirmation IS NULL and station_steps.is_visible = #{true}")
 						      	if is_any_step_without_actual.present?
 						      		is_l3_completed = false
 							      	l3_object = l3_last_live_step.object
@@ -127,7 +127,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 					      	end
 				        end
 				    if is_l3_completed
-					    is_any_step_without_actual = WorkflowLiveStep.where(object_id: l2_last_live_step.object_id, object_type: l2_last_live_step.object_type, actual_confirmation: nil)  	
+    					is_any_step_without_actual = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.object_id= #{l2_last_live_step.object_id} and workflow_live_steps.object_type = '#{l2_last_live_step.object_type}' and workflow_live_steps.actual_confirmation IS NULL and station_steps.is_visible = #{true}")
 					    if is_any_step_without_actual.present?
 					    	is_l2_completed = false
 					      	l2_object = l2_last_live_step.object
@@ -150,7 +150,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 		      	l1_object.save!
 
 					if is_l2_completed
-					    is_any_step_without_actual = WorkflowLiveStep.where(object_id: l1s_last_live_step.object_id, object_type: l1s_last_live_step.object_type, actual_confirmation: nil)  	
+    					is_any_step_without_actual = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.object_id= #{l1s_last_live_step.object_id} and workflow_live_steps.object_type = '#{l1s_last_live_step.object_type}' and workflow_live_steps.actual_confirmation IS NULL and station_steps.is_visible = #{true}")
 					    if is_any_step_without_actual.present?
 					      	l1_object = l1s_last_live_step.object
 					      	l1_object.completed_actual = nil

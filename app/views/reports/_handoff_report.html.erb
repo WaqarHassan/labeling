@@ -2,12 +2,27 @@
   <% if @report_serach_result.present? %>
     <table class="table table-bordered">
       <thead>
-        <tr>
+          <tr class="main_heading">
+          <th></th>
+          <th></th>
+          <th></th>
+          <% @filtered_station_steps.each do |filtered_station_step| %>
+            <th style="width: 110px;" ><%= filtered_station_step.station_step.workflow_station.station_name %></th>
+          <% end %>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+
+        <tr class="sub_heading">
           <th><%= @workflow.L1 %></th>
           <th><%= @workflow.L2 %></th>
           <th><%= @workflow.L3 %></th>
           <% @filtered_station_steps.each do |filtered_station_step| %>
-            <th style="width: 110px;" ><%= filtered_station_step.station_step.workflow_station.station_name %> - <%= filtered_station_step.station_step.step_name %></th>
+            <th style="width: 110px;" ><%= filtered_station_step.station_step.step_name %></th>
           <% end %>
           <th>#Comp</th>
           <th>Comp. Type</th>
@@ -43,7 +58,7 @@
                   <td></td>
                   <% @filtered_station_steps.each do |filtered_station_step| 
                     @timestamp = WorkFlow.get_time_stamp(@report_serach_result, 'L1', result['l1_id'], 'l1_id', filtered_station_step.station_step_id)%>
-                    <td class="<%=@timestamp[1]%>" ><%= @timestamp[0] %></td>
+                    <td class="<%=@timestamp[1]%>" ><%= @timestamp[0].html_safe %></td>
                   <% end %>
                   <% object_attributes_data = WorkFlow.object_attributes(result['l1_id'], 'L1') 
                     l1_comp_type = WorkFlow.get_object_attribute_value(object_attributes_data, 'Comp Type')
@@ -85,7 +100,7 @@
                   <td></td>
                   <% @filtered_station_steps.each do |filtered_station_step| 
                     @timestamp = WorkFlow.get_time_stamp(@report_serach_result, 'L2', result['l2_id'], 'l2_id', filtered_station_step.station_step_id)%>
-                    <td class="<%=@timestamp[1]%>" ><%= @timestamp[0] %></td>
+                    <td class="<%=@timestamp[1]%>" ><%= @timestamp[0].html_safe %></td>
                   <% end %>
                   <% object_attributes_data = WorkFlow.object_attributes(result['l2_id'], 'L2') 
                     l2_comp_type = WorkFlow.get_object_attribute_value(object_attributes_data, 'Comp Type')
@@ -126,7 +141,7 @@
                   </td>
                   <% @filtered_station_steps.each do |filtered_station_step| 
                     @timestamp = WorkFlow.get_time_stamp(@report_serach_result, 'L3', result['l3_id'], 'l3_id', filtered_station_step.station_step_id)%>
-                    <td class="<%=@timestamp[1]%>" ><%= @timestamp[0] %></td>
+                    <td class="<%=@timestamp[1]%>" ><%= @timestamp[0].html_safe %></td>
                   <% end %>
                   <% object_attributes_data = WorkFlow.object_attributes(result['l3_id'], 'L3') 
                     l3_comp_type = WorkFlow.get_object_attribute_value(object_attributes_data, 'Comp Type')

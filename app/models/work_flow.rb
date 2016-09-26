@@ -111,8 +111,8 @@ class WorkFlow < ActiveRecord::Base
 			end
 
 			def get_time_stamp (report_serach_result, object_type, object_id, ll_id,station_step_id)
-				time_stamp = ''
-				table_td_class = ''
+				time_stamp = ""
+				table_td_class = ""
 				habdoff_report_serach_unique = report_serach_result.select{|report| report['object_type'] == object_type and report[ll_id] == object_id and report['station_step_id'] == station_step_id }
 				
 				if habdoff_report_serach_unique.present?
@@ -122,12 +122,14 @@ class WorkFlow < ActiveRecord::Base
 						habdoff_report_actual = habdoff_report_serach_unique.select{|report| report['actual_confirmation'] != nil }
 						if habdoff_report_actual.present?
 							habdoff_report_actual_sorted = habdoff_report_actual.sort_by { |h| h[:log_id] }.reverse!
-							time_stamp = habdoff_report_actual_sorted[0]['actual_confirmation'].strftime("%m/%d/%y %I:%M %p")
+							time_stamp = habdoff_report_actual_sorted[0]['actual_confirmation'].strftime("%m/%d/%y")
+							time_stamp += "<br />"+habdoff_report_actual_sorted[0]['actual_confirmation'].strftime("%I:%M %p")
 							table_td_class = 'report_actual_confirmation'
 						else
 							if habdoff_report_serach_unique[0]['eta'].present?
-								time_stamp = habdoff_report_serach_unique[0]['eta'].strftime("%m/%d/%y %I:%M %p")
-								time_stamp = 'ETA '+time_stamp
+								date_stamp = habdoff_report_serach_unique[0]['eta'].strftime("%m/%d/%y")
+								time_stamp = habdoff_report_serach_unique[0]['eta'].strftime("%I:%M %p")
+								time_stamp = "ETA "+date_stamp+"<br />"+time_stamp
 								if DateTime.parse(Time.now.to_s) > DateTime.parse(habdoff_report_serach_unique[0]['eta'].to_s)
 									table_td_class = 'report_eta_light_red'
 								end

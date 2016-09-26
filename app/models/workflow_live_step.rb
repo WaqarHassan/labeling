@@ -102,14 +102,14 @@ class WorkflowLiveStep < ActiveRecord::Base
   	        if l2s_last_live_step.present?
 			    l2s_last_live_step.each do |l2_last_live_step|
 				      	l2_object = l2_last_live_step.object
-				      	l2_object.completed_estimate = l2_last_live_step.eta
+				      	l2_object.completed_estimate = WorkflowLiveStep.find_by_id(l2_last_live_step.id).eta
 				      	l2_object.save!
 
 				        is_l3_completed = true	
 			  	        if l3s_last_live_step[l2_last_live_step.object_id].present?
 					      	l3s_last_live_step[l2_last_live_step.object_id].each do |l3_last_live_step|
 						      	l3_object = l3_last_live_step.object
-						      	l3_object.completed_estimate = l3_last_live_step.eta
+						      	l3_object.completed_estimate = WorkflowLiveStep.find_by_id(l3_last_live_step.id).eta
 						      	l3_object.save!
 
 						      	# check any step, which are not confirmed
@@ -121,7 +121,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 							      	l3_object.save!
 						      	else
 							      	l3_object = l3_last_live_step.object
-							      	l3_object.completed_actual = l3_last_live_step.actual_confirmation
+							      	l3_object.completed_actual = WorkflowLiveStep.find_by_id(l3_last_live_step.id).actual_confirmation
 							      	l3_object.save!
 						      	end
 					      	end
@@ -135,7 +135,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 					      	l2_object.save!
 					    else
 					      	l2_object = l2_last_live_step.object
-					      	l2_object.completed_actual = l2_last_live_step.actual_confirmation
+					      	l2_object.completed_actual = WorkflowLiveStep.find_by_id(l2_last_live_step.id).actual_confirmation
 					      	l2_object.save!
 				      	end
 				    else
@@ -146,7 +146,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 
 		    if l1s_last_live_step.present?
 		      	l1_object = l1s_last_live_step.object
-		      	l1_object.completed_estimate = l1s_last_live_step.eta
+		      	l1_object.completed_estimate = WorkflowLiveStep.find_by_id(l1s_last_live_step.id).eta
 		      	l1_object.save!
 
 					if is_l2_completed
@@ -157,7 +157,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 					      	l1_object.save!
 					    else
 					      	l1_object = l1s_last_live_step.object
-					      	l1_object.completed_actual = l1s_last_live_step.actual_confirmation
+					      	l1_object.completed_actual = WorkflowLiveStep.find_by_id(l1s_last_live_step.id).actual_confirmation
 					      	l1_object.save!
 				      	end
 			      	end

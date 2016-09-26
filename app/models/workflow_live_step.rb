@@ -97,149 +97,8 @@ class WorkflowLiveStep < ActiveRecord::Base
 	      #workflow_live_step_for_eta = workflow_live_step_for_eta.sort_by{|wls_sort| [wls_sort.station_step.workflow_station.sequence,wls_sort.station_step]}d
 	      calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user,workflow_live_step)
 
-	      	# workflow complete block
-	     	is_l1_completed = true
-	      	is_l2_completed = true
-	      	l2_completed_estimate_date = ''
-	      	l2_completed_actual_date = ''
-	      	l3_completed_estimate_date = ''
-	      	l3_completed_actual_date = ''
-
-  	        if l2s_last_live_step.present?
-			    l2s_last_live_step.each do |l2_last_live_step|
-			    	l2_eta_date = WorkflowLiveStep.find_by_id(l2_last_live_step.id).eta
-			      	l2_object = l2_last_live_step.object
-			      	l2_object.completed_estimate = l2_eta_date
-			      	l2_object.save!
-
-			      	if l2_completed_estimate_date == ''
-			      		l2_completed_estimate_date = l2_eta_date
-			      	else
-			      		if DateTime.parse(l2_eta_date.to_s) > DateTime.parse(l2_completed_estimate_date.to_s)
-			      			l2_completed_estimate_date = l2_eta_date
-			      		end	
-			      	end
-
-			        is_l3_completed = true	
-		  	        if l3s_last_live_step[l2_last_live_step.object_id].present?
-				      	l3s_last_live_step[l2_last_live_step.object_id].each do |l3_last_live_step|
-				      		l3_eta_date = WorkflowLiveStep.find_by_id(l3_last_live_step.id).eta
-					      	l3_object = l3_last_live_step.object
-					      	l3_object.completed_estimate = l3_eta_date
-					      	l3_object.save!
-					      	if l3_completed_estimate_date == ''
-					      		l3_completed_estimate_date = l3_eta_date
-					      	else
-					      		if DateTime.parse(l3_eta_date.to_s) > DateTime.parse(l3_completed_estimate_date.to_s)
-					      			l3_completed_estimate_date = l3_eta_date
-					      		end	
-					      	end
-
-					      	# check any step, which are not confirmed
-							is_any_step_without_actual = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.is_active= #{true} and workflow_live_steps.object_id= #{l3_last_live_step.object_id} and workflow_live_steps.object_type = '#{l3_last_live_step.object_type}' and workflow_live_steps.actual_confirmation IS NULL and station_steps.is_visible = #{true}")
-					      	if is_any_step_without_actual.present?
-					      		is_l3_completed = false
-						      	l3_object = l3_last_live_step.object
-						      	l3_object.completed_actual = nil
-						      	l3_object.save!
-					      	else
-					      		l3_actual_date = WorkflowLiveStep.find_by_id(l3_last_live_step.id).actual_confirmation
-						      	l3_object = l3_last_live_step.object
-						      	l3_object.completed_actual = l3_actual_date
-						      	l3_object.save!
-
-						      	if l3_completed_actual_date == ''
-						      		l3_completed_actual_date = l3_actual_date
-						      	else
-						      		if l3_actual_date.present?
-							      		if DateTime.parse(l3_actual_date.to_s) > DateTime.parse(l3_completed_actual_date.to_s)
-							      			l3_completed_actual_date = l3_actual_date
-							      		end
-						      		end	
-						      	end
-					      	end
-				      	end
-			        end
-				    if is_l3_completed
-    					is_any_step_without_actual = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.is_active= #{true} and workflow_live_steps.object_id= #{l2_last_live_step.object_id} and workflow_live_steps.object_type = '#{l2_last_live_step.object_type}' and workflow_live_steps.actual_confirmation IS NULL and station_steps.is_visible = #{true}")
-					    if is_any_step_without_actual.present?
-					    	is_l2_completed = false
-					      	l2_object = l2_last_live_step.object
-					      	l2_object.completed_actual = nil
-					      	l2_object.save!
-					    else
-					    	l2_actual_date = WorkflowLiveStep.find_by_id(l2_last_live_step.id).actual_confirmation
-					      	l2_object = l2_last_live_step.object
-					      	l2_object.completed_actual = l2_actual_date
-				      		if DateTime.parse(l3_completed_actual_date.to_s) > DateTime.parse(l2_actual_date.to_s)
-				      			l2_object.completed_actual = l3_completed_actual_date
-				      		end
-				      		if DateTime.parse(l3_completed_estimate_date.to_s) > DateTime.parse(l2_object.completed_estimate.to_s)
-				      			l2_object.completed_estimate = l3_completed_estimate_date
-				      			l2_completed_estimate_date = l3_completed_estimate_date
-				      		end		
-					      	l2_object.save!
-
-					      	if l2_completed_actual_date == ''
-					      		l2_completed_actual_date = l2_actual_date
-					      	else
-					      		if DateTime.parse(l2_actual_date.to_s) > DateTime.parse(l2_completed_actual_date.to_s)
-					      			l2_completed_actual_date = l2_actual_date
-					      		end	
-					      	end
-
-				      	end
-				    else
-				    	l2_object = l2_last_live_step.object
-				    	if DateTime.parse(l3_completed_estimate_date.to_s) > DateTime.parse(l2_object.completed_estimate.to_s)
-				      		l2_completed_estimate_date = l3_completed_estimate_date
-				      		l2_object.completed_estimate = l3_completed_estimate_date
-				      		l2_object.save!
-				      	end	
-				      	is_l2_completed = false
-				    end
-				end    
-	  	    end
-
-		    if l1s_last_live_step.present?
-		    	l1_eta_date = WorkflowLiveStep.find_by_id(l1s_last_live_step.id).eta
-		      	l1_object = l1s_last_live_step.object
-		      	l1_object.completed_estimate = l1_eta_date
-		    	if DateTime.parse(l2_completed_estimate_date.to_s) > DateTime.parse(l1_eta_date.to_s)
-		      		l1_object.completed_estimate = l2_completed_estimate_date
-		      	end	
-		      	l1_object.save!
-				if is_l2_completed
-					is_any_step_without_actual = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.is_active= #{true} and workflow_live_steps.object_id= #{l1s_last_live_step.object_id} and workflow_live_steps.object_type = '#{l1s_last_live_step.object_type}' and workflow_live_steps.actual_confirmation IS NULL and station_steps.is_visible = #{true}")
-				    if is_any_step_without_actual.present?
-				      	l1_object = l1s_last_live_step.object
-				      	l1_object.completed_actual = nil
-				      	l1_object.save!
-				    else
-				    	l1_actual_date = WorkflowLiveStep.find_by_id(l1s_last_live_step.id).actual_confirmation
-				      	l1_object = l1s_last_live_step.object
-				      	l1_object.completed_actual = l1_actual_date
-      			    	if DateTime.parse(l2_completed_actual_date.to_s) > DateTime.parse(l1_actual_date.to_s)
-				      		l1_object.completed_actual = l2_completed_actual_date
-				      	end	
-				      	l1_object.save!
-			      	end
-		      	end
-		    else
-		      	if is_l2_completed and l2_completed_actual_date != ''
-		      		parent_l1.completed_actual = l2_completed_actual_date
-		      		if l2_completed_estimate_date != ''
-		      			parent_l1.completed_estimate = l2_completed_estimate_date
-		      		end
-		      		parent_l1.save!
-		      	else
-		      		parent_l1.completed_actual = nil
-		      		if l2_completed_estimate_date != ''
-		      			parent_l1.completed_estimate = l2_completed_estimate_date
-		      		end
-		      		parent_l1.save!
-		      	end
-		    end
+	      # workflow completion
+	      set_workflow_completion_datetime(l1s_last_live_step, l2s_last_live_step, l3s_last_live_step)
 
 		end
 
@@ -325,5 +184,112 @@ class WorkflowLiveStep < ActiveRecord::Base
 	        end
 	    end
 
+	    def set_workflow_completion_datetime(l1s_last_live_step, l2s_last_live_step, l3s_last_live_step)
+	    	# workflow complete block
+	     	is_l1_completed = true
+	      	is_l2_completed = true
+
+  	        if l2s_last_live_step.present?
+			    l2s_last_live_step.each do |l2_last_live_step|
+			    	l2_eta_date = WorkflowLiveStep.find_by_id(l2_last_live_step.id).eta
+			      	l2_object = l2_last_live_step.object
+			      	l2_object.completed_estimate = l2_eta_date
+			      	l2_object.save!
+
+			        is_l3_completed = true	
+		  	        if l3s_last_live_step[l2_last_live_step.object_id].present?
+				      	l3s_last_live_step[l2_last_live_step.object_id].each do |l3_last_live_step|
+				      		l3_eta_date = WorkflowLiveStep.find_by_id(l3_last_live_step.id).eta
+					      	l3_object = l3_last_live_step.object
+					      	l3_object.completed_estimate = l3_eta_date
+					      	l3_object.save!
+
+					      	# check any step, which are not confirmed
+							is_any_step_without_actual = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.is_active= #{true} and workflow_live_steps.object_id= #{l3_last_live_step.object_id} and workflow_live_steps.object_type = '#{l3_last_live_step.object_type}' and workflow_live_steps.actual_confirmation IS NULL and station_steps.is_visible = #{true}")
+					      	if is_any_step_without_actual.present?
+					      		is_l3_completed = false
+						      	l3_object = l3_last_live_step.object
+						      	l3_object.completed_actual = nil
+						      	l3_object.save!
+					      	else
+					      		l3_actual_date = WorkflowLiveStep.find_by_id(l3_last_live_step.id).actual_confirmation
+						      	l3_object = l3_last_live_step.object
+						      	l3_object.completed_actual = l3_actual_date
+						      	l3_object.save!
+					      	end
+				      	end
+			        end
+				    if is_l3_completed
+    					is_any_step_without_actual = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.is_active= #{true} and workflow_live_steps.object_id= #{l2_last_live_step.object_id} and workflow_live_steps.object_type = '#{l2_last_live_step.object_type}' and workflow_live_steps.actual_confirmation IS NULL and station_steps.is_visible = #{true}")
+					    if is_any_step_without_actual.present?
+					    	is_l2_completed = false
+					      	l2_object = l2_last_live_step.object
+					      	l2_object.completed_actual = nil
+					      	l2_object.save!
+					    else
+					    	l2_actual_date = WorkflowLiveStep.find_by_id(l2_last_live_step.id).actual_confirmation
+					      	l2_object = l2_last_live_step.object
+					      	l2_object.completed_actual = l2_actual_date
+      				    	maximum_l3_completed_actual_date = L3.where(l2_id: l2_object.id).maximum(:completed_actual)
+				      		if DateTime.parse(maximum_l3_completed_actual_date.to_s) > DateTime.parse(l2_object.completed_actual.to_s)
+				      			l2_object.completed_actual = maximum_l3_completed_actual_date
+				      		end	
+					      	l2_object.save!
+				      	end
+				    else
+				      	is_l2_completed = false
+  				    	l2_object = l2_last_live_step.object
+				    	maximum_l3_completed_estimate_date = L3.where(l2_id: l2_object.id).maximum(:completed_estimate)
+			      		if DateTime.parse(maximum_l3_completed_estimate_date.to_s) > DateTime.parse(l2_object.completed_estimate.to_s)
+			      			l2_object.completed_estimate = maximum_l3_completed_estimate_date
+			      		end
+		      			l2_object.completed_actual = nil
+		      			l2_object.save!
+				    end
+
+				end    
+	  	    end
+
+		    if l1s_last_live_step.present?
+		    	l1_eta_date = WorkflowLiveStep.find_by_id(l1s_last_live_step.id).eta
+		      	l1_object = l1s_last_live_step.object
+      			maximum_l2_completed_estimate_date = L2.where(l1_id: l1_object.id).maximum(:completed_estimate)
+		      	l1_object.completed_estimate = l1_eta_date
+		    	if DateTime.parse(maximum_l2_completed_estimate_date.to_s) > DateTime.parse(l1_eta_date.to_s)
+		      		l1_object.completed_estimate = maximum_l2_completed_estimate_date
+		      	end	
+		      	l1_object.save!
+
+				if is_l2_completed
+					is_any_step_without_actual = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.is_active= #{true} and workflow_live_steps.object_id= #{l1s_last_live_step.object_id} and workflow_live_steps.object_type = '#{l1s_last_live_step.object_type}' and workflow_live_steps.actual_confirmation IS NULL and station_steps.is_visible = #{true}")
+				    if is_any_step_without_actual.present?
+				      	l1_object = l1s_last_live_step.object
+				      	l1_object.completed_actual = nil
+				      	l1_object.save!
+				    else
+				    	l1_actual_date = WorkflowLiveStep.find_by_id(l1s_last_live_step.id).actual_confirmation
+				      	l1_object = l1s_last_live_step.object
+      					maximum_l2_completed_actual_date = L2.where(l1_id: l1_object.id).maximum(:completed_actual)
+				      	l1_object.completed_actual = l1_actual_date
+      			    	if DateTime.parse(maximum_l2_completed_actual_date.to_s) > DateTime.parse(l1_actual_date.to_s)
+				      		l1_object.completed_actual = maximum_l2_completed_actual_date
+				      	end	
+				      	l1_object.save!
+			      	end
+		      	end
+		    else
+      			maximum_l2_completed_estimate_date = L2.where(l1_id: parent_l1.id).maximum(:completed_estimate)
+		      	if is_l2_completed
+      				maximum_l2_completed_actual_date = L2.where(l1_id: parent_l1.id).maximum(:completed_actual)
+		      		parent_l1.completed_actual = maximum_l2_completed_actual_date
+		      		parent_l1.completed_estimate = maximum_l2_completed_estimate_date
+		      		parent_l1.save!
+		      	else
+		      		parent_l1.completed_actual = nil
+		      		parent_l1.completed_estimate = maximum_l2_completed_estimate_date
+		      		parent_l1.save!
+		      	end
+		    end
+	    end
 	end
 end

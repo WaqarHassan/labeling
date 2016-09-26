@@ -149,8 +149,10 @@ class WorkflowLiveStep < ActiveRecord::Base
 						      	if l3_completed_actual_date == ''
 						      		l3_completed_actual_date = l3_actual_date
 						      	else
-						      		if DateTime.parse(l3_actual_date.to_s) > DateTime.parse(l3_completed_actual_date.to_s)
-						      			l3_completed_actual_date = l3_actual_date
+						      		if l3_actual_date.present?
+							      		if DateTime.parse(l3_actual_date.to_s) > DateTime.parse(l3_completed_actual_date.to_s)
+							      			l3_completed_actual_date = l3_actual_date
+							      		end
 						      		end	
 						      	end
 					      	end

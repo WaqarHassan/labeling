@@ -93,11 +93,19 @@
                     <td><%= l3_result['station'] %></td>
                     <td><%= l3_result['step'] %></td>
                     <% if l3_result['actual_confirmation'].present? %>
-                      <td><%= l3_result['actual_confirmation'].strftime("%m/%d/%y %I:%M %p") %></td>
+                      <td>
+                        <%= l3_result['actual_confirmation'].strftime("%m/%d/%y") %>
+                            <br />
+                        <%= l3_result['actual_confirmation'].strftime("%I:%M %p") %>
+                      </td>
                       <td></td>
                     <%elsif l3_result['eta'].present? %>
                       <td></td>
-                      <td><%= l3_result['eta'].strftime("%m/%d/%y %I:%M %p") %></td>
+                      <td>
+                          <%= l3_result['eta'].strftime("%m/%d/%y") %>
+                            <br />
+                          <%= l3_result['eta'].strftime("%I:%M %p") %>
+                      </td>
                     <%else%>
                       <td></td>
                       <td></td>

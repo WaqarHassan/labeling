@@ -39,7 +39,11 @@
                       </td>
                       <td></td>
                       <td></td>
-                      <td><%= l1_result['actual_confirmation'].strftime("%m/%d/%y %I:%M %p") %></td>
+                      <td>
+                        <%= l1_result['actual_confirmation'].strftime("%m/%d/%y") %>
+                        <br />
+                        <%= l1_result['actual_confirmation'].strftime("%I:%M %p") %>
+                      </td>
                       <td><%= l1_result['step'] %></td>
                       <td><%= l1_result['station'] %></td>
                       <td><%= l1_result['l1_num_component'] %></td>
@@ -85,7 +89,11 @@
                       <% end %>
                       </td>
                       <td></td>
-                      <td><%= l2_result['actual_confirmation'].strftime("%m/%d/%y %I:%M %p") %></td>
+                      <td>
+                        <%= l2_result['actual_confirmation'].strftime("%m/%d/%y") %>
+                        <br />
+                        <%= l2_result['actual_confirmation'].strftime("%I:%M %p") %>
+                      </td>
                       <td><%= l2_result['step'] %></td>
                       <td><%= l2_result['station'] %></td>
                       <td><%= l2_result['l2_num_component'] %></td>
@@ -112,7 +120,11 @@
                         <% end %>
                       <% end %>
                       </td>
-                      <td><%= l3_result['actual_confirmation'].strftime("%m/%d/%y %I:%M %p") %></td>
+                      <td>
+                        <%= l3_result['actual_confirmation'].strftime("%m/%d/%y") %>
+                        <br />
+                        <%= l3_result['actual_confirmation'].strftime("%I:%M %p") %>
+                      </td>
                       <td><%= l3_result['step'] %></td>
                       <td><%= l3_result['station'] %></td>
                       <td><%= l3_result['l3_num_component'] %></td>

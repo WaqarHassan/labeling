@@ -50,23 +50,32 @@ class WorkflowLiveStep < ActiveRecord::Base
 	        parent_l1 = workflow_live_step.object
 	      end
 
+	      l1s_last_live_step = nil
+	      l2s_last_live_step = []
+	      l3s_last_live_step = {}
+
 	      workflow_live_steps_l1 = WorkflowLiveStep.where(object_id: parent_l1.id, object_type: 'L1').order(:id)
+	      l1_last_live_step = workflow_live_steps_l1.last
 	      workflow_live_steps_l1.each do |wls_l1|  
 	        workflow_live_step_for_eta_ids << wls_l1
 	      end
 	      
 	      parent_l1.l2s.each do |l2|
 	        workflow_live_steps_l2 = WorkflowLiveStep.where(object_id: l2.id, object_type: 'L2').order(:id)
+	        l2s_last_live_step << workflow_live_steps_l2.last
 	        workflow_live_steps_l2.each do |wls_l2|  
 	          workflow_live_step_for_eta_ids << wls_l2
 	        end
 
+	        l3sLastLiveStep = []
 	        l2.l3s.each do |l3|
 	          workflow_live_steps_l3 = WorkflowLiveStep.where(object_id: l3.id, object_type: 'L3').order(:id)
+	          l3sLastLiveStep << workflow_live_steps_l3.last
 	          workflow_live_steps_l3.each do |wls_l3|  
 	            workflow_live_step_for_eta_ids << wls_l3
 	          end
 	        end
+	        l3s_last_live_step[l2.id] = l3sLastLiveStep
 	      end
 	     
 	      workflow_live_step_for_eta_ids = workflow_live_step_for_eta_ids.sort_by{|wls_sort| wls_sort.id} 
@@ -85,6 +94,75 @@ class WorkflowLiveStep < ActiveRecord::Base
 
 	      #workflow_live_step_for_eta = workflow_live_step_for_eta.sort_by{|wls_sort| [wls_sort.station_step.workflow_station.sequence,wls_sort.station_step]}d
 	      calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user,workflow_live_step)
+
+	      # workflow complete block
+	      is_l1_completed = true
+	      is_l2_completed = true
+
+  	        if l2s_last_live_step.present?
+			    l2s_last_live_step.each do |l2_last_live_step|
+				      	l2_object = l2_last_live_step.object
+				      	l2_object.completed_estimate = l2_last_live_step.eta
+				      	l2_object.save!
+
+				        is_l3_completed = true	
+			  	        if l3s_last_live_step[l2_last_live_step.object_id].present?
+					      	l3s_last_live_step[l2_last_live_step.object_id].each do |l3_last_live_step|
+						      	l3_object = l3_last_live_step.object
+						      	l3_object.completed_estimate = l3_last_live_step.eta
+						      	l3_object.save!
+
+						      	# check any step, which are not confirmed
+							    is_any_step_without_actual = WorkflowLiveStep.where(object_id: l3_last_live_step.object_id, object_type: l3_last_live_step.object_type, actual_confirmation: nil)  	
+						      	if is_any_step_without_actual.present?
+						      		is_l3_completed = false
+							      	l3_object = l3_last_live_step.object
+							      	l3_object.completed_actual = nil
+							      	l3_object.save!
+						      	else
+							      	l3_object = l3_last_live_step.object
+							      	l3_object.completed_actual = l3_last_live_step.actual_confirmation
+							      	l3_object.save!
+						      	end
+					      	end
+				        end
+				    if is_l3_completed
+					    is_any_step_without_actual = WorkflowLiveStep.where(object_id: l2_last_live_step.object_id, object_type: l2_last_live_step.object_type, actual_confirmation: nil)  	
+					    if is_any_step_without_actual.present?
+					    	is_l2_completed = false
+					      	l2_object = l2_last_live_step.object
+					      	l2_object.completed_actual = nil
+					      	l2_object.save!
+					    else
+					      	l2_object = l2_last_live_step.object
+					      	l2_object.completed_actual = l2_last_live_step.actual_confirmation
+					      	l2_object.save!
+				      	end
+				    else
+				      	is_l2_completed = false
+				    end
+				end    
+	  	    end
+
+		    if l1s_last_live_step.present?
+		      	l1_object = l1s_last_live_step.object
+		      	l1_object.completed_estimate = l1s_last_live_step.eta
+		      	l1_object.save!
+
+					if is_l2_completed
+					    is_any_step_without_actual = WorkflowLiveStep.where(object_id: l1s_last_live_step.object_id, object_type: l1s_last_live_step.object_type, actual_confirmation: nil)  	
+					    if is_any_step_without_actual.present?
+					      	l1_object = l1s_last_live_step.object
+					      	l1_object.completed_actual = nil
+					      	l1_object.save!
+					    else
+					      	l1_object = l1s_last_live_step.object
+					      	l1_object.completed_actual = l1s_last_live_step.actual_confirmation
+					      	l1_object.save!
+				      	end
+			      	end
+		    end
+
 		end
 
 		def calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
@@ -107,7 +185,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 	        pred_max_completion = ''
 	        max_step_completion = ''
 	        if wls.predecessors.present? && !wls.actual_confirmation.present? # && wls.is_active?
-	          comp_attribute_value = wls.object #attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Comp'").first
+	          comp_attribute_value = wls.object
 	          lang_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
 	                                            #check successor---------------------
 	          predecessors_steps = wls.predecessors.split(",")

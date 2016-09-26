@@ -4,6 +4,240 @@ class ReportsController < ApplicationController
 	def index
 	end
 
+	def entire_history
+		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+	    if session[:report_wildcard].present?
+	      @wildcard = session[:report_wildcard]
+	    end
+	    if session[:report_exact].present?
+	      @exact = session[:report_exact]
+	    end
+
+		if request.post? or session[:report_q_string].present?
+			@task_confirmation = false
+			if request.post?
+				@serach_result = search[0]
+				if search[1] != ''
+					@report_serach_result = WorkFlow.report_search(search[1])
+				end	
+			else
+			  	q_string = session[:report_q_string]
+			  	if q_string != ''
+					@serach_result = WorkFlow.search(q_string)
+					@report_serach_result = WorkFlow.report_search(q_string)
+				end
+			end	
+		end
+	end
+	
+	def current_status
+		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+	    if session[:report_wildcard].present?
+	      @wildcard = session[:report_wildcard]
+	    end
+	    if session[:report_exact].present?
+	      @exact = session[:report_exact]
+	    end
+
+		if request.post? or session[:report_q_string].present?
+			if request.post?
+				serach_result = search
+			else
+			  	q_string = session[:report_q_string]
+				serach_result = WorkFlow.search(q_string)
+			end	
+			     @task_confirmation = true
+			if serach_result.present?
+				l2_name = ''
+				l1_name = ''
+				l1_list = ''
+				@l2_list = ''
+				@l3_list = ''
+				serach_result.each do |result|
+				  	if l1_name != result['l1_name']
+				  		l1_name = result['l1_name']
+				  		l1_list += result['l1_id'].to_s+'_' 
+				  	end	
+				  	if l2_name != result['l2_name'] && result['l2_id'].presence
+				  		l2_name = result['l2_name']
+				  		@l2_list += result['l2_id'].to_s+'_' 
+				  	end
+				  	if result['l3_id'].presence
+				  		@l3_list += result['l3_id'].to_s+'_' 
+				  	end		
+			  	end
+			    l1_list = l1_list.split('_')
+				@l2_list = @l2_list.split('_')
+			    @l3_list = @l3_list.split('_')
+				@report_l1s = L1.where(id: [l1_list])
+			end
+		end
+	end
+
+	def current_status_aaa
+		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+	    if session[:report_wildcard].present?
+	      @wildcard = session[:report_wildcard]
+	    end
+	    if session[:report_exact].present?
+	      @exact = session[:report_exact]
+	    end
+	    
+		if request.post? or session[:report_q_string].present?
+			if request.post?
+				@serach_result = search[0]
+				@report_serach_result = WorkFlow.current_report_search(search[1])
+			
+			else
+			  	q_string = session[:report_q_string]
+			  	puts '[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[['
+			  	puts q_string
+				@serach_result = WorkFlow.search(q_string)
+				@report_serach_result = WorkFlow.current_report_search(q_string)
+			end	
+		end
+	end
+
+	def daily_activity
+		@work_flows = WorkFlow.where(is_active: true)
+		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+		if request.post? or session[:daily_activity_report_date].present?
+			if request.post?
+				@daily_report_date = params[:daily_report_date]
+				session[:daily_activity_report_date] = @daily_report_date
+			else
+				@daily_report_date = session[:daily_activity_report_date]
+			end
+			date = L1.set_db_date_format(@daily_report_date)
+			q_string = "STR_TO_DATE( '#{date}', '%Y-%m-%d') = STR_TO_DATE(timestamp_logs.created_at, '%Y-%m-%d')"
+			workflow = params[:work_flow]
+			if workflow.present?
+				@searched_work_flow = workflow
+				q_string += "and timestamp_logs.work_flow_id = #{workflow}"
+			else
+				@searched_work_flow = @workflow.id
+				q_string += "and timestamp_logs.work_flow_id = #{@workflow.id}"
+			end
+			@report_serach_result = WorkFlow.daily_report_serach(q_string)
+		end
+	end
+
+	def daily_activity_aaa
+		@work_flows = WorkFlow.where(is_active: true)
+		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+		if request.post? or session[:daily_activity_report_date].present?
+			if request.post?
+				@daily_report_date = params[:daily_report_date]
+				session[:daily_activity_report_date] = @daily_report_date
+			else
+				@daily_report_date = session[:daily_activity_report_date]
+			end
+			date = L1.set_db_date_format(@daily_report_date)
+			q_string = "STR_TO_DATE( '#{date}', '%Y-%m-%d') = STR_TO_DATE(created_at, '%Y-%m-%d')"
+			workflow = params[:work_flow]
+			if workflow.present?
+				q_string += "and work_flow_id = #{workflow}"
+			else
+				q_string += "and work_flow_id = #{@workflow.id}"
+			end
+			@logs = TimestampLog.where(q_string)
+		end
+	end
+
+	def handoff
+		@task_confirmation = true
+		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+	    if session[:report_wildcard].present?
+	      @wildcard = session[:report_wildcard]
+	    end
+	    if session[:report_exact].present?
+	      @exact = session[:report_exact]
+	    end
+
+	    @filtered_station_steps = @workflow.report_filter_steps.eager_load(:station_step => [:workflow_station]).order(:sequence)
+		if request.post? or session[:report_q_string].present?
+			@task_confirmation = false
+			if request.post?
+				@serach_result = search[0]
+				if search[1] != ''
+					@report_serach_result = WorkFlow.handoff_report_search(search[1], @workflow.id)
+				end	
+			else
+			  	q_string = session[:report_q_string]
+			  	if q_string != ''
+					@serach_result = WorkFlow.search(q_string)
+					@report_serach_result = WorkFlow.handoff_report_search(q_string, @workflow.id)
+				end
+			end	
+		end
+	end
+
+	def handoff_aaa
+		@task_confirmation = true
+		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+	    if session[:report_wildcard].present?
+	      @wildcard = session[:report_wildcard]
+	    end
+	    if session[:report_exact].present?
+	      @exact = session[:report_exact]
+	    end
+
+		if request.post? or session[:report_q_string].present?
+			#get filter steps from config
+			@filtered_steps = ''
+			@filtered_station_steps = @workflow.report_filter_steps.order(:sequence)
+			if @filtered_station_steps.present?
+				@filtered_station_steps.each do |stps|
+					@filtered_steps+=  ','+stps.station_step_id.to_s
+				end
+				if @filtered_steps != ''
+					@filtered_steps.slice!(0)
+				end
+			else	
+				@filtered_station_steps = []
+			end
+
+			@entir_history = []
+			@task_confirmation = false
+			@l1s_name = []
+			
+			if request.post?
+				serach_result = search[0]
+			else
+			  	q_string = session[:report_q_string]
+				serach_result = WorkFlow.search(q_string)
+			end	
+
+			if serach_result.present?
+				l2_name = ''
+				l1_name = ''
+				l1_list = ''
+				@l2_list = ''
+				@l3_list = ''
+				serach_result.each do |result|
+				  	if l1_name != result['l1_name']
+				  		l1_name = result['l1_name']
+				  		l1_list += result['l1_id'].to_s+'_' 
+				  	end
+
+				  	if l2_name != result['l2_name'] && result['l2_id'].presence
+				  		l2_name = result['l2_name']
+				  		@l2_list += result['l2_id'].to_s+'_' 
+				  	end	
+
+				  	if result['l3_id'].presence
+				  		@l3_list += result['l3_id'].to_s+'_' 
+				  	end	
+			  	end
+
+			  	l1_list = l1_list.split('_')
+				@l2_list = @l2_list.split('_')
+			    @l3_list = @l3_list.split('_')
+				@report_l1s = L1.where(id: [l1_list])
+			end
+		end
+	end
+
 	def entire_history_aaaa
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
 	    if session[:report_wildcard].present?
@@ -66,139 +300,6 @@ class ReportsController < ApplicationController
 							end	
 					end
 				end	
-			end
-		end
-	end
-	def entire_history
-		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
-	    if session[:report_wildcard].present?
-	      @wildcard = session[:report_wildcard]
-	    end
-	    if session[:report_exact].present?
-	      @exact = session[:report_exact]
-	    end
-
-		if request.post? or session[:report_q_string].present?
-			@task_confirmation = false
-			if request.post?
-				@serach_result = search[0]
-				@report_serach_result = WorkFlow.report_search(search[1])
-			else
-			  	q_string = session[:report_q_string]
-				@serach_result = WorkFlow.search(q_string)
-				@report_serach_result = WorkFlow.report_search(q_string)
-			end	
-			     @task_confirmation = true
-		end
-	end
-	def current_status
-		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
-	    if session[:report_wildcard].present?
-	      @wildcard = session[:report_wildcard]
-	    end
-	    if session[:report_exact].present?
-	      @exact = session[:report_exact]
-	    end
-	    
-		if request.post? or session[:report_q_string].present?
-			if request.post?
-				@serach_result = search[0]
-				@report_serach_result = WorkFlow.current_report_search(search[1])
-			
-			else
-			  	q_string = session[:report_q_string]
-			  	puts '[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[['
-			  	puts q_string
-				@serach_result = WorkFlow.search(q_string)
-				@report_serach_result = WorkFlow.current_report_search(q_string)
-			end	
-		end
-	end
-
-	def daily_activity
-		@work_flows = WorkFlow.where(is_active: true)
-		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
-		if request.post? or session[:daily_activity_report_date].present?
-			if request.post?
-				@daily_report_date = params[:daily_report_date]
-				session[:daily_activity_report_date] = @daily_report_date
-			else
-				@daily_report_date = session[:daily_activity_report_date]
-			end
-			date = L1.set_db_date_format(@daily_report_date)
-			q_string = "STR_TO_DATE( '#{date}', '%Y-%m-%d') = STR_TO_DATE(created_at, '%Y-%m-%d')"
-			workflow = params[:work_flow]
-			if workflow.present?
-				q_string += "and work_flow_id = #{workflow}"
-			else
-				q_string += "and work_flow_id = 1"
-			end
-			@logs = TimestampLog.where(q_string)
-		end
-	end
-
-	def handoff
-		@task_confirmation = true
-		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
-	    if session[:report_wildcard].present?
-	      @wildcard = session[:report_wildcard]
-	    end
-	    if session[:report_exact].present?
-	      @exact = session[:report_exact]
-	    end
-
-		if request.post? or session[:report_q_string].present?
-			#get filter steps from config
-			@filtered_steps = ''
-			@filtered_station_steps = @workflow.report_filter_steps.order(:sequence)
-			if @filtered_station_steps.present?
-				@filtered_station_steps.each do |stps|
-					@filtered_steps+=  ','+stps.station_step_id.to_s
-				end
-				if @filtered_steps != ''
-					@filtered_steps.slice!(0)
-				end
-			else	
-				@filtered_station_steps = []
-			end
-
-			@entir_history = []
-			@task_confirmation = false
-			@l1s_name = []
-			
-			if request.post?
-				serach_result = search
-			else
-			  	q_string = session[:report_q_string]
-				serach_result = WorkFlow.search(q_string)
-			end	
-
-			if serach_result.present?
-				l2_name = ''
-				l1_name = ''
-				l1_list = ''
-				@l2_list = ''
-				@l3_list = ''
-				serach_result.each do |result|
-				  	if l1_name != result['l1_name']
-				  		l1_name = result['l1_name']
-				  		l1_list += result['l1_id'].to_s+'_' 
-				  	end
-
-				  	if l2_name != result['l2_name'] && result['l2_id'].presence
-				  		l2_name = result['l2_name']
-				  		@l2_list += result['l2_id'].to_s+'_' 
-				  	end	
-
-				  	if result['l3_id'].presence
-				  		@l3_list += result['l3_id'].to_s+'_' 
-				  	end	
-			  	end
-
-			  	l1_list = l1_list.split('_')
-				@l2_list = @l2_list.split('_')
-			    @l3_list = @l3_list.split('_')
-				@report_l1s = L1.where(id: [l1_list])
 			end
 		end
 	end

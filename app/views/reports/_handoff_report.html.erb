@@ -1,5 +1,5 @@
 <div class="handoff-report-data" id ="handoff_report_data">
-  <% if @report_l1s.present? %>
+  <% if @report_serach_result.present? %>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -19,103 +19,139 @@
       </thead>
 
       <tbody>
-        <% @report_l1s.each do |l1| %>
-
-            <% filtered_l1_live_stpes = l1.get_workflow_live_steps(@filtered_steps) %>
+      <% if @serach_result.present?
+          l2_name = ''
+          l1_name = ''
+          l1_list = ''
+          l2_list = ''
+          l3_list = ''
+          @serach_result.each do |result|
+              if l1_name != result['l1_name']
+                l1_name = result['l1_name'] %>
                 <tr>
                   <td>
-                    <%= link_to l1.name, open_info_modal_l1_path(l1.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                    <%= link_to result['l1_name'], open_info_modal_l1_path(result['l1_id'],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
                     <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
-                      <%= hidden_field_tag 'object_type', 'L1' %>
-                      <%= hidden_field_tag 'object_id', l1.id %>
-                      <%= button_tag(type: "submit", class: "btn report_main_link") do %>
-                          <span class="glyphicon glyphicon-new-window"></span>
-                      <% end %>
+                    <%= hidden_field_tag 'object_type', 'L1' %>
+                    <%= hidden_field_tag 'object_id', result['l1_id'] %>
+                    <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                        <span class="glyphicon glyphicon-new-window"></span>
                     <% end %>
+                  <% end %>
                   </td>
                   <td></td>
                   <td></td>
                   <% @filtered_station_steps.each do |filtered_station_step| 
-                    workflow_live_step = filtered_l1_live_stpes.find{|wkls| wkls.station_step_id == filtered_station_step.station_step_id }
-                    step_timestamp = ['','']
-                    if workflow_live_step.present?
-                      step_timestamp = workflow_live_step.get_latest_timestamp_log
-                    end %>
-                    <td class="<%=step_timestamp[1]%>" ><%=step_timestamp[0]%></td>
+                    @timestamp = WorkFlow.get_time_stamp(@report_serach_result, 'L1', result['l1_id'], 'l1_id', filtered_station_step.station_step_id)%>
+                    <td class="<%=@timestamp[1]%>" ><%= @timestamp[0] %></td>
                   <% end %>
-                  <td><%= l1.num_component%></td>
-                  <td><%= l1.get_comp_type %></td>
-                  <td><%= l1.business_unit%></td>
-                  <td><%= l1.get_num_lang %></td>
-                  <td><%= l1.status %></td>
-                  <td><%= l1.get_horw %></td>
+                  <% object_attributes_data = WorkFlow.object_attributes(result['l1_id'], 'L1') 
+                    l1_comp_type = WorkFlow.get_object_attribute_value(object_attributes_data, 'Comp Type')
+                    l1_nm_lang = WorkFlow.get_object_attribute_value(object_attributes_data, '#Lang')
+                    l1_horw = WorkFlow.get_object_attribute_value(object_attributes_data, 'Horw')
+                    work_live_step = WorkFlow.get_work_live_step(@report_serach_result, 'L1', result['l1_id'], 'l1_id')
+                    l1_num_component = ''
+                    l1_bu = ''
+                    l1_status = ''
+                    if work_live_step.present?
+                      l1_num_component = work_live_step['l1_num_component']
+                      l1_bu = work_live_step['l1_bu']
+                      l1_status = work_live_step['l1_status']
+                    end
+                  %>
+                  <td><%= l1_num_component %></td>
+                  <td><%= l1_comp_type %></td>
+                  <td><%= l1_bu %></td>
+                  <td><%= l1_nm_lang %></td>
+                  <td><%= l1_status %></td>
+                  <td><%= l1_horw %></td>
                 </tr>
+             <%end
 
-          <% l1.get_searched_l2_objects(@l2_list).each do |l2| %>
-            <% filtered_l2_live_stpes = l2.get_workflow_live_steps(@filtered_steps) %>
-              <tr>
-                <td></td>
-                <td>
-                  <%= link_to l2.name, open_info_modal_l2_path(l2.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
-                  <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+              if l2_name != result['l2_name'] && result['l2_id'].presence
+                l2_name = result['l2_name'] %>
+                <tr>
+                  <td></td>
+                  <td>
+                    <%= link_to result['l2_name'], open_info_modal_l2_path(result['l2_id'],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                    <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
                     <%= hidden_field_tag 'object_type', 'L2' %>
-                    <%= hidden_field_tag 'object_id', l2.id %>
+                    <%= hidden_field_tag 'object_id', result['l2_id'] %>
                     <%= button_tag(type: "submit", class: "btn report_main_link") do %>
                         <span class="glyphicon glyphicon-new-window"></span>
                     <% end %>
                   <% end %>
-                </td>
-                <td></td>
-                <% @filtered_station_steps.each do |filtered_station_step| 
-                  workflow_live_step = filtered_l2_live_stpes.find{|wkls| wkls.station_step_id == filtered_station_step.station_step_id }
-                  step_timestamp = ['','']
-                  if workflow_live_step.present?
-                    step_timestamp = workflow_live_step.get_latest_timestamp_log
-                  end %>
-                  <td class="<%=step_timestamp[1]%>" ><%=step_timestamp[0]%></td>
-                <% end %>
-                <td><%=l2.num_component%></td>
-                <td><%= l2.get_comp_type %></td>
-                <td><%=l2.business_unit%></td>
-                <td><%= l2.get_num_lang %></td>
-                <td><%=l2.status%></td>
-                <td><%= l2.get_horw %></td>
-              </tr>
+                  </td>
+                  <td></td>
+                  <% @filtered_station_steps.each do |filtered_station_step| 
+                    @timestamp = WorkFlow.get_time_stamp(@report_serach_result, 'L2', result['l2_id'], 'l2_id', filtered_station_step.station_step_id)%>
+                    <td class="<%=@timestamp[1]%>" ><%= @timestamp[0] %></td>
+                  <% end %>
+                  <% object_attributes_data = WorkFlow.object_attributes(result['l2_id'], 'L2') 
+                    l2_comp_type = WorkFlow.get_object_attribute_value(object_attributes_data, 'Comp Type')
+                    l2_nm_lang = WorkFlow.get_object_attribute_value(object_attributes_data, '#Lang')
+                    l2_horw = WorkFlow.get_object_attribute_value(object_attributes_data, 'Horw')
+                    work_live_step = WorkFlow.get_work_live_step(@report_serach_result, 'L2', result['l2_id'], 'l2_id')
+                    l2_num_component = ''
+                    l2_bu = ''
+                    l2_status = ''
+                    if work_live_step.present?
+                      l2_num_component = work_live_step['l2_num_component']
+                      l2_bu = work_live_step['l2_bu']
+                      l2_status = work_live_step['l2_status']
+                    end
 
-          <% l2.get_searched_l3_objects(@l3_list).each do |l3| %>
-            <% filtered_l3_live_stpes = l3.get_workflow_live_steps(@filtered_steps) %>
-              <tr>
-                <td></td>
-                <td></td>
-                <td>                  
-                  <%= link_to l3.name, open_info_modal_l3_path(l3.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
-                  <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                  %>
+                  <td><%= l2_num_component %></td>
+                  <td><%= l2_comp_type %></td>
+                  <td><%= l2_bu %></td>
+                  <td><%= l2_nm_lang %></td>
+                  <td><%= l2_status %></td>
+                  <td><%= l2_horw %></td>
+                </tr>
+            <% end 
+              if result['l3_id'].presence %>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td>
+                    <%= link_to result['l3_name'], open_info_modal_l3_path(result['l3_id'],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                    <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
                     <%= hidden_field_tag 'object_type', 'L3' %>
-                    <%= hidden_field_tag 'object_id', l3.id %>
+                    <%= hidden_field_tag 'object_id', result['l3_id'] %>
                     <%= button_tag(type: "submit", class: "btn report_main_link") do %>
                         <span class="glyphicon glyphicon-new-window"></span>
                     <% end %>
                   <% end %>
-                </td>
-                <% @filtered_station_steps.each do |filtered_station_step| 
-                  workflow_live_step = filtered_l3_live_stpes.find{|wkls| wkls.station_step_id == filtered_station_step.station_step_id }
-                  step_timestamp = ['','']
-                  if workflow_live_step.present?
-                    step_timestamp = workflow_live_step.get_latest_timestamp_log
-                  end %>
-                  <td class="<%=step_timestamp[1]%>" ><%=step_timestamp[0]%></td>
-                <% end %>  
-                <td><%= l3.num_component%></td>
-                <td><%= l3.get_comp_type %></td>
-                <td><%= l3.business_unit%></td>
-                <td><%= l3.get_num_lang %></td>
-                <td><%= l3.status%></td>
-                <td><%= l3.get_horw %></td>
-              </tr>
-            <% end %> 
-          <% end %>
-
-        <% end %>  
+                  </td>
+                  <% @filtered_station_steps.each do |filtered_station_step| 
+                    @timestamp = WorkFlow.get_time_stamp(@report_serach_result, 'L3', result['l3_id'], 'l3_id', filtered_station_step.station_step_id)%>
+                    <td class="<%=@timestamp[1]%>" ><%= @timestamp[0] %></td>
+                  <% end %>
+                  <% object_attributes_data = WorkFlow.object_attributes(result['l3_id'], 'L3') 
+                    l3_comp_type = WorkFlow.get_object_attribute_value(object_attributes_data, 'Comp Type')
+                    l3_nm_lang = WorkFlow.get_object_attribute_value(object_attributes_data, '#Lang')
+                    l3_horw = WorkFlow.get_object_attribute_value(object_attributes_data, 'Horw')
+                    work_live_step = WorkFlow.get_work_live_step(@report_serach_result, 'L3', result['l3_id'], 'l3_id')
+                    l3_num_component = ''
+                    l3_bu = ''
+                    l3_status = ''
+                    if work_live_step.present?
+                      l3_num_component = work_live_step['l3_num_component']
+                      l3_bu = work_live_step['l3_bu']
+                      l3_status = work_live_step['l3_status']
+                    end
+                  %>
+                  <td><%= l3_num_component %></td>
+                  <td><%= l3_comp_type %></td>
+                  <td><%= l3_bu %></td>
+                  <td><%= l3_nm_lang %></td>
+                  <td><%= l3_status %></td>
+                  <td><%= l3_horw %></td>
+                </tr>
+                <%end
+            end
+        end %>  
       </tbody>
     </table>
   <% else %>

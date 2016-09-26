@@ -10,10 +10,10 @@
   <%= form_tag daily_activity_reports_path, remote: true, :id => 'search_form', :class => 'form-horizontal'  do %>
     <div class="row daily_activity_date">
         <div class="col-lg-2">
-          <%= select_tag "work_flow", options_from_collection_for_select(@work_flows, 'id', 'name',@work_flows),{include_blank: "Please Select Workflow", :class=>'form-control pnd-reqst pull-left'}  %> 
+          <%= select_tag "work_flow", options_from_collection_for_select(@work_flows, 'id', 'name',@searched_work_flow),{include_blank: false, :class=>'form-control pnd-reqst pull-left'}  %> 
         </div>
       <div class="col-lg-2">
-        <input type="text" class="datepicker_only form-control" id="datepicker_now" name = "daily_report_date" placeholder="Please Select Date"  required>
+        <input type="text" class="datepicker_only form-control" id="datepicker_now" name = "daily_report_date" placeholder="Please Select Date"  required value="<%=@daily_report_date%>" >
       </div> 
       <div class="col-lg-2">
         <button type="submit" class="btn btn-primary">Search</button>
@@ -21,7 +21,7 @@
     </div>
   <%end%>
     <div id="daily_activity_report_search_result_div">
-      <% if @logs.present? %>
+      <% if @report_serach_result.present? %>
         <%= render 'reports/daily_activity_report' %>
       <% else %>
           <div class="alert daily-alert-report"> Do serach to view your report! </div>
@@ -34,7 +34,9 @@
     }
   </style>		
   <script type="text/javascript">
-      $('.datepicker_only').datepicker({format: 'mm/dd/yyyy' , autoclose: true });
-
-
+  if (window.jQuery) {  
+    $(document).ready(function() {
+        $('.datepicker_only').datepicker({format: 'mm/dd/yyyy' , autoclose: true });
+    })
+  };
   </script>

@@ -1,0 +1,132 @@
+<div class="handoff-report-data" id ="handoff_report_data">
+  <% if @report_l1s.present? %>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th><%= @workflow.L1 %></th>
+          <th><%= @workflow.L2 %></th>
+          <th><%= @workflow.L3 %></th>
+          <% @filtered_station_steps.each do |filtered_station_step| %>
+            <th style="width: 110px;" ><%= filtered_station_step.station_step.workflow_station.station_name %> - <%= filtered_station_step.station_step.step_name %></th>
+          <% end %>
+          <th>#Comp</th>
+          <th>Comp. Type</th>
+          <th>BU</th>
+          <th>#Lang</th>
+          <th>Status</th>
+          <th>Horw</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @report_l1s.each do |l1| %>
+
+            <% filtered_l1_live_stpes = l1.get_workflow_live_steps(@filtered_steps) %>
+                <tr>
+                  <td>
+                    <%= link_to l1.name, open_info_modal_l1_path(l1.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                    <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                      <%= hidden_field_tag 'object_type', 'L1' %>
+                      <%= hidden_field_tag 'object_id', l1.id %>
+                      <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                          <span class="glyphicon glyphicon-new-window"></span>
+                      <% end %>
+                    <% end %>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <% @filtered_station_steps.each do |filtered_station_step| 
+                    workflow_live_step = filtered_l1_live_stpes.find{|wkls| wkls.station_step_id == filtered_station_step.station_step_id }
+                    step_timestamp = ['','']
+                    if workflow_live_step.present?
+                      step_timestamp = workflow_live_step.get_latest_timestamp_log
+                    end %>
+                    <td class="<%=step_timestamp[1]%>" ><%=step_timestamp[0]%></td>
+                  <% end %>
+                  <td><%= l1.num_component%></td>
+                  <td><%= l1.get_comp_type %></td>
+                  <td><%= l1.business_unit%></td>
+                  <td><%= l1.get_num_lang %></td>
+                  <td><%= l1.status %></td>
+                  <td><%= l1.get_horw %></td>
+                </tr>
+
+          <% l1.get_searched_l2_objects(@l2_list).each do |l2| %>
+            <% filtered_l2_live_stpes = l2.get_workflow_live_steps(@filtered_steps) %>
+              <tr>
+                <td></td>
+                <td>
+                  <%= link_to l2.name, open_info_modal_l2_path(l2.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                  <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                    <%= hidden_field_tag 'object_type', 'L2' %>
+                    <%= hidden_field_tag 'object_id', l2.id %>
+                    <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                        <span class="glyphicon glyphicon-new-window"></span>
+                    <% end %>
+                  <% end %>
+                </td>
+                <td></td>
+                <% @filtered_station_steps.each do |filtered_station_step| 
+                  workflow_live_step = filtered_l2_live_stpes.find{|wkls| wkls.station_step_id == filtered_station_step.station_step_id }
+                  step_timestamp = ['','']
+                  if workflow_live_step.present?
+                    step_timestamp = workflow_live_step.get_latest_timestamp_log
+                  end %>
+                  <td class="<%=step_timestamp[1]%>" ><%=step_timestamp[0]%></td>
+                <% end %>
+                <td><%=l2.num_component%></td>
+                <td><%= l2.get_comp_type %></td>
+                <td><%=l2.business_unit%></td>
+                <td><%= l2.get_num_lang %></td>
+                <td><%=l2.status%></td>
+                <td><%= l2.get_horw %></td>
+              </tr>
+
+          <% l2.get_searched_l3_objects(@l3_list).each do |l3| %>
+            <% filtered_l3_live_stpes = l3.get_workflow_live_steps(@filtered_steps) %>
+              <tr>
+                <td></td>
+                <td></td>
+                <td>                  
+                  <%= link_to l3.name, open_info_modal_l3_path(l3.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                  <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                    <%= hidden_field_tag 'object_type', 'L3' %>
+                    <%= hidden_field_tag 'object_id', l3.id %>
+                    <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                        <span class="glyphicon glyphicon-new-window"></span>
+                    <% end %>
+                  <% end %>
+                </td>
+                <% @filtered_station_steps.each do |filtered_station_step| 
+                  workflow_live_step = filtered_l3_live_stpes.find{|wkls| wkls.station_step_id == filtered_station_step.station_step_id }
+                  step_timestamp = ['','']
+                  if workflow_live_step.present?
+                    step_timestamp = workflow_live_step.get_latest_timestamp_log
+                  end %>
+                  <td class="<%=step_timestamp[1]%>" ><%=step_timestamp[0]%></td>
+                <% end %>  
+                <td><%= l3.num_component%></td>
+                <td><%= l3.get_comp_type %></td>
+                <td><%= l3.business_unit%></td>
+                <td><%= l3.get_num_lang %></td>
+                <td><%= l3.status%></td>
+                <td><%= l3.get_horw %></td>
+              </tr>
+            <% end %> 
+          <% end %>
+
+        <% end %>  
+      </tbody>
+    </table>
+  <% else %>
+    <div class="alert alert-info"> No Result Found! </a>
+  <% end %>
+</div>
+
+  <style type="text/css">
+    .container{
+        background-color: #fff;    
+    }
+  </style>
+
+  <%= javascript_include_tag "reports" %>   

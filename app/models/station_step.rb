@@ -76,6 +76,23 @@ class StationStep < ActiveRecord::Base
 		# 	return calculated_end_of_day
 		# end
 	end
+
+	class << self
+		def get_step_predecessors(predecessors)
+			pred_name = "\n" 
+			if predecessors.present?
+				predecessors_list = predecessors.split(',')
+				if predecessors_list.presence
+					predecessors_list.each do |pred|
+						pred_station_step = StationStep.eager_load(:workflow_station).find_by_id(pred)
+						pred_name = pred_name+'*'+pred_station_step.workflow_station.station_name+' - '+pred_station_step.step_name
+						pred_name = pred_name+"\n"
+					end
+				end	
+			end	
+			return pred_name
+		end
+	end
 	
 end
 

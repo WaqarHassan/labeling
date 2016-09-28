@@ -328,9 +328,10 @@ CREATE TABLE `report_filter_steps` (
   `predecessors` varchar(255) DEFAULT NULL,
   `sequence` int(11) DEFAULT NULL,
   `updated_at` datetime NOT NULL,
-  `created_at` datetime NOT NULL,
+  `duration_days` int(11) DEFAULT NULL,
+  `predecessors` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -435,6 +436,7 @@ CREATE TABLE `timestamp_logs` (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1336 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -581,7 +583,6 @@ CREATE TABLE `workflow_stations` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-09-28 10:37:07
 INSERT INTO schema_migrations (version) VALUES ('20130909170542');
 
 INSERT INTO schema_migrations (version) VALUES ('20130909194719');
@@ -679,4 +680,3 @@ INSERT INTO schema_migrations (version) VALUES ('20160926070013');
 INSERT INTO schema_migrations (version) VALUES ('20160927074414');
 
 INSERT INTO schema_migrations (version) VALUES ('20160927093731');
-

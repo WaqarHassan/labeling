@@ -556,3 +556,15 @@ label.string, label.integer {
     margin: auto;
     width: 13%;
 }
+
+.btn:hover, .card__actions a:hover, .btn:focus, .card__actions a:focus, .btn.focus, .card__actions a.focus{
+    color: #fff;
+}
+.btn.save-print-update-edit-btn.focus{
+    background-color: #45012f;
+}
+
+.btn-danger:focus, .btn-danger.focus{
+    background-color: #9e9783;
+    border-color: #94896b;
+}

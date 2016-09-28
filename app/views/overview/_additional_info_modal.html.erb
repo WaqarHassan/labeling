@@ -145,7 +145,7 @@
       <%if @type == 'L1' %>
          <%=  link_to "ADD "+@workflow.L2, add_new_l2_path(@l1.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_l2_modal',"data-dismiss" => "modal", :class => 'btn save-print-update-edit-btn pull-left'} %>
          
-          <%=  link_to "ETA-Refresh", eta_refresh_path(@l1.id), { :class => 'btn save-print-update-edit-btn pull-left'} %>
+          <%=  link_to "ETA Refresh", eta_refresh_path(@l1.id), { :class => 'btn save-print-update-edit-btn pull-left'} %>
 
       <%elsif @type == 'L2' %>
           <%=  link_to "ADD "+@workflow.L3, add_new_l3_path(@l2.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_l3_modal',"data-dismiss" => "modal", :class => 'btn save-print-update-edit-btn pull-left'} %>

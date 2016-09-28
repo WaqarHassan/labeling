@@ -133,10 +133,11 @@ function handoff_show_hide()
 		var handoff_report_data = $('#handoff_report_data').width() - 250 ;
 		$('#handoff_report_data').width(handoff_report_data);
 	  }
-		// handoff_projectform_class = $('#handoff_projectform').attr('class');	 
-		// handoff_report_data_width = $('#handoff_report_data').width();
-		// Cookies.set('handoff_projectform_class', handoff_projectform_class, { expires: 7 });
-		// Cookies.set('handoff_report_data_width', handoff_report_data_width, { expires: 7 });
+}
+
+function update_all_etas(){
+	$('#myPleaseWait').modal('show');
+	return true;
 }
 
 

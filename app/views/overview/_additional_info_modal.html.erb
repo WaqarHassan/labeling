@@ -19,7 +19,7 @@
                 <% if @l1.status.downcase! == 'cancel' %>
                   <%= link_to @l1.name, 'javascript:void(0)', title: 'Closed and Canceled level are not editable!' %>
                 <% else %>
-                  <%= link_to @l1.name, edit_l1_path(@l1.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_l1_modal' , "data-di` smiss" => "modal"} %>
+                  <%= link_to @l1.name, edit_l1_path(@l1.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_l1_modal' , "data-dismiss" => "modal"} %>
                 <% end %>  
               </div>
           </div>

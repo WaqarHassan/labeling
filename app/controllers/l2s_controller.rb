@@ -59,6 +59,8 @@ class L2sController < ApplicationController
     if name.present? 
       abort('Validation Error: Name must be Unique.');
     end
+    #abort("=========================================================================================")
+    abort( params[:requested_date] )
     @l2 = L2.new(l2_params)
     #abort()
     @l2.user_id = current_user.id
@@ -164,7 +166,16 @@ class L2sController < ApplicationController
       #abort()
       session[:filter_object_type] = 'L2'
       session[:filter_object_id] = @l2.id
-      redirect_to root_path, notice: @workflow.L2+' was successfully created.'
+       redirect_to root_path, notice: @workflow.L2+' was successfully created.'
+       
+      # if  calculate_Ia_approval_date(params[:requested_date]) >= Date.now
+      #     redirect_to root_path, notice: @workflow.L2+' was successfully created.'
+      # else
+      #       redirect_to root_path, notice: @workflow.L2+' was successfully created.
+      #       Based on your entries, the IA should have already been approved on MM/DD/YY'
+      # end
+
+      
     else
       render :new
     end
@@ -229,7 +240,10 @@ class L2sController < ApplicationController
     def set_l2
       @l2 = L2.find(params[:id])
     end
+    def calculate_Ia_approval_date(requested_date)
 
+
+    end
     # Only allow a trusted parameter "white list" through.
     def l2_params
       params.require(:l2).permit(:name, :l1_id, :status, :business_unit, :num_component, :notes, :requested_date, :to_be_approved_by)

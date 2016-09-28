@@ -130,7 +130,11 @@
                           <div class="col-lg-6">
                             <input type="text" name="<%= "attr[#{att.id}]" %>"   <%= att.is_required == true ? 'required' : '' %> class="datepicker_only form-control" value= <%= attr_field_value.present? ? attr_field_value : "" %> >
                         </div>
+                        <%if att.label == "Requested Date" %>
+                          <%= f.hidden_field :requested_date_id, :value => att.id  %>
+                        <%end %>
                       </div>
+
                       <%else%>
                           <div class="row">
                             <div class="col-lg-4">

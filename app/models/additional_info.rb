@@ -12,7 +12,7 @@ class AdditionalInfo < ActiveRecord::Base
 				reason = ReasonCode.where(id: reason_code_ids)
 				data = ''
 				reason.each do |t|
-					data +=  t.reason + '<br/>'
+					data +=  t.reason + ',<br/>'
 				end
 				return data.chomp('<br/>')				#data.chop.chop.chop.chop.chop :) 
 			end

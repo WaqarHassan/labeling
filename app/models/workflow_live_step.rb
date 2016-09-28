@@ -98,7 +98,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 	      calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user,workflow_live_step)
 
 	      # workflow completion
-	      set_workflow_completion_datetime(l1s_last_live_step, l2s_last_live_step, l3s_last_live_step)
+	      set_workflow_completion_datetime(parent_l1, l1s_last_live_step, l2s_last_live_step, l3s_last_live_step)
 
 		end
 
@@ -184,7 +184,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 	        end
 	    end
 
-	    def set_workflow_completion_datetime(l1s_last_live_step, l2s_last_live_step, l3s_last_live_step)
+	    def set_workflow_completion_datetime(parent_l1, l1s_last_live_step, l2s_last_live_step, l3s_last_live_step)
 	    	# workflow complete block
 	     	is_l1_completed = true
 	      	is_l2_completed = true

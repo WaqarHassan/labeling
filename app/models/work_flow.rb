@@ -182,29 +182,6 @@ class WorkFlow < ActiveRecord::Base
 			end
 		end
 end
-
-
-# Select  l1s.id as l1_id, l1s.name as l1_name,
-# 		l2s.id as l2_id, l2s.name as l2_name, 
-# 		l3s.id as l3_id, l3s.name as l3_name,
-# 		l3s.num_component as l3_num_component,
-# 		l2s.num_component as l2_num_component,
-# 		l1s.num_component as l1_num_component,
-# 		workflow_live_steps.actual_confirmation as actual_confirmation, 
-# 		workflow_live_steps.eta as eta, 
-# 		station_steps.step_name as step, 
-# 		workflow_stations.station_name as station,
-# 		workflow_live_steps.id as wls_id, 
-# 		workflow_live_steps.object_type as object_type
-# 		from labeling_development.l1s
-# 		left join labeling_development.l2s on labeling_development.l1s.id = l2s.l1_id
-# 		left join labeling_development.l3s on labeling_development.l3s.l2_id=l2s.id
-# 		inner join labeling_development.workflow_live_steps 
-# 				on (workflow_live_steps.object_id = l1s.id and workflow_live_steps.object_type = 'L1') 
-# 				or (workflow_live_steps.object_id = l2s.id  and workflow_live_steps.object_type = 'L2') 
-# 				or (workflow_live_steps.object_id = l3s.id  and workflow_live_steps.object_type = 'L3')
-# 		inner join labeling_development.station_steps on workflow_live_steps.station_step_id = station_steps.id
-# 		inner join labeling_development.workflow_stations on station_steps.workflow_station_id = workflow_stations.id
 	
 
 

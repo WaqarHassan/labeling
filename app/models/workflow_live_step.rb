@@ -232,17 +232,21 @@ class WorkflowLiveStep < ActiveRecord::Base
 					      	l2_object = l2_last_live_step.object
 					      	l2_object.completed_actual = l2_actual_date
       				    	maximum_l3_completed_actual_date = L3.where(l2_id: l2_object.id).maximum(:completed_actual)
-				      		if DateTime.parse(maximum_l3_completed_actual_date.to_s) > DateTime.parse(l2_object.completed_actual.to_s)
-				      			l2_object.completed_actual = maximum_l3_completed_actual_date
-				      		end	
+      				    	if maximum_l3_completed_actual_date.presence and l2_object.completed_actual.presence
+					      		if DateTime.parse(maximum_l3_completed_actual_date.to_s) > DateTime.parse(l2_object.completed_actual.to_s)
+					      			l2_object.completed_actual = maximum_l3_completed_actual_date
+					      		end	
+				      		end
 					      	l2_object.save!
 				      	end
 				    else
 				      	is_l2_completed = false
   				    	l2_object = l2_last_live_step.object
 				    	maximum_l3_completed_estimate_date = L3.where(l2_id: l2_object.id).maximum(:completed_estimate)
-			      		if DateTime.parse(maximum_l3_completed_estimate_date.to_s) > DateTime.parse(l2_object.completed_estimate.to_s)
-			      			l2_object.completed_estimate = maximum_l3_completed_estimate_date
+				    	if maximum_l3_completed_estimate_date.presence and l2_object.completed_estimate.presence
+				      		if DateTime.parse(maximum_l3_completed_estimate_date.to_s) > DateTime.parse(l2_object.completed_estimate.to_s)
+				      			l2_object.completed_estimate = maximum_l3_completed_estimate_date
+				      		end
 			      		end
 		      			l2_object.completed_actual = nil
 		      			l2_object.save!
@@ -256,9 +260,11 @@ class WorkflowLiveStep < ActiveRecord::Base
 		      	l1_object = l1s_last_live_step.object
       			maximum_l2_completed_estimate_date = L2.where(l1_id: l1_object.id).maximum(:completed_estimate)
 		      	l1_object.completed_estimate = l1_eta_date
-		    	if DateTime.parse(maximum_l2_completed_estimate_date.to_s) > DateTime.parse(l1_eta_date.to_s)
-		      		l1_object.completed_estimate = maximum_l2_completed_estimate_date
-		      	end	
+		      	if maximum_l2_completed_estimate_date.presence and l1_eta_date.presence
+			    	if DateTime.parse(maximum_l2_completed_estimate_date.to_s) > DateTime.parse(l1_eta_date.to_s)
+			      		l1_object.completed_estimate = maximum_l2_completed_estimate_date
+			      	end	
+		      	end
 		      	l1_object.save!
 
 				if is_l2_completed
@@ -272,9 +278,11 @@ class WorkflowLiveStep < ActiveRecord::Base
 				      	l1_object = l1s_last_live_step.object
       					maximum_l2_completed_actual_date = L2.where(l1_id: l1_object.id).maximum(:completed_actual)
 				      	l1_object.completed_actual = l1_actual_date
-      			    	if DateTime.parse(maximum_l2_completed_actual_date.to_s) > DateTime.parse(l1_actual_date.to_s)
-				      		l1_object.completed_actual = maximum_l2_completed_actual_date
-				      	end	
+				      	if maximum_l2_completed_actual_date.presence and l1_actual_date.presence
+	      			    	if DateTime.parse(maximum_l2_completed_actual_date.to_s) > DateTime.parse(l1_actual_date.to_s)
+					      		l1_object.completed_actual = maximum_l2_completed_actual_date
+					      	end	
+				      	end
 				      	l1_object.save!
 			      	end
 		      	end
@@ -282,7 +290,6 @@ class WorkflowLiveStep < ActiveRecord::Base
 
       			maximum_l2_completed_estimate_date = L2.where(l1_id: parent_l1.id).maximum(:completed_estimate)
 		      	if is_l2_completed
-		      		#abort('=======>parent_l1<===========')
       				maximum_l2_completed_actual_date = L2.where(l1_id: parent_l1.id).maximum(:completed_actual)
 		      		parent_l1.completed_actual = maximum_l2_completed_actual_date
 		      		parent_l1.completed_estimate = maximum_l2_completed_estimate_date

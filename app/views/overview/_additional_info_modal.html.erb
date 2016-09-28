@@ -3,7 +3,7 @@
     <%= simple_form_for @additional_info, :url => add_additional_info_path, remote: true , :html => { :id => "info_modal_form", :class=> 'form-horizontal'}  do |f| %>
       <div class = 'errors__container'>
         <%= render 'layouts/messages' %>
-      </div> 
+      </div>  
       <div class='modal-header'>
         <button class='close' data-dismiss='modal' type='button'>×</button>
         <h1 class="h1-heading-popup">Additional Info</h1>
@@ -122,8 +122,9 @@
                     <br>
                   <% end %>
 
-                  <% if add_info.reason_code.present? %>
-                    <strong>Reason:</strong> <%= add_info.reason_code.reason %>
+                  <% if add_info.reason_code_id.present? %>
+                    <strong>Reason:</strong> 
+                    <%= AdditionalInfo.get_reasons(add_info.reason_code_id).html_safe %>
                     <br>
                   <%end%>
 

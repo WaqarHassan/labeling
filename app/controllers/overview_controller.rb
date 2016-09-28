@@ -95,8 +95,25 @@ class OverviewController < ApplicationController
     if workflowLiveStep.present?
       WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
     end
-     redirect_to root_path, notice: 'ETAs Refreshed successfully created.'
+     redirect_to root_path, notice: 'ETA\'s refreshed successfully.'
 
+   end
+   def recalculate_all_eta
+      l1s = @workflow.l1s.where.not(status: 'cancel')
+      l1s.each do |l1_id|
+          workflowLiveStep = WorkflowLiveStep.find_by_object_id_and_object_type(l1_id,'L1')
+          if !workflowLiveStep.present?
+              l1 = L1.find(l1_id)
+              if l1.l2s.present?
+                l2 = l1.l2s.first
+                workflowLiveStep = WorkflowLiveStep.find_by_object_id_and_object_type(l2.id,'L2')
+              end
+          end
+          if workflowLiveStep.present?
+            WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
+          end
+      end               
+       redirect_to root_path, notice: 'ETA\'s re-calculated successfully.'
    end
 
    def open_info_modal_l2
@@ -719,7 +736,13 @@ class OverviewController < ApplicationController
 
   def save_reject_reason
     additional_info_id = session[:additional_info_id]
-    AdditionalInfo.update(additional_info_id, reason_code_id: params[:additional_info][:reason_code_id], note: params[:additional_info][:note])
+    codes = params[:additional_info][:reason_code_id]
+    ids = ''
+    codes.each do |t|
+      ids += t + ','
+    end
+    ids.slice!(-1)
+    AdditionalInfo.update(additional_info_id, reason_code_id: ids, note: params[:additional_info][:note])
     session.delete(:additional_info_id)
     redirect_to root_path, notice: 'Reject reason saved'
   end

@@ -24,12 +24,11 @@
 
       %li.dropdown
         %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
-          SETTINGS
+          ADMIN
           %b.caret
         %ul.dropdown-menu.setting_menu
           %li= link_to '+ADD '+@workflow.L1, new_l1_path,  {:remote => true, 'data-toggle' =>  "modal",class: 'add_links', 'data-target' => '#add_l1_modal'}
-          %li= link_to '+ADD '+@workflow.L2, new_l2_path,  {:remote => true, 'data-toggle' =>  "modal",class: 'add_links', 'data-target' => '#add_l2_modal'}
-          %li= link_to '+ADD '+@workflow.L3, new_l3_path,  {:remote => true, 'data-toggle' =>  "modal",class: 'add_links', 'data-target' => '#add_l3_modal'}
+          %li= link_to 'RECALCULATE ALL ETA' , recalculate_all_eta_path,  {:remote => true, class: 'add_links'}
 
       %li.dropdown
         %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
@@ -42,7 +41,7 @@
       - if user_signed_in?
         %li.dropdown
           %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
-            = render 'users/avatar', size: :tiny
+            = current_user.first_name
             %b.caret
           %ul.dropdown-menu
             - if current_user.is_admin?

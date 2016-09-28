@@ -98,7 +98,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 	      calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user,workflow_live_step)
 
 	      # workflow completion
-	      set_workflow_completion_datetime(l1s_last_live_step, l2s_last_live_step, l3s_last_live_step)
+	      set_workflow_completion_datetime(l1s_last_live_step, l2s_last_live_step, l3s_last_live_step, parent_l1)
 
 		end
 
@@ -184,7 +184,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 	        end
 	    end
 
-	    def set_workflow_completion_datetime(l1s_last_live_step, l2s_last_live_step, l3s_last_live_step)
+	    def set_workflow_completion_datetime(l1s_last_live_step, l2s_last_live_step, l3s_last_live_step, parent_l1)
 	    	# workflow complete block
 	     	is_l1_completed = true
 	      	is_l2_completed = true
@@ -278,8 +278,10 @@ class WorkflowLiveStep < ActiveRecord::Base
 			      	end
 		      	end
 		    else
+
       			maximum_l2_completed_estimate_date = L2.where(l1_id: parent_l1.id).maximum(:completed_estimate)
 		      	if is_l2_completed
+		      		#abort('=======>parent_l1<===========')
       				maximum_l2_completed_actual_date = L2.where(l1_id: parent_l1.id).maximum(:completed_actual)
 		      		parent_l1.completed_actual = maximum_l2_completed_actual_date
 		      		parent_l1.completed_estimate = maximum_l2_completed_estimate_date

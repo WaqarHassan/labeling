@@ -131,6 +131,7 @@ class WorkFlow < ActiveRecord::Base
 							if filteredStationStep.predecessors.present?
 								predecessors_list = filteredStationStep.predecessors.split(',')
 								if predecessors_list.presence
+									max_eta_datetime = nil
 									predecessors_list.each do |pred|
 										pred_filteredStationStep = filtered_station_steps.find_by_station_step_id(pred)
 										workflow = WorkFlow.find_by_id(pred_filteredStationStep.work_flow_id)
@@ -163,10 +164,19 @@ class WorkFlow < ActiveRecord::Base
 												eta_datetime =  number_days.business_days.after(eta_datetime)
 											end
 											
-											eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
-											eta_time_stamp = eta_datetime.strftime("%I:%M %p")
+											if !max_eta_datetime.present?
+												max_eta_datetime = eta_datetime
+											end
+											if max_eta_datetime.present?
+												if DateTime.parse(eta_datetime.to_s) > DateTime.parse(max_eta_datetime.to_s)
+										      		max_eta_datetime = eta_datetime
+										      	end	
+											end
+
+											eta_date_stamp = max_eta_datetime.strftime("%m/%d/%y")
+											eta_time_stamp = max_eta_datetime.strftime("%I:%M %p")
 											time_stamp = "ETA "+eta_date_stamp+"<br />"+eta_time_stamp
-											if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
+											if DateTime.parse(Time.now.to_s) > DateTime.parse(max_eta_datetime.to_s)
 												table_td_class = 'report_eta_light_red'
 											end
 

@@ -98,6 +98,7 @@ class OverviewController < ApplicationController
      redirect_to root_path, notice: 'ETA\'s refreshed successfully.'
 
    end
+
    def recalculate_all_eta
       l1s = @workflow.l1s.where.not(status: 'cancel')
       l1s.each do |l1_id|
@@ -112,8 +113,8 @@ class OverviewController < ApplicationController
           if workflowLiveStep.present?
             WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
           end
-      end               
-       redirect_to root_path, notice: 'ETA\'s re-calculated successfully.'
+      end
+      redirect_to root_path, notice: 'ETA\'s re-calculated successfully.'
    end
 
    def open_info_modal_l2

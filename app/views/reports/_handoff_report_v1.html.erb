@@ -6,10 +6,10 @@
           <th></th>
           <th></th>
           <th></th>
-          <th></th>
           <% @filtered_station_steps.each do |filtered_station_step| %>
             <th style="width: 110px;" ><%= filtered_station_step.station_step.workflow_station.station_name %></th>
           <% end %>
+          <th></th>
           <th></th>
           <th></th>
           <th></th>
@@ -21,17 +21,14 @@
           <th><%= @workflow.L1 %></th>
           <th><%= @workflow.L2 %></th>
           <th><%= @workflow.L3 %></th>
-          <th>Status</th>
-          <% @filtered_station_steps.each do |filtered_station_step| 
-            pred_name = StationStep.get_step_predecessors(filtered_station_step.predecessors) %>
-            <th style="width: 110px;" 
-            title="Days: <%=filtered_station_step.duration_days.present? ? filtered_station_step.duration_days : 0 %>&#013;&#013;Predecessors: <%=pred_name%>">
-              <%= filtered_station_step.station_step.step_name %></th>
+          <% @filtered_station_steps.each do |filtered_station_step| %>
+            <th style="width: 110px;" ><%= filtered_station_step.station_step.step_name %></th>
           <% end %>
           <th>#Comp</th>
           <th>Comp. Type</th>
           <th>BU</th>
           <th>#Lang</th>
+          <th>Status</th>
           <th>Horw</th>
         </tr>
       </thead>
@@ -59,9 +56,8 @@
                   </td>
                   <td></td>
                   <td></td>
-                  <td><%= result['l1_status'] %></td>
                   <% @filtered_station_steps.each do |filtered_station_step| 
-                    @timestamp = WorkFlow.get_time_stamp(@report_serach_result, 'L1', result['l1_id'], '', '', 'l1_id', filtered_station_step.station_step_id, @filtered_station_steps)%>
+                    @timestamp = WorkFlow.get_time_stamp(@report_serach_result, 'L1', result['l1_id'], 'l1_id', filtered_station_step.station_step_id)%>
                     <td class="<%=@timestamp[1]%>" ><%= @timestamp[0].html_safe %></td>
                   <% end %>
                   <% object_attributes_data = WorkFlow.object_attributes(result['l1_id'], 'L1') 
@@ -80,8 +76,9 @@
                   %>
                   <td><%= l1_num_component %></td>
                   <td><%= l1_comp_type %></td>
-                  <td><%= result['l1_bu'] %></td>
+                  <td><%= l1_bu %></td>
                   <td><%= l1_nm_lang %></td>
+                  <td><%= l1_status %></td>
                   <td><%= l1_horw %></td>
                 </tr>
              <%end
@@ -101,9 +98,8 @@
                   <% end %>
                   </td>
                   <td></td>
-                  <td><%= result['l2_status'] %></td>
                   <% @filtered_station_steps.each do |filtered_station_step| 
-                    @timestamp = WorkFlow.get_time_stamp(@report_serach_result, 'L2', result['l2_id'], '', result['l1_id'], 'l2_id', filtered_station_step.station_step_id, @filtered_station_steps)%>
+                    @timestamp = WorkFlow.get_time_stamp(@report_serach_result, 'L2', result['l2_id'], 'l2_id', filtered_station_step.station_step_id)%>
                     <td class="<%=@timestamp[1]%>" ><%= @timestamp[0].html_safe %></td>
                   <% end %>
                   <% object_attributes_data = WorkFlow.object_attributes(result['l2_id'], 'L2') 
@@ -123,8 +119,9 @@
                   %>
                   <td><%= l2_num_component %></td>
                   <td><%= l2_comp_type %></td>
-                  <td><%= result['l2_bu'] %></td>
+                  <td><%= l2_bu %></td>
                   <td><%= l2_nm_lang %></td>
+                  <td><%= l2_status %></td>
                   <td><%= l2_horw %></td>
                 </tr>
             <% end 
@@ -142,9 +139,8 @@
                     <% end %>
                   <% end %>
                   </td>
-                  <td><%= result['l3_status'] %></td>
                   <% @filtered_station_steps.each do |filtered_station_step| 
-                    @timestamp = WorkFlow.get_time_stamp(@report_serach_result, 'L3', result['l3_id'], result['l2_id'], result['l1_id'], 'l3_id', filtered_station_step.station_step_id, @filtered_station_steps)%>
+                    @timestamp = WorkFlow.get_time_stamp(@report_serach_result, 'L3', result['l3_id'], 'l3_id', filtered_station_step.station_step_id)%>
                     <td class="<%=@timestamp[1]%>" ><%= @timestamp[0].html_safe %></td>
                   <% end %>
                   <% object_attributes_data = WorkFlow.object_attributes(result['l3_id'], 'L3') 
@@ -163,8 +159,9 @@
                   %>
                   <td><%= l3_num_component %></td>
                   <td><%= l3_comp_type %></td>
-                  <td><%= result['l3_bu'] %></td>
+                  <td><%= l3_bu %></td>
                   <td><%= l3_nm_lang %></td>
+                  <td><%= l3_status %></td>
                   <td><%= l3_horw %></td>
                 </tr>
                 <%end

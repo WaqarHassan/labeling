@@ -13,7 +13,8 @@ class WorkFlow < ActiveRecord::Base
 			
 			def search(q_string)
 				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
-							l3s.id as l3_id, l3s.name as l3_name 
+							l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
+							l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
               				from l1s left join l2s on l1s.id = l2s.l1_id left join l3s on l2s.id = l3s.l2_id 
            					where #{q_string} order by l1s.name"
 				serach_result = ActiveRecord::Base.connection.select_all sql_query
@@ -110,7 +111,7 @@ class WorkFlow < ActiveRecord::Base
                 return handoff_report_serach_result
 			end
 
-			def get_time_stamp (report_serach_result, object_type, object_id, ll_id,station_step_id)
+			def get_time_stamp(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
 				time_stamp = ""
 				table_td_class = ""
 				habdoff_report_serach_unique = report_serach_result.select{|report| report['object_type'] == object_type and report[ll_id] == object_id and report['station_step_id'] == station_step_id }
@@ -118,7 +119,7 @@ class WorkFlow < ActiveRecord::Base
 				if habdoff_report_serach_unique.present?
 					if habdoff_report_serach_unique[0]['is_active'] == 0
 						time_stamp = 'N/A'
-					else	
+					else
 						habdoff_report_actual = habdoff_report_serach_unique.select{|report| report['actual_confirmation'] != nil }
 						if habdoff_report_actual.present?
 							habdoff_report_actual_sorted = habdoff_report_actual.sort_by { |h| h[:log_id] }.reverse!
@@ -126,12 +127,51 @@ class WorkFlow < ActiveRecord::Base
 							time_stamp += "<br />"+habdoff_report_actual_sorted[0]['actual_confirmation'].strftime("%I:%M %p")
 							table_td_class = 'report_actual_confirmation'
 						else
-							if habdoff_report_serach_unique[0]['eta'].present?
-								date_stamp = habdoff_report_serach_unique[0]['eta'].strftime("%m/%d/%y")
-								time_stamp = habdoff_report_serach_unique[0]['eta'].strftime("%I:%M %p")
-								time_stamp = "ETA "+date_stamp+"<br />"+time_stamp
-								if DateTime.parse(Time.now.to_s) > DateTime.parse(habdoff_report_serach_unique[0]['eta'].to_s)
-									table_td_class = 'report_eta_light_red'
+							filteredStationStep = filtered_station_steps.find_by_station_step_id(station_step_id)
+							if filteredStationStep.predecessors.present?
+								predecessors_list = filteredStationStep.predecessors.split(',')
+								if predecessors_list.presence
+									predecessors_list.each do |pred|
+										pred_filteredStationStep = filtered_station_steps.find_by_station_step_id(pred)
+										workflow = WorkFlow.find_by_id(pred_filteredStationStep.work_flow_id)
+										pred_habdoff_report_serach_unique = report_serach_result.select{|report| report['object_type'] == object_type and report[ll_id] == object_id and report['station_step_id'].to_i == pred.to_i }
+										if !pred_habdoff_report_serach_unique.present? and ll_id == 'l3_id'
+											pred_habdoff_report_serach_unique = report_serach_result.select{|report| report['object_type'] == 'L2' and report['l2_id'] == parent_l2_id and report['station_step_id'].to_i == pred.to_i }
+										end
+
+										if !pred_habdoff_report_serach_unique.present? and (ll_id == 'l2_id' or ll_id == 'l3_id')
+											pred_habdoff_report_serach_unique = report_serach_result.select{|report| report['object_type'] == 'L1' and report['l1_id'] == parent_l1_id and report['station_step_id'].to_i == pred.to_i }
+										end
+
+										pred_habdoff_report_actual = pred_habdoff_report_serach_unique.select{|report| report['actual_confirmation'] != nil }
+										if pred_habdoff_report_actual.present?
+											pred_habdoff_report_actual_sorted = pred_habdoff_report_actual.sort_by { |h| h[:log_id] }.reverse!
+											actual_confirmation = pred_habdoff_report_actual_sorted[0]['actual_confirmation']
+
+												# Covnert minutes to hours and minutes
+										  	BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
+										    BusinessTime::Config.end_of_workday = workflow.end_of_workday
+
+										    workflow.holidays.each do |holiday|
+										       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
+										    end
+											number_days = pred_filteredStationStep.duration_days
+											actual_confirmation = actual_confirmation.to_time.strftime('%Y-%m-%d %H:%M')
+											eta_datetime = Time.parse(actual_confirmation)
+											
+											if number_days > 0
+												eta_datetime =  number_days.business_days.after(eta_datetime)
+											end
+											
+											eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
+											eta_time_stamp = eta_datetime.strftime("%I:%M %p")
+											time_stamp = "ETA "+eta_date_stamp+"<br />"+eta_time_stamp
+											if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
+												table_td_class = 'report_eta_light_red'
+											end
+
+										end
+									end
 								end
 							end	
 						end	
@@ -182,29 +222,6 @@ class WorkFlow < ActiveRecord::Base
 			end
 		end
 end
-
-
-# Select  l1s.id as l1_id, l1s.name as l1_name,
-# 		l2s.id as l2_id, l2s.name as l2_name, 
-# 		l3s.id as l3_id, l3s.name as l3_name,
-# 		l3s.num_component as l3_num_component,
-# 		l2s.num_component as l2_num_component,
-# 		l1s.num_component as l1_num_component,
-# 		workflow_live_steps.actual_confirmation as actual_confirmation, 
-# 		workflow_live_steps.eta as eta, 
-# 		station_steps.step_name as step, 
-# 		workflow_stations.station_name as station,
-# 		workflow_live_steps.id as wls_id, 
-# 		workflow_live_steps.object_type as object_type
-# 		from labeling_development.l1s
-# 		left join labeling_development.l2s on labeling_development.l1s.id = l2s.l1_id
-# 		left join labeling_development.l3s on labeling_development.l3s.l2_id=l2s.id
-# 		inner join labeling_development.workflow_live_steps 
-# 				on (workflow_live_steps.object_id = l1s.id and workflow_live_steps.object_type = 'L1') 
-# 				or (workflow_live_steps.object_id = l2s.id  and workflow_live_steps.object_type = 'L2') 
-# 				or (workflow_live_steps.object_id = l3s.id  and workflow_live_steps.object_type = 'L3')
-# 		inner join labeling_development.station_steps on workflow_live_steps.station_step_id = station_steps.id
-# 		inner join labeling_development.workflow_stations on station_steps.workflow_station_id = workflow_stations.id
 	
 
 

@@ -223,7 +223,6 @@ class L2sController < ApplicationController
         session[:l2_id] = @l2.id  
         
       end
-      ia_approval_date = calculate_Ia_approval_date
 
       if DateTime.parse(ia_approval_date.to_s) < DateTime.now.strftime('%Y-%m-%d')
          
@@ -249,6 +248,7 @@ class L2sController < ApplicationController
     def set_l2
       @l2 = L2.find(params[:id])
     end
+
     def calculate_Ia_approval_date
 
       @workflow.holidays.each do |holiday|
@@ -273,9 +273,6 @@ class L2sController < ApplicationController
 
       total_days = base_duration_days + horw + translation
       
-      # puts "==========================#{total_days.class}"
-      # puts "==================!!!!========#{total_days}"
-      # abort()
       requested_date = requested_date.to_time.strftime('%Y-%m-%d %H:%M')
       req_date = Time.parse(requested_date)
      
@@ -283,6 +280,8 @@ class L2sController < ApplicationController
       return estimated_date
 
     end
+
+    
     # Only allow a trusted parameter "white list" through.
     def l2_params
       params.require(:l2).permit(:name, :l1_id, :status, :business_unit, :num_component, :notes, :requested_date, :to_be_approved_by)

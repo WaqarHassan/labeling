@@ -27,7 +27,7 @@ common: &common
 
   rack:
     # Timeout request after 20 seconds
-    timeout: 20
+    timeout: 210
 
   mail:
     layout: 'emails/email'

@@ -104,7 +104,7 @@
               end %>
               <%case att.field_type %>
             <% when  "integer" %>
-              <div class="row">
+              <div class="row" id="<%= att.short_label.downcase.tr(' ', '_').tr('#', '')%>">
                   <div class="col-lg-4">
                     <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %> </label> 
                   </div>
@@ -113,20 +113,20 @@
                   </div>
                 </div>
             <% when "dropdown"%>
-              <div class="row">
+              <div class="row" id="<%= att.short_label.downcase.tr(' ', '_').tr('#', '')%>">
                 <div class="col-lg-4">
                   <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %> </label> 
                 </div>
                   <div class="col-lg-6">
                    <% if att.is_required? %>
-                    <%= select_tag "attr[#{att.id}]", options_from_collection_for_select(att.attribute_options, 'value', 'value', attr_field_value), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left', required: true %> 
+                    <%= select_tag "attr[#{att.id}]", options_from_collection_for_select(att.attribute_options, 'value', 'value', attr_field_value), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left', required: true, :onchange=> 'toggle_lang(this.value, \''+@workflow.name.downcase+'\'); return false' %> 
                    <% else %>
                     <%= select_tag "attr[#{att.id}]", options_from_collection_for_select(att.attribute_options, 'value', 'value', attr_field_value), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left'%> 
                    <% end %>
                   </div>
               </div>
               <% when "date"%>
-                  <div class="row">
+                  <div class="row" id="<%= att.short_label.downcase.tr(' ', '_').tr('#', '')%>">
                   <div class="col-lg-4">
                     <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %> </label> 
                   </div>
@@ -136,7 +136,7 @@
                 </div>
 
               <%else%>
-               <div class="row">
+               <div class="row" id="<%= att.short_label.downcase.tr(' ', '_').tr('#', '')%>">
                   <div class="col-lg-4">
                     <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %> </label> 
                   </div>
@@ -144,8 +144,6 @@
                     <input type="text" name=<%= "attr[#{att.id}]" %> <%= att.is_required == true ? 'required' : '' %> class="form-control" value=<%= attr_field_value %> >
                   </div>
                 </div>
-
-                        
                 <% end %>
             <% end %>
           <% end %>

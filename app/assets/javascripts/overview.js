@@ -140,4 +140,12 @@ function update_all_etas(){
 	return true;
 }
 
+function toggle_lang(comp_type_value, workflow_name){
+	if (comp_type_value=='CGL' && workflow_name=='ldp' ){
+		$('#lang').hide();
+	}else{
+		$('#lang').show();
+	}	
+}
+
 

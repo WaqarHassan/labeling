@@ -742,7 +742,9 @@ class OverviewController < ApplicationController
     codes.each do |t|
       ids += t + ','
     end
-    ids.slice!(-1)
+    if ids.presence
+      ids.slice!(-1)
+    end
     AdditionalInfo.update(additional_info_id, reason_code_id: ids, note: params[:additional_info][:note])
     session.delete(:additional_info_id)
     redirect_to root_path, notice: 'Reject reason saved'

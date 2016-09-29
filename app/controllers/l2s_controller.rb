@@ -251,10 +251,9 @@ class L2sController < ApplicationController
     end
     def calculate_Ia_approval_date
 
-    @workflow.holidays.each do |holiday|
-      BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
-    end
-
+      @workflow.holidays.each do |holiday|
+        BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
+      end
       horw = 0
       translation = 0
       requested_date = L1.set_db_date_format(params[:attr][params[:l2][:requested_date_id]] )

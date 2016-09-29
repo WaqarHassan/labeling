@@ -59,9 +59,11 @@ class L2sController < ApplicationController
     if name.present? 
       abort('Validation Error: Name must be Unique.');
     end
+
+    ia_approval_date = calculate_Ia_approval_date
     @l2 = L2.new(l2_params)
-    #abort()
     @l2.user_id = current_user.id
+    @l2.latest_ia_approval_date = ia_approval_date
     if @l2.save!
       if params[:attr].present?
         AttributeValue.create_attribute_values(params[:attr], @l2, 'L2') 
@@ -161,10 +163,18 @@ class L2sController < ApplicationController
         session[:open_reason_modal] = 'open_reason_modal'
         session[:l2_id] = @l2.id
       end
-      #abort()
       session[:filter_object_type] = 'L2'
       session[:filter_object_id] = @l2.id
-      redirect_to root_path, notice: @workflow.L2+' was successfully created.'
+
+      if DateTime.parse(ia_approval_date.to_s) < DateTime.now.strftime('%Y-%m-%d')
+         
+        redirect_to root_path, notice: @workflow.L2+' was successfully created.Based on your entries, the IA should have already been approved on '+ ia_approval_date.strftime('%Y-%m-%d')
+      else
+        
+         redirect_to root_path, notice: @workflow.L2+' was successfully created.'
+            
+      end
+
     else
       render :new
     end
@@ -174,6 +184,8 @@ class L2sController < ApplicationController
   def update
     @l2.modified_by_user_id = current_user.id
     previous_status = @l2.status
+    ia_approval_date = calculate_Ia_approval_date
+    @l2.latest_ia_approval_date = ia_approval_date
     if @l2.update!(l2_params)
       if params[:attr].present?
         params[:attr].each do |att|
@@ -211,8 +223,16 @@ class L2sController < ApplicationController
         session[:l2_id] = @l2.id  
         
       end
+      ia_approval_date = calculate_Ia_approval_date
 
-      redirect_to root_path, notice: @workflow.L2+' was successfully updated.'
+      if DateTime.parse(ia_approval_date.to_s) < DateTime.now.strftime('%Y-%m-%d')
+         
+        redirect_to root_path, notice: @workflow.L2+' was successfully Updated .Based on your entries, the IA should have already been approved on '+ ia_approval_date.strftime('%Y-%m-%d')
+      else
+        
+         redirect_to root_path, notice: @workflow.L2+' was successfully Updated.'
+            
+      end
     else
       render :edit
     end
@@ -229,7 +249,40 @@ class L2sController < ApplicationController
     def set_l2
       @l2 = L2.find(params[:id])
     end
+    def calculate_Ia_approval_date
 
+      @workflow.holidays.each do |holiday|
+        BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
+      end
+      horw = 0
+      translation = 0
+      requested_date = L1.set_db_date_format(params[:attr][params[:l2][:requested_date_id]] )
+
+      if params[:attr][params[:l2][:horw_id]].to_s == 'YES'
+         horw = @workflow.horw_days
+      end
+      if params[:attr][params[:l2][:translation_id]].to_s == 'YES'
+        translation = @workflow.translation_days.to_i
+      end
+
+      components = params[:l2][:num_component]
+      
+      components = components.to_i / 17 
+
+      base_duration_days = @workflow.base_duration_days  + components.to_i
+
+      total_days = base_duration_days + horw + translation
+      
+      # puts "==========================#{total_days.class}"
+      # puts "==================!!!!========#{total_days}"
+      # abort()
+      requested_date = requested_date.to_time.strftime('%Y-%m-%d %H:%M')
+      req_date = Time.parse(requested_date)
+     
+      estimated_date = total_days.business_days.before(req_date)
+      return estimated_date
+
+    end
     # Only allow a trusted parameter "white list" through.
     def l2_params
       params.require(:l2).permit(:name, :l1_id, :status, :business_unit, :num_component, :notes, :requested_date, :to_be_approved_by)

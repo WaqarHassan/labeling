@@ -38,6 +38,7 @@ CREATE TABLE `additional_infos` (
   PRIMARY KEY (`id`),
   KEY `fk_additional_infos_index` (`work_flow_id`,`object_id`,`object_type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=224 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -195,6 +196,7 @@ CREATE TABLE `l2s` (
   `updated_at` datetime NOT NULL,
   `completed_estimate` datetime DEFAULT NULL,
   `completed_actual` datetime DEFAULT NULL,
+  `latest_ia_approval_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_l2s_on_l1_id` (`l1_id`),
   KEY `index_l2s_on_name` (`name`),
@@ -524,6 +526,9 @@ CREATE TABLE `work_flows` (
   `l1_component` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `l2_component` varchar(255) COLLATE utf8_unicode_ci DEFAULT 'Y',
   `l3_component` varchar(255) COLLATE utf8_unicode_ci DEFAULT 'Y|R',
+  `base_duration_days` int(11) DEFAULT NULL,
+  `translation_days` int(11) DEFAULT NULL,
+  `horw_days` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_work_flows_on_is_active_and_is_in_use` (`is_active`,`is_in_use`),
   KEY `index_work_flows_on_is_in_use` (`is_in_use`)
@@ -582,7 +587,6 @@ CREATE TABLE `workflow_stations` (
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
 INSERT INTO schema_migrations (version) VALUES ('20130909170542');
 
 INSERT INTO schema_migrations (version) VALUES ('20130909194719');

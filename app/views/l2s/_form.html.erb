@@ -1,6 +1,6 @@
   <div class='modal-dialog'>
       <div class='modal-content'>
-        <%= simple_form_for @l2, remote: true , :html => { :id => "ia_modal_form"}  do |f| %>
+        <%= simple_form_for @l2,  :html => { :id => "ia_modal_form"}  do |f| %>
         <div class = 'errors__container'>
         <%= render 'layouts/messages' %>
       </div>
@@ -120,6 +120,11 @@
                             <% else %>
                               <%= select_tag "attr[#{att.id}]", options_from_collection_for_select(att.attribute_options, 'value', 'value',attr_field_value), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left'%> 
                             <% end %>
+                            <%if att.label.downcase == 'translation'%>
+                                 <%= f.hidden_field :translation_id, :value => att.id  %>
+                            <%elsif att.label.downcase == 'horw' %>
+                                   <%= f.hidden_field :horw_id, :value => att.id  %>
+                            <%end%>
                         </div>
                       </div>
                       <% when "date"%>
@@ -130,7 +135,11 @@
                           <div class="col-lg-6">
                             <input type="text" name="<%= "attr[#{att.id}]" %>"   <%= att.is_required == true ? 'required' : '' %> class="datepicker_only form-control" value= <%= attr_field_value.present? ? attr_field_value : "" %> >
                         </div>
+                        <%if att.label == "Requested Date" %>
+                          <%= f.hidden_field :requested_date_id, :value => att.id  %>
+                        <%end %>
                       </div>
+
                       <%else%>
                           <div class="row">
                             <div class="col-lg-4">
@@ -139,10 +148,7 @@
                             <div class="col-lg-6">
                              <input type="text" name="<%= "attr[#{att.id}]" %>"  <%= att.is_required == true ? 'required' : '' %> class="form-control" value= <%= attr_field_value %> >
                             </div>
-                          </div>
-
-
-                        
+                          </div>                        
                     <% end %>
                   <% end %>
                   <% end %>

@@ -113,15 +113,15 @@
                   </div>
                 </div>
             <% when "dropdown"%>
-              <div class="row" id="<%= att.short_label.downcase.tr(' ', '_').tr('#', '')%>">
+              <div class="row">
                 <div class="col-lg-4">
                   <label for="Active" class="pull-right echo_patinet form-group"> <%= att.label %> </label> 
                 </div>
                   <div class="col-lg-6">
                    <% if att.is_required? %>
-                    <%= select_tag "attr[#{att.id}]", options_from_collection_for_select(att.attribute_options, 'value', 'value', attr_field_value), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left', required: true, :onchange=> 'toggle_lang(this.value, \''+@workflow.name.downcase+'\'); return false' %> 
+                    <%= select_tag "attr[#{att.id}]", options_from_collection_for_select(att.attribute_options, 'value', 'value', attr_field_value), prompt: "please select #{att.label}", :id=> att.short_label.downcase.tr(' ', '_').tr('#', ''), :class=>'form-control pnd-reqst pull-left', required: true, :onchange=> 'toggle_lang(this.value, \''+@workflow.name.downcase+'\'); return false' %> 
                    <% else %>
-                    <%= select_tag "attr[#{att.id}]", options_from_collection_for_select(att.attribute_options, 'value', 'value', attr_field_value), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left'%> 
+                    <%= select_tag "attr[#{att.id}]", options_from_collection_for_select(att.attribute_options, 'value', 'value', attr_field_value), prompt: "please select #{att.label}", :class=>'form-control pnd-reqst pull-left',:id=> att.short_label.downcase.tr(' ', '_').tr('#', '') %> 
                    <% end %>
                   </div>
               </div>

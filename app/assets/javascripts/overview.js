@@ -143,6 +143,7 @@ function update_all_etas(){
 function toggle_lang(comp_type_value, workflow_name){
 	if (comp_type_value=='CGL' && workflow_name=='ldp' ){
 		$('#lang').hide();
+		$('#lang input').removeAttr("value");
 	}else{
 		$('#lang').show();
 	}	

@@ -24,6 +24,12 @@ $(document).ready(function() {
 	
 	$("#errors_container").hide();
 
+	if($("#comp_type").length){
+		if ($('#comp_type').val().toLowerCase() == 'cgl'){
+			$('#lang input').removeAttr("value");
+			$('#lang').hide();
+		}
+	}
 }); 
 
 function set_l2_status(status){

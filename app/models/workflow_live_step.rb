@@ -95,7 +95,6 @@ class WorkflowLiveStep < ActiveRecord::Base
 
 	      #workflow_live_step_for_eta = workflow_live_step_for_eta.sort_by{|wls_sort| [wls_sort.station_step.workflow_station.sequence,wls_sort.station_step]}d
 	      calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user,workflow_live_step)
-
 	      # workflow completion
 	      if l1_object.status.downcase! != 'cancel'
 	     	 set_workflow_completion_datetime(l1_object, l2s_objects, l3s_objects)
@@ -132,9 +131,13 @@ class WorkflowLiveStep < ActiveRecord::Base
 	            if indx == 0 and pso.step_completion.present?
 	              pred_max_completion = pso.step_completion
 	            elsif pso.step_completion.present?
-	            	if DateTime.parse(pso.step_completion.to_s) > DateTime.parse(pred_max_completion.to_s)
-	              		pred_max_completion = pso.step_completion
-	          		end
+	            	if pred_max_completion.present?
+		            	if DateTime.parse(pso.step_completion.to_s) > DateTime.parse(pred_max_completion.to_s)
+		              		pred_max_completion = pso.step_completion
+		          		end
+		          	else
+		          		pred_max_completion = pso.step_completion
+		          	end	
 	            end
 	          end
 	          
@@ -145,34 +148,20 @@ class WorkflowLiveStep < ActiveRecord::Base
 	            elsif pso.step_completion.present?
 	              station_step = wls.station_step
 	              step_completion_other = station_step.calculate_step_completion(wls, pso.step_completion, comp_attribute_value, lang_attribute_value, hours_per_workday)
-	                if DateTime.parse(step_completion_other.to_s) > DateTime.parse(max_step_completion.to_s)
-	                  max_step_completion = step_completion_other 
-	                end
+	                if step_completion_other.present? and max_step_completion.present?
+		                if DateTime.parse(step_completion_other.to_s) > DateTime.parse(max_step_completion.to_s)
+		                  max_step_completion = step_completion_other 
+		                end
+	            	else
+	            		max_step_completion = step_completion_other 
+	            	end
 	            end
 	          end
+
 	          current_eta = wls.eta
 	          wls.eta = pred_max_completion
 	          wls.step_completion = max_step_completion
 	          wls.save!
-
-	          # save log start
-	       #    no_of_comp = nil
-      		#   no_of_lang = nil
-      		#   if comp_attribute_value.present?
-        # 	  	  no_of_comp = comp_attribute_value.num_component
-      		#   end
-		      # if lang_attribute_value.present?
-		      #     no_of_lang = lang_attribute_value.value
-		      # end
-	       #    if current_eta != wls.eta
-	       #    	TimestampLog.create(workflow_live_step_id: wls.id, 
-					   #        		eta: wls.eta,
-					   #        		user_id: current_user.id,
-					   #        		work_flow_id: workflow.id,
-					   #        		no_of_lang: no_of_lang,
-					   #        		no_of_comp: no_of_comp)
-	       #    end
-	          # save log end
 	        elsif wls.predecessors.present? && wls.actual_confirmation.present?
 	          comp_attribute_value = wls.object
 	          lang_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first

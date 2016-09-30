@@ -14,7 +14,7 @@ if (window.jQuery) {
 		}
 		else
 		{
-			var detail_data = container_width() - 250 - 300 - 600 ;
+			var detail_data = container_width() - 250 - 377 - 523 ;
 			console.log('detail_data width = '+detail_data);
 			$('#detail_data').width(detail_data);
 		}
@@ -30,24 +30,24 @@ function overview_serach_box()
 
       if (className=='project-data' && labelsClassName == 'project-data project_ia collapsed project_serach_noDetail'){
       	 $('#projectform').addClass('collapsed');
-		var detail_data = container_width() - 300 ;
+		var detail_data = container_width() - 377 ;
 		$('#detail_data').width(detail_data);
 
       }
       else if (className=='project-data'){
 		 $('#projectform').addClass('collapsed');
-		var detail_data = container_width() - 300 - 600;
+		var detail_data = container_width() - 377 - 523;
 		$('#detail_data').width(detail_data);
 
 	  }else if (className=='project-data collapsed' && labelsClassName == 'project-data project_ia collapsed project_serach_noDetail'){
 	  	$('#projectform').removeClass('collapsed');
 		$('#project_ia').addClass('project_serach_noDetail');
-		var detail_data = container_width() - 300 -250  ;
+		var detail_data = container_width() - 377 -250  ;
 		$('#detail_data').width(detail_data);
 
 	  }else{
 	  	 $('#projectform').removeClass('collapsed'); 
-		var detail_data = container_width() - 250 - 300 - 600 ;
+		var detail_data = container_width() - 250 - 377 - 523 ;
 		$('#detail_data').width(detail_data);
 	  }
 		project_ia_classes = $('#project_ia').attr('class');	 
@@ -62,11 +62,11 @@ function adjust(){
 	{
 		if($('#project_ia').hasClass('collapsed'))
 		{
-			var detail_data = container_width() - 300 ;
+			var detail_data = container_width() - 377 ;
 			$('#detail_data').width(detail_data);	
 		}
 		else{
-			var detail_data = container_width() - 300 - 600 ;
+			var detail_data = container_width() - 377 - 523 ;
 			$('#detail_data').width(detail_data);
 
 		}
@@ -76,11 +76,11 @@ function adjust(){
 	{
 		if($('#project_ia').hasClass('collapsed'))
 		{
-			var detail_data = container_width() -250 - 300 ;
+			var detail_data = container_width() -250 - 377 ;
 			$('#detail_data').width(detail_data);	
 		}
 		else{
-			var detail_data = container_width() - 300 - 600 - 250 ;
+			var detail_data = container_width() - 377 - 523 - 250 ;
 			$('#detail_data').width(detail_data);
 		}
 
@@ -97,7 +97,7 @@ function label_attributes_box()
 		 $('.collapse_table_data').addClass('collapse_table');
 		 $('.collapse_table_data').addClass('collapse_table');
 		 $('#project_ia').addClass('project_serach_noDetail');
-		var detail_data = container_width() - 300 ;
+		var detail_data = container_width() - 377 ;
 		$('#detail_data').width(detail_data);
 
       }
@@ -106,14 +106,14 @@ function label_attributes_box()
 		 $('.collapse_table_data').addClass('collapse_table');
 		 $('.collapse_table_data').addClass('collapse_table');
 		 $('#project_ia').addClass('project_serach_noDetail');
-		 var detail_data = container_width() - 300 - 250  ;
+		 var detail_data = container_width() - 377 - 250  ;
 		$('#detail_data').width(detail_data);
 
 	  }else if( searchclassName == "project-data collapsed" && 
 	  		className == "project-data project_ia collapsed project_serach_noDetail") {
 	  		$('#project_ia').removeClass('collapsed');
  	  		$('#project_ia').removeClass('project_serach_noDetail');
-	  		var detail_data = container_width() - 300 - 600;
+	  		var detail_data = container_width() - 377 - 523;
 			$('#detail_data').width(detail_data);
 
 	  }else{	
@@ -121,7 +121,7 @@ function label_attributes_box()
 		 $('.collapse_table_data').removeClass('collapse_table');
 		 $('.collapse_table_data').removeClass('collapse_table');
 		 $('#project_ia').removeClass('project_serach_noDetail');
-		var detail_data = container_width() - 300 - 600 - 250;
+		var detail_data = container_width() - 377 - 523 - 250;
 		$('#detail_data').width(detail_data);
 
 	  }

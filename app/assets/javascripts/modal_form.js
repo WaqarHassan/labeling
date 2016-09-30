@@ -32,6 +32,46 @@ $(document).ready(function() {
 	}
 }); 
 
+
+$("#add_l1_modal #add_l1_form").on('ajax:success', function(e, data, status, xhr){
+  successHTML = '<div class="alert alert-dismissable alert-info">';
+  successHTML += '<button class="close" data-dismiss="alert" aria-hidden="">×</button>';
+  successHTML += 'Validation Error: Name must be unique!';
+  successHTML += '</div>';
+  if (data.unique_error == 'unique_error'){
+    $("#add_l1_modal #add_l1_form .errors__container").html(successHTML);
+    $("#add_l1_modal #add_l1_form .errors__container").show();
+  }
+}).on('ajax:error',function(e, xhr, status, error){
+  console.log('error on save!');
+});
+
+$("#add_l2_modal #ia_modal_form").on('ajax:success', function(e, data, status, xhr){
+  successHTML = '<div class="alert alert-dismissable alert-info">';
+  successHTML += '<button class="close" data-dismiss="alert" aria-hidden="">×</button>';
+  successHTML += 'Validation Error: Name must be unique!';
+  successHTML += '</div>';
+  if (data.unique_error == 'unique_error'){
+    $("#add_l2_modal #ia_modal_form .errors__container").html(successHTML);
+    $("#add_l2_modal #ia_modal_form .errors__container").show();
+  }
+}).on('ajax:error',function(e, xhr, status, error){
+  console.log('error on save!');
+});
+
+$("#add_l3_modal #add_edit_ecr_form").on('ajax:success', function(e, data, status, xhr){
+  successHTML = '<div class="alert alert-dismissable alert-info">';
+  successHTML += '<button class="close" data-dismiss="alert" aria-hidden="">×</button>';
+  successHTML += 'Validation Error: Name must be unique!';
+  successHTML += '</div>';
+  if (data.unique_error == 'unique_error'){
+    $("#add_l3_modal #add_edit_ecr_form .errors__container").html(successHTML);
+    $("#add_l3_modal #add_edit_ecr_form .errors__container").show();
+  }
+}).on('ajax:error',function(e, xhr, status, error){
+  console.log('error on save!');
+});
+
 function set_l2_status(status){
 	$('#l2_status').val(status);
 }

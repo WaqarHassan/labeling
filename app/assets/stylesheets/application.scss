@@ -108,7 +108,7 @@ body {
 .tspend {width: 60% !important;}
 
 .project-data.project_fix.fix_levels {
-    width: 377px;
+    width: 342px;
 }
 
 .project-data.project_ia {
@@ -571,4 +571,7 @@ label.string, label.integer {
 
 #labeling_body {
     padding-right: 0 !important;
+}
+.status-col-width {
+  text-transform: capitalize
 }

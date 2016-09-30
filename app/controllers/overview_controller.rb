@@ -202,27 +202,56 @@ class OverviewController < ApplicationController
         AdditionalInfo.create(additional_info_params_note_only)
       
       else
-         AdditionalInfo.create(additional_info_params)
+        add_info = AdditionalInfo.create(additional_info_params)
         if params[:additional_info][:object_type] == 'L1'
           l1 = L1.find(params[:additional_info][:object_id])
           l1.update(status: params[:additional_info][:status])
-          if l1.status.downcase! == 'cancel'
+          if l1.status.downcase == 'cancel'
             WorkflowLiveStep.where(object_type: 'L1', object_id: l1.id, actual_confirmation: nil).update_all(is_active: false)
+  
+            # set childs to cancel        
+            l1.l2s.each do |l2|
+              if l2.status.downcase != 'cancel'
+                WorkflowLiveStep.where(object_type: 'L2', object_id: l2.id, actual_confirmation: nil).update_all(is_active: false)
+                l2.status = 'cancel'
+                l2.save!
+                AdditionalInfo.create(status: add_info.status, object_id: l2.id, object_type: 'L2', info_timestamp: add_info.info_timestamp,
+                  work_flow_id: add_info.work_flow_id, note: 'Parent cancaled', user_id: add_info.user_id, reason_code_id: add_info.reason_code_id)
+              end
+              l2.l3s.each do |l3|
+                if l3.status.downcase != 'cancel'
+                  WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
+                  l3.status = 'cancel'
+                  l3.save!
+                  AdditionalInfo.create(status: add_info.status, object_id: l3.id, object_type: 'L3', info_timestamp: add_info.info_timestamp,
+                    work_flow_id: add_info.work_flow_id, note: 'Parent cancaled', user_id: add_info.user_id, reason_code_id: add_info.reason_code_id)
+                end
+              end 
+            end
           else
             WorkflowLiveStep.where(object_type: 'L1', object_id: l1.id, actual_confirmation: nil).update_all(is_active: true)
           end
         elsif params[:additional_info][:object_type] == 'L2'
            l2 = L2.find(params[:additional_info][:object_id])
            l2.update(status: params[:additional_info][:status])
-           if l2.status.downcase! == 'cancel'
-             WorkflowLiveStep.where(object_type: 'L2', object_id: l2.id, actual_confirmation: nil).update_all(is_active: false)
+           if l2.status.downcase == 'cancel'
+              WorkflowLiveStep.where(object_type: 'L2', object_id: l2.id, actual_confirmation: nil).update_all(is_active: false)
+              l2.l3s.each do |l3|
+                if l3.status.downcase != 'cancel'
+                  WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
+                  l3.status = 'cancel'
+                  l3.save!
+                  AdditionalInfo.create(status: add_info.status, object_id: l3.id, object_type: 'L3', info_timestamp: add_info.info_timestamp,
+                    work_flow_id: add_info.work_flow_id, note: 'Parent cancaled', user_id: add_info.user_id, reason_code_id: add_info.reason_code_id)
+                end
+              end 
            else
              WorkflowLiveStep.where(object_type: 'L2', object_id: l2.id, actual_confirmation: nil).update_all(is_active: true)
            end
         elsif params[:additional_info][:object_type] == 'L3'
            l3 = L3.find(params[:additional_info][:object_id])
            l3.update(status: params[:additional_info][:status])
-           if l3.status.downcase! == 'cancel'
+           if l3.status.downcase == 'cancel'
              WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
            else
              WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: true)

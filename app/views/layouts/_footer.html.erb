@@ -5,7 +5,9 @@
 <div class="modal fade" id="rework_modal_popup" role="dialog"></div>
 <div class="modal fade" id="confirm_modal_popup" role="dialog"></div>
 <div class="modal fade" id="add_l2_modal" role="dialog"> </div>
-<div class="modal fade" id="reject_reason_modal" role="dialog"> </div>
+<div class="modal fade" id="reject_reason_modal" tabindex="-1"
+    role="dialog" aria-hidden="true" data-backdrop="static">
+</div>
 
 <div class="modal fade" id="add_l1_modal" role="dialog"></div>
 <div class="modal fade" id="update_workflow_modal" role="dialog"></div>
@@ -42,6 +44,32 @@
       </div>
   </div>
 </div>   
+
+<!-- waiting Modal Start here-->
+<div class="modal fade bs-example-modal-sm" id="myPleaseWait" tabindex="-1"
+    role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title wait-color">
+                    <label class="glyphicon glyphicon-time"></label>
+                    <label>Please Wait</label>
+                </h4>
+                <label>It will take some time depending on number of OBJECTS and internet speed!</label>
+            </div>
+            <div class="modal-body">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-info
+                    progress-bar-striped active"
+                    style="width: 100%">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal ends Here -->
+
 
 <div class="modal fade" id="add_l3_modal" role="dialog"></div>  
 

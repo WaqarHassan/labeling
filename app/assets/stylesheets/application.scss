@@ -108,11 +108,11 @@ body {
 .tspend {width: 60% !important;}
 
 .project-data.project_fix.fix_levels {
-    width: 300px;
+    width: 342px;
 }
 
 .project-data.project_ia {
-    width: 600px;
+    width: 523px;
 }
 
 .no-brd { border-right:none !important; width: 95px}
@@ -555,4 +555,29 @@ label.string, label.integer {
 .center {
     margin: auto;
     width: 13%;
+}
+
+.btn:hover, .card__actions a:hover, .btn:focus, .card__actions a:focus, .btn.focus, .card__actions a.focus{
+    color: #fff;
+}
+.btn.save-print-update-edit-btn.focus{
+    background-color: #45012f;
+}
+
+.btn-danger:focus, .btn-danger.focus{
+    background-color: #9e9783;
+    border-color: #94896b;
+}
+
+#labeling_body {
+    padding-right: 0 !important;
+}
+
+.col-lg-6.object_link_edit a {
+    color: blue;
+    font-weight: bold;
+}
+
+.status-col-width {
+  text-transform: capitalize
 }

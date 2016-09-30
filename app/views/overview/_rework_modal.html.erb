@@ -96,6 +96,13 @@
      </div>
 
      <div class="form-group">
+         <label class="col-lg-4 control-label">Note </label>
+          <div class="col-lg-6 ">
+            <textarea id="rework_note" name="rework_info[note]" maxlength="65535" class="text optional form-control"></textarea>
+        </div>
+     </div>
+
+     <div class="form-group">
        <label class="col-lg-4 control-label">#Comp</label>
         <div class="col-lg-6">
           <input type="number" id="selected_num_comp" class="form-control" name="num_component_in_rework" value="<%=@object_num_component%>" max="<%=@object_num_component%>" min="0" >   

@@ -3,7 +3,7 @@
     <%= simple_form_for @additional_info, :url => add_additional_info_path, remote: true , :html => { :id => "info_modal_form", :class=> 'form-horizontal'}  do |f| %>
       <div class = 'errors__container'>
         <%= render 'layouts/messages' %>
-      </div> 
+      </div>  
       <div class='modal-header'>
         <button class='close' data-dismiss='modal' type='button'>×</button>
         <h1 class="h1-heading-popup">Additional Info</h1>
@@ -15,11 +15,11 @@
 
           <div class="form-group">
             <label class="col-lg-4 control-label"> <%= @workflow.L1 %> Name  </label>
-              <div class="col-lg-6">
+              <div class="col-lg-6 object_link_edit ">
                 <% if @l1.status.downcase! == 'cancel' %>
                   <%= link_to @l1.name, 'javascript:void(0)', title: 'Closed and Canceled level are not editable!' %>
                 <% else %>
-                  <%= link_to @l1.name, edit_l1_path(@l1.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_l1_modal' , "data-di` smiss" => "modal"} %>
+                  <%= link_to @l1.name, edit_l1_path(@l1.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_l1_modal' , "data-dismiss" => "modal"} %>
                 <% end %>  
               </div>
           </div>
@@ -33,7 +33,7 @@
         <%elsif @type == 'L2'%>
           <div class="form-group">
             <label class="col-lg-4 control-label"> <%= @workflow.L2 %> Name </label>
-              <div class="col-lg-6">
+              <div class="col-lg-6 object_link_edit">
                 <% if @l2.status.downcase! == 'cancel' %>
                   <%= link_to @l2.name, 'javascript:void(0)', title: 'Closed and Canceled level are not editable!' %>
                 <% else %>
@@ -50,7 +50,7 @@
         <%else%>
           <div class="form-group">
             <label class="col-lg-4 control-label"> <%= @workflow.L3 %> Name </label>
-              <div class="col-lg-6">
+              <div class="col-lg-6 object_link_edit">
                 <% if @l3.is_closed? || @l3.status.downcase! == 'cancel' %>
                   <%= link_to @l3.name, 'javascript:void(0)', title: 'Closed and Canceled level are not editable!' %>
                 <% else %>
@@ -122,8 +122,9 @@
                     <br>
                   <% end %>
 
-                  <% if add_info.reason_code.present? %>
-                    <strong>Reason:</strong> <%= add_info.reason_code.reason %>
+                  <% if add_info.reason_code_id.present? %>
+                    <strong>Reason:</strong> 
+                    <%= AdditionalInfo.get_reasons(add_info.reason_code_id).html_safe %>
                     <br>
                   <%end%>
 
@@ -144,7 +145,7 @@
       <%if @type == 'L1' %>
          <%=  link_to "ADD "+@workflow.L2, add_new_l2_path(@l1.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_l2_modal',"data-dismiss" => "modal", :class => 'btn save-print-update-edit-btn pull-left'} %>
          
-          <%=  link_to "ETA-Refresh", eta_refresh_path(@l1.id), { :class => 'btn save-print-update-edit-btn pull-left'} %>
+          <%=  link_to "ETA Refresh", eta_refresh_path(@l1.id), { :class => 'btn save-print-update-edit-btn pull-left'} %>
 
       <%elsif @type == 'L2' %>
           <%=  link_to "ADD "+@workflow.L3, add_new_l3_path(@l2.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#add_l3_modal',"data-dismiss" => "modal", :class => 'btn save-print-update-edit-btn pull-left'} %>

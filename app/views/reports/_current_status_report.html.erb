@@ -1,100 +1,149 @@
 <div class="handoff-report-data" id ="handoff_report_data">
-  <table id = "current_status_report" class="table table-bordered">
-    <thead>
-      <tr>
-        <th><%= @workflow.L1 %></th>
-        <th><%= @workflow.L2 %></th>
-        <th><%= @workflow.L3 %></th>
-        
-        <th>Station</th>
-        <th>Step</th>
-        <th>Step Completed</th>
-        <th>Estimated Completion</th>
-        <th>#Comp</th>
-      </tr>
-    </thead>
-
-  <tbody>
-      <% @report_l1s.each do |l1| %>
+  <% if @report_serach_result.present? %>
+    <table id = "current_status_report" class="table table-bordered">
+      <thead>
         <tr>
-          <td>
-            <%= link_to l1.name, open_info_modal_l1_path(l1.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
-            <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
-              <%= hidden_field_tag 'object_type', 'L1' %>
-              <%= hidden_field_tag 'object_id', l1.id %>
-              <%= button_tag(type: "submit", class: "btn report_main_link") do %>
-                  <span class="glyphicon glyphicon-new-window"></span>
-              <% end %>
-            <% end %>
-          </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <th><%= @workflow.L1 %></th>
+          <th><%= @workflow.L2 %></th>
+          <th><%= @workflow.L3 %></th>
+          
+          <th>Station</th>
+          <th>Step</th>
+          <th>Step Completed</th>
+          <th>Estimated Completion</th>
+          <th>#Comp</th>
         </tr>
+      </thead>
 
-        <% l1.l2s.where(id: [@l2_list]).each do |l2| %>
-            <tr>
-              <td><%= l1.name%></td>
-              <td>
-                <%= link_to l2.name, open_info_modal_l2_path(l2.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
-                <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
-                  <%= hidden_field_tag 'object_type', 'L2' %>
-                  <%= hidden_field_tag 'object_id', l2.id %>
-                  <%= button_tag(type: "submit", class: "btn report_main_link") do %>
-                      <span class="glyphicon glyphicon-new-window"></span>
-                  <% end %>
-                <% end %>
-              </td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            
-        <% l2.l3s.where(id: [@l3_list]).each do |l3| %>
-          <% wf_live_step = l3.get_farthest_to_the_right_confirmation %>
+    <tbody>
+      <% if @serach_result.present?
+        l2_name = ''
+        l1_name = ''
+        l1_list = ''
+        l2_list = ''
+        l3_list = ''
+   
+          @serach_result.each do |result|
+            if l1_name != result['l1_name']
+              l1_name = result['l1_name'] 
+              l1_results = @report_serach_result.select{|report| report['object_type'] == 'L1' and report['l1_id'] == result['l1_id'] } %>
+
               <tr>
-                <td><%= l1.name%></td>
-                <td><%= l2.name%></td>
-                <td>                  
-                  <%= link_to l3.name, open_info_modal_l3_path(l3.id,'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                <td>
+                  <%= link_to result['l1_name'], open_info_modal_l1_path(result['l1_id'],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
                   <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
-                  <%= hidden_field_tag 'object_type', 'L3' %>
-                  <%= hidden_field_tag 'object_id', l3.id %>
-                  <%= button_tag(type: "submit", class: "btn report_main_link") do %>
-                    <span class="glyphicon glyphicon-new-window"></span>
+                      <%= hidden_field_tag 'object_type', 'L1' %>
+                      <%= hidden_field_tag 'object_id', result['l1_id'] %>
+                      <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+
+                        <span class="glyphicon glyphicon-new-window"></span>
+                      <% end %>
+                  <% end %>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            <% end
+            if l2_name != result['l2_name'] && result['l2_id'].presence
+              l2_name = result['l2_name']%>
+              <tr>
+                <td><%= result['l1_name'] %></td>
+                <td>
+                  <%=
+                  link_to result['l2_name'], open_info_modal_l2_path(result['l2_id'],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                    
+                  <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                    <%= hidden_field_tag 'object_type', 'L2' %>
+                    <%= hidden_field_tag 'object_id', result['l2_name'] %>
+                    <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                      <span class="glyphicon glyphicon-new-window"></span>
                     <% end %>
                   <% end %>
                 </td>
-                <td><%= wf_live_step.station_step.workflow_station.station_name %></td>
-                <td><%= wf_live_step.station_step.step_name %></td>
-                
-                <% if wf_live_step.actual_confirmation.present? %>
-                  <td><%= wf_live_step.actual_confirmation.strftime("%m/%d/%y %I:%M %p") %></td>
-                  <td></td>
-                <%elsif wf_live_step.eta.present? %>
-                  <td></td>
-                  <td><%= wf_live_step.eta.strftime("%m/%d/%y %I:%M %p") %></td>
-                <%else%>
-                  <td></td>
-                  <td></td>
-                <%end%> 
-
-                <td><%= l3.num_component %></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
               </tr>
-          <% end %>    
-        <% end %>
+            <%end 
 
-      <% end %>  
-    </tbody>
+            if result['l3_id'].presence 
+              l3_result = WorkFlow.do_current_search_report(@report_serach_result, 'L3', result['l3_id'], 'l3_id')
+              if l3_result.present? %>
+                  <tr>
+                    <td><%= l3_result['l1_name']%></td>
+                    <td><%= l3_result['l2_name']%></td>
+                    <td>                  
+                      <%= link_to l3_result['l3_name'], open_info_modal_l3_path(result['l3_id'],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                      <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                        <%= hidden_field_tag 'object_type', 'L3' %>
+                        <%= hidden_field_tag 'object_id', l3_result['l3_id'] %>
+                        <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                          <span class="glyphicon glyphicon-new-window"></span>
+                        <% end %>
+                      <% end %>
+                    </td>
+                    <td><%= l3_result['station'] %></td>
+                    <td><%= l3_result['step'] %></td>
+                    <% if l3_result['actual_confirmation'].present? %>
+                      <td>
+                        <%= l3_result['actual_confirmation'].strftime("%m/%d/%y") %>
+                            <br />
+                        <%= l3_result['actual_confirmation'].strftime("%I:%M %p") %>
+                      </td>
+                      <td></td>
+                    <%elsif l3_result['eta'].present? %>
+                      <td></td>
+                      <td>
+                          <%= l3_result['eta'].strftime("%m/%d/%y") %>
+                            <br />
+                          <%= l3_result['eta'].strftime("%I:%M %p") %>
+                      </td>
+                    <%else%>
+                      <td></td>
+                      <td></td>
+                    <%end%> 
 
-  </table>
+                    <td><%= l3_result['l3_num_component'] %></td>
+                  </tr>   
+              <% end %>
+            <% end %>
+        <% end  %>
+      <%end%>  
+      </tbody>
+
+    </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <% else %>
+    <div class="alert alert-info"> No Result Found! </a>
+  <% end %>
 </div>
 
   <style type="text/css">

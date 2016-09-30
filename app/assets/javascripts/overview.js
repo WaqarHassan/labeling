@@ -1,5 +1,7 @@
 
 console.log('main js working........');
+console.log('Container width for this screeen = '+container_width());
+console.log('width of first 3 panels = ' + width3() )
 function set_partial_merger(){
 	$('#rework_info_reason').removeAttr("required");
 	$('#rework_start_step').removeAttr("required");
@@ -21,7 +23,9 @@ function can_be_full_rework(){
 		return true;
 	}
 }
-
+function width3(){
+	return 250 + 342 + 523 ;
+}
 function updateprojectstatusSubmit(){
 	$("form#update_project_status_form").submit();
 	$('#modal').modal('toggle');
@@ -84,11 +88,11 @@ $(document).ready(function() {
 		{
 			if($('#project_ia').hasClass('collapsed'))
 			{
-				var detail_data = container_width() - 300 ;
+				var detail_data = container_width() - 342 ;
 				$('#detail_data').width(detail_data);	
 			}
 			else{
-				var detail_data = container_width() - 300 - 600 ;
+				var detail_data = container_width() - 342 - 533 ;
 				$('#detail_data').width(detail_data);
 
 			}
@@ -98,11 +102,11 @@ $(document).ready(function() {
 
 			if($('#project_ia').hasClass('collapsed'))
 			{
-				var detail_data = container_width() -250 - 300 ;
+				var detail_data = container_width() -250 - 342 ;
 				$('#detail_data').width(detail_data);	
 			}
 			else{
-				var detail_data = container_width() - 300 - 600 - 250 ;
+				var detail_data = container_width() - 342 - 533 - 250 ;
 				$('#detail_data').width(detail_data);
 
 			}
@@ -133,10 +137,20 @@ function handoff_show_hide()
 		var handoff_report_data = $('#handoff_report_data').width() - 250 ;
 		$('#handoff_report_data').width(handoff_report_data);
 	  }
-		// handoff_projectform_class = $('#handoff_projectform').attr('class');	 
-		// handoff_report_data_width = $('#handoff_report_data').width();
-		// Cookies.set('handoff_projectform_class', handoff_projectform_class, { expires: 7 });
-		// Cookies.set('handoff_report_data_width', handoff_report_data_width, { expires: 7 });
+}
+
+function update_all_etas(){
+	$('#myPleaseWait').modal('show');
+	return true;
+}
+
+function toggle_lang(comp_type_value, workflow_name){
+	if (comp_type_value=='CGL' && workflow_name=='ldp' ){
+		$('#lang').hide();
+		$('#lang input').removeAttr("value");
+	}else{
+		$('#lang').show();
+	}	
 }
 
 

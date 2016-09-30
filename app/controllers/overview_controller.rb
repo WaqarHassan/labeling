@@ -95,8 +95,26 @@ class OverviewController < ApplicationController
     if workflowLiveStep.present?
       WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
     end
-     redirect_to root_path, notice: 'ETAs Refreshed successfully created.'
+     redirect_to root_path, notice: 'ETA\'s refreshed successfully.'
 
+   end
+
+   def recalculate_all_eta
+      l1s = @workflow.l1s.where.not(status: 'cancel')
+      l1s.each do |l1_id|
+          workflowLiveStep = WorkflowLiveStep.find_by_object_id_and_object_type(l1_id,'L1')
+          if !workflowLiveStep.present?
+              l1 = L1.find(l1_id)
+              if l1.l2s.present?
+                l2 = l1.l2s.first
+                workflowLiveStep = WorkflowLiveStep.find_by_object_id_and_object_type(l2.id,'L2')
+              end
+          end
+          if workflowLiveStep.present?
+            WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
+          end
+      end
+      redirect_to root_path, notice: 'ETA\'s re-calculated successfully.'
    end
 
    def open_info_modal_l2
@@ -184,27 +202,56 @@ class OverviewController < ApplicationController
         AdditionalInfo.create(additional_info_params_note_only)
       
       else
-         AdditionalInfo.create(additional_info_params)
+        add_info = AdditionalInfo.create(additional_info_params)
         if params[:additional_info][:object_type] == 'L1'
           l1 = L1.find(params[:additional_info][:object_id])
           l1.update(status: params[:additional_info][:status])
-          if l1.status.downcase! == 'cancel'
+          if l1.status.downcase == 'cancel'
             WorkflowLiveStep.where(object_type: 'L1', object_id: l1.id, actual_confirmation: nil).update_all(is_active: false)
+  
+            # set childs to cancel        
+            l1.l2s.each do |l2|
+              if l2.status.downcase != 'cancel'
+                WorkflowLiveStep.where(object_type: 'L2', object_id: l2.id, actual_confirmation: nil).update_all(is_active: false)
+                l2.status = 'cancel'
+                l2.save!
+                AdditionalInfo.create(status: add_info.status, object_id: l2.id, object_type: 'L2', info_timestamp: add_info.info_timestamp,
+                  work_flow_id: add_info.work_flow_id, note: add_info.note, user_id: add_info.user_id, reason_code_id: add_info.reason_code_id)
+              end
+              l2.l3s.each do |l3|
+                if l3.status.downcase != 'cancel'
+                  WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
+                  l3.status = 'cancel'
+                  l3.save!
+                  AdditionalInfo.create(status: add_info.status, object_id: l3.id, object_type: 'L3', info_timestamp: add_info.info_timestamp,
+                    work_flow_id: add_info.work_flow_id, note: add_info.note, user_id: add_info.user_id, reason_code_id: add_info.reason_code_id)
+                end
+              end 
+            end
           else
             WorkflowLiveStep.where(object_type: 'L1', object_id: l1.id, actual_confirmation: nil).update_all(is_active: true)
           end
         elsif params[:additional_info][:object_type] == 'L2'
            l2 = L2.find(params[:additional_info][:object_id])
            l2.update(status: params[:additional_info][:status])
-           if l2.status.downcase! == 'cancel'
-             WorkflowLiveStep.where(object_type: 'L2', object_id: l2.id, actual_confirmation: nil).update_all(is_active: false)
+           if l2.status.downcase == 'cancel'
+              WorkflowLiveStep.where(object_type: 'L2', object_id: l2.id, actual_confirmation: nil).update_all(is_active: false)
+              l2.l3s.each do |l3|
+                if l3.status.downcase != 'cancel'
+                  WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
+                  l3.status = 'cancel'
+                  l3.save!
+                  AdditionalInfo.create(status: add_info.status, object_id: l3.id, object_type: 'L3', info_timestamp: add_info.info_timestamp,
+                    work_flow_id: add_info.work_flow_id, note: add_info.note, user_id: add_info.user_id, reason_code_id: add_info.reason_code_id)
+                end
+              end 
            else
              WorkflowLiveStep.where(object_type: 'L2', object_id: l2.id, actual_confirmation: nil).update_all(is_active: true)
            end
         elsif params[:additional_info][:object_type] == 'L3'
            l3 = L3.find(params[:additional_info][:object_id])
            l3.update(status: params[:additional_info][:status])
-           if l3.status.downcase! == 'cancel'
+           if l3.status.downcase == 'cancel'
              WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
            else
              WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: true)
@@ -719,7 +766,15 @@ class OverviewController < ApplicationController
 
   def save_reject_reason
     additional_info_id = session[:additional_info_id]
-    AdditionalInfo.update(additional_info_id, reason_code_id: params[:additional_info][:reason_code_id], note: params[:additional_info][:note])
+    codes = params[:additional_info][:reason_code_id]
+    ids = ''
+    codes.each do |t|
+      ids += t + ','
+    end
+    if ids.presence
+      ids.slice!(-1)
+    end
+    AdditionalInfo.update(additional_info_id, reason_code_id: ids, note: params[:additional_info][:note])
     session.delete(:additional_info_id)
     redirect_to root_path, notice: 'Reject reason saved'
   end
@@ -825,7 +880,7 @@ class OverviewController < ApplicationController
     actual_confirmation = L1.set_db_datetime_format(actualConfirmation)
     workflow_live_step = WorkflowLiveStep.find(params[:id])
     calculate_eta_completion(actual_confirmation, workflow_live_step)
-    if workflow_live_step.object.status != 'Active'
+    if workflow_live_step.object.status.downcase != 'active'
       workflow_live_step.object.update(:status => 'Active')
       AdditionalInfo.create(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type, status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
     end
@@ -959,7 +1014,7 @@ class OverviewController < ApplicationController
         :work_flow_id, :info_timestamp, :note, :user_id)
     end
     def rework_info_params
-      params.require(:rework_info).permit(:object_id, :object_type, :reason ,:user_id ,:step_initiating_rework ,
+      params.require(:rework_info).permit(:object_id, :object_type, :reason, :note ,:user_id ,:step_initiating_rework ,
         :rework_start_step)
     end
     def workflow_live_step_params

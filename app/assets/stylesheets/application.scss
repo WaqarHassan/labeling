@@ -108,7 +108,7 @@ body {
 .tspend {width: 60% !important;}
 
 .project-data.project_fix.fix_levels {
-    width: 377px;
+    width: 342px;
 }
 
 .project-data.project_ia {
@@ -576,4 +576,8 @@ label.string, label.integer {
 .col-lg-6.object_link_edit a {
     color: blue;
     font-weight: bold;
+}
+
+.status-col-width {
+  text-transform: capitalize
 }

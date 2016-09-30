@@ -216,7 +216,7 @@ class OverviewController < ApplicationController
                 l2.status = 'cancel'
                 l2.save!
                 AdditionalInfo.create(status: add_info.status, object_id: l2.id, object_type: 'L2', info_timestamp: add_info.info_timestamp,
-                  work_flow_id: add_info.work_flow_id, note: 'Parent cancaled', user_id: add_info.user_id, reason_code_id: add_info.reason_code_id)
+                  work_flow_id: add_info.work_flow_id, note: add_info.note, user_id: add_info.user_id, reason_code_id: add_info.reason_code_id)
               end
               l2.l3s.each do |l3|
                 if l3.status.downcase != 'cancel'
@@ -224,7 +224,7 @@ class OverviewController < ApplicationController
                   l3.status = 'cancel'
                   l3.save!
                   AdditionalInfo.create(status: add_info.status, object_id: l3.id, object_type: 'L3', info_timestamp: add_info.info_timestamp,
-                    work_flow_id: add_info.work_flow_id, note: 'Parent cancaled', user_id: add_info.user_id, reason_code_id: add_info.reason_code_id)
+                    work_flow_id: add_info.work_flow_id, note: add_info.note, user_id: add_info.user_id, reason_code_id: add_info.reason_code_id)
                 end
               end 
             end
@@ -242,7 +242,7 @@ class OverviewController < ApplicationController
                   l3.status = 'cancel'
                   l3.save!
                   AdditionalInfo.create(status: add_info.status, object_id: l3.id, object_type: 'L3', info_timestamp: add_info.info_timestamp,
-                    work_flow_id: add_info.work_flow_id, note: 'Parent cancaled', user_id: add_info.user_id, reason_code_id: add_info.reason_code_id)
+                    work_flow_id: add_info.work_flow_id, note: add_info.note, user_id: add_info.user_id, reason_code_id: add_info.reason_code_id)
                 end
               end 
            else
@@ -1014,7 +1014,7 @@ class OverviewController < ApplicationController
         :work_flow_id, :info_timestamp, :note, :user_id)
     end
     def rework_info_params
-      params.require(:rework_info).permit(:object_id, :object_type, :reason ,:user_id ,:step_initiating_rework ,
+      params.require(:rework_info).permit(:object_id, :object_type, :reason, :note ,:user_id ,:step_initiating_rework ,
         :rework_start_step)
     end
     def workflow_live_step_params

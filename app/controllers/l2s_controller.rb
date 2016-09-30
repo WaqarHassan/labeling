@@ -221,9 +221,11 @@ class L2sController < ApplicationController
         session[:open_confirm_modal] = 'open_confirm_modal'
         session[:workflow_step_id] = @l2.workflow_live_steps.first.id
         session[:l_number_id] = @l2.id
-      elsif params[:l2][:status].downcase == 'rejected'
-        session[:open_reason_modal] = 'open_reason_modal'
-        session[:l2_id] = @l2.id  
+      elsif params[:l2][:status].presence
+        if params[:l2][:status].downcase == 'rejected'
+          session[:open_reason_modal] = 'open_reason_modal'
+          session[:l2_id] = @l2.id
+        end
         
       end
 

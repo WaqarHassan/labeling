@@ -851,7 +851,7 @@ class OverviewController < ApplicationController
     actual_confirmation = L1.set_db_datetime_format(actualConfirmation)
     workflow_live_step = WorkflowLiveStep.find(params[:id])
     calculate_eta_completion(actual_confirmation, workflow_live_step)
-    if workflow_live_step.object.status != 'Active'
+    if workflow_live_step.object.status.downcase != 'active'
       workflow_live_step.object.update(:status => 'Active')
       AdditionalInfo.create(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type, status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
     end

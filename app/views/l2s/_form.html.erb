@@ -1,6 +1,6 @@
   <div class='modal-dialog'>
       <div class='modal-content'>
-        <%= simple_form_for @l2,  :html => { :id => "ia_modal_form"}  do |f| %>
+        <%= simple_form_for @l2 ,remote: true,  :html => { :id => "ia_modal_form"}  do |f| %>
         <div class = 'errors__container'>
         <%= render 'layouts/messages' %>
       </div>

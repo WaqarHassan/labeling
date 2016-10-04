@@ -53,48 +53,51 @@ class L1sController < ApplicationController
     
     name = L1.find_by_name(params[:l1][:name])
     if name.present? 
-      abort('Validation Error: Name must be Unique.');
-    end
-    @l1 = L1.new(l1_params)
-    @l1.user_id = current_user.id
-    if @l1.save!
-      if params[:attr].present?
-        AttributeValue.create_attribute_values(params[:attr], @l1, 'L1') 
-      end
-      @l1.work_flow.workflow_stations.order(:sequence).each do |station|
-        station.station_steps.where(recording_level: 'L1').order(:sequence).each do |stp|
-          predecessors = Transition.where(station_step_id: stp.id)
-          predecessors_step = ''
-          predecessors.each do |pred|
-            workflow_live_steps = WorkflowLiveStep.where(station_step_id: pred.previous_station_step_id, object_id: @l1.id, object_type: 'L1')
-            workflow_live_steps.each do |wls|
-              predecessors_step = predecessors_step+','+wls.id.to_s
-            end
-          end
-
-          if predecessors_step != ''
-            predecessors_step.slice!(0)
-          end
-          
-          WorkflowLiveStep.create(station_step_id: stp.id, object_id: @l1.id, object_type: 'L1', predecessors: predecessors_step, is_active: true , eta: '')
+        respond_to do |format|
+          format.json { render json: {status: 'failed', message: 'Validation Error: Name must be unique!', unique_error: 'unique_error'}, status: 200 }
         end
-      end
-
-      if @l1.workflow_live_steps.present?
-         workflow_step = @l1.workflow_live_steps.first
-         if !workflow_step.actual_confirmation.present?
-           session[:open_confirm_modal] = 'open_confirm_modal'
-           session[:workflow_step_id] = workflow_step.id
-         end  
-       end
-      AdditionalInfo.create(work_flow_id: @workflow.id , object_id: @l1.id,object_type: 'L1' , status: @l1.status, user_id: current_user.id)
-
-      session[:filter_object_type] = 'L1'
-      session[:filter_object_id] = @l1.id
-      redirect_to root_path, notice: @workflow.L1+' was successfully created.'
     else
-      render :new
-    end
+      @l1 = L1.new(l1_params)
+      @l1.user_id = current_user.id
+      if @l1.save!
+        if params[:attr].present?
+          AttributeValue.create_attribute_values(params[:attr], @l1, 'L1') 
+        end
+        @l1.work_flow.workflow_stations.order(:sequence).each do |station|
+          station.station_steps.where(recording_level: 'L1').order(:sequence).each do |stp|
+            predecessors = Transition.where(station_step_id: stp.id)
+            predecessors_step = ''
+            predecessors.each do |pred|
+              workflow_live_steps = WorkflowLiveStep.where(station_step_id: pred.previous_station_step_id, object_id: @l1.id, object_type: 'L1')
+              workflow_live_steps.each do |wls|
+                predecessors_step = predecessors_step+','+wls.id.to_s
+              end
+            end
+
+            if predecessors_step != ''
+              predecessors_step.slice!(0)
+            end
+            
+            WorkflowLiveStep.create(station_step_id: stp.id, object_id: @l1.id, object_type: 'L1', predecessors: predecessors_step, is_active: true , eta: '')
+          end
+        end
+
+        if @l1.workflow_live_steps.present?
+           workflow_step = @l1.workflow_live_steps.first
+           if !workflow_step.actual_confirmation.present?
+             session[:open_confirm_modal] = 'open_confirm_modal'
+             session[:workflow_step_id] = workflow_step.id
+           end  
+         end
+        AdditionalInfo.create(work_flow_id: @workflow.id , object_id: @l1.id,object_type: 'L1' , status: @l1.status, user_id: current_user.id)
+
+        session[:filter_object_type] = 'L1'
+        session[:filter_object_id] = @l1.id
+        redirect_to root_path, notice: @workflow.L1+' was successfully created.'
+      else
+        render :new
+      end
+    end  
   end
 
   # PATCH/PUT /l1s/1

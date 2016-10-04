@@ -15,7 +15,7 @@
 
           <div class="form-group">
             <label class="col-lg-4 control-label"> <%= @workflow.L1 %> Name  </label>
-              <div class="col-lg-6">
+              <div class="col-lg-6 object_link_edit ">
                 <% if @l1.status.downcase! == 'cancel' %>
                   <%= link_to @l1.name, 'javascript:void(0)', title: 'Closed and Canceled level are not editable!' %>
                 <% else %>
@@ -33,7 +33,7 @@
         <%elsif @type == 'L2'%>
           <div class="form-group">
             <label class="col-lg-4 control-label"> <%= @workflow.L2 %> Name </label>
-              <div class="col-lg-6">
+              <div class="col-lg-6 object_link_edit">
                 <% if @l2.status.downcase! == 'cancel' %>
                   <%= link_to @l2.name, 'javascript:void(0)', title: 'Closed and Canceled level are not editable!' %>
                 <% else %>
@@ -50,7 +50,7 @@
         <%else%>
           <div class="form-group">
             <label class="col-lg-4 control-label"> <%= @workflow.L3 %> Name </label>
-              <div class="col-lg-6">
+              <div class="col-lg-6 object_link_edit">
                 <% if @l3.is_closed? || @l3.status.downcase! == 'cancel' %>
                   <%= link_to @l3.name, 'javascript:void(0)', title: 'Closed and Canceled level are not editable!' %>
                 <% else %>

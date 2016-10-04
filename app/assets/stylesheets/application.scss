@@ -108,11 +108,11 @@ body {
 .tspend {width: 60% !important;}
 
 .project-data.project_fix.fix_levels {
-    width: 300px;
+    width: 342px;
 }
 
 .project-data.project_ia {
-    width: 600px;
+    width: 523px;
 }
 
 .no-brd { border-right:none !important; width: 95px}
@@ -567,4 +567,17 @@ label.string, label.integer {
 .btn-danger:focus, .btn-danger.focus{
     background-color: #9e9783;
     border-color: #94896b;
+}
+
+#labeling_body {
+    padding-right: 0 !important;
+}
+
+.col-lg-6.object_link_edit a {
+    color: blue;
+    font-weight: bold;
+}
+
+.status-col-width {
+  text-transform: capitalize
 }

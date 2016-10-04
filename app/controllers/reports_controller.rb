@@ -140,15 +140,16 @@ class ReportsController < ApplicationController
 		if request.post? or session[:report_q_string].present?
 			@task_confirmation = false
 			if request.post?
-				@serach_result = search[0]
+				search_hand_off = search('handoff')
+				@serach_result = search_hand_off[0]
 				if search[1] != ''
-					@report_serach_result = WorkFlow.handoff_report_search(search[1], @workflow.id)
+					@report_serach_result = WorkFlow.handoff_report_search_exclude_canceled(search[1], @workflow.id)
 				end	
 			else
 			  	q_string = session[:report_q_string]
 			  	if q_string != ''
-					@serach_result = WorkFlow.search(q_string)
-					@report_serach_result = WorkFlow.handoff_report_search(q_string, @workflow.id)
+					@serach_result = WorkFlow.search_handoff_exclude_canceled(q_string, 'handoff')
+					@report_serach_result = WorkFlow.handoff_report_search_exclude_canceled(q_string, @workflow.id)
 				end
 			end	
 		end
@@ -287,7 +288,7 @@ class ReportsController < ApplicationController
 	end
   	private
 
-		def search 
+		def search(report_type = '') 
 			q_string = '';
 		    session[:report_wildcard] = params[:wildcard]
 		    session[:report_exact] = params[:exact]
@@ -331,12 +332,18 @@ class ReportsController < ApplicationController
 		      q_string += q_string != '' ? ' and ' : ''
 		      q_string += "l1s.work_flow_id = "+ @workflow.id.to_s
 		    end
+
 		    session[:report_q_string] = q_string
+		    q_string_return = q_string
 		    if q_string != ''
-		      serach_result = WorkFlow.search(q_string)
+		   		if report_type == 'handoff' 	
+		      		serach_result = WorkFlow.search_handoff_exclude_canceled(q_string, report_type)
+		  		else
+		      		serach_result = WorkFlow.search(q_string)
+		  		end
 		    end
 
-		    return [serach_result, q_string] 
+		    return [serach_result, q_string_return]
 		end	
 
 end

@@ -11,6 +11,229 @@ class WorkFlow < ActiveRecord::Base
 
 		class << self
 			
+			# HAND OFF report work
+			def search_handoff_exclude_canceled(q_string, report_type)
+		        if report_type == 'handoff'
+      				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+							l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
+							l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
+              				from l1s left join l2s on l1s.id = l2s.l1_id and l2s.status != 'Cancel' 
+              				left join l3s on l2s.id = l3s.l2_id and l3s.status != 'Cancel' and is_main_record = true
+           					where #{q_string} and l1s.status != 'Cancel' order by l1s.name"
+		        else
+					sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+							l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
+							l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
+              				from l1s left join l2s on l1s.id = l2s.l1_id and l2s.status != 'Cancel' 
+              				left join l3s on l2s.id = l3s.l2_id and l3s.status != 'Cancel'
+           					where #{q_string} and l1s.status != 'Cancel' order by l1s.name"
+           		end			
+				serach_result = ActiveRecord::Base.connection.select_all sql_query
+                return serach_result
+			end
+			
+			def handoff_report_search_exclude_canceled(q_string, workflow)
+				handoff_report__exclude_canceled_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
+								l2s.num_component as l2_num_component,l1s.num_component as l1_num_component,l1s.business_unit as l1_bu,l2s.business_unit as l2_bu,l3s.business_unit as l3_bu,
+								l1s.status as l1_status,l2s.status as l2_status,l3s.status as l3_status,wls.station_step_id, wls.is_active,
+								timestamp_logs.actual_confirmation,wls.eta, station_steps.step_name as step, workflow_stations.station_name as station, wls.id as wls_id, wls.object_type, timestamp_logs.id as log_id
+								from l1s
+								left join l2s on l1s.id = l2s.l1_id and l2s.status != 'Cancel'
+								left join l3s on l3s.l2_id=l2s.id and l3s.status != 'Cancel'
+								inner join workflow_live_steps as wls on (wls.object_id = l1s.id and wls.object_type = 'L1') 
+								                               or (wls.object_id = l2s.id  and wls.object_type = 'L2') 
+								                               or (wls.object_id = l3s.id  and wls.object_type = 'L3')
+								inner join station_steps on wls.station_step_id = station_steps.id
+								inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
+								left join timestamp_logs on wls.id = timestamp_logs.workflow_live_step_id
+								where #{q_string}
+								and l1s.status != 'Cancel' and wls.station_step_id in (select station_step_id from report_filter_steps where work_flow_id = #{workflow})
+								order by l1s.name, l2s.name, l3s.name"
+				handoff_report_serach_exclude_canceled_result = ActiveRecord::Base.connection.select_all handoff_report__exclude_canceled_sql_query
+                return handoff_report_serach_exclude_canceled_result
+
+			end
+
+			def handoff_report_search(q_string, workflow)
+				handoff_report_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
+								l2s.num_component as l2_num_component,l1s.num_component as l1_num_component,l1s.business_unit as l1_bu,l2s.business_unit as l2_bu,l3s.business_unit as l3_bu,
+								l1s.status as l1_status,l2s.status as l2_status,l3s.status as l3_status,wls.station_step_id, wls.is_active,
+								timestamp_logs.actual_confirmation,wls.eta, station_steps.step_name as step, workflow_stations.station_name as station, wls.id as wls_id, wls.object_type, timestamp_logs.id as log_id
+								from l1s
+								left join l2s on l1s.id = l2s.l1_id
+								left join l3s on l3s.l2_id=l2s.id
+								inner join workflow_live_steps as wls on (wls.object_id = l1s.id and wls.object_type = 'L1') 
+								                               or (wls.object_id = l2s.id  and wls.object_type = 'L2') 
+								                               or (wls.object_id = l3s.id  and wls.object_type = 'L3')
+								inner join station_steps on wls.station_step_id = station_steps.id
+								inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
+								left join timestamp_logs on wls.id = timestamp_logs.workflow_live_step_id
+								where #{q_string}
+								and wls.station_step_id in (select station_step_id from report_filter_steps where work_flow_id = #{workflow})
+								order by l1s.name, l2s.name, l3s.name"
+				handoff_report_serach_result = ActiveRecord::Base.connection.select_all handoff_report_sql_query
+                return handoff_report_serach_result
+			end
+
+			def get_rollUp_object_status(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id)
+				status = "Closed"
+				habdoff_report_serach_unique = report_serach_result.select{|report| report['object_type'] == object_type and report[ll_id] == object_id}
+				
+				if habdoff_report_serach_unique.present?
+					status = habdoff_report_serach_unique[0]['l3_status']
+					habdoff_report_serach_unique_l3_with_partials = report_serach_result.select{|report| report['object_type'] == object_type and report['l2_id'].to_i == habdoff_report_serach_unique[0]['l2_id'].to_i}
+					if habdoff_report_serach_unique_l3_with_partials.present?
+						habdoff_report_serach_unique_l3_active_status = habdoff_report_serach_unique_l3_with_partials.select{|report| report['l3_status'].downcase == 'active' }
+						if habdoff_report_serach_unique_l3_active_status.present?
+							status = 'Active'
+						else
+							habdoff_report_serach_unique_l3_onHold_status = habdoff_report_serach_unique_l3_with_partials.select{|report| report['l3_status'].downcase == 'onhold' }
+							if habdoff_report_serach_unique_l3_onHold_status.present?
+								status = 'onHold'
+							end
+						end
+					end
+				end
+				return status			
+			end
+
+			def get_time_stamp(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
+				time_stamp = ""
+				table_td_class = ""
+				habdoff_report_serach_unique = report_serach_result.select{|report| report['object_type'] == object_type and report[ll_id] == object_id and report['station_step_id'] == station_step_id }
+				
+				if habdoff_report_serach_unique.present?
+					if object_type == 'L3'
+						habdoff_report_serach_unique_l3_with_partials = report_serach_result.select{|report| report['object_type'] == object_type and report['l2_id'].to_i == habdoff_report_serach_unique[0]['l2_id'].to_i and report['station_step_id'] == station_step_id }
+						if habdoff_report_serach_unique_l3_with_partials.present?
+							
+							habdoff_report_serach_unique_l3_active = habdoff_report_serach_unique_l3_with_partials.select{|report| report['is_active'] == 1 }
+							if habdoff_report_serach_unique_l3_active.present?
+								habdoff_report_serach_unique_l3_blank = habdoff_report_serach_unique_l3_with_partials.select{|report| report['l3_status'].downcase != 'closed' and report['actual_confirmation'] == nil }
+								if habdoff_report_serach_unique_l3_blank.present?
+									calculated_eta = do_calculate_eta_for_l3(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
+									time_stamp = calculated_eta[0]
+									table_td_class = calculated_eta[1]
+								else
+									habdoff_report_actual_sorted = habdoff_report_serach_unique_l3_with_partials.sort_by { |h| h[:actual_confirmation] }
+									time_stamp = habdoff_report_actual_sorted[0]['actual_confirmation'].strftime("%m/%d/%y")
+									table_td_class = 'report_actual_confirmation'
+								end
+							else
+								time_stamp = 'N/A'
+							end
+						end
+					else
+						if habdoff_report_serach_unique[0]['is_active'] == 0
+							time_stamp = 'N/A'
+						else
+							habdoff_report_actual = habdoff_report_serach_unique.select{|report| report['actual_confirmation'] != nil }
+							if habdoff_report_actual.present?
+								habdoff_report_actual_sorted = habdoff_report_actual.sort_by { |h| h[:log_id] }.reverse!
+								time_stamp = habdoff_report_actual_sorted[0]['actual_confirmation'].strftime("%m/%d/%y")
+								table_td_class = 'report_actual_confirmation'
+							else
+								calculated_eta = do_calculate_eta(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
+								time_stamp = calculated_eta[0]
+								table_td_class = calculated_eta[1]
+							end	
+						end
+					end		
+				end
+				return [time_stamp, table_td_class]
+			end
+
+			def do_calculate_eta_for_l3(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
+				time_stamp = ""
+				table_td_class = ""
+				max_eta_datetime = nil
+				filteredStationStep = filtered_station_steps.find_by_station_step_id(station_step_id)
+				if filteredStationStep.predecessors.present?
+					predecessors_list = filteredStationStep.predecessors.split(',')
+					if predecessors_list.presence
+						max_eta_datetime = nil
+						predecessors_list.each do |pred|
+							pred_habdoff_report_serach_unique = []
+							pred_filteredStationStep = filtered_station_steps.find_by_station_step_id(pred)
+							workflow = WorkFlow.find_by_id(pred_filteredStationStep.work_flow_id)
+
+							pred_habdoff_report_serach_unique_current = report_serach_result.select{|report| report['object_type'] == object_type and report[ll_id] == object_id and report['station_step_id'].to_i == pred.to_i }
+							if pred_habdoff_report_serach_unique_current.present?
+								pred_habdoff_report_serach_unique_current.each do |phrsuc|
+									pred_habdoff_report_serach_unique << phrsuc
+								end
+							end
+
+							if ll_id == 'l3_id'
+								if pred_habdoff_report_serach_unique_current.present?
+									l3_object_id = pred_habdoff_report_serach_unique_current.first
+									habdoff_report_serach_unique_l3_with_partials = report_serach_result.select{|report| report['object_type'] == object_type and report['l2_id'].to_i == l3_object_id['l2_id'].to_i and report['station_step_id'].to_i == pred.to_i }
+									if habdoff_report_serach_unique_l3_with_partials.present?
+										habdoff_report_serach_unique_l3_with_partials.each do |phrsup|
+											pred_habdoff_report_serach_unique << phrsup
+										end
+									end
+								end
+								pred_habdoff_report_serach_unique_l3_id = report_serach_result.select{|report| report['object_type'] == 'L2' and report['l2_id'] == parent_l2_id and report['station_step_id'].to_i == pred.to_i }
+								if pred_habdoff_report_serach_unique_l3_id.present?
+									pred_habdoff_report_serach_unique_l3_id.each do |phrsul3|
+										pred_habdoff_report_serach_unique << phrsul3
+									end
+								end
+							end
+
+							if ll_id == 'l2_id' or ll_id == 'l3_id'
+								pred_habdoff_report_serach_unique_l2 = report_serach_result.select{|report| report['object_type'] == 'L1' and report['l1_id'] == parent_l1_id and report['station_step_id'].to_i == pred.to_i }
+								if pred_habdoff_report_serach_unique_l2.present?
+									pred_habdoff_report_serach_unique_l2.each do |phrsul2|
+										pred_habdoff_report_serach_unique << phrsul2
+									end
+								end
+							end
+						
+							habdoff_report_serach_unique_l3_blank = pred_habdoff_report_serach_unique.select{|report| report['l3_status'].downcase != 'closed' and report['actual_confirmation'] == nil }
+							if !habdoff_report_serach_unique_l3_blank.present?
+								habdoff_report_actual_sorted = pred_habdoff_report_serach_unique.sort_by { |h| h[:actual_confirmation] }
+								actual_confirmation = habdoff_report_actual_sorted[0]['actual_confirmation']
+									# Covnert minutes to hours and minutes
+							  	BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
+							    BusinessTime::Config.end_of_workday = workflow.end_of_workday
+
+							    workflow.holidays.each do |holiday|
+							       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
+							    end
+								number_days = pred_filteredStationStep.duration_days
+								actual_confirmation = actual_confirmation.to_time.strftime('%Y-%m-%d %H:%M')
+								eta_datetime = Time.parse(actual_confirmation)
+								
+								if number_days > 0
+									eta_datetime =  number_days.business_days.after(eta_datetime)
+								end
+								
+								if !max_eta_datetime.present?
+									max_eta_datetime = eta_datetime
+								end
+								if max_eta_datetime.present?
+									if DateTime.parse(eta_datetime.to_s) > DateTime.parse(max_eta_datetime.to_s)
+							      		max_eta_datetime = eta_datetime
+							      	end	
+								end
+
+								eta_date_stamp = max_eta_datetime.strftime("%m/%d/%y")
+								time_stamp = "ETA "+eta_date_stamp
+								if DateTime.parse(Time.now.to_s) > DateTime.parse(max_eta_datetime.to_s)
+									table_td_class = 'report_eta_light_red'
+								end
+							end
+
+						end
+					end
+				end
+
+				return [time_stamp, table_td_class]
+			end
+			# -------------end of HAND OFF work--------------------
+
 			def search(q_string)
 				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
 							l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
@@ -88,30 +311,72 @@ class WorkFlow < ActiveRecord::Base
 				 return aa
  	
 			end
-			
 
-			def handoff_report_search(q_string, workflow)
-				handoff_report_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
-								l2s.num_component as l2_num_component,l1s.num_component as l1_num_component,l1s.business_unit as l1_bu,l2s.business_unit as l2_bu,l3s.business_unit as l3_bu,
-								l1s.status as l1_status,l2s.status as l2_status,l3s.status as l3_status,wls.station_step_id, wls.is_active,
-								timestamp_logs.actual_confirmation,wls.eta, station_steps.step_name as step, workflow_stations.station_name as station, wls.id as wls_id, wls.object_type, timestamp_logs.id as log_id
-								from l1s
-								left join l2s on l1s.id = l2s.l1_id
-								left join l3s on l3s.l2_id=l2s.id
-								inner join workflow_live_steps as wls on (wls.object_id = l1s.id and wls.object_type = 'L1') 
-								                               or (wls.object_id = l2s.id  and wls.object_type = 'L2') 
-								                               or (wls.object_id = l3s.id  and wls.object_type = 'L3')
-								inner join station_steps on wls.station_step_id = station_steps.id
-								inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
-								left join timestamp_logs on wls.id = timestamp_logs.workflow_live_step_id
-								where #{q_string}
-								and wls.station_step_id in (select station_step_id from report_filter_steps where work_flow_id = #{workflow})
-								order by l1s.name, l2s.name, l3s.name"
-				handoff_report_serach_result = ActiveRecord::Base.connection.select_all handoff_report_sql_query
-                return handoff_report_serach_result
+			def do_calculate_eta(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
+				time_stamp = ""
+				table_td_class = ""
+				filteredStationStep = filtered_station_steps.find_by_station_step_id(station_step_id)
+				if filteredStationStep.predecessors.present?
+					predecessors_list = filteredStationStep.predecessors.split(',')
+					if predecessors_list.presence
+						max_eta_datetime = nil
+						predecessors_list.each do |pred|
+							pred_filteredStationStep = filtered_station_steps.find_by_station_step_id(pred)
+							workflow = WorkFlow.find_by_id(pred_filteredStationStep.work_flow_id)
+							pred_habdoff_report_serach_unique = report_serach_result.select{|report| report['object_type'] == object_type and report[ll_id] == object_id and report['station_step_id'].to_i == pred.to_i }
+							if !pred_habdoff_report_serach_unique.present? and ll_id == 'l3_id'
+								pred_habdoff_report_serach_unique = report_serach_result.select{|report| report['object_type'] == 'L2' and report['l2_id'] == parent_l2_id and report['station_step_id'].to_i == pred.to_i }
+							end
+
+							if !pred_habdoff_report_serach_unique.present? and (ll_id == 'l2_id' or ll_id == 'l3_id')
+								pred_habdoff_report_serach_unique = report_serach_result.select{|report| report['object_type'] == 'L1' and report['l1_id'] == parent_l1_id and report['station_step_id'].to_i == pred.to_i }
+							end
+
+							pred_habdoff_report_actual = pred_habdoff_report_serach_unique.select{|report| report['actual_confirmation'] != nil }
+							if pred_habdoff_report_actual.present?
+								pred_habdoff_report_actual_sorted = pred_habdoff_report_actual.sort_by { |h| h[:log_id] }.reverse!
+								actual_confirmation = pred_habdoff_report_actual_sorted[0]['actual_confirmation']
+
+									# Covnert minutes to hours and minutes
+							  	BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
+							    BusinessTime::Config.end_of_workday = workflow.end_of_workday
+
+							    workflow.holidays.each do |holiday|
+							       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
+							    end
+								number_days = pred_filteredStationStep.duration_days
+								actual_confirmation = actual_confirmation.to_time.strftime('%Y-%m-%d %H:%M')
+								eta_datetime = Time.parse(actual_confirmation)
+								
+								if number_days > 0
+									eta_datetime =  number_days.business_days.after(eta_datetime)
+								end
+								
+								if !max_eta_datetime.present?
+									max_eta_datetime = eta_datetime
+								end
+								if max_eta_datetime.present?
+									if DateTime.parse(eta_datetime.to_s) > DateTime.parse(max_eta_datetime.to_s)
+							      		max_eta_datetime = eta_datetime
+							      	end	
+								end
+
+								eta_date_stamp = max_eta_datetime.strftime("%m/%d/%y")
+								eta_time_stamp = max_eta_datetime.strftime("%I:%M %p")
+								time_stamp = "ETA "+eta_date_stamp+"<br />"+eta_time_stamp
+								if DateTime.parse(Time.now.to_s) > DateTime.parse(max_eta_datetime.to_s)
+									table_td_class = 'report_eta_light_red'
+								end
+
+							end
+						end
+					end
+				end
+
+				return [time_stamp, table_td_class]
 			end
 
-			def get_time_stamp(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
+			def get_time_stamp__aaa(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
 				time_stamp = ""
 				table_td_class = ""
 				habdoff_report_serach_unique = report_serach_result.select{|report| report['object_type'] == object_type and report[ll_id] == object_id and report['station_step_id'] == station_step_id }

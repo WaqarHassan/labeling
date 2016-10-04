@@ -142,10 +142,12 @@
                     <% end %>
                   <% end %>
                   </td>
-                  <td><%= result['l3_status'] %></td>
+                  <%  stataus = WorkFlow.get_rollUp_object_status(@report_serach_result, 'L3', result['l3_id'], result['l2_id'], result['l1_id'], 'l3_id')
+                  %>
+                  <td><%= stataus %></td>
                   <% @filtered_station_steps.each do |filtered_station_step| 
                     @timestamp = WorkFlow.get_time_stamp(@report_serach_result, 'L3', result['l3_id'], result['l2_id'], result['l1_id'], 'l3_id', filtered_station_step.station_step_id, @filtered_station_steps)%>
-                    <td class="<%=@timestamp[1]%>" ><%= @timestamp[0].html_safe %></td>
+                    <td class="<%=@timestamp[1]%>" id="<%=@timestamp[2]%>"><%= @timestamp[0].html_safe %></td>
                   <% end %>
                   <% object_attributes_data = WorkFlow.object_attributes(result['l3_id'], 'L3') 
                     l3_comp_type = WorkFlow.get_object_attribute_value(object_attributes_data, 'Comp Type')

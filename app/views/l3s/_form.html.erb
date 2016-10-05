@@ -156,9 +156,15 @@
         <%=  link_to 'Update Workflow', update_workflow_path('L3', @l3.id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#update_workflow_modal' , "data-dismiss" => "modal", :class=>'btn save-print-update-edit-btn', :style=>"float: left;"} %>
       <% end %>
       <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
-      <button class="btn save-print-update-edit-btn" type="submit" >
-        <%= @btn_action %>
-      </button>
+      <% if @btn_action.downcase == 'update' %>
+        <button class="btn save-print-update-edit-btn" type="submit" onclick="return show_waiting_bar_l3_update();">
+          <%= @btn_action %>
+        </button>
+      <% else %>
+        <button class="btn save-print-update-edit-btn" type="submit" onclick="return show_waiting_bar_l3();">
+          <%= @btn_action %>
+        </button>
+      <% end %>
     </div>
   <% end %>
 </div>

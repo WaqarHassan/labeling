@@ -207,24 +207,31 @@ class L3sController < ApplicationController
 
   # PATCH/PUT /l3s/1
   def update
-    @l3.modified_by_user_id = current_user.id
-    if @l3.update!(l3_params)
-      if params[:attr].present?
-        params[:attr].each do |att|
-         attr_value_object = AttributeValue.find_by_label_attribute_id_and_object_id_and_object_type(att[0], @l3.id, 'L3')
-          if attr_value_object.present?
-            attr_value_object.value = att[1]
-            attr_value_object.save!
-          else
-            AttributeValue.create_single_attribute_value(att[0], att[1], @l3, 'L3')   
-          end
+    name = L3.where(name: params[:l3][:name]).where.not(id: params[:id]).first
+    if name.present? 
+        respond_to do |format|
+          format.json { render json: {status: 'failed', message: 'Validation Error: Name must be unique!', unique_error: 'unique_error'}, status: 200 }
         end
-      end  
-      AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l3.id,object_type: 'L3' , status: @l3.status, user_id: current_user.id)
-
-      redirect_to root_path, notice: @workflow.L3+' was successfully updated.'
     else
-      render :edit
+      @l3.modified_by_user_id = current_user.id
+      if @l3.update!(l3_params)
+        if params[:attr].present?
+          params[:attr].each do |att|
+           attr_value_object = AttributeValue.find_by_label_attribute_id_and_object_id_and_object_type(att[0], @l3.id, 'L3')
+            if attr_value_object.present?
+              attr_value_object.value = att[1]
+              attr_value_object.save!
+            else
+              AttributeValue.create_single_attribute_value(att[0], att[1], @l3, 'L3')   
+            end
+          end
+        end  
+        AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l3.id,object_type: 'L3' , status: @l3.status, user_id: current_user.id)
+
+        redirect_to root_path, notice: @workflow.L3+' was successfully updated.'
+      else
+        render :edit
+      end
     end
   end
 

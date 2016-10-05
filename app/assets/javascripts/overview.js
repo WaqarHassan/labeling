@@ -1,12 +1,13 @@
 
 console.log('main js working........');
-console.log('Container width for this screeen = '+container_width());
-console.log('width of first 3 panels = ' + width3() )
+
 function set_partial_merger(){
 	$('#rework_info_reason').removeAttr("required");
 	$('#rework_start_step').removeAttr("required");
 	$('#merge_back_partial_with_parent').val('merge_back_partial_with_parent');
+	$('#myPleaseWait').modal('show');
 }
+
 function can_be_full_rework(){
 	selected_num_comp = $('#selected_num_comp').val();
 	total_num_component = $('#total_num_component').val();
@@ -20,6 +21,9 @@ function can_be_full_rework(){
 		$('#full_rework_not_possible').html(dataHTMLREWORK);
 		return false;
 	}else{
+		if ($("#rework_modal_popup #rework_modal_from").valid() == true){
+			$('#myPleaseWait').modal('show');
+		}
 		return true;
 	}
 }
@@ -151,6 +155,10 @@ function toggle_lang(comp_type_value, workflow_name){
 	}else{
 		$('#lang').show();
 	}	
+}
+
+function show_waiting_bar_search_side(){
+	//$('#myPleaseWait').modal('show');
 }
 
 function selectOnlyThis(thisBox){

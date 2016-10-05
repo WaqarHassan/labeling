@@ -52,8 +52,23 @@ $("#add_l2_modal #ia_modal_form").on('ajax:success', function(e, data, status, x
   successHTML += 'Validation Error: Name must be unique!';
   successHTML += '</div>';
   if (data.unique_error == 'unique_error'){
+  	$('#myPleaseWait').modal('hide');
     $("#add_l2_modal #ia_modal_form .errors__container").html(successHTML);
     $("#add_l2_modal #ia_modal_form .errors__container").show();
+  }
+}).on('ajax:error',function(e, xhr, status, error){
+  console.log('error on save!');
+});
+
+$("#l2_update_popup #ia_modal_form").on('ajax:success', function(e, data, status, xhr){
+  successHTML = '<div class="alert alert-dismissable alert-info">';
+  successHTML += '<button class="close" data-dismiss="alert" aria-hidden="">×</button>';
+  successHTML += 'Validation Error: Name must be unique!';
+  successHTML += '</div>';
+  if (data.unique_error == 'unique_error'){
+  	$('#myPleaseWait').modal('hide');
+    $("#l2_update_popup #ia_modal_form .errors__container").html(successHTML);
+    $("#l2_update_popup #ia_modal_form .errors__container").show();
   }
 }).on('ajax:error',function(e, xhr, status, error){
   console.log('error on save!');
@@ -65,6 +80,7 @@ $("#add_l3_modal #add_edit_ecr_form").on('ajax:success', function(e, data, statu
   successHTML += 'Validation Error: Name must be unique!';
   successHTML += '</div>';
   if (data.unique_error == 'unique_error'){
+  	$('#myPleaseWait').modal('hide');
     $("#add_l3_modal #add_edit_ecr_form .errors__container").html(successHTML);
     $("#add_l3_modal #add_edit_ecr_form .errors__container").show();
   }
@@ -72,12 +88,50 @@ $("#add_l3_modal #add_edit_ecr_form").on('ajax:success', function(e, data, statu
   console.log('error on save!');
 });
 
+$("#l3_update_popup #add_edit_ecr_form").on('ajax:success', function(e, data, status, xhr){
+  successHTML = '<div class="alert alert-dismissable alert-info">';
+  successHTML += '<button class="close" data-dismiss="alert" aria-hidden="">×</button>';
+  successHTML += 'Validation Error: Name must be unique!';
+  successHTML += '</div>';
+  if (data.unique_error == 'unique_error'){
+  	$('#myPleaseWait').modal('hide');
+    $("#l3_update_popup #add_edit_ecr_form .errors__container").html(successHTML);
+    $("#l3_update_popup #add_edit_ecr_form .errors__container").show();
+  }
+}).on('ajax:error',function(e, xhr, status, error){
+  console.log('error on save!');
+});
+
 function set_l2_status(status){
 	$('#l2_status').val(status);
+	if ($('#add_l2_modal #ia_modal_form').valid() == true){
+		$('#myPleaseWait').modal('show');
+	}
 }
 
 function remove_l2_status(){
 	$('#l2_status').remove();
+	if ($('#l2_update_popup #ia_modal_form').valid() == true){
+		$('#myPleaseWait').modal('show');
+	}
+}
+
+function show_waiting_bar_l3(){
+	if ($("#add_l3_modal #add_edit_ecr_form").valid() == true){
+		$('#myPleaseWait').modal('show');
+	}
+console.log('new');
+}
+
+function show_waiting_bar_l3_update(){
+	if ($("#l3_update_popup #add_edit_ecr_form").valid() == true){
+		$('#myPleaseWait').modal('show');
+	}
+console.log('update');
+}
+
+function show_waiting_bar(){
+	$('#myPleaseWait').modal('show');
 }
 
 function onlySaveNote(){

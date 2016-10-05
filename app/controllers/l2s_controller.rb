@@ -186,59 +186,66 @@ class L2sController < ApplicationController
   # PATCH/PUT /ia/1
   def update
     @l2.modified_by_user_id = current_user.id
-    previous_status = @l2.status
-    ia_approval_date = calculate_Ia_approval_date
-    @l2.latest_ia_approval_date = ia_approval_date
-    if @l2.update!(l2_params)
-      if params[:attr].present?
-        params[:attr].each do |att|
-         attr_value_object = AttributeValue.find_by_label_attribute_id_and_object_id_and_object_type(att[0], @l2.id, 'L2')
-          if attr_value_object.present?
-            attr_value_object.value = att[1]
-            attr_value_object.save!
-          else
-            AttributeValue.create_single_attribute_value(att[0], att[1], @l2, 'L2')   
-          end
+    name = L2.where(name: params[:l2][:name]).where.not(id: params[:id]).first
+    if name.present? 
+        respond_to do |format|
+          format.json { render json: {status: 'failed', message: 'Validation Error: Name must be unique!', unique_error: 'unique_error'}, status: 200 }
         end
-      end  
-
-      if params[:l2][:status].present?
-        time_stamp =  nil
-        accept_reject_date = params[:accept_reject_date]
-        if accept_reject_date.present?
-          time_stamp =  L1.set_db_datetime_format(accept_reject_date)
-        end
-           additional_info_id = AdditionalInfo.create(work_flow_id: @workflow.id,
-                              object_id: @l2.id,
-                              object_type: 'L2' ,
-                              status: @l2.status,
-                              user_id: current_user.id,
-                              info_timestamp: time_stamp)
-           session[:additional_info_id] = additional_info_id.id
-      end
-
-      if previous_status.downcase == 'rejected' && @l2.status.downcase == 'active'
-        session[:open_confirm_modal] = 'open_confirm_modal'
-        session[:workflow_step_id] = @l2.workflow_live_steps.first.id
-        session[:l_number_id] = @l2.id
-      elsif params[:l2][:status].presence
-        if params[:l2][:status].downcase == 'rejected'
-          session[:open_reason_modal] = 'open_reason_modal'
-          session[:l2_id] = @l2.id
-        end
-        
-      end
-
-      if DateTime.parse(ia_approval_date.to_s) < DateTime.now.strftime('%Y-%m-%d')
-         
-        redirect_to root_path, notice: @workflow.L2+' was successfully Updated .Based on your entries, the IA should have already been approved on '+ ia_approval_date.strftime('%Y-%m-%d')
-      else
-        
-         redirect_to root_path, notice: @workflow.L2+' was successfully Updated.'
-            
-      end
     else
-      render :edit
+      previous_status = @l2.status
+      ia_approval_date = calculate_Ia_approval_date
+      @l2.latest_ia_approval_date = ia_approval_date
+      if @l2.update!(l2_params)
+        if params[:attr].present?
+          params[:attr].each do |att|
+           attr_value_object = AttributeValue.find_by_label_attribute_id_and_object_id_and_object_type(att[0], @l2.id, 'L2')
+            if attr_value_object.present?
+              attr_value_object.value = att[1]
+              attr_value_object.save!
+            else
+              AttributeValue.create_single_attribute_value(att[0], att[1], @l2, 'L2')   
+            end
+          end
+        end  
+
+        if params[:l2][:status].present?
+          time_stamp =  nil
+          accept_reject_date = params[:accept_reject_date]
+          if accept_reject_date.present?
+            time_stamp =  L1.set_db_datetime_format(accept_reject_date)
+          end
+             additional_info_id = AdditionalInfo.create(work_flow_id: @workflow.id,
+                                object_id: @l2.id,
+                                object_type: 'L2' ,
+                                status: @l2.status,
+                                user_id: current_user.id,
+                                info_timestamp: time_stamp)
+             session[:additional_info_id] = additional_info_id.id
+        end
+
+        if previous_status.downcase == 'rejected' && @l2.status.downcase == 'active'
+          session[:open_confirm_modal] = 'open_confirm_modal'
+          session[:workflow_step_id] = @l2.workflow_live_steps.first.id
+          session[:l_number_id] = @l2.id
+        elsif params[:l2][:status].presence
+          if params[:l2][:status].downcase == 'rejected'
+            session[:open_reason_modal] = 'open_reason_modal'
+            session[:l2_id] = @l2.id
+          end
+          
+        end
+
+        if DateTime.parse(ia_approval_date.to_s) < DateTime.now.strftime('%Y-%m-%d')
+           
+          redirect_to root_path, notice: @workflow.L2+' was successfully Updated .Based on your entries, the IA should have already been approved on '+ ia_approval_date.strftime('%Y-%m-%d')
+        else
+          
+           redirect_to root_path, notice: @workflow.L2+' was successfully Updated.'
+              
+        end
+      else
+        render :edit
+      end
     end
   end
 

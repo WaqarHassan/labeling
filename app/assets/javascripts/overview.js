@@ -161,6 +161,10 @@ function show_waiting_bar_search_side(){
 	//$('#myPleaseWait').modal('show');
 }
 
+function show_waiting_bar_addInfo(){
+	$('#myPleaseWait').modal('show');
+}
+
 function selectOnlyThis(thisBox){
   set_to_uncheck = ''
   if ($('#'+thisBox.id+':checkbox:checked').length == 0){

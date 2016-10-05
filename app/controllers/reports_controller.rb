@@ -6,6 +6,9 @@ class ReportsController < ApplicationController
 
 	def entire_history
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+	    @report_include_canceled = session[:report_include_canceled]
+    	@report_include_completed = session[:report_include_completed]
+
 	    if session[:report_wildcard].present?
 	      @wildcard = session[:report_wildcard]
 	    end
@@ -15,23 +18,58 @@ class ReportsController < ApplicationController
 
 		if request.post? or session[:report_q_string].present?
 			@task_confirmation = false
+			q_string = ''
 			if request.post?
+			    if params[:report_include_canceled].presence
+			      @report_include_canceled = params[:report_include_canceled]
+			      session[:report_include_canceled] = @report_include_canceled
+			    else
+			      session.delete(:report_include_canceled)
+			    end
+			    if params[:report_include_completed].presence
+			      @report_include_completed = params[:report_include_completed]
+			      session[:report_include_completed] = @report_include_completed
+			    else
+			      session.delete(:report_include_completed)
+			    end
+
 				@serach_result = search[0]
-				if search[1] != ''
-					@report_serach_result = WorkFlow.report_search(search[1])
-				end	
+				q_string = search[1]
 			else
 			  	q_string = session[:report_q_string]
 			  	if q_string != ''
-					@serach_result = WorkFlow.search(q_string)
-					@report_serach_result = WorkFlow.report_search(q_string)
+					if @report_include_canceled == 'report_include_canceled' and @report_include_completed == 'report_include_completed'
+						@serach_result = WorkFlow.search(q_string)
+					elsif @report_include_canceled == 'report_include_canceled'
+						@serach_result = WorkFlow.search_exclude_complete(q_string)
+					elsif @report_include_completed == 'report_include_completed'
+						@serach_result = WorkFlow.search_exclude_cancel(q_string)
+					else
+						@serach_result = WorkFlow.search_exclude_cancel_and_complete(q_string)
+					end	
 				end
-			end	
+			end
+
+			if q_string != ''
+		      if @report_include_canceled == 'report_include_canceled' and @report_include_completed == 'report_include_completed'
+		        @report_serach_result = WorkFlow.entire_report_search(q_string)
+		      elsif @report_include_canceled == 'report_include_canceled'
+		      	@report_serach_result = WorkFlow.entire_report_search_exclude_complete(q_string)
+		      elsif @report_include_completed == 'report_include_completed'
+		      	@report_serach_result = WorkFlow.entire_report_search_exclude_cancel(q_string)
+		      else
+		      	@report_serach_result = WorkFlow.entire_report_search_exclude_cancel_and_complete(q_string)
+		      end
+			end
+
 		end
 	end
 	
 	def current_status
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+		@report_include_canceled = session[:report_include_canceled]
+    	@report_include_completed = session[:report_include_completed]
+	    
 	    if session[:report_wildcard].present?
 	      @wildcard = session[:report_wildcard]
 	    end
@@ -39,18 +77,49 @@ class ReportsController < ApplicationController
 	      @exact = session[:report_exact]
 	    end
 	    if request.post? or session[:report_q_string].present?
+	    	q_string = ''
   			if request.post?
+			    if params[:report_include_canceled].presence
+			      @report_include_canceled = params[:report_include_canceled]
+			      session[:report_include_canceled] = @report_include_canceled
+			    else
+			      session.delete(:report_include_canceled)
+			    end
+			    if params[:report_include_completed].presence
+			      @report_include_completed = params[:report_include_completed]
+			      session[:report_include_completed] = @report_include_completed
+			    else
+			      session.delete(:report_include_completed)
+			    end
+
  				@serach_result = search[0]
- 				if search[1] != ''
-  					@report_serach_result = WorkFlow.current_report_search(search[1])
- 				end
+ 				q_string = search[1]
   			else
   			  	q_string = session[:report_q_string]
   			  	if q_string != ''
-	  				@serach_result = WorkFlow.search(q_string)
-	  				@report_serach_result = WorkFlow.current_report_search(q_string)
+					if @report_include_canceled == 'report_include_canceled' and @report_include_completed == 'report_include_completed'
+						@serach_result = WorkFlow.search(q_string)
+					elsif @report_include_canceled == 'report_include_canceled'
+						@serach_result = WorkFlow.search_exclude_complete(q_string)
+					elsif @report_include_completed == 'report_include_completed'
+						@serach_result = WorkFlow.search_exclude_cancel(q_string)
+					else
+						@serach_result = WorkFlow.search_exclude_cancel_and_complete(q_string)
+					end
 	  			end
-  			end	
+  			end
+
+			if q_string != ''
+		      if @report_include_canceled == 'report_include_canceled' and @report_include_completed == 'report_include_completed'
+				@report_serach_result = WorkFlow.current_report_search(q_string)
+		      elsif @report_include_canceled == 'report_include_canceled'
+		      	@report_serach_result = WorkFlow.current_report_search_exclude_complete(q_string)
+		      elsif @report_include_completed == 'report_include_completed'
+		      	@report_serach_result = WorkFlow.current_report_search_exclude_cancel(q_string)
+		      else
+		      	@report_serach_result = WorkFlow.current_report_search_exclude_cancel_and_complete(q_string)
+		      end
+			end
   		end
 	end
 
@@ -129,6 +198,9 @@ class ReportsController < ApplicationController
 	def handoff
 		@task_confirmation = true
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+	    @report_include_canceled = '' #session[:report_include_canceled]
+    	@report_include_completed = '' #session[:report_include_completed]
+
 	    if session[:report_wildcard].present?
 	      @wildcard = session[:report_wildcard]
 	    end
@@ -138,20 +210,44 @@ class ReportsController < ApplicationController
 
 	    @filtered_station_steps = @workflow.report_filter_steps.eager_load(:station_step => [:workflow_station]).order(:sequence)
 		if request.post? or session[:report_q_string].present?
+			q_string = ''
 			@task_confirmation = false
 			if request.post?
-				search_hand_off = search('handoff')
+			    if params[:report_include_canceled].presence
+			      @report_include_canceled = params[:report_include_canceled]
+			      session[:report_include_canceled] = @report_include_canceled
+			    else
+			      session.delete(:report_include_canceled)
+			    end
+			    if params[:report_include_completed].presence
+			      @report_include_completed = params[:report_include_completed]
+			      session[:report_include_completed] = @report_include_completed
+			    else
+			      session.delete(:report_include_completed)
+			    end
+
+				search_hand_off = handoff_search
 				@serach_result = search_hand_off[0]
-				if search[1] != ''
-					@report_serach_result = WorkFlow.handoff_report_search_exclude_canceled(search[1], @workflow.id)
-				end	
+				q_string = search_hand_off[1]
 			else
 			  	q_string = session[:report_q_string]
-			  	if q_string != ''
-					@serach_result = WorkFlow.search_handoff_exclude_canceled(q_string, 'handoff')
-					@report_serach_result = WorkFlow.handoff_report_search_exclude_canceled(q_string, @workflow.id)
-				end
-			end	
+  			  	if q_string != ''
+	  				@serach_result = WorkFlow.search_handoff_report(q_string)
+	  			end
+			end
+
+			if q_string != ''
+		      if @report_include_canceled == 'report_include_canceled' and @report_include_completed == 'report_include_completed'
+				@report_serach_result = WorkFlow.handoff_report_search(q_string, @workflow.id)
+		      elsif @report_include_canceled == 'report_include_canceled'
+		      	@report_serach_result = WorkFlow.handoff_report_search_exclude_completed(q_string, @workflow.id)
+		      elsif @report_include_completed == 'report_include_completed'
+		      	@report_serach_result = WorkFlow.handoff_report_search_exclude_canceled(q_string, @workflow.id)
+		      else
+		      	@report_serach_result = WorkFlow.handoff_report_search_exclude_canceled_completed(q_string, @workflow.id)
+		      end
+			end
+
 		end
 	end
 
@@ -288,11 +384,20 @@ class ReportsController < ApplicationController
 	end
   	private
 
-		def search(report_type = '') 
+		def search 
 			q_string = '';
 		    session[:report_wildcard] = params[:wildcard]
 		    session[:report_exact] = params[:exact]
 		    wildcard_bu = params[:wildcard][:business_unit]
+    	    
+    	    if params[:report_include_canceled].presence
+		      report_include_canceled = params[:report_include_canceled]
+		    end
+
+		    if params[:report_include_completed].presence
+		      report_include_completed = params[:report_include_completed]
+		    end
+
 		    if wildcard_bu.presence
 		      q_string += "(l1s.business_unit like '%#{wildcard_bu}%'"
 		      q_string += "OR l2s.business_unit like '%#{wildcard_bu}%'"
@@ -336,11 +441,86 @@ class ReportsController < ApplicationController
 		    session[:report_q_string] = q_string
 		    q_string_return = q_string
 		    if q_string != ''
-		   		if report_type == 'handoff' 	
-		      		serach_result = WorkFlow.search_handoff_exclude_canceled(q_string, report_type)
-		  		else
-		      		serach_result = WorkFlow.search(q_string)
-		  		end
+				if report_include_canceled == 'report_include_canceled' and report_include_completed == 'report_include_completed'
+					serach_result = WorkFlow.search(q_string)
+				elsif report_include_canceled == 'report_include_canceled'
+					serach_result = WorkFlow.search_exclude_complete(q_string)
+				elsif report_include_completed == 'report_include_completed'
+					serach_result = WorkFlow.search_exclude_cancel(q_string)
+				else
+					serach_result = WorkFlow.search_exclude_cancel_and_complete(q_string)
+				end
+		    end
+
+		    return [serach_result, q_string_return]
+		end	
+
+		def handoff_search
+			q_string = '';
+		    session[:report_wildcard] = params[:wildcard]
+		    session[:report_exact] = params[:exact]
+		    wildcard_bu = params[:wildcard][:business_unit]
+    	    
+    	    if params[:report_include_canceled].presence
+		      report_include_canceled = params[:report_include_canceled]
+		    end
+
+		    if params[:report_include_completed].presence
+		      report_include_completed = params[:report_include_completed]
+		    end
+
+		    if wildcard_bu.presence
+		      q_string += "(l1s.business_unit like '%#{wildcard_bu}%'"
+		      q_string += "OR l2s.business_unit like '%#{wildcard_bu}%'"
+		      q_string += "OR l3s.business_unit like '%#{wildcard_bu}%')"
+		    end
+		    wildcard_l1 = params[:wildcard][:l1]
+		    if wildcard_l1.presence
+		      q_string += q_string != '' ? ' and ' : ''
+		      q_string += "l1s.name like '%#{wildcard_l1}%'"
+		    end
+		    wildcard_l2 = params[:wildcard][:l2]
+		    if wildcard_l2.presence
+		      q_string += q_string != '' ? ' and ' : ''
+		      q_string += "l2s.name like '%#{wildcard_l2}%'"
+		    end
+		    wildcard_l3 = params[:wildcard][:l3]
+		    if wildcard_l3.presence
+		      q_string += q_string != '' ? ' and ' : ''
+		      q_string += "l3s.name like '%#{wildcard_l3}%'"
+		    end
+
+		    exact_bu = params[:exact][:business_unit]
+		    if exact_bu.presence
+		      q_string += q_string != '' ? ' and ' : ''
+		      q_string += "(l1s.business_unit = '#{exact_bu}'"
+		      q_string += "OR l2s.business_unit = '#{exact_bu}'"
+		      q_string += "OR l3s.business_unit = '#{exact_bu}')"
+		    end
+		  
+		    exact_l2 = params[:exact][:l2]
+		    if exact_l2.presence
+		      q_string += q_string != '' ? ' and ' : ''
+		      q_string += "l2s.name = '#{exact_l2}'"
+		    end
+		    
+		    if @workflow.id.presence && q_string != ''
+		      q_string += q_string != '' ? ' and ' : ''
+		      q_string += "l1s.work_flow_id = "+ @workflow.id.to_s
+		    end
+
+		    session[:report_q_string] = q_string
+		    q_string_return = q_string
+		    if q_string != ''
+				if report_include_canceled == 'report_include_canceled' and report_include_completed == 'report_include_completed'
+					serach_result = WorkFlow.search_handoff_report(q_string)
+				elsif report_include_canceled == 'report_include_canceled'
+					serach_result = WorkFlow.search_handoff_exclude_complete(q_string)
+				elsif report_include_completed == 'report_include_completed'
+					serach_result = WorkFlow.search_handoff_exclude_cancel(q_string)
+				else
+					serach_result = WorkFlow.search_handoff_exclude_cancel_and_complete(q_string)
+				end
 		    end
 
 		    return [serach_result, q_string_return]

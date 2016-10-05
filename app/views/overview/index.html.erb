@@ -76,22 +76,23 @@
 						<div class="project-fields">
 							<div class="row">
 							  <div class="col-lg-2">
-							   <input type="checkbox" class="form-control">
+									<input type="checkbox" id="include_completed" name="include_completed" value="include_completed" class="searchCheckbox" <%= @include_completed == 'include_completed' ? 'checked' : '' %>/>
 							  </div>
 							  <div class="col-lg-8">
-							   <label>Show Completed Objects</label>
+							   <label>Include Completed Objects</label>
 							  </div>
 							</div>
 
 							<div class="row">
 							  <div class="col-lg-2">
-							   <input type="checkbox" class="form-control">
+									<input type="checkbox" id="include_canceled" name="include_canceled" value="include_canceled" class="searchCheckbox" <%= @include_canceled == 'include_canceled' ? 'checked' : '' %>/>
 							  </div>
 							  <div class="col-lg-8">
-							   <label>Include Cancel Objects</label>
+							   <label>Include Canceled Objects</label>
 							  </div>
 							</div>
 						</div>
+
 						<div class="project-fields">
 							<div class="row">
 								<div class="col-lg-2">

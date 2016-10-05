@@ -22,6 +22,18 @@ class L1 < ActiveRecord::Base
     L2.where(id: [l2_list], l1_id: self.id)
   end
   
+  def get_l2s_objects(include_canceled, include_completed)
+    if include_canceled =='include_canceled' and include_completed == 'include_completed'
+      return self.l2s
+    elsif include_canceled =='include_canceled'
+      return self.l2s.where(completed_actual: nil)
+    elsif include_completed == 'include_completed'
+      return self.l2s.where.not(status: 'cancel')           
+    else 
+      return self.l2s.where(completed_actual: nil).where.not(status: 'cancel')
+    end
+  end
+  
   def get_workflow_live_steps(filter_stations)
     self.workflow_live_steps.where("station_step_id in (#{filter_stations})")
   end

@@ -33,7 +33,7 @@
 							<%if @show_search_result_l2 == 'filter_type_l2' 
 							   l2_rows = @l2_records
 							  else
-							   l2_rows = l1.l2s  	
+							   l2_rows = l1.get_l2s_objects(@include_canceled, @include_completed)
 							  end %>
 							<% l2_rows.each do |l2| %>
 								<tr>
@@ -46,7 +46,7 @@
 								<%if @show_search_result_l3 == 'filter_type_l3' 
 								   l3_rows = @l3_records
 								  else
-								   l3_rows = l2.l3s  	
+								   l3_rows = l2.get_l3s_objects(@include_canceled, @include_completed)
 								  end %>
 								<% l3_rows.each do |l3| %>
 									<tr>
@@ -127,7 +127,7 @@
 							<%if @show_search_result_l2 == 'filter_type_l2' 
 							   l2_rows = @l2_records
 							  else
-							   l2_rows = l1.l2s  	
+							   l2_rows = l1.get_l2s_objects(@include_canceled, @include_completed)
 							  end %>
 							<% l2_rows.each do |l2| %>
 								<tr><!-- 
@@ -153,7 +153,7 @@
 								<%if @show_search_result_l3 == 'filter_type_l3' 
 								   l3_rows = @l3_records
 								  else
-								   l3_rows = l2.l3s  	
+								   l3_rows = l2.get_l3s_objects(@include_canceled, @include_completed)
 								  end %>
 								<% l3_rows.each do |l3|
 									if l3.is_closed?
@@ -275,7 +275,7 @@
 					<%if @show_search_result_l2 == 'filter_type_l2' 
 					   l2_rows = @l2_records 
 					  else
-					   l2_rows = l1.l2s  	
+					   l2_rows = l1.get_l2s_objects(@include_canceled, @include_completed)
 					  end %>
 					<% l2_rows.each do |l2|%>
 					    <tr>
@@ -323,7 +323,7 @@
 						<%if @show_search_result_l3 == 'filter_type_l3' 
 						   l3_rows = @l3_records
 						  else
-						   l3_rows = l2.l3s  	
+						   l3_rows = l2.get_l3s_objects(@include_canceled, @include_completed)
 						 end %>
 						<% l3_rows.each do |l3| %>		
 						    <tr>

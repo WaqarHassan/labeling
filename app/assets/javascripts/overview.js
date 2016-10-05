@@ -153,4 +153,20 @@ function toggle_lang(comp_type_value, workflow_name){
 	}	
 }
 
+function selectOnlyThis(thisBox){
+  set_to_uncheck = ''
+  if ($('#'+thisBox.id+':checkbox:checked').length == 0){
+  	  set_to_uncheck = 'set_to_uncheck'
+  }
+
+  var myCheckbox = $(".searchCheckbox");
+  Array.prototype.forEach.call(myCheckbox,function(el){
+  	el.checked = false;
+  });
+
+  if (set_to_uncheck == ''){
+  	thisBox.checked = true;
+  }
+}
+
 

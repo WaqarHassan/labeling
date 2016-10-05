@@ -5,6 +5,8 @@ class OverviewController < ApplicationController
     @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
+    @include_canceled = session[:include_canceled]
+    @include_completed = session[:include_completed]
 
     if request.post? and params[:object_id].present?
       if params[:object_type] == 'L1'
@@ -23,14 +25,33 @@ class OverviewController < ApplicationController
         @l3_records = L3.where(id: l3.id)
         @l2_records = L2.where(id: @l3_records.first.l2_id)
         @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
-      end    
+      end
     elsif session[:filter_object_type] == 'L1'
-      @l1s = @workflow.l1s.where(id: [session[:filter_object_id]])
+      if @include_canceled == 'include_canceled' && @include_completed == 'include_completed'
+        @l1s = @workflow.l1s.where(id: [session[:filter_object_id]])
+      elsif @include_canceled == 'include_canceled'
+        @l1s = @workflow.l1s.where(id: [session[:filter_object_id]], completed_actual: nil)
+      elsif @include_completed == 'include_completed'
+        @l1s = @workflow.l1s.where(id: [session[:filter_object_id]]).where.not(status: 'cancel')
+      else
+        @l1s = @workflow.l1s.where(id: [session[:filter_object_id]], completed_actual: nil).where.not(status: 'cancel')
+      end
   
     elsif session[:filter_object_type] == 'L2'
       @show_search_result_l2 = 'filter_type_l2'
-      @l2_records = L2.where(id: session[:filter_object_id])
-      @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+      if @include_canceled == 'include_canceled' && @include_completed == 'include_completed'
+        @l2_records = L2.where(id: session[:filter_object_id])
+        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+      elsif @include_canceled == 'include_canceled'
+        @l2_records = L2.where(id: session[:filter_object_id], completed_actual: nil)
+        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id, completed_actual: nil)
+      elsif @include_completed == 'include_completed'
+        @l2_records = L2.where(id: session[:filter_object_id]).where.not(status: 'cancel')
+        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel')
+      else
+        @l2_records = L2.where(id: session[:filter_object_id], completed_actual: nil).where.not(status: 'cancel')
+        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id, completed_actual: nil).where.not(status: 'cancel')
+      end
    
     elsif session[:filter_object_type] == 'L3'
       @show_search_result_l2 = 'filter_type_l2'
@@ -39,11 +60,25 @@ class OverviewController < ApplicationController
       end
       l3 = L3.find(session[:filter_object_id])
       ll2 = l3.l2
-      @l3_records = L3.where(id: l3.id)
-      @l2_records = L2.where(id: @l3_records.first.l2_id)
-      @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+      if @include_canceled == 'include_canceled' && @include_completed == 'include_completed'
+        @l3_records = L3.where(id: l3.id)
+        @l2_records = L2.where(id: @l3_records.first.l2_id)
+        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+      elsif @include_canceled == 'include_canceled'
+        @l3_records = L3.where(id: l3.id, completed_actual: nil)
+        @l2_records = L2.where(id: @l3_records.first.l2_id, completed_actual: nil)
+        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id, completed_actual: nil)
+      elsif @include_completed == 'include_completed'
+        @l3_records = L3.where(id: l3.id).where.not(status: 'cancel')
+        @l2_records = L2.where(id: @l3_records.first.l2_id).where.not(status: 'cancel')
+        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel')     
+      else
+        @l3_records = L3.where(id: l3.id).where.not(status: 'cancel')
+        @l2_records = L2.where(id: @l3_records.first.l2_id).where.not(status: 'cancel')
+        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel')        
+      end  
     else
-      @l1s = @workflow.l1s.where.not(status: 'cancel').order(:id)
+      @l1s = @workflow.l1s.where(completed_actual: nil).where.not(status: 'cancel').order(:id)
     end
 
     if session[:wildcard].present?
@@ -54,7 +89,15 @@ class OverviewController < ApplicationController
     end
     if session[:q_string].present?
       q_string = session[:q_string]
-      @serach_result = WorkFlow.search(q_string)
+      if @include_canceled == 'include_canceled' && @include_completed == 'include_completed'
+        @serach_result = WorkFlow.search(q_string)
+      elsif @include_canceled == 'include_canceled'
+        @serach_result = WorkFlow.search_exclude_complete(q_string)
+      elsif @include_completed == 'include_completed'
+        @serach_result = WorkFlow.search_exclude_cancel(q_string)
+      else
+        @serach_result = WorkFlow.search_exclude_cancel_and_complete(q_string)
+      end
     end
 	end
 
@@ -693,6 +736,8 @@ class OverviewController < ApplicationController
     session.delete(:filter_object_id)
     session.delete(:filter_object_type)
     session.delete(:new_object_added)
+    session.delete(:include_canceled)
+    session.delete(:include_completed)
 
     redirect_to root_path, notice: 'WorkFlow was successfully changed.'
   end
@@ -701,6 +746,21 @@ class OverviewController < ApplicationController
     q_string = '';
     session[:wildcard] = params[:wildcard]
     session[:exact] = params[:exact]
+    
+    if params[:include_canceled].presence
+      include_canceled = params[:include_canceled]
+      session[:include_canceled] = include_canceled
+    else
+      session.delete(:include_canceled)
+    end
+
+    if params[:include_completed].presence
+      include_completed = params[:include_completed]
+      session[:include_completed] = include_completed
+    else
+      session.delete(:include_completed)
+    end
+
     wildcard_bu = params[:wildcard][:business_unit]
     if wildcard_bu.presence
       q_string += "(l1s.business_unit like '%#{wildcard_bu}%'"
@@ -743,7 +803,15 @@ class OverviewController < ApplicationController
     end
     session[:q_string] = q_string
     if q_string != ''
-      @serach_result = WorkFlow.search(q_string)
+      if include_canceled == 'include_canceled' and include_completed == 'include_completed'
+        @serach_result = WorkFlow.search(q_string)
+      elsif include_canceled == 'include_canceled'
+        @serach_result = WorkFlow.search_exclude_complete(q_string)
+      elsif include_completed == 'include_completed'
+        @serach_result = WorkFlow.search_exclude_cancel(q_string)
+      else
+        @serach_result = WorkFlow.search_exclude_cancel_and_complete(q_string)
+      end
     end
 
     respond_to do |format|
@@ -787,6 +855,8 @@ class OverviewController < ApplicationController
     l1_list = params[:l1_id].split('_')
     session[:filter_object_id] = l1_list
     session[:filter_object_type] = 'L1'
+    @include_canceled = session[:include_canceled]
+    @include_completed = session[:include_completed]
     session.delete(:new_object_added)
     @l1s = L1.where(id: [l1_list])
 
@@ -804,6 +874,8 @@ class OverviewController < ApplicationController
     l2_id = params[:l2_id]
     session[:filter_object_id] = l2_id
     session[:filter_object_type] = 'L2'
+    @include_canceled = session[:include_canceled]
+    @include_completed = session[:include_completed]
     session.delete(:new_object_added)
 
     @l2_records = L2.where(id: l2_id)
@@ -824,6 +896,8 @@ class OverviewController < ApplicationController
     l3_id = params[:l3_id]
     session[:filter_object_id] = l3_id
     session[:filter_object_type] = 'L3'
+    @include_canceled = session[:include_canceled]
+    @include_completed = session[:include_completed]
     session.delete(:new_object_added)
 
     l3 = L3.find(l3_id)
@@ -843,6 +917,8 @@ class OverviewController < ApplicationController
     session.delete(:filter_object_id)
     session.delete(:filter_object_type)
     session.delete(:new_object_added)
+    session.delete(:include_canceled)
+    session.delete(:include_completed)
     @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
@@ -860,6 +936,8 @@ class OverviewController < ApplicationController
     session.delete(:exact)
     session.delete(:filter_object_id)
     session.delete(:filter_object_type)
+    session.delete(:include_canceled)
+    session.delete(:include_completed)
     @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)

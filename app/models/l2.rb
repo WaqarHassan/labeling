@@ -18,6 +18,19 @@ class L2 < ActiveRecord::Base
     self.workflow_live_steps.where("station_step_id in (#{filter_stations})")
   end
 
+  def get_l3s_objects(include_canceled, include_completed)
+
+    if include_canceled =='include_canceled' and include_completed == 'include_completed'
+      return self.l3s
+    elsif include_canceled =='include_canceled'
+      return self.l3s.where(completed_actual: nil)
+    elsif include_completed == 'include_completed'
+      return self.l3s.where.not(status: 'cancel')           
+    else 
+      return self.l3s.where(completed_actual: nil).where.not(status: 'cancel')
+    end
+  end
+
   def get_num_lang
   	num_lang_value = ''
   	num_lang = self.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first

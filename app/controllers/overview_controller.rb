@@ -143,6 +143,7 @@ class OverviewController < ApplicationController
    end
 
    def recalculate_all_eta
+    if current_user.is_admin
       l1s = @workflow.l1s.where.not(status: 'cancel')
       l1s.each do |l1_id|
           workflowLiveStep = WorkflowLiveStep.find_by_object_id_and_object_type(l1_id,'L1')
@@ -158,6 +159,9 @@ class OverviewController < ApplicationController
           end
       end
       redirect_to root_path, notice: 'ETA\'s re-calculated successfully.'
+    else
+      redirect_to root_path, alert: "You don't have permission to perform this action!"  
+    end  
    end
 
    def open_info_modal_l2

@@ -36,7 +36,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     # Resource will not yet be saved if user is signing up with OAuth
     elsif resource.persisted? && resource.valid?
       path = after_sign_in_path_for(current_user)
-      path = main_home_path unless valid_after_sign_in_path?(path)
+      path = edit_user_registration_path unless valid_after_sign_in_path?(path)
       redirect_to path
 
     # Redisplay registration form with OAuth data for user to confirm
@@ -62,12 +62,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/edit
   def edit
+    @workflows = WorkFlow.where(is_active: true, is_in_use: false)
     super
   end
 
   # PUT /resource
   def update
     super
+    #redirect_to root_path, alert: "You updated your account successfully!"  
   end
 
   # DELETE /resource

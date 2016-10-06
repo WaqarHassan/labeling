@@ -21,14 +21,15 @@
           %li= link_to 'DAILY ACTIVITY ', daily_activity_reports_path, :class => 'add_links'
 
 
-
-      %li.dropdown
-        %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
-          ADMIN
-          %b.caret
-        %ul.dropdown-menu.setting_menu
-          %li= link_to '+ADD '+@workflow.L1, new_l1_path,  {:remote => true, 'data-toggle' =>  "modal",class: 'add_links', 'data-target' => '#add_l1_modal'}
-          %li= link_to 'RECALCULATE ALL ETA' , recalculate_all_eta_path,  {class: 'add_links', onclick: 'update_all_etas();'}
+      - if current_user.is_admin    
+        %li.dropdown
+          %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
+            ADMIN
+            %b.caret
+          %ul.dropdown-menu.setting_menu
+            %li= link_to '+ADD '+@workflow.L1, new_l1_path,  {:remote => true, 'data-toggle' =>  "modal",class: 'add_links', 'data-target' => '#add_l1_modal'}
+            %li= link_to 'RECALCULATE ALL ETA' , recalculate_all_eta_path,  {class: 'add_links', onclick: 'update_all_etas();'}
+            %li= link_to 'User Management' , admin_users_path,  {class: 'add_links'}
 
       %li.dropdown
         %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}
@@ -44,8 +45,8 @@
             = current_user.first_name
             %b.caret
           %ul.dropdown-menu
-            - if current_user.is_admin?
-              %li= link_to I18n.t('admin.link'), rails_admin_path, data: {"no-turbolink" => true}
+            /- if current_user.is_admin?
+            / %li= link_to I18n.t('admin.link'), rails_admin_path, data: {"no-turbolink" => true}
             %li= link_to I18n.t('account.edit.link'), edit_user_registration_path
             %li= link_to I18n.t('auth.logout.link'), destroy_user_session_path, rel: :nofollow
       - unless user_signed_in?

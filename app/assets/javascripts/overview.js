@@ -181,4 +181,41 @@ function selectOnlyThis(thisBox){
   }
 }
 
+function check_password_length(){
+	if ($('#user_password').val().length > 0 && $('#user_password').val().length < 8){
+		$( "<div class='password_error_length'>Minimum 8 character password required!</div>" ).insertBefore( "#user_password" );
+		return false;
+	}else{
+		return true;
+	}
+}
+
+if($("#admin_user_list").length){
+		$('#admin_user_list').DataTable({
+		"order": [[ 0, "asc" ]],
+		"iDisplayLength" : 50
+	});
+}
+
+$(document).ready(function() {
+	if($("#user_password").length){
+		$('#user_password').val('');
+	}
+
+	if($("#new_user").length){	
+	  $('#new_user').validate();
+	}
+
+	$('.confirm').click(function(e) {
+		var confrm = confirm('Are you sure?');
+	    if (confrm == true) {
+	    	return true;
+	    } else {
+	    	e.preventDefault();
+	    	return false;
+	    }
+	});
+
+});
+
 

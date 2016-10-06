@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     end
   end
 
-  mount RailsAdmin::Engine => '/admin', :as => 'rails_admin' if defined? RailsAdmin
+  # mount RailsAdmin::Engine => '/admin', :as => 'rails_admin' if defined? RailsAdmin
 
   get '/l2s/new(/:l1_id)(.:format)' => 'l2s#new', as: 'add_new_l2'
   get '/l3s/new(/:l2_id)' => 'l3s#new', as: 'add_new_l3'
@@ -59,6 +59,17 @@ Rails.application.routes.draw do
       match 'daily-activity', via: [:get, :post]
     end
   end
+
+  namespace :admin do
+    resources :users do
+      collection do
+        get 'deleted-user'
+      end
+      member do
+        get 'activate-user'
+      end
+    end
+  end  
 
 
   get '/overview/open_info_modal_l1/:l1_id(/:report_info)' => 'overview#open_info_modal_l1', as: 'open_info_modal_l1'

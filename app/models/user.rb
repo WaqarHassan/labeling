@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   include Concerns::UserImagesConcern
-
+  acts_as_paranoid
+  
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :confirmable, :timeoutable, :lockable, :async

@@ -14,19 +14,23 @@ class L1sController < ApplicationController
 
   # GET /l1s/new
   def new
-    @l1_bu = @workflow.l1_bu
-    @l1_component = @workflow.l1_component
-   
-    @action = 'ADD'
-    @btn_action = 'SAVE'
-    @bu_options = @workflow.bu_options.where(recording_level: 'L1')
-    @status_list = @workflow.statuses.where(recording_level: 'L1')
-    @attr_list = @workflow.label_attributes.where(recording_level: 'L1', is_visible: true).order(:sequence)
-    @l1 = L1.new
-    respond_to do |format|
-      format.html
-      format.js
-    end
+    if current_user.is_admin
+      @l1_bu = @workflow.l1_bu
+      @l1_component = @workflow.l1_component
+     
+      @action = 'ADD'
+      @btn_action = 'SAVE'
+      @bu_options = @workflow.bu_options.where(recording_level: 'L1')
+      @status_list = @workflow.statuses.where(recording_level: 'L1')
+      @attr_list = @workflow.label_attributes.where(recording_level: 'L1', is_visible: true).order(:sequence)
+      @l1 = L1.new
+      respond_to do |format|
+        format.html
+        format.js
+      end
+    else
+      redirect_to root_path, alert: "You don't have permission to perform this action!"  
+    end    
   end
 
   # GET /l1s/1/edit

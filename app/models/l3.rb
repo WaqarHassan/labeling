@@ -8,9 +8,9 @@ class L3 < ActiveRecord::Base
 	has_many :timestamp_logs, through: :workflow_live_steps
   # 
   # * *Description* :
-  #   - It calculates value of actually confirmed top right station_step
+  #   - It calculates value of Actually Confirmed top right Station Step
   # * *Returns* :
-  #   -value of actually confirmed top right station_step
+  #   -value of Actually Confirmed top right Station Step
   #
 	def get_farthest_to_the_right_confirmation
  
@@ -24,18 +24,18 @@ class L3 < ActiveRecord::Base
 			return wf_live_step
 	end
   # 
-  # * *Parameter/Arguments* :
-  #   - It accepts a collection of station_steps object ids
+  # * *Arguments* :
+  #   - It accepts a collection of Station Steps Object ids
   # * *Description* :
-  #   - It Gets a list of station_steps object ids and return workflow live step objects
-  #     for current l3s object after quering from database
+  #   - It gets a list of Station Steps Object ids and return Workflow Live Step Objects
+  #     for current l3s Object.
   #
   def get_workflow_live_steps(filter_stations)
     self.workflow_live_steps.where("station_step_id in (#{filter_stations})")
   end
   #
   # * *Description* :
-  #   - It returns number of languages of current object
+  #   - It returns number of Languages of current Object
   #
   def get_num_lang
   	num_lang_value = ''
@@ -47,7 +47,7 @@ class L3 < ActiveRecord::Base
   end
   #
   # * *Description* :
-  #   - It returns Component type of current object
+  #   - It returns Component type of current Object
   #
   def get_comp_type
   	comp_type_value = ''
@@ -59,7 +59,7 @@ class L3 < ActiveRecord::Base
   end
   #
   # * *Description* :
-  #   - It returns HORW value of current object
+  #   - It returns HORW value of current Object
   #
   def get_horw
   	horw_value = ''

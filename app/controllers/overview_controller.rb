@@ -4,7 +4,7 @@ class OverviewController < ApplicationController
   #
   # * *Description* :
   #   - It is executed whenever main index page is requested.
-  #   - It renders all information regarding Objects, their attributes and station steps
+  #   - It renders all information regarding Objects, their Attributes and Station Steps
   #
 	def index
     @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
@@ -107,7 +107,7 @@ class OverviewController < ApplicationController
 	end
   #
   # * *Description* :
-  #   - It finds inofrmation for l1s addditional info and renders pop-up via open_info_modal_l1.js.erb
+  #   - It finds information for l1s Addditional Information and renders pop-up via open_info_modal_l1.js.erb
   #
   def open_info_modal_l1
     @report_info = params[:report_info]
@@ -130,7 +130,7 @@ class OverviewController < ApplicationController
    end
   #
   # * *Description* :
-  #   - It is called from within additional info pop-up for l1s to force ETA-Refresh
+  #   - It is called from within Additional Information pop-up for l1s to force ETA-Refresh
   #
    def eta_refresh
     l1_id = params[:l1_id]
@@ -154,7 +154,7 @@ class OverviewController < ApplicationController
    end
   #
   # * *Description* :
-  #   - It Recalculate All ETA's by calling a sub-routine named "get_steps_calculate_eta" from workflow live step modal
+  #   - It recalculate all ETAs by calling a function named "get_steps_calculate_eta" from Workflow Live Steps modal
   #
    def recalculate_all_eta
       l1s = @workflow.l1s.where.not(status: 'cancel')
@@ -175,7 +175,7 @@ class OverviewController < ApplicationController
    end
   #
   # * *Description* :
-  #   - It finds inofrmation for l12s addditional info and renders pop-up via open_info_modal_l2.js.erb
+  #   - It finds information for l12s Addditional Information and renders pop-up via open_info_modal_l2.js.erb
   #
    def open_info_modal_l2
     @report_info = params[:report_info]
@@ -197,7 +197,7 @@ class OverviewController < ApplicationController
    end
   #
   # * *Description* :
-  #   - It finds inofrmation for l3s addditional info and renders pop-up via open_info_modal_l3.js.erb
+  #   - It finds information for l3s Addditional Information and renders pop-up via open_info_modal_l3.js.erb
   #
    def open_info_modal_l3
     @report_info = params[:report_info]
@@ -219,7 +219,7 @@ class OverviewController < ApplicationController
    end
   # 
   # * *Description* :
-  #   - It finds Stations and thier steps for current Lxs and then renders update workflow modal via update_workflow.js.erb
+  #   - It finds Stations and thier Steps for current lxs and then renders Update Workflow pop-up via update_workflow.js.erb
   #
   def update_workflow
     @object_type = params[:object_type]
@@ -240,7 +240,7 @@ class OverviewController < ApplicationController
   end
   # 
   # * *Description* :
-  #   - It updates Stations and thier steps for current Lx's
+  #   - It updates Stations and thier steps for current lx's
   #
   def workflow_update
     live_steps = params[:live_steps]
@@ -261,7 +261,7 @@ class OverviewController < ApplicationController
   end
   # 
   # * *Description* :
-  #   - It Create additional info for Lx's object in Database
+  #   - It Create Additional Information for lxs object in database
   #
    def add_additional_info
       params[:additional_info][:info_timestamp] = L1.set_db_datetime_format(params[:additional_info][:info_timestamp])
@@ -341,7 +341,7 @@ class OverviewController < ApplicationController
    end
    # 
   # * *Description* :
-  #   - It get reasons from Database to beshown in Reason drop down in Rework Pop-up
+  #   - It get reasons from database to be shown in Reason drop down option in Rework Pop-up
   #
   def get_reasons
     @reasons = ReasonCode.where(status: params[:additional_info][:status],
@@ -355,7 +355,7 @@ class OverviewController < ApplicationController
  
   #
   # * *Description* :
-  #   - It gets steps from Database for the given station 
+  #   - It gets Steps from database for the given Station 
   #
   def get_steps
     @steps = StationStep.where(workflow_station_id: params[:rework_info][:station_id] )
@@ -442,8 +442,8 @@ class OverviewController < ApplicationController
 
    # 
    # * *Description* :
-   #   - It creates a full or partial rework for l3s based upon no of components and respective Additional Info
-   #     and logs every Actual Confirmation and ETA into timestamp_Logs table
+   #   - It creates a Full or Partial Rework for l3s based upon no of Components and respective Additional Information
+   #     and logs every Actual Confirmation and ETA into Timestamp_Logs table
    # 
   def create_rework_info
     merge_back_partial_with_parent = params[:merge_back_partial_with_parent]
@@ -752,7 +752,7 @@ class OverviewController < ApplicationController
     #  
     #
     # * *Description* :
-    #   - It finds information for Task Confirmation of a Station_Step and renders a pop-up it via open_confirm_modal.js.erb
+    #   - It finds information for Task Confirmation of a Station Step and renders a pop-up it via open_confirm_modal.js.erb
     #
   def open_confirm_modal
     session.delete(:open_confirm_modal)
@@ -777,7 +777,7 @@ class OverviewController < ApplicationController
   end
     #
     # * *Description* :
-    #   - It finds information for Task Confirmation of a Station_Step and renders a pop-up it via open_confirm_modal.js.erb
+    #   - It finds information for Task Confirmation of a Station Step and renders a pop-up it via open_confirm_modal.js.erb
     #
   def update_workflow_status
     workflow_id = params[:workflow_id]
@@ -796,8 +796,8 @@ class OverviewController < ApplicationController
   end
     #  
     # * *Description* :
-    #   - It query DataBase for search attributes provided through search Panel.
-    #   - It calls a subroutine named "search" from Workflow Modal which execute query and returns result
+    #   - It query dataBase for search Attributes provided through search Panel.
+    #   - It calls a function named "search" from Workflow pop-up which execute query and returns result
     #
   def search
     q_string = '';
@@ -893,7 +893,7 @@ class OverviewController < ApplicationController
   end
     # 
     # * *Description* :
-    #   - It saves Reject reasons for L2
+    #   - It saves Reject Reasons for L2
     #
   def save_reject_reason
     additional_info_id = session[:additional_info_id]
@@ -1006,7 +1006,7 @@ class OverviewController < ApplicationController
   end
    # 
     # * *Description* :
-    #   - It clear search details from search panel and  gets all data of lxs objects and render pop-up via clear_search.js.erb
+    #   - It clears search reults from search panel and  gets all data of lxs objects and render pop-up via clear_search.js.erb
     #
   def clear_search
     session.delete(:q_string)
@@ -1030,7 +1030,7 @@ class OverviewController < ApplicationController
 
    # 
     # * *Description* :
-    #   - It creates information for Task Confirmation of a Station_Step, calculate ETA's and then creates respective Additional Information.
+    #   - It creates information for Task Confirmation of a Station Step, calculate ETA's and then creates respective Additional Information.
     #
 
   def update_task_confirmation

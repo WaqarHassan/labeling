@@ -72,7 +72,7 @@ class L2sController < ApplicationController
   # POST /ia
   #
   # * *Description* :
-  #   - It creates new l2s, sets its Predecessors, saves its attribute values, creates workflow Live Steps and creates additional Information about it .
+  #   - It creates new l2s, sets its Predecessors, saves its Attribute Values, creates Workflow Live Steps and creates Additional Information about it .
   #   - It checks whether requested date is possible to meet or not and shows repective message.
   #
   def create
@@ -207,7 +207,7 @@ class L2sController < ApplicationController
   # PATCH/PUT /ia/1
   #
   # * *Description* :
-  #   - It updates l2s of given id, updates its atttribute values, and creates additional information about it.
+  #   - It updates l2s of given id, updates its Atttribute Values, and creates Additional Information about it.
   #   - It checks whether requested date is possible to meet or not and shows respective message.
   #
   def update
@@ -291,7 +291,7 @@ class L2sController < ApplicationController
       @l2 = L2.find(params[:id])
     end
     # * *Description* :
-    #   - It calculate estimate completion date of currrent l2s object.
+    #   - It calculate Estimate Completion Date of currrent l2s object.
     #
     def calculate_Ia_approval_date
 

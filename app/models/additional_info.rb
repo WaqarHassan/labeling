@@ -7,14 +7,14 @@ class AdditionalInfo < ActiveRecord::Base
 
 	class << self
 			# 
-  			# * *Parameter/Arguments* :
-  			#   - It accepts string of  comma seperated reason codes
+  			# * *Arguments* :
+  			#   - It accepts string of  comma seperated Reason Codes
   			# * *Returns* :
-  			#   - It returns an string of HTML embeded array of reasons 
+  			#   - It returns an string of HTML embeded array of Reasons 
   			# * *Description* :
-  			#   - It accepts string of  comma seperated reason codes and 
-  			#     converts it to an string of HTML embeded array of reasons 
-  			#     to be displayed in reject reason Pop-up
+  			#   - It accepts string of  comma seperated Reason Codes and 
+  			#     converts it to an string of HTML embeded array of Reasons 
+  			#     to be displayed in Reject Reason Pop-up
  			#
 			def get_reasons(reason_code_ids)
 				reason_code_ids = reason_code_ids.split(',')

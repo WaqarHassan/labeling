@@ -66,7 +66,7 @@ class L3sController < ApplicationController
 
   #
   # * *Description* :
-  #   - It creates new l3s, sets its Predecessors, saves its attribute values, creates workflow Live Steps and creates additional Information about it .
+  #   - It creates new l3s, sets its Predecessors, saves its Attribute Values, creates Workflow Live Steps and creates Additional Information about it .
   #
   def create
     name = L3.find_by_name(params[:l3][:name])
@@ -220,7 +220,7 @@ class L3sController < ApplicationController
 
   #
   # * *Description* :
-  #   - It updates l3s of given id, updates its atttribute values, and creates additional information about it.
+  #   - It updates l3s of given id, updates its Atttribute Values, and creates Additional Information about it.
   #
   def update
     name = L3.where(name: params[:l3][:name]).where.not(id: params[:id]).first

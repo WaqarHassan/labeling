@@ -68,7 +68,7 @@ class L1sController < ApplicationController
   # POST /l1s
   #
   # * *Description* :
-  #   - It creates new l1s Object, sets its predecessors, saves Attributes values, creates Workflow Live Steps, and creates additional information about it.
+  #   - It creates new l1s object, sets its predecessors, saves Attribute Values, creates Workflow Live Steps, and creates Additional Information about it.
   #
   def create
     
@@ -124,7 +124,7 @@ class L1sController < ApplicationController
    # PATCH/PUT /l1s/1
   #
   # * *Description* :
-  #   - It Updates l1s of given Id , updates its atttribute values, and creates additional Info about this update.
+  #   - It updates l1s of given Id , updates its Atttribute Values, and creates Additional Information about this update.
   #
   def update
 

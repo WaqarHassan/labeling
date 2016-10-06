@@ -4,11 +4,11 @@ class AttributeValue < ActiveRecord::Base
 
 	class << self
         # 
-        # * *Parameter/Arguments* :
-        #   - It accepts lx object , lx object type and an array of attribute parameters
-        #     containg id and value.
+        # * *Arguments* :
+        #   - It accepts lx Object , lx Object type and an array of Attribute Parameters containg id and value.
+        #     
         # * *Description* :
-        #   - It creates multiple attribute value reocrds for respective lx objects's each attribute.
+        #   - It creates multiple Attribute Value records for respective lxs Objects's each Attribute.
         #
 		def create_attribute_values(attr_params, l_object, l_type) 
         	attr_params.each do |att|
@@ -19,10 +19,10 @@ class AttributeValue < ActiveRecord::Base
         	end 
     	end
         # 
-        # * *Parameter/Arguments* :
-        #   - It accepts lx object , lx object type,  attribute id and attribute value.
+        # * *Arguments* :
+        #   - It accepts lxs Object , lxs Object type,  Attribute Id and Attribute Value.
         # * *Description* :
-        #   - It creates attribute value record for respective lx objects's.
+        #   - It creates Attribute Value record for respective lxs Objects's.
         #
         def create_single_attribute_value(label_attribute, att_value, l_object, l_type)   
          		AttributeValue.create(:label_attribute_id => label_attribute,

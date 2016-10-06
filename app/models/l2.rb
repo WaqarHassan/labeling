@@ -10,31 +10,30 @@ class L2 < ActiveRecord::Base
 
 	validates :name, uniqueness: {:message => "must be unique!" }
   # 
-  # * *Parameter/Arguments* :
-  #   - It accepts a collection of l3s object ids
+  # * *Arguments* :
+  #   - It accepts a collection of l3s Object ids.
   # * *Description* :
-  #   - It Gets a list of l3s object ids and return complete objects after quering from database
+  #   - It gets a list of l3s Object ids and returns complete Objects after quering from database.
   #
   def get_searched_l3_objects(l3_list)
   	L3.where(id: [l3_list], l2_id: self.id)
   end
   # 
-  # * *Parameter/Arguments* :
-  #   - It accepts a collection of station_steps object ids
+  # * *Arguments* :
+  #   - It accepts a collection of Station Steps object ids.
   # * *Description* :
-  #   - It Gets a list of station_steps object ids and return workflow live step objects
-  #     for current l2s object after quering from database
+  #   - It gets a list of Station Steps Object ids and returns Eorkflow Live Step Objects for current l2s Object.
   #
   def get_workflow_live_steps(filter_stations)
     self.workflow_live_steps.where("station_step_id in (#{filter_stations})")
   end
   # 
-  # * *Parameter/Arguments* :
+  # * *Arguments* :
   #   - Include_canceled , Include_completed
    # * *Returns :
-  #   - collection of l3s objects
+  #   - collection of l3s Objects
   # * *Description* :
-  #   - It selects l3 objetcs based upon parameters
+  #   - It selects l3s Objetcs based upon parameters
   #
   def get_l3s_objects(include_canceled, include_completed)
 
@@ -50,7 +49,7 @@ class L2 < ActiveRecord::Base
   end
   #
   # * *Description* :
-  #   - It returns number of languages of current object
+  #   - It returns number of Languages of current Object
   #
   def get_num_lang
   	num_lang_value = ''
@@ -62,7 +61,7 @@ class L2 < ActiveRecord::Base
   end
   #
   # * *Description* :
-  #   - It returns Component type of current object
+  #   - It returns Component type of current Object
   #
   def get_comp_type
   	comp_type_value = ''
@@ -74,7 +73,7 @@ class L2 < ActiveRecord::Base
   end
   #
   # * *Description* :
-  #   - It returns HORW value of current object
+  #   - It returns HORW value of current Object
   #
   def get_horw
   	horw_value = ''

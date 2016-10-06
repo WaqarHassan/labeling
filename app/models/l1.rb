@@ -22,10 +22,10 @@ class L1 < ActiveRecord::Base
    end
   end
   # 
-  # * *Parameter/Arguments* :
-  #   - It accepts a collection of l2 object ids
+  # * *Arguments* :
+  #   - It accepts a collection of l2s Object ids
   # * *Description* :
-  #   - It Gets a list of l2 object ids and return complete objects after quering from database
+  #   - It Gets a list of l2s Object ids and returns complete Objects
   #
   def get_searched_l2_objects(l2_list)
     L2.where(id: [l2_list], l1_id: self.id)
@@ -43,18 +43,18 @@ class L1 < ActiveRecord::Base
     end
   end
   # 
-  # * *Parameter/Arguments* :
-  #   - It accepts a collection of station_steps object ids
+  # * *Arguments* :
+  #   - It accepts a collection of Station Steps Object ids
   # * *Description* :
-  #   - It Gets a list of station_steps object ids and return workflow live step objects
-  #     for current l2s object after quering from database
+  #   - It Gets a list of Station Steps object ids and return Workflow Live Step objects
+  #     for current l2s Object after quering from database
   #
   def get_workflow_live_steps(filter_stations)
     self.workflow_live_steps.where("station_step_id in (#{filter_stations})")
   end
   #
   # * *Description* :
-  #   - It returns number of languages of current object
+  #   - It returns number of Languages of current Object
   #
   def get_num_lang
     num_lang_value = ''
@@ -91,12 +91,12 @@ class L1 < ActiveRecord::Base
 
   class << self
     #
-    # * *Parameters* :
-    #   -It accepts datatime as parameter
+    # * *Arguments* :
+    #   -It accepts Datatime as parameter
     # * *Returns* :
-    #   -It return Database formated Datetime
+    #   -It return database formated Datetime
     # * *Description* :
-    #   -It change the datetime format to match database datetime format
+    #   -It change current datetime format to match database datetime format
     #
     def set_db_datetime_format(date_time)
     	date_time_split = date_time.split(' ')
@@ -114,10 +114,10 @@ class L1 < ActiveRecord::Base
     	return datetime_formated
     end
     #
-    # * *Parameters* :
+    # * *Arguments* :
     #   -It accepts data as parameter
     # * *Returns* :
-    #   -It return Database formated Date
+    #   -It return database formated Date
     # * *Description* :
     #   -It change the date format to match database date format
     #

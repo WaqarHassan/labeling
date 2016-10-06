@@ -8,7 +8,7 @@ class ReportsController < ApplicationController
 	end
  	# 
   	# * *Description* :
-  	#   - It gets entire history data of searched object from search panel
+  	#   - It gets Entire History data of given Object.
   	#
 	def entire_history
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
@@ -72,7 +72,7 @@ class ReportsController < ApplicationController
 	end
 	# 
   	# * *Description* :
-  	#   - It gets current status data of searched object from search panel
+  	#   - It gets Current Status data of given object
   	#
 	def current_status
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
@@ -133,7 +133,7 @@ class ReportsController < ApplicationController
 	end
 	# 
   	# * *Description* :
-  	#   - It is a Backup Function for current status report
+  	#   - It is a backup function for Current Status report
   	#
 	def current_status_aaa
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
@@ -162,7 +162,7 @@ class ReportsController < ApplicationController
 	end
 	# 
   	# * *Description* :
-  	#   - It gets daily Activity data of searched object from search panel
+  	#   - It gets daily activity data of given object
   	#
 	def daily_activity
 		@work_flows = WorkFlow.where(is_active: true)
@@ -189,7 +189,7 @@ class ReportsController < ApplicationController
 	end
 	# 
   	# * *Description* :
-  	#   - It is a Backup Function for daily activity
+  	#   - It is a backup function for Daily Activity
   	#
 	def daily_activity_aaa
 		@work_flows = WorkFlow.where(is_active: true)
@@ -214,7 +214,7 @@ class ReportsController < ApplicationController
 	end
 	# 
   	# * *Description* :
-  	#   - It gets HandOff data of searched object from search panel
+  	#   - It gets HandOff data of given Osbject
   	#
 	def handoff
 		@task_confirmation = true
@@ -273,7 +273,7 @@ class ReportsController < ApplicationController
 	end
 	# 
   	# * *Description* :
-  	#   - It is a Backup Function for HandOff 
+  	#   - It is a backup function for HandOff 
   	#
 	def handoff_aaa
 		@task_confirmation = true
@@ -342,7 +342,7 @@ class ReportsController < ApplicationController
 	end
 	# 
   	# * *Description* :
-  	#   - It is a Backup Function for entire History
+  	#   - It is a backup function for Entire History
   	#
 	def entire_history_aaaa
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)

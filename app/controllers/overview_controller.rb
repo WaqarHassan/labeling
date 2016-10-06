@@ -1,6 +1,11 @@
 class OverviewController < ApplicationController
 	skip_authorization_check
-  
+  #
+  #
+  # * *Description* :
+  #   - It is executed whenever main index page is requested.
+  #   - It renders all information regarding Objects, their attributes and station steps
+  #
 	def index
     @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
@@ -100,7 +105,10 @@ class OverviewController < ApplicationController
       end
     end
 	end
-
+  #
+  # * *Description* :
+  #   - It finds inofrmation for l1s addditional info and renders pop-up via open_info_modal_l1.js.erb
+  #
   def open_info_modal_l1
     @report_info = params[:report_info]
     @type = 'L1' 
@@ -120,7 +128,10 @@ class OverviewController < ApplicationController
       format.js
     end
    end
-   #force refresh eta , from additional info pop up
+  #
+  # * *Description* :
+  #   - It is called from within additional info pop-up for l1s to force ETA-Refresh
+  #
    def eta_refresh
     l1_id = params[:l1_id]
     workflowLiveStep = WorkflowLiveStep.find_by_object_id_and_object_type(l1_id,'L1')
@@ -141,7 +152,10 @@ class OverviewController < ApplicationController
      redirect_to root_path, notice: 'ETA\'s refreshed successfully.'
 
    end
-
+  #
+  # * *Description* :
+  #   - It Recalculate All ETA's by calling a sub-routine named "get_steps_calculate_eta" from workflow live step modal
+  #
    def recalculate_all_eta
       l1s = @workflow.l1s.where.not(status: 'cancel')
       l1s.each do |l1_id|
@@ -159,7 +173,10 @@ class OverviewController < ApplicationController
       end
       redirect_to root_path, notice: 'ETA\'s re-calculated successfully.'
    end
-
+  #
+  # * *Description* :
+  #   - It finds inofrmation for l12s addditional info and renders pop-up via open_info_modal_l2.js.erb
+  #
    def open_info_modal_l2
     @report_info = params[:report_info]
     @type = 'L2'
@@ -178,7 +195,10 @@ class OverviewController < ApplicationController
       format.js
     end
    end
-
+  #
+  # * *Description* :
+  #   - It finds inofrmation for l3s addditional info and renders pop-up via open_info_modal_l3.js.erb
+  #
    def open_info_modal_l3
     @report_info = params[:report_info]
     @type = 'L3'
@@ -197,7 +217,10 @@ class OverviewController < ApplicationController
       format.js
     end
    end
-
+  # 
+  # * *Description* :
+  #   - It finds Stations and thier steps for current Lxs and then renders update workflow modal via update_workflow.js.erb
+  #
   def update_workflow
     @object_type = params[:object_type]
     @object_id = params[:object_id]
@@ -215,7 +238,10 @@ class OverviewController < ApplicationController
       format.js
     end
   end
-
+  # 
+  # * *Description* :
+  #   - It updates Stations and thier steps for current Lx's
+  #
   def workflow_update
     live_steps = params[:live_steps]
     object_type = params[:object_type]
@@ -233,7 +259,10 @@ class OverviewController < ApplicationController
     end
     redirect_to root_path, notice: 'Workflow Updated'
   end
-
+  # 
+  # * *Description* :
+  #   - It Create additional info for Lx's object in Database
+  #
    def add_additional_info
       params[:additional_info][:info_timestamp] = L1.set_db_datetime_format(params[:additional_info][:info_timestamp])
       
@@ -310,6 +339,10 @@ class OverviewController < ApplicationController
         redirect_to root_path, notice: 'Additional Info was successfully created.'
       end
    end
+   # 
+  # * *Description* :
+  #   - It get reasons from Database to beshown in Reason drop down in Rework Pop-up
+  #
   def get_reasons
     @reasons = ReasonCode.where(status: params[:additional_info][:status],
      recording_level: params[:l_type] )
@@ -320,7 +353,10 @@ class OverviewController < ApplicationController
       end
   end
  
-
+  #
+  # * *Description* :
+  #   - It gets steps from Database for the given station 
+  #
   def get_steps
     @steps = StationStep.where(workflow_station_id: params[:rework_info][:station_id] )
     respond_to do |format|
@@ -329,7 +365,10 @@ class OverviewController < ApplicationController
     end
   end
 
-  #GET rework Modal
+  #  
+  # * *Description* :
+  #   - It finds information for l3s rework pop-up and render it via open_rework_modal.js.erb
+  #
   def open_rework_modal
     @wf_step_id = params[:wf_step_id]
     workflow_live_step = WorkflowLiveStep.find(@wf_step_id)
@@ -401,7 +440,11 @@ class OverviewController < ApplicationController
     end
   end
 
-   #POST rework Modal
+   # 
+   # * *Description* :
+   #   - It creates a full or partial rework for l3s based upon no of components and respective Additional Info
+   #     and logs every Actual Confirmation and ETA into timestamp_Logs table
+   # 
   def create_rework_info
     merge_back_partial_with_parent = params[:merge_back_partial_with_parent]
     rework_object_type = params[:rework_info][:object_type]
@@ -661,7 +704,10 @@ class OverviewController < ApplicationController
      redirect_to root_path, notice: 'Rework Info was successfully created.'
     end
   end
-
+  # 
+  # * *Description* :
+  #   - It merges Rework with its immediate active parent iff exists and creates Additional Information
+  #
   def merge_partial_with_parent(partial_to_merge_id, rework_object_type, merge_back_time)
     if rework_object_type == 'L3'
       @partial_ready_to_merge = L3.find_by_id(partial_to_merge_id)
@@ -703,7 +749,11 @@ class OverviewController < ApplicationController
 
     redirect_to root_path, notice: 'Partial Merged Back successfully.'
   end
-    #GET task Confirmation
+    #  
+    #
+    # * *Description* :
+    #   - It finds information for Task Confirmation of a Station_Step and renders a pop-up it via open_confirm_modal.js.erb
+    #
   def open_confirm_modal
     session.delete(:open_confirm_modal)
     @wf_step_id = params[:wf_step_id]
@@ -725,7 +775,10 @@ class OverviewController < ApplicationController
       format.js
     end
   end
-
+    #
+    # * *Description* :
+    #   - It finds information for Task Confirmation of a Station_Step and renders a pop-up it via open_confirm_modal.js.erb
+    #
   def update_workflow_status
     workflow_id = params[:workflow_id]
     WorkFlow.update_all(is_in_use: false)
@@ -741,7 +794,11 @@ class OverviewController < ApplicationController
 
     redirect_to root_path, notice: 'WorkFlow was successfully changed.'
   end
-
+    #  
+    # * *Description* :
+    #   - It query DataBase for search attributes provided through search Panel.
+    #   - It calls a subroutine named "search" from Workflow Modal which execute query and returns result
+    #
   def search
     q_string = '';
     session[:wildcard] = params[:wildcard]
@@ -819,7 +876,10 @@ class OverviewController < ApplicationController
       format.js
     end
   end
-
+    # 
+    # * *Description* :
+    #   - It finds Information for reject reason and opens pop-up via reject_reason_modal.js.erb
+    #
   def reject_reason_modal
     session.delete(:open_reason_modal)
     l2_id = params[:id]
@@ -831,7 +891,10 @@ class OverviewController < ApplicationController
       format.js
     end
   end
-
+    # 
+    # * *Description* :
+    #   - It saves Reject reasons for L2
+    #
   def save_reject_reason
     additional_info_id = session[:additional_info_id]
     codes = params[:additional_info][:reason_code_id]
@@ -846,7 +909,10 @@ class OverviewController < ApplicationController
     session.delete(:additional_info_id)
     redirect_to root_path, notice: 'Reject reason saved'
   end
-
+    # 
+    # * *Description* :
+    #   - It get details of the l1s of given id from search results and then then renders pop-up via project_deatils_l1.js.erb
+    #
   def project_deatils_l1
     @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
@@ -865,7 +931,10 @@ class OverviewController < ApplicationController
       format.js
     end 
   end
-
+    # 
+    # * *Description* :
+    #   - It get details of the l2s of given id from search results and then then renders pop-up via project_deatils_l2.js.erb
+    #
   def project_deatils_l2
     @show_search_result_l2 = 'filter_type_l2' 
     @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
@@ -886,7 +955,10 @@ class OverviewController < ApplicationController
       format.js
     end 
   end
-
+   # 
+    # * *Description* :
+    #   - It get details of the l3s of given id from search results and then then renders pop-up via project_deatils_l3.js.erb
+    #
   def project_deatils_l3
     @show_search_result_l2 = 'filter_type_l2' 
     @show_search_result_l3 = 'filter_type_l3' 
@@ -912,7 +984,10 @@ class OverviewController < ApplicationController
       format.js
     end 
   end
-
+    # 
+    # * *Description* :
+    #   - It gets all data of lxs objects and render pop-up via show_all_db.js.erb
+    #
   def show_all_db
     session.delete(:filter_object_id)
     session.delete(:filter_object_type)
@@ -929,7 +1004,10 @@ class OverviewController < ApplicationController
     end 
     
   end
-
+   # 
+    # * *Description* :
+    #   - It clear search details from search panel and  gets all data of lxs objects and render pop-up via clear_search.js.erb
+    #
   def clear_search
     session.delete(:q_string)
     session.delete(:wildcard)
@@ -950,7 +1028,10 @@ class OverviewController < ApplicationController
   end
 
 
-   #POST Task Confirmation
+   # 
+    # * *Description* :
+    #   - It creates information for Task Confirmation of a Station_Step, calculate ETA's and then creates respective Additional Information.
+    #
 
   def update_task_confirmation
     session.delete(:open_confirm_modal)
@@ -967,7 +1048,12 @@ class OverviewController < ApplicationController
   end
 
   private
-
+    #
+    # * *Returns* :
+    #   - it return boolean value based upon calculations
+    # * *Description* :
+    #   - It checks whether an l3s-Rx can be merged back to its parent or not.
+    #
     def can_merge_back_with_parent(object)
       has_open_partial = L3.find_by_merge_back_with_id_and_is_closed(object.id, false)
       if has_open_partial.present?
@@ -981,7 +1067,11 @@ class OverviewController < ApplicationController
         end  
       end  
     end
-
+    #
+    # * *Returns* :
+    #   - it return l3x-Rx name
+    # * *Description* :
+    #
     def get_rework_name(object_name, indx = 1)
       parent_object_name = object_name.split('-R')[0]
       object_name_new = parent_object_name+'-R'+indx.to_s

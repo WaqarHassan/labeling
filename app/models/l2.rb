@@ -9,15 +9,33 @@ class L2 < ActiveRecord::Base
 	has_many :timestamp_logs, -> { order 'actual_confirmation desc' }, through: :workflow_live_steps
 
 	validates :name, uniqueness: {:message => "must be unique!" }
-
+  # 
+  # * *Parameter/Arguments* :
+  #   - It accepts a collection of l3s object ids
+  # * *Description* :
+  #   - It Gets a list of l3s object ids and return complete objects after quering from database
+  #
   def get_searched_l3_objects(l3_list)
   	L3.where(id: [l3_list], l2_id: self.id)
   end
-
+  # 
+  # * *Parameter/Arguments* :
+  #   - It accepts a collection of station_steps object ids
+  # * *Description* :
+  #   - It Gets a list of station_steps object ids and return workflow live step objects
+  #     for current l2s object after quering from database
+  #
   def get_workflow_live_steps(filter_stations)
     self.workflow_live_steps.where("station_step_id in (#{filter_stations})")
   end
-
+  # 
+  # * *Parameter/Arguments* :
+  #   - Include_canceled , Include_completed
+   # * *Returns :
+  #   - collection of l3s objects
+  # * *Description* :
+  #   - It selects l3 objetcs based upon parameters
+  #
   def get_l3s_objects(include_canceled, include_completed)
 
     if include_canceled =='include_canceled' and include_completed == 'include_completed'
@@ -30,7 +48,10 @@ class L2 < ActiveRecord::Base
       return self.l3s.where(completed_actual: nil).where.not(status: 'cancel')
     end
   end
-
+  #
+  # * *Description* :
+  #   - It returns number of languages of current object
+  #
   def get_num_lang
   	num_lang_value = ''
   	num_lang = self.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
@@ -39,7 +60,10 @@ class L2 < ActiveRecord::Base
   	end	
   	return num_lang_value
   end
-
+  #
+  # * *Description* :
+  #   - It returns Component type of current object
+  #
   def get_comp_type
   	comp_type_value = ''
   	comp_type = self.attribute_values.joins(:label_attribute).where("label_attributes.short_label like '%Comp Type%'").first
@@ -48,7 +72,10 @@ class L2 < ActiveRecord::Base
   	end	
   	return comp_type_value
   end
-
+  #
+  # * *Description* :
+  #   - It returns HORW value of current object
+  #
   def get_horw
   	horw_value = ''
   	horw = self.attribute_values.joins(:label_attribute).where("label_attributes.short_label='Horw'").first

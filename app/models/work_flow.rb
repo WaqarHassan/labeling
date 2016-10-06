@@ -11,7 +11,11 @@ class WorkFlow < ActiveRecord::Base
 
 		class << self
 			
-			# HAND OFF report work
+			# 
+			# * *Description* :
+			#   - It is a backup function created by Developers
+			#     
+			#
 			def search_handoff_report(q_string)
   				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
 						l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
@@ -77,7 +81,15 @@ class WorkFlow < ActiveRecord::Base
 				handoff_report_serach_result = ActiveRecord::Base.connection.select_all handoff_report_sql_query
                 return handoff_report_serach_result
 			end
-
+			# 
+			# * *Parameter/Arguments* :
+			#   - Query String , workflow id
+			# * *return* :
+			#   - Search Results return by query
+			# * *Description* :
+			#   - It query database using Raw SQL and returns objects whose staus is not canceled
+			#     
+			#
 			def handoff_report_search_exclude_canceled(q_string, workflow)
 				handoff_report__exclude_canceled_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
 								l2s.num_component as l2_num_component,l1s.num_component as l1_num_component,l1s.business_unit as l1_bu,l2s.business_unit as l2_bu,l3s.business_unit as l3_bu,

@@ -6,7 +6,16 @@ class AdditionalInfo < ActiveRecord::Base
 	belongs_to :reason_code
 
 	class << self
-
+			# 
+  			# * *Parameter/Arguments* :
+  			#   - It accepts string of  comma seperated reason codes
+  			# * *Returns* :
+  			#   - It returns an string of HTML embeded array of reasons 
+  			# * *Description* :
+  			#   - It accepts string of  comma seperated reason codes and 
+  			#     converts it to an string of HTML embeded array of reasons 
+  			#     to be displayed in reject reason Pop-up
+ 			#
 			def get_reasons(reason_code_ids)
 				reason_code_ids = reason_code_ids.split(',')
 				reason = ReasonCode.where(id: reason_code_ids)

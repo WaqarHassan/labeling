@@ -1,9 +1,15 @@
 class ReportsController < ApplicationController
 	skip_authorization_check
-
+	# 
+  	# * *Description* :
+  	#   - Its does nothing
+  	#
 	def index
 	end
-
+ 	# 
+  	# * *Description* :
+  	#   - It gets entire history data of searched object from search panel
+  	#
 	def entire_history
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
 	    @report_include_canceled = session[:report_include_canceled]
@@ -64,7 +70,10 @@ class ReportsController < ApplicationController
 
 		end
 	end
-	
+	# 
+  	# * *Description* :
+  	#   - It gets current status data of searched object from search panel
+  	#
 	def current_status
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
 		@report_include_canceled = session[:report_include_canceled]
@@ -122,7 +131,10 @@ class ReportsController < ApplicationController
 			end
   		end
 	end
-
+	# 
+  	# * *Description* :
+  	#   - It is a Backup Function for current status report
+  	#
 	def current_status_aaa
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
 	    if session[:report_wildcard].present?
@@ -148,7 +160,10 @@ class ReportsController < ApplicationController
 			end	
 		end
 	end
-
+	# 
+  	# * *Description* :
+  	#   - It gets daily Activity data of searched object from search panel
+  	#
 	def daily_activity
 		@work_flows = WorkFlow.where(is_active: true)
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
@@ -172,7 +187,10 @@ class ReportsController < ApplicationController
 			@report_serach_result = WorkFlow.daily_report_serach(q_string)
 		end
 	end
-
+	# 
+  	# * *Description* :
+  	#   - It is a Backup Function for daily activity
+  	#
 	def daily_activity_aaa
 		@work_flows = WorkFlow.where(is_active: true)
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
@@ -194,7 +212,10 @@ class ReportsController < ApplicationController
 			@logs = TimestampLog.where(q_string)
 		end
 	end
-
+	# 
+  	# * *Description* :
+  	#   - It gets HandOff data of searched object from search panel
+  	#
 	def handoff
 		@task_confirmation = true
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
@@ -250,7 +271,10 @@ class ReportsController < ApplicationController
 
 		end
 	end
-
+	# 
+  	# * *Description* :
+  	#   - It is a Backup Function for HandOff 
+  	#
 	def handoff_aaa
 		@task_confirmation = true
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
@@ -316,7 +340,10 @@ class ReportsController < ApplicationController
 			end
 		end
 	end
-
+	# 
+  	# * *Description* :
+  	#   - It is a Backup Function for entire History
+  	#
 	def entire_history_aaaa
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
 	    if session[:report_wildcard].present?

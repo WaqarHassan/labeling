@@ -2,17 +2,29 @@ class L1sController < ApplicationController
   before_action :set_l1, only: [:show, :edit, :update, :destroy]
   skip_authorization_check
   # GET /l1s
+  #
+  # * *Description* :
+  #   - It selects all l1s.
+  #
   def index
     @l1s = L1.all
   end
 
   # GET /l1s/1
+  #
+  # * *Description* :
+  #   - It does noting.
+  #
   def show
 
   
   end
 
   # GET /l1s/new
+  #
+  # * *Renders* :
+  #   - It renders pop-up via new.js.erb
+  #
   def new
     @l1_bu = @workflow.l1_bu
     @l1_component = @workflow.l1_component
@@ -30,6 +42,10 @@ class L1sController < ApplicationController
   end
 
   # GET /l1s/1/edit
+  #
+  # * *Renders* :
+  #   - It finds l1s of given id and then renders pop-up via edit.js.erb
+  #
   def edit
     @l1_bu = @workflow.l1_bu
     @l1_component = @workflow.l1_component
@@ -48,7 +64,12 @@ class L1sController < ApplicationController
   end
 
  
+  
   # POST /l1s
+  #
+  # * *Description* :
+  #   - It creates new l1s Object, sets its predecessors, saves Attributes values, creates Workflow Live Steps, and creates additional information about it.
+  #
   def create
     
     name = L1.find_by_name(params[:l1][:name])
@@ -100,7 +121,11 @@ class L1sController < ApplicationController
     end  
   end
 
-  # PATCH/PUT /l1s/1
+   # PATCH/PUT /l1s/1
+  #
+  # * *Description* :
+  #   - It Updates l1s of given Id , updates its atttribute values, and creates additional Info about this update.
+  #
   def update
 
     @l1.modified_by_user_id = current_user.id
@@ -125,6 +150,10 @@ class L1sController < ApplicationController
   end
 
   # DELETE /l1s/1
+  #
+  # * *Description* :
+  #   - It deletes l1s of given Id.
+  #
   def destroy
     @l1.destroy
     redirect_to l1s_url, notice: @workflow.L1+' was successfully destroyed.'

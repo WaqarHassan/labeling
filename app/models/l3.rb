@@ -6,9 +6,14 @@ class L3 < ActiveRecord::Base
 	validates :name, uniqueness: {:message => "must be unique!" }
 	has_many :additional_info, as: :object
 	has_many :timestamp_logs, through: :workflow_live_steps
-
+  # 
+  # * *Description* :
+  #   - It calculates value of actually confirmed top right station_step
+  # * *Returns* :
+  #   -value of actually confirmed top right station_step
+  #
 	def get_farthest_to_the_right_confirmation
-
+ 
 		wf_live_step = self.workflow_live_steps.where.not( actual_confirmation: nil).order('workflow_live_steps.id DESC').first
 
 			if !wf_live_step.present?
@@ -18,11 +23,20 @@ class L3 < ActiveRecord::Base
 					
 			return wf_live_step
 	end
-
+  # 
+  # * *Parameter/Arguments* :
+  #   - It accepts a collection of station_steps object ids
+  # * *Description* :
+  #   - It Gets a list of station_steps object ids and return workflow live step objects
+  #     for current l3s object after quering from database
+  #
   def get_workflow_live_steps(filter_stations)
     self.workflow_live_steps.where("station_step_id in (#{filter_stations})")
   end
-
+  #
+  # * *Description* :
+  #   - It returns number of languages of current object
+  #
   def get_num_lang
   	num_lang_value = ''
   	num_lang = self.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
@@ -31,7 +45,10 @@ class L3 < ActiveRecord::Base
   	end	
   	return num_lang_value
   end
-
+  #
+  # * *Description* :
+  #   - It returns Component type of current object
+  #
   def get_comp_type
   	comp_type_value = ''
   	comp_type = self.attribute_values.joins(:label_attribute).where("label_attributes.short_label like '%Comp Type%'").first
@@ -40,7 +57,10 @@ class L3 < ActiveRecord::Base
   	end	
   	return comp_type_value
   end
-
+  #
+  # * *Description* :
+  #   - It returns HORW value of current object
+  #
   def get_horw
   	horw_value = ''
   	horw = self.attribute_values.joins(:label_attribute).where("label_attributes.short_label='Horw'").first

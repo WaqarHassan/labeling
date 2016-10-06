@@ -3,16 +3,28 @@ class L2sController < ApplicationController
   skip_authorization_check
 
   # GET /ia_lists
+  #
+  # * *Description* :
+  #   - It selects all l2s.
+  #
   def index
     @l2 = L2.all
   end
 
   # GET /ia/1
+  #
+  # * *Description* :
+  #   - It does noting.
+  #
   def show
   end
 
 
   # GET /ia/new
+  #
+  # * *Renders* :
+  #   - It renders pop-up via new.js.erb.
+  #
   def new
     @attr_list = @workflow.label_attributes.where(recording_level: 'L2', is_visible: true).order(:sequence)
     @action = 'ADD'
@@ -36,6 +48,10 @@ class L2sController < ApplicationController
 
 
   # GET /ia/1/edit
+  #
+  # * *Renders* :
+  #   - It finds l2s of given id and then renders pop-up via edit.js.erb.
+  #
   def edit
     
     @attr_list = @workflow.label_attributes.where(recording_level: 'L2', is_visible: true).order(:sequence)
@@ -54,6 +70,11 @@ class L2sController < ApplicationController
   end
 
   # POST /ia
+  #
+  # * *Description* :
+  #   - It creates new l2s, sets its Predecessors, saves its attribute values, creates workflow Live Steps and creates additional Information about it .
+  #   - It checks whether requested date is possible to meet or not and shows repective message.
+  #
   def create
      name = L2.find_by_name(params[:l2][:name])
     if name.present? 
@@ -184,6 +205,11 @@ class L2sController < ApplicationController
   end
 
   # PATCH/PUT /ia/1
+  #
+  # * *Description* :
+  #   - It updates l2s of given id, updates its atttribute values, and creates additional information about it.
+  #   - It checks whether requested date is possible to meet or not and shows respective message.
+  #
   def update
     @l2.modified_by_user_id = current_user.id
     name = L2.where(name: params[:l2][:name]).where.not(id: params[:id]).first
@@ -250,6 +276,10 @@ class L2sController < ApplicationController
   end
 
   # DELETE /ia/1
+  #
+  # * *Description* :
+  #   - It destroys l2s of given id.
+  #
   def destroy
     @l2.destroy
     redirect_to l2_url, notice: @workflow.L2+' was successfully destroyed.'
@@ -260,7 +290,9 @@ class L2sController < ApplicationController
     def set_l2
       @l2 = L2.find(params[:id])
     end
-
+    # * *Description* :
+    #   - It calculate estimate completion date of currrent l2s object.
+    #
     def calculate_Ia_approval_date
 
       @workflow.holidays.each do |holiday|

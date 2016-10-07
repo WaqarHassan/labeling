@@ -5,7 +5,7 @@ class AttributeValue < ActiveRecord::Base
 	class << self
         # 
         # * *Arguments* :
-        #   - It accepts lx Object , lx Object type and an array of Attribute Parameters containg id and value.
+        #   - It accepts lx Object, lx Object type and an array of Attribute Parameters containg id and value.
         #     
         # * *Description* :
         #   - It creates multiple Attribute Value records for respective lxs Objects's each Attribute.
@@ -20,7 +20,7 @@ class AttributeValue < ActiveRecord::Base
     	end
         # 
         # * *Arguments* :
-        #   - It accepts lxs Object , lxs Object type,  Attribute Id and Attribute Value.
+        #   - It accepts lxs Object, lxs Object type, Attribute Id and Attribute Value.
         # * *Description* :
         #   - It creates Attribute Value record for respective lxs Objects's.
         #

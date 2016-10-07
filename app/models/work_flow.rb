@@ -13,7 +13,7 @@ class WorkFlow < ActiveRecord::Base
 			
 			# 
 			# * *Description* :
-			#   - It is a backup function created by Developers
+			#   - It is a backup function created by Developers.
 			#
 			def search_handoff_report(q_string)
   				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
@@ -30,7 +30,7 @@ class WorkFlow < ActiveRecord::Base
 			# * *Arguments* :
 			#   - query string
 			# * *Description* :
-			#   - It searches Objetcs with any status
+			#   - It searches Objetcs with any Status.
 			#     
 			def search_handoff_exclude_complete(q_string)
   				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
@@ -47,7 +47,7 @@ class WorkFlow < ActiveRecord::Base
 			# * *Arguments* :
 			#   - query string
 			# * *Description* :
-			#   - It searches in main Objetcs whose status is not canceled
+			#   - It searches in main Objetcs whose Status is not Canceled.
 			# 
 			def search_handoff_exclude_cancel(q_string)
   				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
@@ -64,7 +64,7 @@ class WorkFlow < ActiveRecord::Base
 			# * *Arguments* :
 			#   - query string
 			# * *Description* :
-			#   - It searches Objetcs whose Status is neither Complete nor Canceled
+			#   - It searches Objetcs whose Status is neither Complete nor Canceled.
 			# 
 			def search_handoff_exclude_cancel_and_complete(q_string)
   				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
@@ -81,7 +81,7 @@ class WorkFlow < ActiveRecord::Base
 			# * *Arguments* :
 			#   - query string
 			# * *Description* :
-			#   - It searches Objetcs for handoff report
+			#   - It searches Objetcs for Handoff Report.
 			# 
 			def handoff_report_search(q_string, workflow)
 				handoff_report_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
@@ -106,10 +106,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - Query String , workflow id
-			# * *returns* :
+			# * *Returns* :
 			#   - Search Results return by query
 			# * *Description* :
-			#   - It searches data for HandOff report for Objects whose Status is not Canceled
+			#   - It searches data for HandOff report for Objects whose Status is not Canceled.
 			#
 			def handoff_report_search_exclude_canceled(q_string, workflow)
 				handoff_report__exclude_canceled_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
@@ -135,10 +135,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - Query String , workflow id
-			# * *returns* :
+			# * *Returns* :
 			#   - Search Results return by query
 			# * *Description* :
-			#   - It searches data for HandOff report for Objects whose Status is not Completed
+			#   - It searches data for HandOff report for Objects whose Status is not Completed.
 
 			def handoff_report_search_exclude_completed(q_string, workflow)
 				handoff_report__exclude_canceled_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
@@ -164,10 +164,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - Query String , workflow id
-			# * *returns* :
+			# * *Returns* :
 			#   - earch Results return by query
 			# * *Description* :
-			#   - It Searches data for HandOff report for Objects whose Status is neither Completed nor Canceled
+			#   - It Searches data for HandOff report for Objects whose Status is neither Completed nor Canceled.
 			#
 			def handoff_report_search_exclude_canceled_completed(q_string, workflow)
 				handoff_report__exclude_canceled_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
@@ -194,7 +194,7 @@ class WorkFlow < ActiveRecord::Base
 			# * *Arguments* :
 			#   - query string
 			# * *Description* :
-			#   - Handoff report Status roll up
+			#   - Handoff report Status roll up.
 			# 
 			def get_rollUp_object_status(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id)
 				status = "Closed"
@@ -221,7 +221,7 @@ class WorkFlow < ActiveRecord::Base
 			# * *Arguments* :
 			#   - query string
 			# * *Description* :
-			#   - It recalculate ETAs for HandOff report roll up
+			#   - It recalculate ETAs for HandOff report roll up.
 			# 
 			def get_time_stamp(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
 				time_stamp = ""
@@ -272,7 +272,7 @@ class WorkFlow < ActiveRecord::Base
 			# * *Arguments* :
 			#   - query string
 			# * *Description* :
-			#   - It searches Objetcs with any Status
+			#   - It searches Objetcs with any Status.
 			# 
 			def do_calculate_eta_for_l3(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
 				time_stamp = ""
@@ -370,10 +370,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - Query String 
-			# * *returns* :
+			# * *Returns* :
 			#   - Search Results returned by query
 			# * *Description* :
-			#   - It searches data for Entire History report
+			#   - It searches data for Entire History report.
 			#
 			def entire_report_search(q_string)
 				report_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
@@ -398,10 +398,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - Query String 
-			# * *returns* :
+			# * *Returns* :
 			#   - Search Results return by query
 			# * *Description* :
-			#   - It searches data for Entire History report for Objects whose Status is not complete
+			#   - It searches data for Entire History report for Objects whose Status is not Complete.
 			#
 			def entire_report_search_exclude_complete(q_string)
 				report_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
@@ -427,10 +427,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - Query String 
-			# * *returns* :
+			# * *Returns* :
 			#   - Search Results return by query
 			# * *Description* :
-			#   - It searches data for Entire History report for Objects whose Status is not Cancel
+			#   - It searches data for Entire History report for Objects whose Status is not Cancel.
 			#
 			def entire_report_search_exclude_cancel(q_string)
 				report_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
@@ -456,10 +456,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - Query String 
-			# * *returns* :
+			# * *Returns* :
 			#   - Search Results return by query
 			# * *Description* :
-			#   - It Searches data for Entire History report for Objects whose Status is neither Complete nor Cancel
+			#   - It Searches data for Entire History report for Objects whose Status is neither Complete nor Cancel.
 			#
 			def entire_report_search_exclude_cancel_and_complete(q_string)
 				report_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
@@ -486,10 +486,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - report_serach_result, object_type, object_id, ll_id
-			# * *returns* :
+			# * *Returns* :
 			#   - unique collection of search result 
 			# * *Description* :
-			#   - It makes collection unique based upon passed l1s id
+			#   - It makes collection unique based upon passed l1s id.
 			#
 			def do_search_report (report_serach_result, object_type, object_id, ll_id)
 				report_serach_unique = report_serach_result.select{|report| report['object_type'] == object_type and report[ll_id] == object_id }
@@ -497,13 +497,15 @@ class WorkFlow < ActiveRecord::Base
 			end
 
 			# -------------current report serach---------------------
+
+
 			# 
 			# * *Arguments* :
 			#   - Query String 
-			# * *returns* :
+			# * *Returns* :
 			#   - Search Results return by query
 			# * *Description* :
-			#   - It searches data for current status report 
+			#   - It searches data for Current Status report.
 			#
 			def current_report_search(q_string)
 				report_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name,l2s.id as l2_id, l2s.name as l2_name, 
@@ -529,10 +531,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - Query String 
-			# * *returns* :
+			# * *Returns* :
 			#   - Search Results return by query
 			# * *Description* :
-			#   - It searches data for current status report for Objects whose status is not Complete
+			#   - It searches data for Current Status Report for Objects whose Status is not Complete.
 			#
 			def current_report_search_exclude_complete(q_string)
 				report_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name,l2s.id as l2_id, l2s.name as l2_name, 
@@ -557,10 +559,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - Query String 
-			# * *returns* :
+			# * *Returns* :
 			#   - Search Results return by query
 			# * *Description* :
-			#   - It searches data for Current Status report for Objects whose tatus is not Cancel
+			#   - It searches data for Current Status Report for Objects whose Status is not Cancel
 			#
 			def current_report_search_exclude_cancel(q_string)
 				report_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name,l2s.id as l2_id, l2s.name as l2_name, 
@@ -585,10 +587,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - Query String 
-			# * *returns* :
+			# * *Returns* :
 			#   - Search Results return by query
 			# * *Description* :
-			#   - It Searches data for Current Status report for Objects whose status is neither Complete not Cancel
+			#   - It Searches data for Current Status Report for Objects whose Status is neither Complete not Cancel
 			#
 			def current_report_search_exclude_cancel_and_complete(q_string)
 				report_sql_query = "Select l1s.id as l1_id, l1s.name as l1_name,l2s.id as l2_id, l2s.name as l2_name, 
@@ -613,7 +615,7 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - report_serach_result, object_type, object_id, ll_id
-			# * *returns* :
+			# * *Returns* :
 			#   - Search Results return by query
 			# * *Description* :
 			#   - It searches Latest confirmation from the provided collection of search results
@@ -636,10 +638,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps
-			# * *returns* :
-			#   - timestamp containing calculated ETA and a respective table data color value
+			# * *Returns* :
+			#   - timestamp containing calculated ETA and a respective table data color value.
 			# * *Description* :
-			#   - It calculate ETA for the HandOff report data
+			#   - It calculate ETA for the HandOff report data.
 			#
 			def do_calculate_eta(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
 				time_stamp = ""
@@ -706,7 +708,7 @@ class WorkFlow < ActiveRecord::Base
 			end
 			# 
 			# * *Description* :
-			#   - It is a backup for get_time_stamp function
+			#   - It is a backup for get_time_stamp function.
 			#
 			def get_time_stamp__aaa(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
 				time_stamp = ""
@@ -789,10 +791,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - object_id, object_type
-			# * *returns* :
+			# * *Returns* :
 			#   - collection of Object Attributes
 			# * *Description* :
-			#   - It calculate all Attributes for the given lxs
+			#   - It calculate all Attributes for the given lxs.
 			#
 			def object_attributes(object_id, object_type)
 				return AttributeValue.eager_load(:label_attribute).where(object_id: object_id, object_type: object_type)
@@ -800,10 +802,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - object_att_values, att_name
-			# * *returns* :
+			# * *Returns* :
 			#   - attribute value name
 			# * *Description* :
-			#   - It finds specific Attribute name's Value from the provided collection of Object Attributes
+			#   - It finds specific Attribute name's Value from the provided collection of Object Attributes.
 			#
 			def get_object_attribute_value(object_att_values, att_name)
 				att_value = ''
@@ -818,7 +820,7 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - report_serach_result, object_type, object_id, ll_id
-			# * *returns* :
+			# * *Returns* :
 			#   - unique results from the given colection
 			# * *Description* :
 			#   - It finds unique Objects from the given collection.
@@ -831,7 +833,7 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - query string
-			# * *returns* :
+			# * *Returns* :
 			#   - Daily report search result
 			# * *Description* :
 			#   - It calculates data for Daily report based upon given query string 
@@ -861,10 +863,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - query string
-			# * *returns* :
+			# * *Returns* :
 			#   - search_result 
 			# * *Description* :
-			#   - It calculates data for the given query string
+			#   - It calculates data for the given query string.
 			#
 			def search(q_string)
 				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
@@ -878,10 +880,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - query string
-			# * *returns* :
+			# * *Returns* :
 			#   - search_result 
 			# * *Description* :
-			#   - It calculates data for the given query string fro Objects whose Status is not Canceled
+			#   - It calculates data for the given query string fro Objects whose Status is not Canceled.
 			#
 			def search_exclude_cancel(q_string)
 				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
@@ -896,10 +898,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - query string
-			# * *returns* :
+			# * *Returns* :
 			#   - search_result 
 			# * *Description* :
-			#   - It calculates data for the given query string fro Objects whose Status is not Complete
+			#   - It calculates data for the given query string fro Objects whose Status is not Complete.
 			#
 			def search_exclude_complete(q_string)
 				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
@@ -914,10 +916,10 @@ class WorkFlow < ActiveRecord::Base
 			# 
 			# * *Arguments* :
 			#   - query string
-			# * *returns* :
+			# * *Returns* :
 			#   - search_result 
 			# * *Description* :
-			#   - It calculates data for the given query string for Objects whose tatus is neither Canceled nor Complete
+			#   - It calculates data for the given query string for Objects whose Status is neither Canceled nor Complete
 			#
 			def search_exclude_cancel_and_complete(q_string)
 				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 

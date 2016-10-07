@@ -6,12 +6,11 @@ class StationStep < ActiveRecord::Base
  
  	#
     # * *Parameters* :
-    #   - workflow_live_step, actual-confirmation, current_level_objects,
-    #     lang_attribute_value, hours_per_workday
+    #   - workflow_live_step, actual-confirmation, current_level_objects, lang_attribute_value, hours_per_workday.
     # * *Returns* :
-    #   - actual_confirmation and remaining minutes in current hour
+    #   - actual_confirmation and remaining minutes in current hour.
     # * *Description* :
-    #   - It calculates Step Compeletion Date of next Station Step based on given Parameters
+    #   - It calculates Step Compeletion Date of next Station Step based on given Parameters.
     # 
 	def calculate_step_completion(live_step, actual_confirmation, level_object, lang_attribute_value, hours_per_workday)
 		duration_days = self.duration_days
@@ -89,11 +88,11 @@ class StationStep < ActiveRecord::Base
 	class << self
 		#
 	    # * *Parameters* :
-	    #   - Station Step's Predessors list
+	    #   - Station Step's Predessors list.
 	    # * *Returns* :
-	    #   - formated string of Predecessor calculation procedure for current Station Step heading
+	    #   - formated string of Predecessor calculation procedure for current Station Step heading.
 	    # * *Description* :
-	    #   - It creates a string that is displayed as Station Step heading to show how ETA calculations are done
+	    #   - It creates a string that is displayed as Station Step heading to show how ETA calculations are done.
 	    #
 		def get_step_predecessors(predecessors)
 			pred_name = "\n" 

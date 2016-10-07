@@ -13,8 +13,8 @@ class L1 < ActiveRecord::Base
 
   # 
   # * *Description* :
-  #   -validate :uniqueness_of_name
-  #   -validates :name, uniqueness: {:message => "must be unique!" }
+  #   - validate :uniqueness_of_name
+  #   - validates :name, uniqueness: {:message => "must be unique!" }
   def uniqueness_of_name
    existing_record = L1.find_by_name(name)
    unless existing_record.nil?
@@ -92,11 +92,11 @@ class L1 < ActiveRecord::Base
   class << self
     #
     # * *Arguments* :
-    #   -It accepts Datatime as parameter
+    #   - It accepts Datatime as parameter
     # * *Returns* :
-    #   -It return database formated Datetime
+    #   - It return database formated Datetime
     # * *Description* :
-    #   -It change current datetime format to match database datetime format
+    #   - It change current datetime format to match database datetime format
     #
     def set_db_datetime_format(date_time)
     	date_time_split = date_time.split(' ')
@@ -115,11 +115,11 @@ class L1 < ActiveRecord::Base
     end
     #
     # * *Arguments* :
-    #   -It accepts data as parameter
+    #   - It accepts data as parameter
     # * *Returns* :
-    #   -It return database formated Date
+    #   - It return database formated Date
     # * *Description* :
-    #   -It change the date format to match database date format
+    #   - It change the date format to match database date format
     #
     def set_db_date_format(date)
 

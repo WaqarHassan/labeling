@@ -29,11 +29,11 @@ class L2 < ActiveRecord::Base
   end
   # 
   # * *Arguments* :
-  #   - Include_canceled , Include_completed
-   # * *Returns :
-  #   - collection of l3s Objects
+  #   - Include_canceled , Include_completed.
+   # * *Returns* :
+  #   - collection of l3s Objects.
   # * *Description* :
-  #   - It selects l3s Objetcs based upon parameters
+  #   - It selects l3s Objetcs based upon parameters.
   #
   def get_l3s_objects(include_canceled, include_completed)
 
@@ -49,7 +49,7 @@ class L2 < ActiveRecord::Base
   end
   #
   # * *Description* :
-  #   - It returns number of Languages of current Object
+  #   - It returns number of Languages of current Object.
   #
   def get_num_lang
   	num_lang_value = ''
@@ -61,7 +61,7 @@ class L2 < ActiveRecord::Base
   end
   #
   # * *Description* :
-  #   - It returns Component type of current Object
+  #   - It returns Component type of current Object.
   #
   def get_comp_type
   	comp_type_value = ''
@@ -73,7 +73,7 @@ class L2 < ActiveRecord::Base
   end
   #
   # * *Description* :
-  #   - It returns HORW value of current Object
+  #   - It returns HORW value of current Object.
   #
   def get_horw
   	horw_value = ''

@@ -7,7 +7,7 @@ class WorkflowLiveStep < ActiveRecord::Base
     # * *Returns* :
     #   - It return a collection containing a timestamp for station_step and a string
     # * *Description* :
-    #   - It calculates latest timestamp_log and checks whether its belated or not
+    #   - It calculates latest timestamp_log and checks whether its belated or not.
     #
     def get_latest_timestamp_log
     	step_timestamp = ''
@@ -38,7 +38,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 	    # * *Parameters* :
 	    #   - It accepts currently active workflow, current user and workflow_live_step
 	    # * *Description* :
-	    #   - It creates a string that is displayed as station_step heading to show how ETA calculations are done
+	    #   - It creates a string that is displayed as station_step heading to show how ETA calculations are done.
 	    #
 		def get_steps_calculate_eta(workflow_live_step,workflow,current_user)
 
@@ -116,7 +116,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 	    # * *Parameters* :
 	    #   - live_steps_qry_result, hours_per_workday, workflow, current_user, and currentWorkflowLiveStepConfirm
 	    # * *Description* :
-	    #   - It finds workflow Live steps based upon object id and then calculate ETAs
+	    #   - It finds workflow Live Steps based upon object id and then calculate ETAs.
 	    #
 		def calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
 	      live_steps_qry_result.each do |lsr|
@@ -137,7 +137,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 	    # * *Parameters* :
 	    #   - wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm
 	    # * *Description* :
-	    #   - It calculates ETA for the given workflow live step
+	    #   - It calculates ETA for the given Workflow live step.
 	    #
 		def do_calculate_eta(wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
 	        pred_max_completion = ''
@@ -198,7 +198,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 	    # * *Parameters* :
 	    #   - l1_object, l2s_objects, l3s_objects
 	    # * *Description* :
-	    #   - It gets an l1s and it related all l2s and l3s and then calculate workflow completion date
+	    #   - It gets an l1s and it related all l2s and l3s and then calculate Workflow Completion Date.
 	    #
 	    def set_workflow_completion_datetime(l1_object, l2s_objects, l3s_objects)
 

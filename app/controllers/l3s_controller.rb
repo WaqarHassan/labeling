@@ -1,16 +1,23 @@
 class L3sController < ApplicationController
   before_action :set_l3, only: [:show, :edit, :update, :destroy]
    skip_authorization_check 
-  # GET /l3s
+  # * *Description* :
+  #   - It selects all l3s.
+  #
   def index
     @l3s = L3.all
   end
 
-  # GET /l3s/1
+  # * *Description* :
+  #   - It does noting.
+  #
   def show
   end
-
-  # GET /l3s/new
+ 
+  #
+  # * *Renders* :
+  #   - It renders pop-up via new.js.erb.
+  #
   def new
     @attr_list = @workflow.label_attributes.where(recording_level: 'L3', is_visible: true).order(:sequence)
     @action = 'ADD'
@@ -34,7 +41,10 @@ class L3sController < ApplicationController
     end
   end
 
-  # GET /l3s/1/edit
+  #
+  # * *Renders* :
+  #   - It finds l3s of given id and then renders pop-up via edit.js.erb.
+  #
   def edit
     @l3_bu = @workflow.l3_bu
     @l3_component = @workflow.l3_component
@@ -54,7 +64,10 @@ class L3sController < ApplicationController
       end
   end
 
-  # POST /l3s
+  #
+  # * *Description* :
+  #   - It creates new l3s, sets its Predecessors, saves its Attribute Values, creates Workflow Live Steps and creates Additional Information about it .
+  #
   def create
     name = L3.find_by_name(params[:l3][:name])
     if name.present? 
@@ -205,7 +218,10 @@ class L3sController < ApplicationController
   end
 
 
-  # PATCH/PUT /l3s/1
+  #
+  # * *Description* :
+  #   - It updates l3s of given id, updates its Atttribute Values, and creates Additional Information about it.
+  #
   def update
     name = L3.where(name: params[:l3][:name]).where.not(id: params[:id]).first
     if name.present? 
@@ -235,7 +251,10 @@ class L3sController < ApplicationController
     end
   end
 
-  # DELETE /l3s/1
+  #
+  # * *Description* :
+  #   - It destroys l3s of given id.
+  #
   def destroy
     @l3.destroy
     redirect_to l3s_url, notice: @workflow.L3+' was successfully destroyed.'

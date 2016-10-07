@@ -755,3 +755,23 @@ label.string, label.integer {
 #new_user .string.optional.control-label{
     float: left;
 }
+
+.closed_hint {
+    background-color: lightgreen;
+    border-radius: 0 14px 0 0;
+    height: 10px;
+    margin-left: -6px;
+    margin-top: 12px;
+    position: absolute;
+    width: 12px;
+}
+
+.completed_hint {
+    background-color: lightgreen;
+    border-radius: 0 0 12px;
+    height: 10px;
+    margin-left: -6px;
+    margin-top: -7px;
+    position: absolute;
+    width: 12px;
+}

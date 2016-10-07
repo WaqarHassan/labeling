@@ -3,6 +3,12 @@ class WorkflowLiveStep < ActiveRecord::Base
 	belongs_to :station_step
 	has_many :timestamp_logs
 
+	#
+    # * *Returns* :
+    #   - It return a collection containing a timestamp for station_step and a string
+    # * *Description* :
+    #   - It calculates latest timestamp_log and checks whether its belated or not.
+    #
     def get_latest_timestamp_log
     	step_timestamp = ''
     	table_td_class = ''
@@ -28,7 +34,12 @@ class WorkflowLiveStep < ActiveRecord::Base
     end
 
 	class << self
-
+		#
+	    # * *Parameters* :
+	    #   - It accepts currently active workflow, current user and workflow_live_step
+	    # * *Description* :
+	    #   - It creates a string that is displayed as station_step heading to show how ETA calculations are done.
+	    #
 		def get_steps_calculate_eta(workflow_live_step,workflow,current_user)
 
 	  	  BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
@@ -101,7 +112,12 @@ class WorkflowLiveStep < ActiveRecord::Base
 	  	  end
 
 		end
-
+		#
+	    # * *Parameters* :
+	    #   - live_steps_qry_result, hours_per_workday, workflow, current_user, and currentWorkflowLiveStepConfirm
+	    # * *Description* :
+	    #   - It finds workflow Live Steps based upon object id and then calculate ETAs.
+	    #
 		def calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
 	      live_steps_qry_result.each do |lsr|
 	      	wls = WorkflowLiveStep.find_by_id(lsr["id"])
@@ -117,7 +133,12 @@ class WorkflowLiveStep < ActiveRecord::Base
 		    end 	
 	      end
     	end
-
+    	#
+	    # * *Parameters* :
+	    #   - wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm
+	    # * *Description* :
+	    #   - It calculates ETA for the given Workflow live step.
+	    #
 		def do_calculate_eta(wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
 	        pred_max_completion = ''
 	        max_step_completion = ''
@@ -173,7 +194,12 @@ class WorkflowLiveStep < ActiveRecord::Base
       		  wls.save!
 	        end
 	    end
-
+	    #
+	    # * *Parameters* :
+	    #   - l1_object, l2s_objects, l3s_objects
+	    # * *Description* :
+	    #   - It gets an l1s and it related all l2s and l3s and then calculate Workflow Completion Date.
+	    #
 	    def set_workflow_completion_datetime(l1_object, l2s_objects, l3s_objects)
 
 	    	# workflow complete block

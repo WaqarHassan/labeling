@@ -235,8 +235,8 @@ class OverviewController < ApplicationController
     elsif @object_type == 'L3' 
       @object = L3.find(@object_id)
     end
-    
-    @live_station_steps = WorkflowLiveStep.where(object_type: @object_type, object_id: @object_id)
+    #  @live_station_steps = WorkflowLiveStep.where(object_type: @object_type, object_id: @object_id)
+    @live_station_steps = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.object_type= '#{@object_type}' and workflow_live_steps.object_id = #{@object_id} and station_steps.can_be_turned_off = #{true} ")
     respond_to do |format|
       format.html
       format.js

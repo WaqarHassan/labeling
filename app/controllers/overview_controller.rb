@@ -83,7 +83,7 @@ class OverviewController < ApplicationController
         @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel')        
       end  
     else
-      @l1s = @workflow.l1s.where(completed_actual: nil).where.not(status: 'cancel').order(:id)
+      @l1s = [] #@workflow.l1s.where(completed_actual: nil).where.not(status: 'cancel').order(:id)
     end
 
     if session[:wildcard].present?
@@ -255,7 +255,11 @@ class OverviewController < ApplicationController
     if live_steps.present?
       live_steps = live_steps.flatten
       WorkflowLiveStep.where(id: live_steps).update_all(is_active: true)
-      WorkflowLiveStep.where(object_type: object_type, object_id: object_id, is_active: false).update_all(actual_confirmation: nil)
+      na_workflowlivestep = WorkflowLiveStep.where(object_type: object_type, object_id: object_id, is_active: false)
+      na_workflowlivestep.each do |na_step|
+        na_step.update(actual_confirmation: nil)
+        TimestampLog.where(workflow_live_step_id: na_step.id).destroy_all
+      end
     end  
     workflowLiveStep = WorkflowLiveStep.find_by_object_type_and_object_id(object_type, object_id)
     if workflowLiveStep.present?
@@ -281,7 +285,9 @@ class OverviewController < ApplicationController
         add_info = AdditionalInfo.create(additional_info_params)
         if params[:additional_info][:object_type] == 'L1'
           l1 = L1.find(params[:additional_info][:object_id])
-          l1.update(status: params[:additional_info][:status])
+          if params[:additional_info][:status] != ''
+            l1.update(status: params[:additional_info][:status])
+          end
           if l1.status.downcase == 'cancel'
             WorkflowLiveStep.where(object_type: 'L1', object_id: l1.id, actual_confirmation: nil).update_all(is_active: false)
   
@@ -309,7 +315,9 @@ class OverviewController < ApplicationController
           end
         elsif params[:additional_info][:object_type] == 'L2'
            l2 = L2.find(params[:additional_info][:object_id])
-           l2.update(status: params[:additional_info][:status])
+           if params[:additional_info][:status] != ''
+              l2.update(status: params[:additional_info][:status])
+           end   
            if l2.status.downcase == 'cancel'
               WorkflowLiveStep.where(object_type: 'L2', object_id: l2.id, actual_confirmation: nil).update_all(is_active: false)
               l2.l3s.each do |l3|
@@ -326,7 +334,9 @@ class OverviewController < ApplicationController
            end
         elsif params[:additional_info][:object_type] == 'L3'
            l3 = L3.find(params[:additional_info][:object_id])
-           l3.update(status: params[:additional_info][:status])
+           if params[:additional_info][:status] != ''
+              l3.update(status: params[:additional_info][:status])
+           end
            if l3.status.downcase == 'cancel'
              WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
            else

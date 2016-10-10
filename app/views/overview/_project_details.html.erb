@@ -402,6 +402,13 @@
 	 </div> 
 	</div>
 
+	<% if !@l1s.present? %>
+		<div id="selection_msg_div">
+			<div style="height: 150px;"></div>
+			<div class="selection_msg">Use search panel to make your selection</div>
+		</div>
+	<% end %>
+
     <%= javascript_include_tag "js.cookie" %>
     <%= javascript_include_tag "labeling_cookie" %>
     

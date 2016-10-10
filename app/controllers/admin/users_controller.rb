@@ -1,6 +1,6 @@
 class Admin::UsersController < ApplicationController
   skip_authorization_check
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :delete, :set_admin, :unset_admin]
 
   # GET /admin/users
   def index
@@ -59,7 +59,7 @@ class Admin::UsersController < ApplicationController
   end
 
   # DELETE /admin/users/1
-  def destroy
+  def delete
     @user.destroy
     redirect_to admin_users_url, notice: 'User was successfully destroyed.'
   end
@@ -67,6 +67,17 @@ class Admin::UsersController < ApplicationController
   def activate_user
     User.restore(params[:id])
     redirect_to admin_users_url, notice: 'User was successfully activated.'
+  end
+
+
+  def set_admin
+    @user.update(is_admin: true)
+    redirect_to admin_users_url, notice: 'User was successfully set as Admin.'
+  end
+  
+  def unset_admin
+    @user.update(is_admin: false)
+    redirect_to admin_users_url, notice: 'User was successfully removed from Admin list.'
   end
 
   private

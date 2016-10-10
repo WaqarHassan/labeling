@@ -25,5 +25,13 @@ class AdditionalInfo < ActiveRecord::Base
 				end
 				return data.chomp('<br/>')				#data.chop.chop.chop.chop.chop :) 
 			end
+
+			def get_status(additional_info_data, indx)
+				indx +=1
+				until additional_info_data[indx].status.present?
+					indx +=1
+				end
+				return additional_info_data[indx].status
+			end
 	end
 end

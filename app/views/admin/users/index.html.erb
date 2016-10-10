@@ -9,6 +9,7 @@
       <th>First name</th>
       <th>Last name</th>
       <th>Email</th>
+      <th>Is Admin</th>
       <th></th>
       <th></th>
     </tr>
@@ -20,8 +21,11 @@
         <td><%= user.first_name %></td>
         <td><%= user.last_name %></td>
         <td><%= user.email %></td>
+        <td>
+          <input type="checkbox" onchange="toggleAdmin(this, <%= user.id %>);" <%= user.is_admin ? 'checked' : ''  %> />
+        </td>
         <td><%= link_to 'Edit', edit_admin_user_path(user) %></td>
-        <td><%= link_to 'Destroy', '/admin/users/'+user.id.to_s, method: :delete, class: 'confirm' %></td>
+        <td><%= link_to 'Delete', delete_admin_user_path(user), onclick: 'confirm_action(event);' %></td>
       </tr>
     <% end %>
   </tbody>

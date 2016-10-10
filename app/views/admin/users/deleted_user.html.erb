@@ -9,6 +9,7 @@
       <th>First name</th>
       <th>Last name</th>
       <th>Email</th>
+      <th>Is Admin</th>
       <th></th>
     </tr>
   </thead>
@@ -19,7 +20,8 @@
         <td><%= user.first_name %></td>
         <td><%= user.last_name %></td>
         <td><%= user.email %></td>
-        <td><%= link_to 'Activate', activate_user_admin_user_path(user.id), class: 'confirm' %></td>
+        <td><%= user.is_admin ? 'Yes' : ''  %></td>
+        <td><%= link_to 'Activate', activate_user_admin_user_path(user.id), onclick: 'confirm_action(event);'  %></td>
       </tr>
     <% end %>
   </tbody>

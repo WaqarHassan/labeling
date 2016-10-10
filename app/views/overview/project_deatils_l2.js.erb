@@ -3,3 +3,7 @@ $("#overview_detail").html("<%= escape_javascript(render 'overview/project_detai
 $(document).ready(function() {
 	 $('.collapse_table_data').removeClass('collapse_table');
 });
+
+if($("#selection_msg_div").length){	
+	$('#selection_msg_div').remove();
+}

@@ -206,16 +206,25 @@ $(document).ready(function() {
 	  $('#new_user').validate();
 	}
 
-	$('.confirm').click(function(e) {
-		var confrm = confirm('Are you sure?');
-	    if (confrm == true) {
-	    	return true;
-	    } else {
-	    	e.preventDefault();
-	    	return false;
-	    }
-	});
-
 });
 
+
+function confirm_action(e){
+	var confrm = confirm('Are you sure?');
+    if (confrm == true) {
+    	return true;
+    } else {
+    	e.preventDefault();
+    	return false;
+    }
+}
+
+function toggleAdmin(chkbox, usr_id){
+	if($(chkbox).is(':checked')){
+		window.top.location = '/admin/users/'+usr_id+'/set-admin'
+	}else{
+		window.top.location = '/admin/users/'+usr_id+'/unset-admin'
+	}
+	console.log(chkbox);
+}
 

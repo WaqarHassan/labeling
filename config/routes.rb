@@ -67,6 +67,9 @@ Rails.application.routes.draw do
       end
       member do
         get 'activate-user'
+        get 'delete'
+        get 'set-admin'
+        get 'unset-admin'
       end
     end
   end  

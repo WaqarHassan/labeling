@@ -1,6 +1,6 @@
 class StationStep < ActiveRecord::Base
 	belongs_to :workflow_station
-	has_many :workflow_live_stations
+	has_many :workflow_live_stes
 	has_many :transitions
 	has_many :report_filter_steps
  

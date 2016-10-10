@@ -781,3 +781,9 @@ label.string, label.integer {
     text-align: center; 
     font-weight: bold;
 }
+
+.project-data.project_fix.fix_levels tr td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

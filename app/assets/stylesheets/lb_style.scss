@@ -782,7 +782,7 @@ label.string, label.integer {
     font-weight: bold;
 }
 
-.project-data.project_fix.fix_levels tr td {
+.project-data.project_fix.fix_levels tr td, #project_ia tr td{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

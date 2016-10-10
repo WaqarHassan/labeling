@@ -25,7 +25,13 @@
 						<% @l1s.each do |l1| %>
 							<tr style= "background-color: <%=  @workflow.l1_bg_color%>">
 								<td colspan="3" class="project">
+									<% if l1.completed_actual.present? %>
+										<div class="completed_hint"></div>
+									<% end %>
 									<%=  link_to l1.name, open_info_modal_l1_path(l1), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#info_modal_popup'} %>
+									<% if l1.status.downcase == 'closed' %>
+										<div class="closed_hint"></div>
+									<% end %>
 								</td>
 								<td class = "status-col-width" ><%= l1.status %></td>
 
@@ -39,7 +45,14 @@
 								<tr>
 									<td></td>
 									<td colspan="2">
-									<%= link_to l2.name, open_info_modal_l2_path(l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %></td>
+										<% if l2.completed_actual.present? %>
+											<div class="completed_hint"></div>
+										<% end %>
+										<%= link_to l2.name, open_info_modal_l2_path(l2.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+										<% if l2.status.downcase == 'closed' %>
+											<div class="closed_hint"></div>
+										<% end %>
+									</td>	
 									<td class = "status-col-width" ><%= l2.status %></td>
 								</tr>
 
@@ -53,7 +66,13 @@
 										<td></td>
 										<td></td>
 										<td>
+											<% if l3.completed_actual.present? %>
+												<div class="completed_hint"></div>
+											<% end %>
 											<%= link_to l3.name, open_info_modal_l3_path(l3.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+											<% if l3.status.downcase == 'closed' %>
+												<div class="closed_hint"></div>
+											<% end %>
 										</td>
 										<td class = "status-col-width" ><%= l3.status %></td>
 									</tr>

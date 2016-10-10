@@ -230,7 +230,7 @@ class WorkFlow < ActiveRecord::Base
 				
 				if habdoff_report_serach_unique.present?
 					if object_type == 'L3'
-						habdoff_report_serach_unique_l3_with_partials = report_serach_result.select{|report| report['object_type'] == object_type and report['l2_id'].to_i == habdoff_report_serach_unique[0]['l2_id'].to_i and report['station_step_id'] == station_step_id }
+						habdoff_report_serach_unique_l3_with_partials = report_serach_result.select{|report| report['object_type'] == object_type and report['l3_name'].split('-R')[0] == habdoff_report_serach_unique[0]['l3_name'] and report['station_step_id'] == station_step_id }
 						if habdoff_report_serach_unique_l3_with_partials.present?
 							
 							habdoff_report_serach_unique_l3_active = habdoff_report_serach_unique_l3_with_partials.select{|report| report['is_active'] == 1 }
@@ -334,7 +334,7 @@ class WorkFlow < ActiveRecord::Base
 							if ll_id == 'l3_id'
 								if pred_habdoff_report_serach_unique_current.present?
 									l3_object_id = pred_habdoff_report_serach_unique_current.first
-									habdoff_report_serach_unique_l3_with_partials = report_serach_result.select{|report| report['object_type'] == object_type and report['l2_id'].to_i == l3_object_id['l2_id'].to_i and report['station_step_id'].to_i == pred.to_i }
+									habdoff_report_serach_unique_l3_with_partials = report_serach_result.select{|report| report['object_type'] == object_type and report['l3_name'].split('-R')[0] == l3_object_id['l3_name'] and report['station_step_id'].to_i == pred.to_i }
 									if habdoff_report_serach_unique_l3_with_partials.present?
 										habdoff_report_serach_unique_l3_with_partials.each do |phrsup|
 											pred_habdoff_report_serach_unique << phrsup

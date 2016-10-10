@@ -245,7 +245,8 @@ class WorkFlow < ActiveRecord::Base
 											work_flow_id = station_Step_to_calculate.work_flow_id
 											bk_frm_collab_workflowLiveStep = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.object_type='L3' and workflow_live_steps.object_id=#{object_id} and station_steps.step_name='Back from Collab.'")
 											if bk_frm_collab_workflowLiveStep.present?
-												if bk_frm_collab_workflowLiveStep.first.actual_confirmation.present?
+												habdoff_report_actual = habdoff_report_serach_unique_l3_with_partials.select{|report| report['actual_confirmation'] == nil }
+												if bk_frm_collab_workflowLiveStep.first.actual_confirmation.present? and !habdoff_report_actual.present?
 													crd_started_workflowLiveStep = WorkflowLiveStep.where(object_type: 'L3', object_id: object_id, station_step_id: station_step_id)
 													if crd_started_workflowLiveStep.present?
 														# Covnert minutes to hours and minutes

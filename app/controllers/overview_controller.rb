@@ -116,7 +116,7 @@ class OverviewController < ApplicationController
     @status_ = @l1.status
 
     @reasons = ReasonCode.where(status: @status_,
-     recording_level: @type )
+     recording_level: @type ).order(:sequence)
 
 
     @additional_info = AdditionalInfo.new
@@ -188,7 +188,7 @@ class OverviewController < ApplicationController
     @status_ = @l2.status
 
     @reasons = ReasonCode.where(status: @status_,
-     recording_level: @type )
+     recording_level: @type ).order(:sequence)
 
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
@@ -210,7 +210,7 @@ class OverviewController < ApplicationController
     @status_ = @l3.status
 
     @reasons = ReasonCode.where(status: @status_,
-     recording_level: @type )
+     recording_level: @type ).order(:sequence)
 
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
@@ -282,7 +282,17 @@ class OverviewController < ApplicationController
         AdditionalInfo.create(additional_info_params_note_only)
       
       else
+
+        codes = params[:additional_info][:reason_code_id]
+        if codes.present?
+          ids  = ""
+          codes.each do |d|
+            ids += d + ','
+          end
+          ids  = ids.chop
+        end
         add_info = AdditionalInfo.create(additional_info_params)
+        add_info.update(:reason_code_id => ids)
         if params[:additional_info][:object_type] == 'L1'
           l1 = L1.find(params[:additional_info][:object_id])
           if params[:additional_info][:status] != ''
@@ -935,6 +945,13 @@ class OverviewController < ApplicationController
   def save_reject_reason
     additional_info_id = session[:additional_info_id]
     codes = params[:additional_info][:reason_code_id]
+    # if codes.present?
+    #   ids = ''
+    #   codes.each do |t|
+    #     ids += t + ','
+    #   end
+    #   ids = ids.chop
+    # end
     ids = ''
     codes.each do |t|
       ids += t + ','

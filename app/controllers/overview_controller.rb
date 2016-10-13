@@ -468,7 +468,7 @@ class OverviewController < ApplicationController
     @user_id = current_user.id
     @current_step = workflow_live_step.station_step
     @current_station = workflow_live_step.station_step.workflow_station
-    @reason_codes = @workflow.reason_codes.where(status: 'Rework', recording_level: workflow_live_step.object_type)
+    @reason_codes = @workflow.reason_codes.where(status: 'Rework', recording_level: workflow_live_step.object_type).order(:sequence)
     @level_workflow_stations = @workflow.workflow_stations.joins(:station_steps).where("station_steps.recording_level='#{workflow_live_step.object_type}' and workflow_stations.sequence <= #{@current_station.sequence} and workflow_stations.is_visible=true").order(:sequence).uniq
 
     @level_steps = []
@@ -956,7 +956,7 @@ class OverviewController < ApplicationController
     l2_id = params[:id]
     @l2 = L2.find(l2_id)
 
-    @reason_codes = @workflow.reason_codes.where(status: 'Rejected', recording_level: 'L2')
+    @reason_codes = @workflow.reason_codes.where(status: 'Rejected', recording_level: 'L2').order(:sequence)
     respond_to do |format|
       format.html { render :partial => "reject_reason_modal" }
       format.js

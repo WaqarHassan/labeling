@@ -75,7 +75,7 @@
      <div class="form-group">
         <label class="col-lg-4 control-label">Reason </label>
           <div class="col-lg-6" id= "get_reasons_div">
-            <%= select_tag "additional_info[reason_code_id]", options_from_collection_for_select(@reasons, 'id', 'reason'),prompt: 'please select Reason', :class=>'form-control pnd-reqst pull-left' ,:multiple => true, :size => 10 %> 
+            <select size="8" multiple="multiple" class="form-control pnd-reqst pull-left" id="additional_info_reason_code_id" name="additional_info[reason_code_id][]"><option value="">please select Status to render reasons</option></select>
           </div>
       </div>
      

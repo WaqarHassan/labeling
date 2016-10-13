@@ -304,6 +304,12 @@ class OverviewController < ApplicationController
                 if l3.status.downcase != 'cancel'
                   WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
                   l3.status = 'cancel'
+                  if l3.rework_parent_id.present? and !l3.is_main_record
+                    num_component_rework = l3.num_component
+                    parent_l3 = L3.find_by_id(l3.rework_parent_id)
+                    parent_l3.num_component_in_rework = parent_l3.num_component_in_rework.to_i - num_component_rework.to_i
+                    parent_l3.save!
+                  end
                   l3.save!
                   AdditionalInfo.create(status: add_info.status, object_id: l3.id, object_type: 'L3', info_timestamp: add_info.info_timestamp,
                     work_flow_id: add_info.work_flow_id, note: add_info.note, user_id: add_info.user_id, reason_code_id: add_info.reason_code_id)
@@ -324,6 +330,12 @@ class OverviewController < ApplicationController
                 if l3.status.downcase != 'cancel'
                   WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
                   l3.status = 'cancel'
+                  if l3.rework_parent_id.present? and !l3.is_main_record
+                    num_component_rework = l3.num_component
+                    parent_l3 = L3.find_by_id(l3.rework_parent_id)
+                    parent_l3.num_component_in_rework = parent_l3.num_component_in_rework.to_i - num_component_rework.to_i
+                    parent_l3.save!
+                  end
                   l3.save!
                   AdditionalInfo.create(status: add_info.status, object_id: l3.id, object_type: 'L3', info_timestamp: add_info.info_timestamp,
                     work_flow_id: add_info.work_flow_id, note: add_info.note, user_id: add_info.user_id, reason_code_id: add_info.reason_code_id)
@@ -338,9 +350,20 @@ class OverviewController < ApplicationController
               l3.update(status: params[:additional_info][:status])
            end
            if l3.status.downcase == 'cancel'
-             WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
+              if l3.rework_parent_id.present? and !l3.is_main_record
+                num_component_rework = l3.num_component
+                parent_l3 = L3.find_by_id(l3.rework_parent_id)
+                parent_l3.num_component_in_rework = parent_l3.num_component_in_rework.to_i - num_component_rework.to_i
+                parent_l3.save!
+
+                workflowLiveStep = WorkflowLiveStep.find_by_object_type_and_object_id('L3', l3.id)
+                if workflowLiveStep.present?
+                  WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
+                end
+              end
+              WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
            else
-             WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: true)
+              WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: true)
            end
         end
       end

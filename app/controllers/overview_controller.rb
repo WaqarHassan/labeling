@@ -316,7 +316,7 @@ class OverviewController < ApplicationController
                   work_flow_id: add_info.work_flow_id, note: add_info.note, user_id: add_info.user_id, reason_code_id: add_info.reason_code_id)
               end
               l2.l3s.each do |l3|
-                if l3.status.downcase != 'cancel'
+                if l3.status.downcase != 'cancel' and l3.status.downcase != 'closed'
                   WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
                   l3.status = 'cancel'
                   if l3.rework_parent_id.present? and !l3.is_main_record
@@ -346,7 +346,7 @@ class OverviewController < ApplicationController
            if l2.status.downcase == 'cancel'
               WorkflowLiveStep.where(object_type: 'L2', object_id: l2.id, actual_confirmation: nil).update_all(is_active: false)
               l2.l3s.each do |l3|
-                if l3.status.downcase != 'cancel'
+                if l3.status.downcase != 'cancel' and l3.status.downcase != 'closed'
                   WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
                   l3.status = 'cancel'
                   if l3.rework_parent_id.present? and !l3.is_main_record

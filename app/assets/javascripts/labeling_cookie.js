@@ -19,10 +19,12 @@ if (window.jQuery) {
 			$('#detail_data').width(detail_data);
 		}
 	});
-}
+} 
+//It returns width of Panel's container on index page
 function container_width(){
 	return  $('#labeling_container').width() - 22 ;
 }
+//This function adjusts Panel's container width whenever search panel is collapsed or expanded.
 function overview_serach_box()
 {
 	 var labelsClassName = $('.project_ia').attr('class');	
@@ -56,6 +58,7 @@ function overview_serach_box()
 		Cookies.set('project_ia', project_ia_classes, { expires: 7 });
 		Cookies.set('projectform', projectform_classes, { expires: 7 });
 }
+//This function adjusts panel's container width whenever any panel in expaneded or collapsed 
 function adjust(){
 
 	if($('#projectform').hasClass('collapsed'))
@@ -87,6 +90,7 @@ function adjust(){
 	}
 
 }
+//This function adjusts Panel's container width when ever objects Panel is expanded or collapsed
 function label_attributes_box()
 {
 	 var searchclassName = $('#projectform').attr('class');	

@@ -1,0 +1,2258 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class WorkFlow - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">ActiveRecord::Base
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-current_report_search">::current_report_search</a>
+    
+    <li ><a href="#method-c-current_report_search_exclude_cancel">::current_report_search_exclude_cancel</a>
+    
+    <li ><a href="#method-c-current_report_search_exclude_cancel_and_complete">::current_report_search_exclude_cancel_and_complete</a>
+    
+    <li ><a href="#method-c-current_report_search_exclude_complete">::current_report_search_exclude_complete</a>
+    
+    <li ><a href="#method-c-daily_report_serach">::daily_report_serach</a>
+    
+    <li ><a href="#method-c-do_calculate_eta">::do_calculate_eta</a>
+    
+    <li ><a href="#method-c-do_calculate_eta_for_l3">::do_calculate_eta_for_l3</a>
+    
+    <li ><a href="#method-c-do_current_search_report">::do_current_search_report</a>
+    
+    <li ><a href="#method-c-do_search_report">::do_search_report</a>
+    
+    <li ><a href="#method-c-entire_report_search">::entire_report_search</a>
+    
+    <li ><a href="#method-c-entire_report_search_exclude_cancel">::entire_report_search_exclude_cancel</a>
+    
+    <li ><a href="#method-c-entire_report_search_exclude_cancel_and_complete">::entire_report_search_exclude_cancel_and_complete</a>
+    
+    <li ><a href="#method-c-entire_report_search_exclude_complete">::entire_report_search_exclude_complete</a>
+    
+    <li ><a href="#method-c-get_object_attribute_value">::get_object_attribute_value</a>
+    
+    <li ><a href="#method-c-get_rollUp_object_status">::get_rollUp_object_status</a>
+    
+    <li ><a href="#method-c-get_time_stamp">::get_time_stamp</a>
+    
+    <li ><a href="#method-c-get_time_stamp__aaa">::get_time_stamp__aaa</a>
+    
+    <li ><a href="#method-c-get_work_live_step">::get_work_live_step</a>
+    
+    <li ><a href="#method-c-handoff_report_search">::handoff_report_search</a>
+    
+    <li ><a href="#method-c-handoff_report_search_exclude_canceled">::handoff_report_search_exclude_canceled</a>
+    
+    <li ><a href="#method-c-handoff_report_search_exclude_canceled_completed">::handoff_report_search_exclude_canceled_completed</a>
+    
+    <li ><a href="#method-c-handoff_report_search_exclude_completed">::handoff_report_search_exclude_completed</a>
+    
+    <li ><a href="#method-c-object_attributes">::object_attributes</a>
+    
+    <li ><a href="#method-c-search">::search</a>
+    
+    <li ><a href="#method-c-search_exclude_cancel">::search_exclude_cancel</a>
+    
+    <li ><a href="#method-c-search_exclude_cancel_and_complete">::search_exclude_cancel_and_complete</a>
+    
+    <li ><a href="#method-c-search_exclude_complete">::search_exclude_complete</a>
+    
+    <li ><a href="#method-c-search_handoff_exclude_cancel">::search_handoff_exclude_cancel</a>
+    
+    <li ><a href="#method-c-search_handoff_exclude_cancel_and_complete">::search_handoff_exclude_cancel_and_complete</a>
+    
+    <li ><a href="#method-c-search_handoff_exclude_complete">::search_handoff_exclude_complete</a>
+    
+    <li ><a href="#method-c-search_handoff_report">::search_handoff_report</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-WorkFlow">
+  <h1 id="class-WorkFlow" class="class">
+    class WorkFlow
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-current_report_search" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">current_report_search</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>Query String</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>Search Results return by query</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It searches data for Current <a href="Status.html">Status</a> report.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="current_report_search-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 547</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">current_report_search</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">report_sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name,l2s.id as l2_id, l2s.name as l2_name, 
+                                                        l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
+                                                        workflow_live_steps.actual_confirmation as actual_confirmation, workflow_live_steps.eta as eta, 
+                                                        station_steps.step_name as step, workflow_stations.station_name as station, workflow_live_steps.id as wls_id, workflow_live_steps.object_type as object_type
+                                                        from l1s
+                                                        left join l2s on l1s.id = l2s.l1_id
+                                                        left join l3s on l3s.l2_id=l2s.id
+                                                        inner join workflow_live_steps 
+                                                                on (workflow_live_steps.object_id = l1s.id and workflow_live_steps.object_type = &#39;L1&#39;) 
+                                                    or (workflow_live_steps.object_id = l2s.id  and workflow_live_steps.object_type = &#39;L2&#39;) 
+                                                    or (workflow_live_steps.object_id = l3s.id  and workflow_live_steps.object_type = &#39;L3&#39;)
+                                                        inner join station_steps on workflow_live_steps.station_step_id = station_steps.id
+                                                        inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
+                                                where #{q_string} 
+                                                order by l1s.name, l2s.name, l3s.name&quot;</span>
+
+                <span class="ruby-identifier">report_serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">report_sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">report_serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-current_report_search_exclude_cancel" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">current_report_search_exclude_cancel</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>Query String</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>Search Results return by query</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It searches data for Current <a href="Status.html">Status</a> Report for
+Objects whose <a href="Status.html">Status</a> is not Cancel</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="current_report_search_exclude_cancel-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 604</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">current_report_search_exclude_cancel</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">report_sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name,l2s.id as l2_id, l2s.name as l2_name, 
+                                                        l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
+                                                        workflow_live_steps.actual_confirmation as actual_confirmation, workflow_live_steps.eta as eta, 
+                                                        station_steps.step_name as step, workflow_stations.station_name as station, workflow_live_steps.id as wls_id, workflow_live_steps.object_type as object_type
+                                                        from l1s
+                                                        left join l2s on l1s.id = l2s.l1_id and l2s.status != &#39;Cancel&#39;
+                                                        left join l3s on l3s.l2_id=l2s.id and l3s.status != &#39;Cancel&#39;
+                                                        inner join workflow_live_steps 
+                                                                on (workflow_live_steps.object_id = l1s.id and workflow_live_steps.object_type = &#39;L1&#39;) 
+                                                    or (workflow_live_steps.object_id = l2s.id  and workflow_live_steps.object_type = &#39;L2&#39;) 
+                                                    or (workflow_live_steps.object_id = l3s.id  and workflow_live_steps.object_type = &#39;L3&#39;)
+                                                        inner join station_steps on workflow_live_steps.station_step_id = station_steps.id
+                                                        inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
+                                                where #{q_string} and l1s.status != &#39;Cancel&#39; 
+                                                order by l1s.name, l2s.name, l3s.name&quot;</span>
+
+                <span class="ruby-identifier">report_serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">report_sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">report_serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-current_report_search_exclude_cancel_and_complete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">current_report_search_exclude_cancel_and_complete</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>Query String</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>Search Results return by query</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It Searches data for Current <a href="Status.html">Status</a> Report for
+Objects whose <a href="Status.html">Status</a> is neither Complete not
+Cancel</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="current_report_search_exclude_cancel_and_complete-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 632</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">current_report_search_exclude_cancel_and_complete</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">report_sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name,l2s.id as l2_id, l2s.name as l2_name, 
+                                                        l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
+                                                        workflow_live_steps.actual_confirmation as actual_confirmation, workflow_live_steps.eta as eta, 
+                                                        station_steps.step_name as step, workflow_stations.station_name as station, workflow_live_steps.id as wls_id, workflow_live_steps.object_type as object_type
+                                                        from l1s
+                                                        left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL and l2s.status != &#39;Cancel&#39;
+                                                        left join l3s on l3s.l2_id=l2s.id and l3s.completed_actual IS NULL and l3s.status != &#39;Cancel&#39;
+                                                        inner join workflow_live_steps 
+                                                                on (workflow_live_steps.object_id = l1s.id and workflow_live_steps.object_type = &#39;L1&#39;) 
+                                                    or (workflow_live_steps.object_id = l2s.id  and workflow_live_steps.object_type = &#39;L2&#39;) 
+                                                    or (workflow_live_steps.object_id = l3s.id  and workflow_live_steps.object_type = &#39;L3&#39;)
+                                                        inner join station_steps on workflow_live_steps.station_step_id = station_steps.id
+                                                        inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
+                                                where #{q_string} and l1s.completed_actual IS NULL and l1s.status != &#39;Cancel&#39; 
+                                                order by l1s.name, l2s.name, l3s.name&quot;</span>
+
+                <span class="ruby-identifier">report_serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">report_sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">report_serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-current_report_search_exclude_complete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">current_report_search_exclude_complete</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>Query String</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>Search Results return by query</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It searches data for Current <a href="Status.html">Status</a> Report for
+Objects whose <a href="Status.html">Status</a> is not Complete.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="current_report_search_exclude_complete-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 576</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">current_report_search_exclude_complete</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">report_sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name,l2s.id as l2_id, l2s.name as l2_name, 
+                                                        l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
+                                                        workflow_live_steps.actual_confirmation as actual_confirmation, workflow_live_steps.eta as eta, 
+                                                        station_steps.step_name as step, workflow_stations.station_name as station, workflow_live_steps.id as wls_id, workflow_live_steps.object_type as object_type
+                                                        from l1s
+                                                        left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL
+                                                        left join l3s on l3s.l2_id=l2s.id and l3s.completed_actual IS NULL
+                                                        inner join workflow_live_steps 
+                                                                on (workflow_live_steps.object_id = l1s.id and workflow_live_steps.object_type = &#39;L1&#39;) 
+                                                    or (workflow_live_steps.object_id = l2s.id  and workflow_live_steps.object_type = &#39;L2&#39;) 
+                                                    or (workflow_live_steps.object_id = l3s.id  and workflow_live_steps.object_type = &#39;L3&#39;)
+                                                        inner join station_steps on workflow_live_steps.station_step_id = station_steps.id
+                                                        inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
+                                                where #{q_string} and l1s.completed_actual IS NULL 
+                                                order by l1s.name, l2s.name, l3s.name&quot;</span>
+
+                <span class="ruby-identifier">report_serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">report_sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">report_serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-daily_report_serach" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">daily_report_serach</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>query string</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>Daily report search result</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It calculates data for Daily report based upon given query string</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="daily_report_serach-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 878</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">daily_report_serach</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">daily_report_sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name, 
+                                                station_steps.step_name as step, workflow_stations.station_name as station, wls.object_type, 
+                                                timestamp_logs.actual_confirmation, timestamp_logs.updated_at, timestamp_logs.user_id, users.first_name as updated_by, timestamp_logs.id as log_id
+                                                from l1s
+                                                left join l2s on l1s.id = l2s.l1_id
+                                                left join l3s on l3s.l2_id=l2s.id
+                                                inner join workflow_live_steps as wls on (wls.object_id = l1s.id and wls.object_type = &#39;L1&#39;) 
+                                                                               or (wls.object_id = l2s.id  and wls.object_type = &#39;L2&#39;) 
+                                                                               or (wls.object_id = l3s.id  and wls.object_type = &#39;L3&#39;)
+                                                inner join station_steps on wls.station_step_id = station_steps.id
+                                                inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
+                                                inner join timestamp_logs on wls.id = timestamp_logs.workflow_live_step_id
+                                                inner join users on timestamp_logs.user_id = users.id
+                                                where #{q_string}
+                                                order by l1s.name, l2s.name, l3s.name&quot;</span>
+                <span class="ruby-identifier">daily_report_serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">daily_report_sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">daily_report_serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-do_calculate_eta" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">do_calculate_eta</span><span
+            class="method-args">(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>————-end current report serach———————</p>
+<ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id,
+ll_id, station_step_id, filtered_station_steps</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>timestamp containing calculated ETA and a respective table data color
+value.</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It calculate ETA for the HandOff report data.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="do_calculate_eta-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 683</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">do_calculate_eta</span>(<span class="ruby-identifier">report_serach_result</span>, <span class="ruby-identifier">object_type</span>, <span class="ruby-identifier">object_id</span>, <span class="ruby-identifier">parent_l2_id</span>, <span class="ruby-identifier">parent_l1_id</span>, <span class="ruby-identifier">ll_id</span>, <span class="ruby-identifier">station_step_id</span>, <span class="ruby-identifier">filtered_station_steps</span>)
+        <span class="ruby-identifier">time_stamp</span> = <span class="ruby-string">&quot;&quot;</span>
+        <span class="ruby-identifier">table_td_class</span> = <span class="ruby-string">&quot;&quot;</span>
+        <span class="ruby-identifier">filteredStationStep</span> = <span class="ruby-identifier">filtered_station_steps</span>.<span class="ruby-identifier">find_by_station_step_id</span>(<span class="ruby-identifier">station_step_id</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">filteredStationStep</span>.<span class="ruby-identifier">predecessors</span>.<span class="ruby-identifier">present?</span>
+                <span class="ruby-identifier">predecessors_list</span> = <span class="ruby-identifier">filteredStationStep</span>.<span class="ruby-identifier">predecessors</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>)
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">predecessors_list</span>.<span class="ruby-identifier">presence</span>
+                        <span class="ruby-identifier">max_eta_datetime</span> = <span class="ruby-keyword">nil</span>
+                        <span class="ruby-identifier">predecessors_list</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pred</span><span class="ruby-operator">|</span>
+                                <span class="ruby-identifier">pred_filteredStationStep</span> = <span class="ruby-identifier">filtered_station_steps</span>.<span class="ruby-identifier">find_by_station_step_id</span>(<span class="ruby-identifier">pred</span>)
+                                <span class="ruby-identifier">workflow</span> = <span class="ruby-constant">WorkFlow</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">pred_filteredStationStep</span>.<span class="ruby-identifier">work_flow_id</span>)
+                                <span class="ruby-identifier">pred_habdoff_report_serach_unique</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_type</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-identifier">ll_id</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_id</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;station_step_id&#39;</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">pred</span>.<span class="ruby-identifier">to_i</span> }
+                                <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">pred_habdoff_report_serach_unique</span>.<span class="ruby-identifier">present?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">ll_id</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;l3_id&#39;</span>
+                                        <span class="ruby-identifier">pred_habdoff_report_serach_unique</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;L2&#39;</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;l2_id&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">parent_l2_id</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;station_step_id&#39;</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">pred</span>.<span class="ruby-identifier">to_i</span> }
+                                <span class="ruby-keyword">end</span>
+
+                                <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">pred_habdoff_report_serach_unique</span>.<span class="ruby-identifier">present?</span> <span class="ruby-keyword">and</span> (<span class="ruby-identifier">ll_id</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;l2_id&#39;</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">ll_id</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;l3_id&#39;</span>)
+                                        <span class="ruby-identifier">pred_habdoff_report_serach_unique</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;L1&#39;</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;l1_id&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">parent_l1_id</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;station_step_id&#39;</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">pred</span>.<span class="ruby-identifier">to_i</span> }
+                                <span class="ruby-keyword">end</span>
+
+                                <span class="ruby-identifier">pred_habdoff_report_actual</span> = <span class="ruby-identifier">pred_habdoff_report_serach_unique</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;actual_confirmation&#39;</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span> }
+                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">pred_habdoff_report_actual</span>.<span class="ruby-identifier">present?</span>
+                                        <span class="ruby-identifier">pred_habdoff_report_actual_sorted</span> = <span class="ruby-identifier">pred_habdoff_report_actual</span>.<span class="ruby-identifier">sort_by</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-value">:log_id</span>] }.<span class="ruby-identifier">reverse!</span>
+                                        <span class="ruby-identifier">actual_confirmation</span> = <span class="ruby-identifier">pred_habdoff_report_actual_sorted</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;actual_confirmation&#39;</span>]
+
+                                                <span class="ruby-comment"># Covnert minutes to hours and minutes</span>
+                                         <span class="ruby-constant">BusinessTime</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">beginning_of_workday</span> = <span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">beginning_of_workday</span>
+                                    <span class="ruby-constant">BusinessTime</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">end_of_workday</span> = <span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">end_of_workday</span>
+
+                                    <span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">holidays</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">holiday</span><span class="ruby-operator">|</span>
+                                       <span class="ruby-constant">BusinessTime</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">holidays</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">holiday</span>.<span class="ruby-identifier">holiday_date</span>.<span class="ruby-identifier">to_s</span>)
+                                    <span class="ruby-keyword">end</span>
+                                        <span class="ruby-identifier">number_days</span> = <span class="ruby-identifier">pred_filteredStationStep</span>.<span class="ruby-identifier">duration_days</span>
+                                        <span class="ruby-identifier">actual_confirmation</span> = <span class="ruby-identifier">actual_confirmation</span>.<span class="ruby-identifier">to_time</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%Y-%m-%d %H:%M&#39;</span>)
+                                        <span class="ruby-identifier">eta_datetime</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">actual_confirmation</span>)
+                                        
+                                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">number_days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+                                                <span class="ruby-identifier">eta_datetime</span> =  <span class="ruby-identifier">number_days</span>.<span class="ruby-identifier">business_days</span>.<span class="ruby-identifier">after</span>(<span class="ruby-identifier">eta_datetime</span>)
+                                        <span class="ruby-keyword">end</span>
+                                        
+                                        <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">present?</span>
+                                                <span class="ruby-identifier">max_eta_datetime</span> = <span class="ruby-identifier">eta_datetime</span>
+                                        <span class="ruby-keyword">end</span>
+                                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">present?</span>
+                                                <span class="ruby-keyword">if</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">eta_datetime</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">to_s</span>)
+                                                 <span class="ruby-identifier">max_eta_datetime</span> = <span class="ruby-identifier">eta_datetime</span>
+                                         <span class="ruby-keyword">end</span>       
+                                        <span class="ruby-keyword">end</span>
+
+                                        <span class="ruby-identifier">eta_date_stamp</span> = <span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%m/%d/%y&quot;</span>)
+                                        <span class="ruby-identifier">eta_time_stamp</span> = <span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%I:%M %p&quot;</span>)
+                                        <span class="ruby-identifier">time_stamp</span> = <span class="ruby-string">&quot;ETA &quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">eta_date_stamp</span><span class="ruby-operator">+</span><span class="ruby-string">&quot;&lt;br /&gt;&quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">eta_time_stamp</span>
+                                        <span class="ruby-keyword">if</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">to_s</span>)
+                                                <span class="ruby-identifier">table_td_class</span> = <span class="ruby-string">&#39;report_eta_light_red&#39;</span>
+                                        <span class="ruby-keyword">end</span>
+
+                                <span class="ruby-keyword">end</span>
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-keyword">return</span> [<span class="ruby-identifier">time_stamp</span>, <span class="ruby-identifier">table_td_class</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-do_calculate_eta_for_l3" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">do_calculate_eta_for_l3</span><span
+            class="method-args">(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>query string</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It searches Objetcs with any <a href="Status.html">Status</a>.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="do_calculate_eta_for_l3-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 314</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">do_calculate_eta_for_l3</span>(<span class="ruby-identifier">report_serach_result</span>, <span class="ruby-identifier">object_type</span>, <span class="ruby-identifier">object_id</span>, <span class="ruby-identifier">parent_l2_id</span>, <span class="ruby-identifier">parent_l1_id</span>, <span class="ruby-identifier">ll_id</span>, <span class="ruby-identifier">station_step_id</span>, <span class="ruby-identifier">filtered_station_steps</span>)
+        <span class="ruby-identifier">time_stamp</span> = <span class="ruby-string">&quot;&quot;</span>
+        <span class="ruby-identifier">table_td_class</span> = <span class="ruby-string">&quot;&quot;</span>
+        <span class="ruby-identifier">max_eta_datetime</span> = <span class="ruby-keyword">nil</span>
+        <span class="ruby-identifier">filteredStationStep</span> = <span class="ruby-identifier">filtered_station_steps</span>.<span class="ruby-identifier">find_by_station_step_id</span>(<span class="ruby-identifier">station_step_id</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">filteredStationStep</span>.<span class="ruby-identifier">predecessors</span>.<span class="ruby-identifier">present?</span>
+                <span class="ruby-identifier">predecessors_list</span> = <span class="ruby-identifier">filteredStationStep</span>.<span class="ruby-identifier">predecessors</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>)
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">predecessors_list</span>.<span class="ruby-identifier">presence</span>
+                        <span class="ruby-identifier">max_eta_datetime</span> = <span class="ruby-keyword">nil</span>
+                        <span class="ruby-identifier">predecessors_list</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pred</span><span class="ruby-operator">|</span>
+                                <span class="ruby-identifier">pred_habdoff_report_serach_unique</span> = []
+                                <span class="ruby-identifier">pred_filteredStationStep</span> = <span class="ruby-identifier">filtered_station_steps</span>.<span class="ruby-identifier">find_by_station_step_id</span>(<span class="ruby-identifier">pred</span>)
+                                <span class="ruby-identifier">workflow</span> = <span class="ruby-constant">WorkFlow</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">pred_filteredStationStep</span>.<span class="ruby-identifier">work_flow_id</span>)
+
+                                <span class="ruby-identifier">pred_habdoff_report_serach_unique_current</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_type</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-identifier">ll_id</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_id</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;station_step_id&#39;</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">pred</span>.<span class="ruby-identifier">to_i</span> }
+                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">pred_habdoff_report_serach_unique_current</span>.<span class="ruby-identifier">present?</span>
+                                        <span class="ruby-identifier">pred_habdoff_report_serach_unique_current</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">phrsuc</span><span class="ruby-operator">|</span>
+                                                <span class="ruby-identifier">pred_habdoff_report_serach_unique</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">phrsuc</span>
+                                        <span class="ruby-keyword">end</span>
+                                <span class="ruby-keyword">end</span>
+
+                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">ll_id</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;l3_id&#39;</span>
+                                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">pred_habdoff_report_serach_unique_current</span>.<span class="ruby-identifier">present?</span>
+                                                <span class="ruby-identifier">l3_object_id</span> = <span class="ruby-identifier">pred_habdoff_report_serach_unique_current</span>.<span class="ruby-identifier">first</span>
+                                                <span class="ruby-identifier">habdoff_report_serach_unique_l3_with_partials</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_type</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;l3_name&#39;</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;-R&#39;</span>)[<span class="ruby-value">0</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">l3_object_id</span>[<span class="ruby-string">&#39;l3_name&#39;</span>] <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;station_step_id&#39;</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">pred</span>.<span class="ruby-identifier">to_i</span> }
+                                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">habdoff_report_serach_unique_l3_with_partials</span>.<span class="ruby-identifier">present?</span>
+                                                        <span class="ruby-identifier">habdoff_report_serach_unique_l3_with_partials</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">phrsup</span><span class="ruby-operator">|</span>
+                                                                <span class="ruby-identifier">pred_habdoff_report_serach_unique</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">phrsup</span>
+                                                        <span class="ruby-keyword">end</span>
+                                                <span class="ruby-keyword">end</span>
+                                        <span class="ruby-keyword">end</span>
+                                        <span class="ruby-identifier">pred_habdoff_report_serach_unique_l3_id</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;L2&#39;</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;l2_id&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">parent_l2_id</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;station_step_id&#39;</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">pred</span>.<span class="ruby-identifier">to_i</span> }
+                                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">pred_habdoff_report_serach_unique_l3_id</span>.<span class="ruby-identifier">present?</span>
+                                                <span class="ruby-identifier">pred_habdoff_report_serach_unique_l3_id</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">phrsul3</span><span class="ruby-operator">|</span>
+                                                        <span class="ruby-identifier">pred_habdoff_report_serach_unique</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">phrsul3</span>
+                                                <span class="ruby-keyword">end</span>
+                                        <span class="ruby-keyword">end</span>
+                                <span class="ruby-keyword">end</span>
+
+                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">ll_id</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;l2_id&#39;</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">ll_id</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;l3_id&#39;</span>
+                                        <span class="ruby-identifier">pred_habdoff_report_serach_unique_l2</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;L1&#39;</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;l1_id&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">parent_l1_id</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;station_step_id&#39;</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">pred</span>.<span class="ruby-identifier">to_i</span> }
+                                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">pred_habdoff_report_serach_unique_l2</span>.<span class="ruby-identifier">present?</span>
+                                                <span class="ruby-identifier">pred_habdoff_report_serach_unique_l2</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">phrsul2</span><span class="ruby-operator">|</span>
+                                                        <span class="ruby-identifier">pred_habdoff_report_serach_unique</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">phrsul2</span>
+                                                <span class="ruby-keyword">end</span>
+                                        <span class="ruby-keyword">end</span>
+                                <span class="ruby-keyword">end</span>
+                        
+                                <span class="ruby-identifier">habdoff_report_serach_unique_l3_blank</span> = <span class="ruby-identifier">pred_habdoff_report_serach_unique</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;l3_status&#39;</span>].<span class="ruby-identifier">downcase</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;closed&#39;</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;actual_confirmation&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> }
+                                <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">habdoff_report_serach_unique_l3_blank</span>.<span class="ruby-identifier">present?</span>
+                                        <span class="ruby-identifier">habdoff_report_actual_sorted</span> = <span class="ruby-identifier">pred_habdoff_report_serach_unique</span>.<span class="ruby-identifier">sort_by</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-value">:actual_confirmation</span>] }
+                                        <span class="ruby-identifier">actual_confirmation</span> = <span class="ruby-identifier">habdoff_report_actual_sorted</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;actual_confirmation&#39;</span>]
+                                                <span class="ruby-comment"># Covnert minutes to hours and minutes</span>
+                                         <span class="ruby-constant">BusinessTime</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">beginning_of_workday</span> = <span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">beginning_of_workday</span>
+                                    <span class="ruby-constant">BusinessTime</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">end_of_workday</span> = <span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">end_of_workday</span>
+
+                                    <span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">holidays</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">holiday</span><span class="ruby-operator">|</span>
+                                       <span class="ruby-constant">BusinessTime</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">holidays</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">holiday</span>.<span class="ruby-identifier">holiday_date</span>.<span class="ruby-identifier">to_s</span>)
+                                    <span class="ruby-keyword">end</span>
+                                        <span class="ruby-identifier">number_days</span> = <span class="ruby-identifier">pred_filteredStationStep</span>.<span class="ruby-identifier">duration_days</span>
+                                        <span class="ruby-identifier">actual_confirmation</span> = <span class="ruby-identifier">actual_confirmation</span>.<span class="ruby-identifier">to_time</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%Y-%m-%d %H:%M&#39;</span>)
+                                        <span class="ruby-identifier">eta_datetime</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">actual_confirmation</span>)
+                                        
+                                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">number_days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+                                                <span class="ruby-identifier">eta_datetime</span> =  <span class="ruby-identifier">number_days</span>.<span class="ruby-identifier">business_days</span>.<span class="ruby-identifier">after</span>(<span class="ruby-identifier">eta_datetime</span>)
+                                        <span class="ruby-keyword">end</span>
+                                        
+                                        <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">present?</span>
+                                                <span class="ruby-identifier">max_eta_datetime</span> = <span class="ruby-identifier">eta_datetime</span>
+                                        <span class="ruby-keyword">end</span>
+                                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">present?</span>
+                                                <span class="ruby-keyword">if</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">eta_datetime</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">to_s</span>)
+                                                 <span class="ruby-identifier">max_eta_datetime</span> = <span class="ruby-identifier">eta_datetime</span>
+                                         <span class="ruby-keyword">end</span>       
+                                        <span class="ruby-keyword">end</span>
+
+                                        <span class="ruby-identifier">eta_date_stamp</span> = <span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%m/%d/%y&quot;</span>)
+                                        <span class="ruby-identifier">time_stamp</span> = <span class="ruby-string">&quot;ETA &quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">eta_date_stamp</span>
+                                        <span class="ruby-keyword">if</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">to_s</span>)
+                                                <span class="ruby-identifier">table_td_class</span> = <span class="ruby-string">&#39;report_eta_light_red&#39;</span>
+                                        <span class="ruby-keyword">end</span>
+                                <span class="ruby-keyword">end</span>
+
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-keyword">return</span> [<span class="ruby-identifier">time_stamp</span>, <span class="ruby-identifier">table_td_class</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-do_current_search_report" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">do_current_search_report</span><span
+            class="method-args">(report_serach_result, object_type, object_id, ll_id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>report_serach_result, object_type, object_id, ll_id</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>Search Results return by query</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It searches Latest confirmation from the provided collection of search
+results</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="do_current_search_report-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 660</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">do_current_search_report</span> (<span class="ruby-identifier">report_serach_result</span>, <span class="ruby-identifier">object_type</span>, <span class="ruby-identifier">object_id</span>, <span class="ruby-identifier">ll_id</span>)
+        <span class="ruby-identifier">report_serach_confirmation</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_type</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-identifier">ll_id</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_id</span> }
+
+         <span class="ruby-identifier">actual_confirmation_row</span> = <span class="ruby-identifier">report_serach_confirmation</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">ac</span><span class="ruby-operator">|</span> <span class="ruby-identifier">ac</span>[<span class="ruby-string">&#39;actual_confirmation&#39;</span>].<span class="ruby-identifier">present?</span> }
+
+         <span class="ruby-keyword">if</span> <span class="ruby-identifier">actual_confirmation_row</span>.<span class="ruby-identifier">present?</span>
+            <span class="ruby-identifier">aa</span> =  <span class="ruby-identifier">actual_confirmation_row</span>.<span class="ruby-identifier">sort_by</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">k</span>[<span class="ruby-string">&quot;wls_id&quot;</span>] }.<span class="ruby-identifier">reverse</span>.<span class="ruby-identifier">first</span>
+
+         <span class="ruby-keyword">else</span>
+            <span class="ruby-identifier">aa</span> =  <span class="ruby-identifier">report_serach_confirmation</span>.<span class="ruby-identifier">sort_by</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">k</span>[<span class="ruby-string">&quot;wls_id&quot;</span>] }.<span class="ruby-identifier">first</span>
+         <span class="ruby-keyword">end</span>
+         <span class="ruby-keyword">return</span> <span class="ruby-identifier">aa</span>
+        
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-do_search_report" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">do_search_report</span><span
+            class="method-args">(report_serach_result, object_type, object_id, ll_id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>————-end entire report serach———————</p>
+<ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>report_serach_result, object_type, object_id, ll_id</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>unique collection of search result</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It makes collection unique based upon passed l1s id.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="do_search_report-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 531</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">do_search_report</span> (<span class="ruby-identifier">report_serach_result</span>, <span class="ruby-identifier">object_type</span>, <span class="ruby-identifier">object_id</span>, <span class="ruby-identifier">ll_id</span>)
+        <span class="ruby-identifier">report_serach_unique</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_type</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-identifier">ll_id</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_id</span> }
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">report_serach_unique</span>.<span class="ruby-identifier">uniq</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>[<span class="ruby-string">&#39;log_id&#39;</span>]}
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-entire_report_search" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">entire_report_search</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>Query String</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>Search Results returned by query</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It searches data for Entire History report.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="entire_report_search-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 415</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">entire_report_search</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">report_sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+                l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
+                                        l2s.num_component as l2_num_component,l1s.num_component as l1_num_component,
+                                        timestamp_logs.actual_confirmation, station_steps.step_name as step, 
+                                        workflow_stations.station_name as station,workflow_live_steps.id as wls_id, 
+                                        workflow_live_steps.object_type, timestamp_logs.id as log_id
+                                        from l1s
+                                        left join l2s on l1s.id = l2s.l1_id
+                                        left join l3s on l3s.l2_id=l2s.id
+                                        inner join workflow_live_steps on (workflow_live_steps.object_id = l1s.id and workflow_live_steps.object_type = &#39;L1&#39;) 
+                                                                       or (workflow_live_steps.object_id = l2s.id  and workflow_live_steps.object_type = &#39;L2&#39;) 
+                                                                       or (workflow_live_steps.object_id = l3s.id  and workflow_live_steps.object_type = &#39;L3&#39;)
+                                        inner join station_steps on workflow_live_steps.station_step_id = station_steps.id
+                                        inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
+                                        inner join timestamp_logs on workflow_live_steps.id = timestamp_logs.workflow_live_step_id
+                                where #{q_string} order by l1s.name, l2s.name, l3s.name&quot;</span>
+                <span class="ruby-identifier">report_serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">report_sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">report_serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-entire_report_search_exclude_cancel" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">entire_report_search_exclude_cancel</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>Query String</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>Search Results return by query</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It searches data for Entire History report for Objects whose <a
+href="Status.html">Status</a> is not Cancel.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="entire_report_search_exclude_cancel-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 472</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">entire_report_search_exclude_cancel</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">report_sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+                l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
+                                        l2s.num_component as l2_num_component,l1s.num_component as l1_num_component,
+                                        timestamp_logs.actual_confirmation, station_steps.step_name as step, 
+                                        workflow_stations.station_name as station,workflow_live_steps.id as wls_id, 
+                                        workflow_live_steps.object_type, timestamp_logs.id as log_id
+                                        from l1s
+                                        left join l2s on l1s.id = l2s.l1_id and l2s.status != &#39;Cancel&#39;
+                                        left join l3s on l3s.l2_id=l2s.id and l3s.status != &#39;Cancel&#39;
+                                        inner join workflow_live_steps on (workflow_live_steps.object_id = l1s.id and workflow_live_steps.object_type = &#39;L1&#39;) 
+                                                                       or (workflow_live_steps.object_id = l2s.id  and workflow_live_steps.object_type = &#39;L2&#39;) 
+                                                                       or (workflow_live_steps.object_id = l3s.id  and workflow_live_steps.object_type = &#39;L3&#39;)
+                                        inner join station_steps on workflow_live_steps.station_step_id = station_steps.id
+                                        inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
+                                        inner join timestamp_logs on workflow_live_steps.id = timestamp_logs.workflow_live_step_id
+                                where #{q_string} and l1s.status != &#39;Cancel&#39; 
+                                order by l1s.name, l2s.name, l3s.name&quot;</span>
+                <span class="ruby-identifier">report_serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">report_sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">report_serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-entire_report_search_exclude_cancel_and_complete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">entire_report_search_exclude_cancel_and_complete</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>Query String</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>Search Results return by query</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It Searches data for Entire History report for Objects whose <a
+href="Status.html">Status</a> is neither Complete nor Cancel.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="entire_report_search_exclude_cancel_and_complete-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 501</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">entire_report_search_exclude_cancel_and_complete</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">report_sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+                l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
+                                        l2s.num_component as l2_num_component,l1s.num_component as l1_num_component,
+                                        timestamp_logs.actual_confirmation, station_steps.step_name as step, 
+                                        workflow_stations.station_name as station,workflow_live_steps.id as wls_id, 
+                                        workflow_live_steps.object_type, timestamp_logs.id as log_id
+                                        from l1s
+                                        left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL and l2s.status != &#39;Cancel&#39;
+                                        left join l3s on l3s.l2_id=l2s.id and l3s.completed_actual IS NULL and l3s.status != &#39;Cancel&#39;
+                                        inner join workflow_live_steps on (workflow_live_steps.object_id = l1s.id and workflow_live_steps.object_type = &#39;L1&#39;) 
+                                                                       or (workflow_live_steps.object_id = l2s.id  and workflow_live_steps.object_type = &#39;L2&#39;) 
+                                                                       or (workflow_live_steps.object_id = l3s.id  and workflow_live_steps.object_type = &#39;L3&#39;)
+                                        inner join station_steps on workflow_live_steps.station_step_id = station_steps.id
+                                        inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
+                                        inner join timestamp_logs on workflow_live_steps.id = timestamp_logs.workflow_live_step_id
+                                where #{q_string} and l1s.completed_actual IS NULL and l1s.status != &#39;Cancel&#39; 
+                                order by l1s.name, l2s.name, l3s.name&quot;</span>
+                <span class="ruby-identifier">report_serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">report_sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">report_serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-entire_report_search_exclude_complete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">entire_report_search_exclude_complete</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>Query String</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>Search Results return by query</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It searches data for Entire History report for Objects whose <a
+href="Status.html">Status</a> is not Complete.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="entire_report_search_exclude_complete-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 443</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">entire_report_search_exclude_complete</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">report_sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+                l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
+                                        l2s.num_component as l2_num_component,l1s.num_component as l1_num_component,
+                                        timestamp_logs.actual_confirmation, station_steps.step_name as step, 
+                                        workflow_stations.station_name as station,workflow_live_steps.id as wls_id, 
+                                        workflow_live_steps.object_type, timestamp_logs.id as log_id
+                                        from l1s
+                                        left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL 
+                                        left join l3s on l3s.l2_id=l2s.id and l3s.completed_actual IS NULL 
+                                        inner join workflow_live_steps on (workflow_live_steps.object_id = l1s.id and workflow_live_steps.object_type = &#39;L1&#39;) 
+                                                                       or (workflow_live_steps.object_id = l2s.id  and workflow_live_steps.object_type = &#39;L2&#39;) 
+                                                                       or (workflow_live_steps.object_id = l3s.id  and workflow_live_steps.object_type = &#39;L3&#39;)
+                                        inner join station_steps on workflow_live_steps.station_step_id = station_steps.id
+                                        inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
+                                        inner join timestamp_logs on workflow_live_steps.id = timestamp_logs.workflow_live_step_id
+                                where #{q_string} and l1s.completed_actual IS NULL 
+                                order by l1s.name, l2s.name, l3s.name&quot;</span>
+                <span class="ruby-identifier">report_serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">report_sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">report_serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-get_object_attribute_value" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_object_attribute_value</span><span
+            class="method-args">(object_att_values, att_name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>object_att_values, att_name</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>attribute value name</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It finds specific Attribute name&#39;s Value from the provided collection
+of Object Attributes.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_object_attribute_value-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 847</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_object_attribute_value</span>(<span class="ruby-identifier">object_att_values</span>, <span class="ruby-identifier">att_name</span>)
+        <span class="ruby-identifier">att_value</span> = <span class="ruby-string">&#39;&#39;</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">object_att_values</span>.<span class="ruby-identifier">present?</span>
+                <span class="ruby-identifier">att_value_object</span> = <span class="ruby-identifier">object_att_values</span>.<span class="ruby-identifier">find</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">att</span><span class="ruby-operator">|</span> <span class="ruby-identifier">att</span>.<span class="ruby-identifier">label_attribute</span>.<span class="ruby-identifier">short_label</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">att_name</span> }
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">att_value_object</span>.<span class="ruby-identifier">present?</span>
+                        <span class="ruby-identifier">att_value</span> = <span class="ruby-identifier">att_value_object</span>.<span class="ruby-identifier">value</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span> 
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">att_value</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-get_rollUp_object_status" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_rollUp_object_status</span><span
+            class="method-args">(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>query string</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>Handoff report <a href="Status.html">Status</a> roll up.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_rollUp_object_status-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 199</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_rollUp_object_status</span>(<span class="ruby-identifier">report_serach_result</span>, <span class="ruby-identifier">object_type</span>, <span class="ruby-identifier">object_id</span>, <span class="ruby-identifier">parent_l2_id</span>, <span class="ruby-identifier">parent_l1_id</span>, <span class="ruby-identifier">ll_id</span>)
+        <span class="ruby-identifier">status</span> = <span class="ruby-string">&quot;Closed&quot;</span>
+        <span class="ruby-identifier">habdoff_report_serach_unique</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_type</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-identifier">ll_id</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_id</span>}
+        
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">habdoff_report_serach_unique</span>.<span class="ruby-identifier">present?</span>
+                <span class="ruby-identifier">status</span> = <span class="ruby-identifier">habdoff_report_serach_unique</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;l3_status&#39;</span>]
+                <span class="ruby-identifier">habdoff_report_serach_unique_l3_with_partials</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_type</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;l2_id&#39;</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">habdoff_report_serach_unique</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;l2_id&#39;</span>].<span class="ruby-identifier">to_i</span>}
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">habdoff_report_serach_unique_l3_with_partials</span>.<span class="ruby-identifier">present?</span>
+                        <span class="ruby-identifier">habdoff_report_serach_unique_l3_active_status</span> = <span class="ruby-identifier">habdoff_report_serach_unique_l3_with_partials</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;l3_status&#39;</span>].<span class="ruby-identifier">downcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;active&#39;</span> }
+                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">habdoff_report_serach_unique_l3_active_status</span>.<span class="ruby-identifier">present?</span>
+                                <span class="ruby-identifier">status</span> = <span class="ruby-string">&#39;Active&#39;</span>
+                        <span class="ruby-keyword">else</span>
+                                <span class="ruby-identifier">habdoff_report_serach_unique_l3_onHold_status</span> = <span class="ruby-identifier">habdoff_report_serach_unique_l3_with_partials</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;l3_status&#39;</span>].<span class="ruby-identifier">downcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;onhold&#39;</span> }
+                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">habdoff_report_serach_unique_l3_onHold_status</span>.<span class="ruby-identifier">present?</span>
+                                        <span class="ruby-identifier">status</span> = <span class="ruby-string">&#39;onHold&#39;</span>
+                                <span class="ruby-keyword">end</span>
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">status</span>                       
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-get_time_stamp" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_time_stamp</span><span
+            class="method-args">(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>query string</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It recalculate ETAs for HandOff report roll up.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_time_stamp-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 226</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_time_stamp</span>(<span class="ruby-identifier">report_serach_result</span>, <span class="ruby-identifier">object_type</span>, <span class="ruby-identifier">object_id</span>, <span class="ruby-identifier">parent_l2_id</span>, <span class="ruby-identifier">parent_l1_id</span>, <span class="ruby-identifier">ll_id</span>, <span class="ruby-identifier">station_step_id</span>, <span class="ruby-identifier">filtered_station_steps</span>)
+        <span class="ruby-identifier">time_stamp</span> = <span class="ruby-string">&quot;&quot;</span>
+        <span class="ruby-identifier">table_td_class</span> = <span class="ruby-string">&quot;&quot;</span>
+        <span class="ruby-identifier">habdoff_report_serach_unique</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_type</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-identifier">ll_id</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_id</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;station_step_id&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">station_step_id</span> }
+        
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">habdoff_report_serach_unique</span>.<span class="ruby-identifier">present?</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">habdoff_report_serach_unique</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;is_active&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+                        <span class="ruby-identifier">time_stamp</span> = <span class="ruby-string">&#39;N/A&#39;</span>
+                <span class="ruby-keyword">else</span>
+                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">object_type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;L3&#39;</span>
+                                <span class="ruby-identifier">habdoff_report_serach_unique_l3_with_partials</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_type</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;l3_name&#39;</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;-R&#39;</span>)[<span class="ruby-value">0</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">habdoff_report_serach_unique</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;l3_name&#39;</span>] <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;station_step_id&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">station_step_id</span> }
+                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">habdoff_report_serach_unique_l3_with_partials</span>.<span class="ruby-identifier">present?</span>
+                                        
+                                        <span class="ruby-identifier">habdoff_report_serach_unique_l3_active</span> = <span class="ruby-identifier">habdoff_report_serach_unique_l3_with_partials</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;is_active&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-value">1</span> }
+                                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">habdoff_report_serach_unique_l3_active</span>.<span class="ruby-identifier">present?</span>
+                                                <span class="ruby-identifier">habdoff_report_serach_unique_l3_blank</span> = <span class="ruby-identifier">habdoff_report_serach_unique_l3_with_partials</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;l3_status&#39;</span>].<span class="ruby-identifier">downcase</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;closed&#39;</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;actual_confirmation&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> }
+                                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">habdoff_report_serach_unique_l3_blank</span>.<span class="ruby-identifier">present?</span>
+                                                        <span class="ruby-identifier">station_Step_to_calculate</span> = <span class="ruby-identifier">filtered_station_steps</span>.<span class="ruby-identifier">find_by_station_step_id</span>(<span class="ruby-identifier">station_step_id</span>)
+                                                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">station_Step_to_calculate</span>.<span class="ruby-identifier">station_step</span>.<span class="ruby-identifier">step_name</span>.<span class="ruby-identifier">downcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;crb started&#39;</span> 
+                                                                <span class="ruby-identifier">work_flow_id</span> = <span class="ruby-identifier">station_Step_to_calculate</span>.<span class="ruby-identifier">work_flow_id</span>
+                                                                <span class="ruby-identifier">bk_frm_collab_workflowLiveStep</span> = <span class="ruby-constant">WorkflowLiveStep</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:station_step</span>).<span class="ruby-identifier">where</span>(<span class="ruby-node">&quot;workflow_live_steps.object_type=&#39;L3&#39; and workflow_live_steps.object_id=#{object_id} and station_steps.step_name=&#39;Back from Collab.&#39;&quot;</span>)
+                                                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">bk_frm_collab_workflowLiveStep</span>.<span class="ruby-identifier">present?</span>
+                                                                        <span class="ruby-identifier">habdoff_report_actual</span> = <span class="ruby-identifier">habdoff_report_serach_unique_l3_with_partials</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;actual_confirmation&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> }
+                                                                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">bk_frm_collab_workflowLiveStep</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">actual_confirmation</span>.<span class="ruby-identifier">present?</span> <span class="ruby-keyword">and</span> <span class="ruby-operator">!</span><span class="ruby-identifier">habdoff_report_actual</span>.<span class="ruby-identifier">present?</span>
+                                                                                <span class="ruby-identifier">crd_started_workflowLiveStep</span> = <span class="ruby-constant">WorkflowLiveStep</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">object_type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;L3&#39;</span>, <span class="ruby-identifier">object_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">object_id</span>, <span class="ruby-identifier">station_step_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">station_step_id</span>)
+                                                                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">crd_started_workflowLiveStep</span>.<span class="ruby-identifier">present?</span>
+                                                                                        <span class="ruby-comment"># Covnert minutes to hours and minutes</span>
+                                                                                        <span class="ruby-identifier">workflow</span> = <span class="ruby-constant">WorkFlow</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">work_flow_id</span>)
+                                                                                   <span class="ruby-constant">BusinessTime</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">beginning_of_workday</span> = <span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">beginning_of_workday</span>
+                                                                                    <span class="ruby-constant">BusinessTime</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">end_of_workday</span> = <span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">end_of_workday</span>
+
+                                                                                    <span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">holidays</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">holiday</span><span class="ruby-operator">|</span>
+                                                                                       <span class="ruby-constant">BusinessTime</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">holidays</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">holiday</span>.<span class="ruby-identifier">holiday_date</span>.<span class="ruby-identifier">to_s</span>)
+                                                                                    <span class="ruby-keyword">end</span>
+                                                                                        <span class="ruby-identifier">number_days</span> = <span class="ruby-value">1</span>
+                                                                                        <span class="ruby-identifier">actual_confirmation</span> = <span class="ruby-identifier">crd_started_workflowLiveStep</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">eta</span>.<span class="ruby-identifier">to_time</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%Y-%m-%d %H:%M&#39;</span>)
+                                                                                        <span class="ruby-identifier">eta_datetime</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">actual_confirmation</span>)
+                                                                                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">number_days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+                                                                                                <span class="ruby-identifier">eta_datetime</span> =  <span class="ruby-identifier">number_days</span>.<span class="ruby-identifier">business_days</span>.<span class="ruby-identifier">after</span>(<span class="ruby-identifier">eta_datetime</span>)
+                                                                                        <span class="ruby-keyword">end</span>
+                                                                                        <span class="ruby-identifier">eta_date_stamp</span> = <span class="ruby-identifier">eta_datetime</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%m/%d/%y&quot;</span>)
+                                                                                        <span class="ruby-identifier">time_stamp</span> = <span class="ruby-string">&quot;ETA &quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">eta_date_stamp</span>
+                                                                                        <span class="ruby-keyword">if</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">eta_datetime</span>.<span class="ruby-identifier">to_s</span>)
+                                                                                                <span class="ruby-identifier">table_td_class</span> = <span class="ruby-string">&#39;report_eta_light_red&#39;</span>
+                                                                                        <span class="ruby-keyword">end</span>
+                                                                                <span class="ruby-keyword">end</span>        
+                                                                        <span class="ruby-keyword">else</span>
+                                                                                <span class="ruby-identifier">calculated_eta</span> = <span class="ruby-identifier">do_calculate_eta_for_l3</span>(<span class="ruby-identifier">report_serach_result</span>, <span class="ruby-identifier">object_type</span>, <span class="ruby-identifier">object_id</span>, <span class="ruby-identifier">parent_l2_id</span>, <span class="ruby-identifier">parent_l1_id</span>, <span class="ruby-identifier">ll_id</span>, <span class="ruby-identifier">station_step_id</span>, <span class="ruby-identifier">filtered_station_steps</span>)
+                                                                                <span class="ruby-identifier">time_stamp</span> = <span class="ruby-identifier">calculated_eta</span>[<span class="ruby-value">0</span>]
+                                                                                <span class="ruby-identifier">table_td_class</span> = <span class="ruby-identifier">calculated_eta</span>[<span class="ruby-value">1</span>]
+                                                                        <span class="ruby-keyword">end</span>
+                                                                <span class="ruby-keyword">end</span>  
+                                                        <span class="ruby-keyword">else</span>
+                                                                <span class="ruby-identifier">calculated_eta</span> = <span class="ruby-identifier">do_calculate_eta_for_l3</span>(<span class="ruby-identifier">report_serach_result</span>, <span class="ruby-identifier">object_type</span>, <span class="ruby-identifier">object_id</span>, <span class="ruby-identifier">parent_l2_id</span>, <span class="ruby-identifier">parent_l1_id</span>, <span class="ruby-identifier">ll_id</span>, <span class="ruby-identifier">station_step_id</span>, <span class="ruby-identifier">filtered_station_steps</span>)
+                                                                <span class="ruby-identifier">time_stamp</span> = <span class="ruby-identifier">calculated_eta</span>[<span class="ruby-value">0</span>]
+                                                                <span class="ruby-identifier">table_td_class</span> = <span class="ruby-identifier">calculated_eta</span>[<span class="ruby-value">1</span>]
+                                                        <span class="ruby-keyword">end</span>
+                                                <span class="ruby-keyword">else</span>
+                                                        <span class="ruby-identifier">habdoff_report_actual_sorted</span> = <span class="ruby-identifier">habdoff_report_serach_unique_l3_with_partials</span>.<span class="ruby-identifier">sort_by</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-value">:actual_confirmation</span>] }
+                                                        <span class="ruby-identifier">time_stamp</span> = <span class="ruby-identifier">habdoff_report_actual_sorted</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;actual_confirmation&#39;</span>].<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%m/%d/%y&quot;</span>)
+                                                        <span class="ruby-identifier">table_td_class</span> = <span class="ruby-string">&#39;report_actual_confirmation&#39;</span>
+                                                <span class="ruby-keyword">end</span>
+                                        <span class="ruby-keyword">else</span>
+                                                <span class="ruby-identifier">time_stamp</span> = <span class="ruby-string">&#39;N/A&#39;</span>
+                                        <span class="ruby-keyword">end</span>
+                                <span class="ruby-keyword">end</span>
+                        <span class="ruby-keyword">else</span>
+                                <span class="ruby-identifier">habdoff_report_actual</span> = <span class="ruby-identifier">habdoff_report_serach_unique</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;actual_confirmation&#39;</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span> }
+                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">habdoff_report_actual</span>.<span class="ruby-identifier">present?</span>
+                                        <span class="ruby-identifier">habdoff_report_actual_sorted</span> = <span class="ruby-identifier">habdoff_report_actual</span>.<span class="ruby-identifier">sort_by</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-value">:log_id</span>] }.<span class="ruby-identifier">reverse!</span>
+                                        <span class="ruby-identifier">time_stamp</span> = <span class="ruby-identifier">habdoff_report_actual_sorted</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;actual_confirmation&#39;</span>].<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%m/%d/%y&quot;</span>)
+                                        <span class="ruby-identifier">table_td_class</span> = <span class="ruby-string">&#39;report_actual_confirmation&#39;</span>
+                                <span class="ruby-keyword">else</span>
+                                        <span class="ruby-identifier">calculated_eta</span> = <span class="ruby-identifier">do_calculate_eta</span>(<span class="ruby-identifier">report_serach_result</span>, <span class="ruby-identifier">object_type</span>, <span class="ruby-identifier">object_id</span>, <span class="ruby-identifier">parent_l2_id</span>, <span class="ruby-identifier">parent_l1_id</span>, <span class="ruby-identifier">ll_id</span>, <span class="ruby-identifier">station_step_id</span>, <span class="ruby-identifier">filtered_station_steps</span>)
+                                        <span class="ruby-identifier">time_stamp</span> = <span class="ruby-identifier">calculated_eta</span>[<span class="ruby-value">0</span>]
+                                        <span class="ruby-identifier">table_td_class</span> = <span class="ruby-identifier">calculated_eta</span>[<span class="ruby-value">1</span>]
+                                <span class="ruby-keyword">end</span>
+                        <span class="ruby-keyword">end</span>       
+                <span class="ruby-keyword">end</span>        
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> [<span class="ruby-identifier">time_stamp</span>, <span class="ruby-identifier">table_td_class</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-get_time_stamp__aaa" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_time_stamp__aaa</span><span
+            class="method-args">(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It is a backup for <a
+href="WorkFlow.html#method-c-get_time_stamp">::get_time_stamp</a> function.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_time_stamp__aaa-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 750</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_time_stamp__aaa</span>(<span class="ruby-identifier">report_serach_result</span>, <span class="ruby-identifier">object_type</span>, <span class="ruby-identifier">object_id</span>, <span class="ruby-identifier">parent_l2_id</span>, <span class="ruby-identifier">parent_l1_id</span>, <span class="ruby-identifier">ll_id</span>, <span class="ruby-identifier">station_step_id</span>, <span class="ruby-identifier">filtered_station_steps</span>)
+        <span class="ruby-identifier">time_stamp</span> = <span class="ruby-string">&quot;&quot;</span>
+        <span class="ruby-identifier">table_td_class</span> = <span class="ruby-string">&quot;&quot;</span>
+        <span class="ruby-identifier">habdoff_report_serach_unique</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_type</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-identifier">ll_id</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_id</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;station_step_id&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">station_step_id</span> }
+        
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">habdoff_report_serach_unique</span>.<span class="ruby-identifier">present?</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">habdoff_report_serach_unique</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;is_active&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+                        <span class="ruby-identifier">time_stamp</span> = <span class="ruby-string">&#39;N/A&#39;</span>
+                <span class="ruby-keyword">else</span>
+                        <span class="ruby-identifier">habdoff_report_actual</span> = <span class="ruby-identifier">habdoff_report_serach_unique</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;actual_confirmation&#39;</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span> }
+                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">habdoff_report_actual</span>.<span class="ruby-identifier">present?</span>
+                                <span class="ruby-identifier">habdoff_report_actual_sorted</span> = <span class="ruby-identifier">habdoff_report_actual</span>.<span class="ruby-identifier">sort_by</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-value">:log_id</span>] }.<span class="ruby-identifier">reverse!</span>
+                                <span class="ruby-identifier">time_stamp</span> = <span class="ruby-identifier">habdoff_report_actual_sorted</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;actual_confirmation&#39;</span>].<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%m/%d/%y&quot;</span>)
+                                <span class="ruby-identifier">time_stamp</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot;&lt;br /&gt;&quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">habdoff_report_actual_sorted</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;actual_confirmation&#39;</span>].<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%I:%M %p&quot;</span>)
+                                <span class="ruby-identifier">table_td_class</span> = <span class="ruby-string">&#39;report_actual_confirmation&#39;</span>
+                        <span class="ruby-keyword">else</span>
+                                <span class="ruby-identifier">filteredStationStep</span> = <span class="ruby-identifier">filtered_station_steps</span>.<span class="ruby-identifier">find_by_station_step_id</span>(<span class="ruby-identifier">station_step_id</span>)
+                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">filteredStationStep</span>.<span class="ruby-identifier">predecessors</span>.<span class="ruby-identifier">present?</span>
+                                        <span class="ruby-identifier">predecessors_list</span> = <span class="ruby-identifier">filteredStationStep</span>.<span class="ruby-identifier">predecessors</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;,&#39;</span>)
+                                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">predecessors_list</span>.<span class="ruby-identifier">presence</span>
+                                                <span class="ruby-identifier">max_eta_datetime</span> = <span class="ruby-keyword">nil</span>
+                                                <span class="ruby-identifier">predecessors_list</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pred</span><span class="ruby-operator">|</span>
+                                                        <span class="ruby-identifier">pred_filteredStationStep</span> = <span class="ruby-identifier">filtered_station_steps</span>.<span class="ruby-identifier">find_by_station_step_id</span>(<span class="ruby-identifier">pred</span>)
+                                                        <span class="ruby-identifier">workflow</span> = <span class="ruby-constant">WorkFlow</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">pred_filteredStationStep</span>.<span class="ruby-identifier">work_flow_id</span>)
+                                                        <span class="ruby-identifier">pred_habdoff_report_serach_unique</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_type</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-identifier">ll_id</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_id</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;station_step_id&#39;</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">pred</span>.<span class="ruby-identifier">to_i</span> }
+                                                        <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">pred_habdoff_report_serach_unique</span>.<span class="ruby-identifier">present?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">ll_id</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;l3_id&#39;</span>
+                                                                <span class="ruby-identifier">pred_habdoff_report_serach_unique</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;L2&#39;</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;l2_id&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">parent_l2_id</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;station_step_id&#39;</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">pred</span>.<span class="ruby-identifier">to_i</span> }
+                                                        <span class="ruby-keyword">end</span>
+
+                                                        <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">pred_habdoff_report_serach_unique</span>.<span class="ruby-identifier">present?</span> <span class="ruby-keyword">and</span> (<span class="ruby-identifier">ll_id</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;l2_id&#39;</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">ll_id</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;l3_id&#39;</span>)
+                                                                <span class="ruby-identifier">pred_habdoff_report_serach_unique</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;L1&#39;</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;l1_id&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">parent_l1_id</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;station_step_id&#39;</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">pred</span>.<span class="ruby-identifier">to_i</span> }
+                                                        <span class="ruby-keyword">end</span>
+
+                                                        <span class="ruby-identifier">pred_habdoff_report_actual</span> = <span class="ruby-identifier">pred_habdoff_report_serach_unique</span>.<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span> <span class="ruby-identifier">report</span>[<span class="ruby-string">&#39;actual_confirmation&#39;</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span> }
+                                                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">pred_habdoff_report_actual</span>.<span class="ruby-identifier">present?</span>
+                                                                <span class="ruby-identifier">pred_habdoff_report_actual_sorted</span> = <span class="ruby-identifier">pred_habdoff_report_actual</span>.<span class="ruby-identifier">sort_by</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-value">:log_id</span>] }.<span class="ruby-identifier">reverse!</span>
+                                                                <span class="ruby-identifier">actual_confirmation</span> = <span class="ruby-identifier">pred_habdoff_report_actual_sorted</span>[<span class="ruby-value">0</span>][<span class="ruby-string">&#39;actual_confirmation&#39;</span>]
+
+                                                                        <span class="ruby-comment"># Covnert minutes to hours and minutes</span>
+                                                              <span class="ruby-constant">BusinessTime</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">beginning_of_workday</span> = <span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">beginning_of_workday</span>
+                                                            <span class="ruby-constant">BusinessTime</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">end_of_workday</span> = <span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">end_of_workday</span>
+
+                                                            <span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">holidays</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">holiday</span><span class="ruby-operator">|</span>
+                                                               <span class="ruby-constant">BusinessTime</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">holidays</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">holiday</span>.<span class="ruby-identifier">holiday_date</span>.<span class="ruby-identifier">to_s</span>)
+                                                            <span class="ruby-keyword">end</span>
+                                                                <span class="ruby-identifier">number_days</span> = <span class="ruby-identifier">pred_filteredStationStep</span>.<span class="ruby-identifier">duration_days</span>
+                                                                <span class="ruby-identifier">actual_confirmation</span> = <span class="ruby-identifier">actual_confirmation</span>.<span class="ruby-identifier">to_time</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%Y-%m-%d %H:%M&#39;</span>)
+                                                                <span class="ruby-identifier">eta_datetime</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">actual_confirmation</span>)
+                                                                
+                                                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">number_days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+                                                                        <span class="ruby-identifier">eta_datetime</span> =  <span class="ruby-identifier">number_days</span>.<span class="ruby-identifier">business_days</span>.<span class="ruby-identifier">after</span>(<span class="ruby-identifier">eta_datetime</span>)
+                                                                <span class="ruby-keyword">end</span>
+                                                                
+                                                                <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">present?</span>
+                                                                        <span class="ruby-identifier">max_eta_datetime</span> = <span class="ruby-identifier">eta_datetime</span>
+                                                                <span class="ruby-keyword">end</span>
+                                                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">present?</span>
+                                                                        <span class="ruby-keyword">if</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">eta_datetime</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">to_s</span>)
+                                                                              <span class="ruby-identifier">max_eta_datetime</span> = <span class="ruby-identifier">eta_datetime</span>
+                                                                      <span class="ruby-keyword">end</span>    
+                                                                <span class="ruby-keyword">end</span>
+
+                                                                <span class="ruby-identifier">eta_date_stamp</span> = <span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%m/%d/%y&quot;</span>)
+                                                                <span class="ruby-identifier">eta_time_stamp</span> = <span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%I:%M %p&quot;</span>)
+                                                                <span class="ruby-identifier">time_stamp</span> = <span class="ruby-string">&quot;ETA &quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">eta_date_stamp</span><span class="ruby-operator">+</span><span class="ruby-string">&quot;&lt;br /&gt;&quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">eta_time_stamp</span>
+                                                                <span class="ruby-keyword">if</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">max_eta_datetime</span>.<span class="ruby-identifier">to_s</span>)
+                                                                        <span class="ruby-identifier">table_td_class</span> = <span class="ruby-string">&#39;report_eta_light_red&#39;</span>
+                                                                <span class="ruby-keyword">end</span>
+
+                                                        <span class="ruby-keyword">end</span>
+                                                <span class="ruby-keyword">end</span>
+                                        <span class="ruby-keyword">end</span>
+                                <span class="ruby-keyword">end</span>      
+                        <span class="ruby-keyword">end</span>       
+                <span class="ruby-keyword">end</span>                
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> [<span class="ruby-identifier">time_stamp</span>, <span class="ruby-identifier">table_td_class</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-get_work_live_step" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_work_live_step</span><span
+            class="method-args">(report_serach_result, object_type, object_id, ll_id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>report_serach_result, object_type, object_id, ll_id</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>unique results from the given colection</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It finds unique Objects from the given collection.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_work_live_step-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 865</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_work_live_step</span>(<span class="ruby-identifier">report_serach_result</span>, <span class="ruby-identifier">object_type</span>, <span class="ruby-identifier">object_id</span>, <span class="ruby-identifier">ll_id</span>)
+        <span class="ruby-identifier">reportSerachUnique</span> = <span class="ruby-identifier">report_serach_result</span>.<span class="ruby-identifier">find</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">wl</span><span class="ruby-operator">|</span> <span class="ruby-identifier">wl</span>[<span class="ruby-string">&#39;object_type&#39;</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_type</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">wl</span>[<span class="ruby-identifier">ll_id</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">object_id</span> }
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">reportSerachUnique</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-handoff_report_search" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">handoff_report_search</span><span
+            class="method-args">(q_string, workflow)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>query string</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It searches Objetcs for Handoff Report.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="handoff_report_search-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 86</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">handoff_report_search</span>(<span class="ruby-identifier">q_string</span>, <span class="ruby-identifier">workflow</span>)
+                <span class="ruby-identifier">handoff_report_sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
+                                                l2s.num_component as l2_num_component,l1s.num_component as l1_num_component,l1s.business_unit as l1_bu,l2s.business_unit as l2_bu,l3s.business_unit as l3_bu,
+                                                l1s.status as l1_status,l2s.status as l2_status,l3s.status as l3_status,wls.station_step_id, wls.is_active,
+                                                timestamp_logs.actual_confirmation,wls.eta, station_steps.step_name as step, workflow_stations.station_name as station, wls.id as wls_id, wls.object_type, timestamp_logs.id as log_id
+                                                from l1s
+                                                left join l2s on l1s.id = l2s.l1_id
+                                                left join l3s on l3s.l2_id=l2s.id
+                                                inner join workflow_live_steps as wls on (wls.object_id = l1s.id and wls.object_type = &#39;L1&#39;) 
+                                                                               or (wls.object_id = l2s.id  and wls.object_type = &#39;L2&#39;) 
+                                                                               or (wls.object_id = l3s.id  and wls.object_type = &#39;L3&#39;)
+                                                inner join station_steps on wls.station_step_id = station_steps.id
+                                                inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
+                                                left join timestamp_logs on wls.id = timestamp_logs.workflow_live_step_id
+                                                where #{q_string}
+                                                and wls.station_step_id in (select station_step_id from report_filter_steps where work_flow_id = #{workflow})
+                                                order by l1s.name, l2s.name, l3s.name&quot;</span>
+                <span class="ruby-identifier">handoff_report_serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">handoff_report_sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">handoff_report_serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-handoff_report_search_exclude_canceled" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">handoff_report_search_exclude_canceled</span><span
+            class="method-args">(q_string, workflow)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>Query String , workflow id</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>Search Results return by query</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It searches data for HandOff report for Objects whose <a
+href="Status.html">Status</a> is not Canceled.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="handoff_report_search_exclude_canceled-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 114</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">handoff_report_search_exclude_canceled</span>(<span class="ruby-identifier">q_string</span>, <span class="ruby-identifier">workflow</span>)
+                <span class="ruby-identifier">handoff_report__exclude_canceled_sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
+                                                l2s.num_component as l2_num_component,l1s.num_component as l1_num_component,l1s.business_unit as l1_bu,l2s.business_unit as l2_bu,l3s.business_unit as l3_bu,
+                                                l1s.status as l1_status,l2s.status as l2_status,l3s.status as l3_status,wls.station_step_id, wls.is_active,
+                                                timestamp_logs.actual_confirmation,wls.eta, station_steps.step_name as step, workflow_stations.station_name as station, wls.id as wls_id, wls.object_type, timestamp_logs.id as log_id
+                                                from l1s
+                                                left join l2s on l1s.id = l2s.l1_id and l2s.status != &#39;Cancel&#39;
+                                                left join l3s on l3s.l2_id=l2s.id and l3s.status != &#39;Cancel&#39;
+                                                inner join workflow_live_steps as wls on (wls.object_id = l1s.id and wls.object_type = &#39;L1&#39;) 
+                                                                               or (wls.object_id = l2s.id  and wls.object_type = &#39;L2&#39;) 
+                                                                               or (wls.object_id = l3s.id  and wls.object_type = &#39;L3&#39;)
+                                                inner join station_steps on wls.station_step_id = station_steps.id
+                                                inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
+                                                left join timestamp_logs on wls.id = timestamp_logs.workflow_live_step_id
+                                                where #{q_string}
+                                                and l1s.status != &#39;Cancel&#39; and wls.station_step_id in (select station_step_id from report_filter_steps where work_flow_id = #{workflow})
+                                                order by l1s.name, l2s.name, l3s.name&quot;</span>
+                <span class="ruby-identifier">handoff_report_serach_exclude_canceled_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">handoff_report__exclude_canceled_sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">handoff_report_serach_exclude_canceled_result</span>
+
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-handoff_report_search_exclude_canceled_completed" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">handoff_report_search_exclude_canceled_completed</span><span
+            class="method-args">(q_string, workflow)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>Query String , workflow id</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>earch Results return by query</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It Searches data for HandOff report for Objects whose <a
+href="Status.html">Status</a> is neither Completed nor Canceled.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="handoff_report_search_exclude_canceled_completed-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 172</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">handoff_report_search_exclude_canceled_completed</span>(<span class="ruby-identifier">q_string</span>, <span class="ruby-identifier">workflow</span>)
+                <span class="ruby-identifier">handoff_report__exclude_canceled_sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
+                                                l2s.num_component as l2_num_component,l1s.num_component as l1_num_component,l1s.business_unit as l1_bu,l2s.business_unit as l2_bu,l3s.business_unit as l3_bu,
+                                                l1s.status as l1_status,l2s.status as l2_status,l3s.status as l3_status,wls.station_step_id, wls.is_active,
+                                                timestamp_logs.actual_confirmation,wls.eta, station_steps.step_name as step, workflow_stations.station_name as station, wls.id as wls_id, wls.object_type, timestamp_logs.id as log_id
+                                                from l1s
+                                                left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL and l2s.status != &#39;Cancel&#39;
+                                                left join l3s on l3s.l2_id=l2s.id and l3s.completed_actual IS NULL and l3s.status != &#39;Cancel&#39;
+                                                inner join workflow_live_steps as wls on (wls.object_id = l1s.id and wls.object_type = &#39;L1&#39;) 
+                                                                               or (wls.object_id = l2s.id  and wls.object_type = &#39;L2&#39;) 
+                                                                               or (wls.object_id = l3s.id  and wls.object_type = &#39;L3&#39;)
+                                                inner join station_steps on wls.station_step_id = station_steps.id
+                                                inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
+                                                left join timestamp_logs on wls.id = timestamp_logs.workflow_live_step_id
+                                                where #{q_string}
+                                                and l1s.completed_actual IS NULL and l1s.status != &#39;Cancel&#39; and wls.station_step_id in (select station_step_id from report_filter_steps where work_flow_id = #{workflow})
+                                                order by l1s.name, l2s.name, l3s.name&quot;</span>
+                <span class="ruby-identifier">handoff_report_serach_exclude_canceled_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">handoff_report__exclude_canceled_sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">handoff_report_serach_exclude_canceled_result</span>
+
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-handoff_report_search_exclude_completed" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">handoff_report_search_exclude_completed</span><span
+            class="method-args">(q_string, workflow)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>Query String , workflow id</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>Search Results return by query</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It searches data for HandOff report for Objects whose <a
+href="Status.html">Status</a> is not Completed.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="handoff_report_search_exclude_completed-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 143</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">handoff_report_search_exclude_completed</span>(<span class="ruby-identifier">q_string</span>, <span class="ruby-identifier">workflow</span>)
+                <span class="ruby-identifier">handoff_report__exclude_canceled_sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l3s.id as l3_id, l3s.name as l3_name,l3s.num_component as l3_num_component,
+                                                l2s.num_component as l2_num_component,l1s.num_component as l1_num_component,l1s.business_unit as l1_bu,l2s.business_unit as l2_bu,l3s.business_unit as l3_bu,
+                                                l1s.status as l1_status,l2s.status as l2_status,l3s.status as l3_status,wls.station_step_id, wls.is_active,
+                                                timestamp_logs.actual_confirmation,wls.eta, station_steps.step_name as step, workflow_stations.station_name as station, wls.id as wls_id, wls.object_type, timestamp_logs.id as log_id
+                                                from l1s
+                                                left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL
+                                                left join l3s on l3s.l2_id=l2s.id and l3s.completed_actual IS NULL
+                                                inner join workflow_live_steps as wls on (wls.object_id = l1s.id and wls.object_type = &#39;L1&#39;) 
+                                                                               or (wls.object_id = l2s.id  and wls.object_type = &#39;L2&#39;) 
+                                                                               or (wls.object_id = l3s.id  and wls.object_type = &#39;L3&#39;)
+                                                inner join station_steps on wls.station_step_id = station_steps.id
+                                                inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
+                                                left join timestamp_logs on wls.id = timestamp_logs.workflow_live_step_id
+                                                where #{q_string}
+                                                and l1s.completed_actual IS NULL and wls.station_step_id in (select station_step_id from report_filter_steps where work_flow_id = #{workflow})
+                                                order by l1s.name, l2s.name, l3s.name&quot;</span>
+                <span class="ruby-identifier">handoff_report_serach_exclude_canceled_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">handoff_report__exclude_canceled_sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">handoff_report_serach_exclude_canceled_result</span>
+
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-object_attributes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">object_attributes</span><span
+            class="method-args">(object_id, object_type)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>object_id, object_type</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>collection of Object Attributes</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It calculate all Attributes for the given lxs.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="object_attributes-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 836</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">object_attributes</span>(<span class="ruby-identifier">object_id</span>, <span class="ruby-identifier">object_type</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-constant">AttributeValue</span>.<span class="ruby-identifier">eager_load</span>(<span class="ruby-value">:label_attribute</span>).<span class="ruby-identifier">where</span>(<span class="ruby-identifier">object_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">object_id</span>, <span class="ruby-identifier">object_type</span><span class="ruby-operator">:</span> <span class="ruby-identifier">object_type</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-search" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>query string</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>search_result</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It calculates data for the given query string.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="search-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 908</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">search</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+                                        l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
+                                        l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
+                        from l1s left join l2s on l1s.id = l2s.l1_id left join l3s on l2s.id = l3s.l2_id 
+                                where #{q_string} order by l1s.name&quot;</span>
+                <span class="ruby-identifier">serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-search_exclude_cancel" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_exclude_cancel</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>query string</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>search_result</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It calculates data for the given query string fro Objects whose <a
+href="Status.html">Status</a> is not Canceled.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="search_exclude_cancel-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 925</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">search_exclude_cancel</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+                                l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
+                                l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
+                        from l1s left join l2s on l1s.id = l2s.l1_id and l2s.status != &#39;Cancel&#39; 
+                        left join l3s on l2s.id = l3s.l2_id and l3s.status != &#39;Cancel&#39;
+                        where #{q_string} and l1s.status != &#39;Cancel&#39; order by l1s.name&quot;</span>
+                <span class="ruby-identifier">serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-search_exclude_cancel_and_complete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_exclude_cancel_and_complete</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>query string</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>search_result</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It calculates data for the given query string for Objects whose <a
+href="Status.html">Status</a> is neither Canceled nor Complete</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="search_exclude_cancel_and_complete-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 961</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">search_exclude_cancel_and_complete</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+                                l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
+                                l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
+                        from l1s left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL and l2s.status != &#39;Cancel&#39;
+                        left join l3s on l2s.id = l3s.l2_id and l3s.completed_actual IS NULL and l3s.status != &#39;Cancel&#39;
+                        where #{q_string} and l1s.completed_actual IS NULL and l1s.status != &#39;Cancel&#39; order by l1s.name&quot;</span>
+                <span class="ruby-identifier">serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-search_exclude_complete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_exclude_complete</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>query string</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>search_result</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It calculates data for the given query string fro Objects whose <a
+href="Status.html">Status</a> is not Complete.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="search_exclude_complete-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 943</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">search_exclude_complete</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+                                l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
+                                l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
+                        from l1s left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL
+                        left join l3s on l2s.id = l3s.l2_id and l3s.completed_actual IS NULL
+                        where #{q_string} and l1s.completed_actual IS NULL order by l1s.name&quot;</span>
+                <span class="ruby-identifier">serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-search_handoff_exclude_cancel" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_handoff_exclude_cancel</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>query string</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It searches in main Objetcs whose <a href="Status.html">Status</a> is not
+Canceled.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="search_handoff_exclude_cancel-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 52</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">search_handoff_exclude_cancel</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+                                l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
+                                l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
+                        from l1s 
+                        left join l2s on l1s.id = l2s.l1_id and l2s.status != &#39;Cancel&#39; 
+                        left join l3s on l2s.id = l3s.l2_id and l3s.status != &#39;Cancel&#39; and is_main_record = true
+                        where #{q_string} and l1s.status != &#39;Cancel&#39; order by l1s.name&quot;</span>             
+                <span class="ruby-identifier">serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-search_handoff_exclude_cancel_and_complete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_handoff_exclude_cancel_and_complete</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>query string</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It searches Objetcs whose <a href="Status.html">Status</a> is neither
+Complete nor Canceled.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="search_handoff_exclude_cancel_and_complete-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 69</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">search_handoff_exclude_cancel_and_complete</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+                                l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
+                                l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
+                        from l1s 
+                        left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL and l2s.status != &#39;Cancel&#39; 
+                        left join l3s on l2s.id = l3s.l2_id and l2s.completed_actual IS NULL and l3s.status != &#39;Cancel&#39; and is_main_record = true
+                        where #{q_string} and l1s.completed_actual IS NULL and l1s.status != &#39;Cancel&#39; order by l1s.name&quot;</span>            
+                <span class="ruby-identifier">serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-search_handoff_exclude_complete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_handoff_exclude_complete</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>query string</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It searches Objetcs with any <a href="Status.html">Status</a>.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="search_handoff_exclude_complete-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 35</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">search_handoff_exclude_complete</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+                                l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
+                                l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
+                        from l1s 
+                        left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL 
+                        left join l3s on l2s.id = l3s.l2_id and l3s.completed_actual IS NULL and is_main_record = true
+                        where #{q_string} and l1s.completed_actual IS NULL order by l1s.name&quot;</span>               
+                <span class="ruby-identifier">serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-search_handoff_report" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_handoff_report</span><span
+            class="method-args">(q_string)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It is a backup function created by Developers.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="search_handoff_report-source">
+            <pre><span class="ruby-comment"># File app/models/work_flow.rb, line 18</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">search_handoff_report</span>(<span class="ruby-identifier">q_string</span>)
+                <span class="ruby-identifier">sql_query</span> = <span class="ruby-node">&quot;Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+                                l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
+                                l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
+                        from l1s 
+                        left join l2s on l1s.id = l2s.l1_id
+                        left join l3s on l2s.id = l3s.l2_id and is_main_record = true
+                        where #{q_string} order by l1s.name&quot;</span>                
+                <span class="ruby-identifier">serach_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">sql_query</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">serach_result</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

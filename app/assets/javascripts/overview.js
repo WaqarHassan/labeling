@@ -1,13 +1,14 @@
 
 console.log('main js working........');
-
+//This function removes required field status of rework form whenever merge Back happens to facilitates form submission
 function set_partial_merger(){
 	$('#rework_info_reason').removeAttr("required");
 	$('#rework_start_step').removeAttr("required");
 	$('#merge_back_partial_with_parent').val('merge_back_partial_with_parent');
 	$('#myPleaseWait').modal('show');
 }
-
+// This function checks whether L3-Rx can be merged back to its parent by comparing current no of components 
+//with parent's 
 function can_be_full_rework(){
 	selected_num_comp = $('#selected_num_comp').val();
 	total_num_component = $('#total_num_component').val();
@@ -26,23 +27,25 @@ function can_be_full_rework(){
 		}
 		return true;
 	}
-}
+} 
+//This function speaks for itself :) 
 function width3(){
 	return 250 + 342 + 523 ;
 }
+// This Function submits form with given id and close down pop-up
 function updateprojectstatusSubmit(){
 	$("form#update_project_status_form").submit();
 	$('#modal').modal('toggle');
 }
-
+// This function set current time to the date field
 function set_current_timestamp(){
 	$('#datetimepicker_now').val(moment().format('MM/DD/YYYY hh:mm A'));
 }
-
+// This function set current time to the date field of rework pop-up
 function set_current_timestamp_rework(){
 	$('#datetimepicker_now_rework').val(moment().format('MM/DD/YYYY hh:mm A'));
 }
-
+// this function embeds drop down to the rework pop-up when 'move original back to' field has a value
 function about_existing_confirmartion(val){
 	dataHTML = '';
 	if (val != ""){
@@ -56,7 +59,7 @@ function about_existing_confirmartion(val){
 	}
     $('#move_riginal_record_back_div').html(dataHTML);
 }
-
+// This Function clears search results from search panel
 function resetSearchResult(){
 	$('.form-control').removeAttr("value")
 	$('#search_form').trigger("reset");
@@ -72,6 +75,7 @@ function resetSearchResult(){
 	dataHtml += '</div>';
 	$('#search_result_div').html(dataHtml);
 }
+//This Fiunction clears values in the form fields of search panel of Reports
 function resetReportSearch(){
 	$('.form-control').removeAttr("value")
 	$('#search_form').trigger("reset");
@@ -128,7 +132,7 @@ $(document).ready(function() {
 	});
 
 });
-
+//This Function adjusts conatainer width whenever search panel is collapsed or expanded In hand-off report container
 function handoff_show_hide()
 {
      var className = $('#handoff_projectform').attr('class');
@@ -143,11 +147,12 @@ function handoff_show_hide()
 	  }
 }
 
+//This Function displays progress bar pop-up 
 function update_all_etas(){
 	$('#myPleaseWait').modal('show');
 	return true;
 }
-
+// This function hides Lang component whenever worflwo is 'ldp' and com_type_value is = 'CGL' ans shows otherwise
 function toggle_lang(comp_type_value, workflow_name){
 	if (comp_type_value=='CGL' && workflow_name=='ldp' ){
 		$('#lang').hide();
@@ -156,15 +161,15 @@ function toggle_lang(comp_type_value, workflow_name){
 		$('#lang').show();
 	}	
 }
-
+//Dummy Function
 function show_waiting_bar_search_side(){
 	//$('#myPleaseWait').modal('show');
 }
-
+//This Function displays progress bar pop-up
 function show_waiting_bar_addInfo(){
 	$('#myPleaseWait').modal('show');
 }
-
+// Dummy Fucntion . Not works now
 function selectOnlyThis(thisBox){
   set_to_uncheck = ''
   if ($('#'+thisBox.id+':checkbox:checked').length == 0){
@@ -180,7 +185,7 @@ function selectOnlyThis(thisBox){
   	thisBox.checked = true;
   }
 }
-
+// This function checks password length on login
 function check_password_length(){
 	if ($('#user_password').val().length > 0 && $('#user_password').val().length < 8){
 		$( "<div class='password_error_length'>Minimum 8 character password required!</div>" ).insertBefore( "#user_password" );
@@ -189,7 +194,7 @@ function check_password_length(){
 		return true;
 	}
 }
-
+// Following lines activates Jquery DataTable plugin for Admin users List
 if($("#admin_user_list").length){
 		$('#admin_user_list').DataTable({
 		"order": [[ 0, "asc" ]],
@@ -208,7 +213,7 @@ $(document).ready(function() {
 
 });
 
-
+//This Function prompts Confirm action on user delete
 function confirm_action(e){
 	var confrm = confirm('Are you sure?');
     if (confrm == true) {
@@ -218,7 +223,7 @@ function confirm_action(e){
     	return false;
     }
 }
-
+//This functions toggles admin status when ever admin scheckbox is checked in users list
 function toggleAdmin(chkbox, usr_id){
 	if($(chkbox).is(':checked')){
 		window.top.location = '/admin/users/'+usr_id+'/set-admin'
@@ -227,7 +232,7 @@ function toggleAdmin(chkbox, usr_id){
 	}
 	console.log(chkbox);
 }
-
+// This Function turns OOPs mode on 
 function turn_off_oops_mode(){
 	$('.actual_confirmation a').each(function() {
         href_id = $(this).attr('id');

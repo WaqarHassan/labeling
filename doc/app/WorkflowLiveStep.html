@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class WorkflowLiveStep - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">ActiveRecord::Base
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-calculate_eta">::calculate_eta</a>
+    
+    <li ><a href="#method-c-do_calculate_eta">::do_calculate_eta</a>
+    
+    <li ><a href="#method-c-get_steps_calculate_eta">::get_steps_calculate_eta</a>
+    
+    <li ><a href="#method-c-set_workflow_completion_datetime">::set_workflow_completion_datetime</a>
+    
+    <li ><a href="#method-i-get_latest_timestamp_log">#get_latest_timestamp_log</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-WorkflowLiveStep">
+  <h1 id="class-WorkflowLiveStep" class="class">
+    class WorkflowLiveStep
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-calculate_eta" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">calculate_eta</span><span
+            class="method-args">(live_steps_qry_result, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Parameters</strong> :</p>
+<ul><li>
+<p>live_steps_qry_result, hours_per_workday, workflow, current_user, and
+currentWorkflowLiveStepConfirm</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It finds workflow Live Steps based upon object id and then calculate ETAs.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="calculate_eta-source">
+            <pre><span class="ruby-comment"># File app/models/workflow_live_step.rb, line 121</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">calculate_eta</span>(<span class="ruby-identifier">live_steps_qry_result</span>, <span class="ruby-identifier">hours_per_workday</span>,<span class="ruby-identifier">workflow</span>,<span class="ruby-identifier">current_user</span>,<span class="ruby-identifier">currentWorkflowLiveStepConfirm</span>)
+      <span class="ruby-identifier">live_steps_qry_result</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">lsr</span><span class="ruby-operator">|</span>
+       <span class="ruby-identifier">wls</span> = <span class="ruby-constant">WorkflowLiveStep</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">lsr</span>[<span class="ruby-string">&quot;id&quot;</span>])
+       <span class="ruby-keyword">if</span> <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">object</span>.<span class="ruby-identifier">present?</span>
+                      <span class="ruby-keyword">if</span> <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">object_type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;L3&#39;</span>
+                              <span class="ruby-keyword">if</span> <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">object</span>.<span class="ruby-identifier">is_closed?</span>
+                              <span class="ruby-keyword">else</span>
+                                      <span class="ruby-identifier">do_calculate_eta</span>(<span class="ruby-identifier">wls</span>, <span class="ruby-identifier">hours_per_workday</span>,<span class="ruby-identifier">workflow</span>,<span class="ruby-identifier">current_user</span>,<span class="ruby-identifier">currentWorkflowLiveStepConfirm</span>)
+                              <span class="ruby-keyword">end</span>
+                      <span class="ruby-keyword">else</span>
+                       <span class="ruby-identifier">do_calculate_eta</span>(<span class="ruby-identifier">wls</span>, <span class="ruby-identifier">hours_per_workday</span>,<span class="ruby-identifier">workflow</span>,<span class="ruby-identifier">current_user</span>,<span class="ruby-identifier">currentWorkflowLiveStepConfirm</span>)
+                      <span class="ruby-keyword">end</span>    
+            <span class="ruby-keyword">end</span>       
+      <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-do_calculate_eta" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">do_calculate_eta</span><span
+            class="method-args">(wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Parameters</strong> :</p>
+<ul><li>
+<p>wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It calculates ETA for the given Workflow live step.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="do_calculate_eta-source">
+            <pre><span class="ruby-comment"># File app/models/workflow_live_step.rb, line 142</span>
+    <span class="ruby-keyword">def</span> <span class="ruby-identifier">do_calculate_eta</span>(<span class="ruby-identifier">wls</span>, <span class="ruby-identifier">hours_per_workday</span>,<span class="ruby-identifier">workflow</span>,<span class="ruby-identifier">current_user</span>,<span class="ruby-identifier">currentWorkflowLiveStepConfirm</span>)
+    <span class="ruby-identifier">pred_max_completion</span> = <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-identifier">max_step_completion</span> = <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">predecessors</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">wls</span>.<span class="ruby-identifier">actual_confirmation</span>.<span class="ruby-identifier">present?</span> <span class="ruby-comment"># &amp;&amp; wls.is_active?</span>
+      <span class="ruby-identifier">comp_attribute_value</span> = <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">object</span>
+      <span class="ruby-identifier">lang_attribute_value</span> = <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">object</span>.<span class="ruby-identifier">attribute_values</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:label_attribute</span>).<span class="ruby-identifier">where</span>(<span class="ruby-node">&quot;label_attributes.short_label=&#39;#Lang&#39;&quot;</span>).<span class="ruby-identifier">first</span>
+                                        <span class="ruby-comment">#check successor---------------------</span>
+      <span class="ruby-identifier">predecessors_steps</span> = <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">predecessors</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;,&quot;</span>)
+      <span class="ruby-identifier">predecessors_step_ojbets</span> = <span class="ruby-constant">WorkflowLiveStep</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">predecessors_steps</span>)
+      <span class="ruby-identifier">predecessors_step_ojbets</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pso</span>, <span class="ruby-identifier">indx</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">indx</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">pso</span>.<span class="ruby-identifier">step_completion</span>.<span class="ruby-identifier">present?</span>
+          <span class="ruby-identifier">pred_max_completion</span> = <span class="ruby-identifier">pso</span>.<span class="ruby-identifier">step_completion</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">pso</span>.<span class="ruby-identifier">step_completion</span>.<span class="ruby-identifier">present?</span>
+           <span class="ruby-keyword">if</span> <span class="ruby-identifier">pred_max_completion</span>.<span class="ruby-identifier">present?</span>
+                  <span class="ruby-keyword">if</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">pso</span>.<span class="ruby-identifier">step_completion</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">pred_max_completion</span>.<span class="ruby-identifier">to_s</span>)
+                                  <span class="ruby-identifier">pred_max_completion</span> = <span class="ruby-identifier">pso</span>.<span class="ruby-identifier">step_completion</span>
+                          <span class="ruby-keyword">end</span>
+                  <span class="ruby-keyword">else</span>
+                          <span class="ruby-identifier">pred_max_completion</span> = <span class="ruby-identifier">pso</span>.<span class="ruby-identifier">step_completion</span>
+                  <span class="ruby-keyword">end</span>        
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+      
+      <span class="ruby-identifier">predecessors_step_ojbets</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pso</span>, <span class="ruby-identifier">indx</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">indx</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">pso</span>.<span class="ruby-identifier">step_completion</span>.<span class="ruby-identifier">present?</span>
+          <span class="ruby-identifier">station_step</span> = <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">station_step</span>
+          <span class="ruby-identifier">max_step_completion</span> = <span class="ruby-identifier">station_step</span>.<span class="ruby-identifier">calculate_step_completion</span>(<span class="ruby-identifier">wls</span>, <span class="ruby-identifier">pso</span>.<span class="ruby-identifier">step_completion</span>, <span class="ruby-identifier">comp_attribute_value</span>, <span class="ruby-identifier">lang_attribute_value</span>, <span class="ruby-identifier">hours_per_workday</span>)
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">pso</span>.<span class="ruby-identifier">step_completion</span>.<span class="ruby-identifier">present?</span>
+          <span class="ruby-identifier">station_step</span> = <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">station_step</span>
+          <span class="ruby-identifier">step_completion_other</span> = <span class="ruby-identifier">station_step</span>.<span class="ruby-identifier">calculate_step_completion</span>(<span class="ruby-identifier">wls</span>, <span class="ruby-identifier">pso</span>.<span class="ruby-identifier">step_completion</span>, <span class="ruby-identifier">comp_attribute_value</span>, <span class="ruby-identifier">lang_attribute_value</span>, <span class="ruby-identifier">hours_per_workday</span>)
+            <span class="ruby-keyword">if</span> <span class="ruby-identifier">step_completion_other</span>.<span class="ruby-identifier">present?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">max_step_completion</span>.<span class="ruby-identifier">present?</span>
+                    <span class="ruby-keyword">if</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">step_completion_other</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">max_step_completion</span>.<span class="ruby-identifier">to_s</span>)
+                      <span class="ruby-identifier">max_step_completion</span> = <span class="ruby-identifier">step_completion_other</span> 
+                    <span class="ruby-keyword">end</span>
+           <span class="ruby-keyword">else</span>
+                   <span class="ruby-identifier">max_step_completion</span> = <span class="ruby-identifier">step_completion_other</span> 
+           <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-identifier">current_eta</span> = <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">eta</span>
+      <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">eta</span> = <span class="ruby-identifier">pred_max_completion</span>
+      <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">step_completion</span> = <span class="ruby-identifier">max_step_completion</span>
+      <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">save!</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">predecessors</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">actual_confirmation</span>.<span class="ruby-identifier">present?</span>
+      <span class="ruby-identifier">comp_attribute_value</span> = <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">object</span>
+      <span class="ruby-identifier">lang_attribute_value</span> = <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">object</span>.<span class="ruby-identifier">attribute_values</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:label_attribute</span>).<span class="ruby-identifier">where</span>(<span class="ruby-node">&quot;label_attributes.short_label=&#39;#Lang&#39;&quot;</span>).<span class="ruby-identifier">first</span>
+      
+              <span class="ruby-identifier">station_step</span> = <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">station_step</span>
+          <span class="ruby-identifier">step_completion</span> = <span class="ruby-identifier">station_step</span>.<span class="ruby-identifier">calculate_step_completion</span>(<span class="ruby-identifier">wls</span>, <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">actual_confirmation</span>, <span class="ruby-identifier">comp_attribute_value</span>, <span class="ruby-identifier">lang_attribute_value</span>, <span class="ruby-identifier">hours_per_workday</span>)
+
+          <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">step_completion</span> = <span class="ruby-identifier">step_completion</span>
+      <span class="ruby-identifier">wls</span>.<span class="ruby-identifier">save!</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-get_steps_calculate_eta" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_steps_calculate_eta</span><span
+            class="method-args">(workflow_live_step,workflow,current_user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Parameters</strong> :</p>
+<ul><li>
+<p>It accepts currently active workflow, current user and workflow_live_step</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It creates a string that is displayed as station_step heading to show how
+ETA calculations are done.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_steps_calculate_eta-source">
+            <pre><span class="ruby-comment"># File app/models/workflow_live_step.rb, line 43</span>
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_steps_calculate_eta</span>(<span class="ruby-identifier">workflow_live_step</span>,<span class="ruby-identifier">workflow</span>,<span class="ruby-identifier">current_user</span>)
+
+   <span class="ruby-constant">BusinessTime</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">beginning_of_workday</span> = <span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">beginning_of_workday</span>
+<span class="ruby-constant">BusinessTime</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">end_of_workday</span> = <span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">end_of_workday</span>
+
+<span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">holidays</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">holiday</span><span class="ruby-operator">|</span>
+  <span class="ruby-constant">BusinessTime</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">holidays</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">holiday</span>.<span class="ruby-identifier">holiday_date</span>.<span class="ruby-identifier">to_s</span>)
+<span class="ruby-keyword">end</span>
+
+<span class="ruby-identifier">hours_per_workday</span> = <span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">hours_per_workday</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">workflow</span>.<span class="ruby-identifier">hours_per_workday</span> <span class="ruby-operator">:</span> <span class="ruby-value">1</span>
+
+    <span class="ruby-identifier">workflow_live_step_for_eta</span> = []
+    <span class="ruby-identifier">workflow_live_step_for_eta_ids</span> = []                     
+<span class="ruby-keyword">if</span> <span class="ruby-identifier">workflow_live_step</span>.<span class="ruby-identifier">object_type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;L3&quot;</span>
+  <span class="ruby-identifier">parent_l1</span> = <span class="ruby-identifier">workflow_live_step</span>.<span class="ruby-identifier">object</span>.<span class="ruby-identifier">l2</span>.<span class="ruby-identifier">l1</span>
+<span class="ruby-keyword">elsif</span> <span class="ruby-identifier">workflow_live_step</span>.<span class="ruby-identifier">object_type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;L2&quot;</span>
+  <span class="ruby-identifier">parent_l1</span> = <span class="ruby-identifier">workflow_live_step</span>.<span class="ruby-identifier">object</span>.<span class="ruby-identifier">l1</span>
+<span class="ruby-keyword">elsif</span> <span class="ruby-identifier">workflow_live_step</span>.<span class="ruby-identifier">object_type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;L1&quot;</span>
+  <span class="ruby-identifier">parent_l1</span> = <span class="ruby-identifier">workflow_live_step</span>.<span class="ruby-identifier">object</span>
+<span class="ruby-keyword">end</span>
+
+<span class="ruby-identifier">l1_object</span> = <span class="ruby-identifier">parent_l1</span>
+<span class="ruby-identifier">l2s_objects</span> = []
+<span class="ruby-identifier">l3s_objects</span> = {}
+
+<span class="ruby-identifier">workflow_live_steps_l1</span> = <span class="ruby-constant">WorkflowLiveStep</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">object_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">parent_l1</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">object_type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;L1&#39;</span>).<span class="ruby-identifier">order</span>(<span class="ruby-value">:id</span>)
+<span class="ruby-identifier">workflow_live_steps_l1</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">wls_l1</span><span class="ruby-operator">|</span>  
+  <span class="ruby-identifier">workflow_live_step_for_eta_ids</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">wls_l1</span>
+<span class="ruby-keyword">end</span>
+
+<span class="ruby-identifier">parent_l1</span>.<span class="ruby-identifier">l2s</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">l2</span><span class="ruby-operator">|</span>
+  <span class="ruby-identifier">workflow_live_steps_l2</span> = <span class="ruby-constant">WorkflowLiveStep</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">object_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">l2</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">object_type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;L2&#39;</span>).<span class="ruby-identifier">order</span>(<span class="ruby-value">:id</span>)
+  <span class="ruby-identifier">l2s_objects</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">l2</span>
+  <span class="ruby-identifier">workflow_live_steps_l2</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">wls_l2</span><span class="ruby-operator">|</span>  
+    <span class="ruby-identifier">workflow_live_step_for_eta_ids</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">wls_l2</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">l3sObjects</span> = []
+  <span class="ruby-identifier">l2</span>.<span class="ruby-identifier">l3s</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">l3</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">workflow_live_steps_l3</span> = <span class="ruby-constant">WorkflowLiveStep</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">object_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">l3</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">object_type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;L3&#39;</span>).<span class="ruby-identifier">order</span>(<span class="ruby-value">:id</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">l3</span>.<span class="ruby-identifier">is_closed</span>
+         <span class="ruby-identifier">l3sObjects</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">l3</span>
+   <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">workflow_live_steps_l3</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">wls_l3</span><span class="ruby-operator">|</span>  
+      <span class="ruby-identifier">workflow_live_step_for_eta_ids</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">wls_l3</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">l3s_objects</span>[<span class="ruby-identifier">l2</span>.<span class="ruby-identifier">id</span>] = <span class="ruby-identifier">l3sObjects</span>
+<span class="ruby-keyword">end</span>
+             
+<span class="ruby-identifier">workflow_live_step_for_eta_ids</span> = <span class="ruby-identifier">workflow_live_step_for_eta_ids</span>.<span class="ruby-identifier">sort_by</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">wls_sort</span><span class="ruby-operator">|</span> <span class="ruby-identifier">wls_sort</span>.<span class="ruby-identifier">id</span>} 
+<span class="ruby-identifier">first_step</span> = <span class="ruby-identifier">workflow_live_step_for_eta_ids</span>.<span class="ruby-identifier">first</span>
+<span class="ruby-identifier">last_step</span> = <span class="ruby-identifier">workflow_live_step_for_eta_ids</span>.<span class="ruby-identifier">last</span>
+
+<span class="ruby-identifier">live_steps_qry</span> = <span class="ruby-node">&quot;select station_steps.step_name, workflow_live_steps.`predecessors`,workflow_live_steps.object_id,
+workflow_live_steps.object_type,workflow_live_steps.id,workflow_live_steps.`actual_confirmation`,
+workflow_live_steps.`step_completion`, workflow_live_steps.eta from workflow_live_steps, station_steps, workflow_stations 
+where workflow_live_steps.station_step_id = station_steps.id 
+and station_steps.workflow_station_id = workflow_stations.id 
+and workflow_live_steps.id &gt;= #{first_step.id} 
+and workflow_live_steps.id &lt;= #{last_step.id} 
+order by workflow_stations.sequence, station_steps.sequence&quot;</span>
+    <span class="ruby-identifier">live_steps_qry_result</span> = <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">select_all</span> <span class="ruby-identifier">live_steps_qry</span>
+
+<span class="ruby-comment">#workflow_live_step_for_eta = workflow_live_step_for_eta.sort_by{|wls_sort| [wls_sort.station_step.workflow_station.sequence,wls_sort.station_step]}d</span>
+<span class="ruby-identifier">calculate_eta</span>(<span class="ruby-identifier">live_steps_qry_result</span>, <span class="ruby-identifier">hours_per_workday</span>,<span class="ruby-identifier">workflow</span>,<span class="ruby-identifier">current_user</span>,<span class="ruby-identifier">workflow_live_step</span>)
+<span class="ruby-comment"># workflow completion</span>
+<span class="ruby-keyword">if</span> <span class="ruby-identifier">l1_object</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">downcase!</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;cancel&#39;</span>
+  <span class="ruby-identifier">set_workflow_completion_datetime</span>(<span class="ruby-identifier">l1_object</span>, <span class="ruby-identifier">l2s_objects</span>, <span class="ruby-identifier">l3s_objects</span>)
+   <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-set_workflow_completion_datetime" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_workflow_completion_datetime</span><span
+            class="method-args">(l1_object, l2s_objects, l3s_objects)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Parameters</strong> :</p>
+<ul><li>
+<p>l1_object, l2s_objects, l3s_objects</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It gets an l1s and it related all l2s and l3s and then calculate Workflow
+Completion Date.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="set_workflow_completion_datetime-source">
+            <pre><span class="ruby-comment"># File app/models/workflow_live_step.rb, line 203</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_workflow_completion_datetime</span>(<span class="ruby-identifier">l1_object</span>, <span class="ruby-identifier">l2s_objects</span>, <span class="ruby-identifier">l3s_objects</span>)
+
+   <span class="ruby-comment"># workflow complete block</span>
+   <span class="ruby-identifier">is_l1_completed</span> = <span class="ruby-keyword">true</span>
+   <span class="ruby-identifier">is_l2_completed</span> = <span class="ruby-keyword">true</span>
+
+   <span class="ruby-keyword">if</span> <span class="ruby-identifier">l2s_objects</span>.<span class="ruby-identifier">present?</span>
+           <span class="ruby-identifier">l2s_objects</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">l2_object</span><span class="ruby-operator">|</span>
+                   <span class="ruby-keyword">if</span> <span class="ruby-identifier">l2_object</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">downcase!</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;cancel&#39;</span>
+                                  <span class="ruby-identifier">max_l2_eta</span> = <span class="ruby-constant">WorkflowLiveStep</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">object_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">l2_object</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">object_type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;L2&#39;</span>).<span class="ruby-identifier">maximum</span>(<span class="ruby-value">:eta</span>)         
+                                  <span class="ruby-identifier">l2_object</span>.<span class="ruby-identifier">completed_estimate</span> = <span class="ruby-identifier">max_l2_eta</span>
+
+                                  <span class="ruby-identifier">is_l3_completed</span> = <span class="ruby-keyword">true</span>
+                                  <span class="ruby-keyword">if</span> <span class="ruby-identifier">l3s_objects</span>[<span class="ruby-identifier">l2_object</span>.<span class="ruby-identifier">id</span>].<span class="ruby-identifier">present?</span>
+                                          <span class="ruby-identifier">l3s_objects</span>[<span class="ruby-identifier">l2_object</span>.<span class="ruby-identifier">id</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">l3_object</span><span class="ruby-operator">|</span>
+                                                  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">l3_object</span>.<span class="ruby-identifier">is_closed</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">l3_object</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">downcase!</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;cancel&#39;</span>
+                                                       <span class="ruby-identifier">max_l3_eta</span> = <span class="ruby-constant">WorkflowLiveStep</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">object_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">l3_object</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">object_type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;L3&#39;</span>).<span class="ruby-identifier">maximum</span>(<span class="ruby-value">:eta</span>)
+                                                       <span class="ruby-identifier">l3_object</span>.<span class="ruby-identifier">completed_estimate</span> = <span class="ruby-identifier">max_l3_eta</span>
+
+                                                            <span class="ruby-identifier">is_any_step_without_actual</span> = <span class="ruby-constant">WorkflowLiveStep</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:station_step</span>).<span class="ruby-identifier">where</span>(<span class="ruby-node">&quot;workflow_live_steps.is_active= #{true} and workflow_live_steps.object_id= #{l3_object.id} and workflow_live_steps.object_type = &#39;L3&#39; and workflow_live_steps.actual_confirmation IS NULL and station_steps.is_visible = #{true}&quot;</span>)
+                                                            <span class="ruby-keyword">if</span> <span class="ruby-identifier">is_any_step_without_actual</span>.<span class="ruby-identifier">present?</span>
+                                                             <span class="ruby-identifier">is_l3_completed</span> = <span class="ruby-keyword">false</span>
+                                                            <span class="ruby-identifier">l3_object</span>.<span class="ruby-identifier">completed_actual</span> = <span class="ruby-keyword">nil</span>
+                                                     <span class="ruby-keyword">else</span>
+                                                             <span class="ruby-identifier">l3_max_actual_date</span> = <span class="ruby-constant">WorkflowLiveStep</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">object_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">l3_object</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">object_type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;L3&#39;</span>).<span class="ruby-identifier">maximum</span>(<span class="ruby-value">:actual_confirmation</span>)
+                                                            <span class="ruby-identifier">l3_object</span>.<span class="ruby-identifier">completed_actual</span> = <span class="ruby-identifier">l3_max_actual_date</span>
+                                                     <span class="ruby-keyword">end</span>
+                                                     <span class="ruby-identifier">l3_object</span>.<span class="ruby-identifier">save!</span>
+                                              <span class="ruby-keyword">end</span>
+                                          <span class="ruby-keyword">end</span>
+                                  <span class="ruby-keyword">end</span>
+
+                                  <span class="ruby-comment"># set actual complete date of L2 and update estimate complete if needed</span>
+                                  <span class="ruby-keyword">if</span> <span class="ruby-identifier">is_l3_completed</span>
+                                          <span class="ruby-identifier">is_any_step_without_actual</span> = <span class="ruby-constant">WorkflowLiveStep</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:station_step</span>).<span class="ruby-identifier">where</span>(<span class="ruby-node">&quot;workflow_live_steps.is_active= #{true} and workflow_live_steps.object_id= #{l2_object.id} and workflow_live_steps.object_type = &#39;L2&#39; and workflow_live_steps.actual_confirmation IS NULL and station_steps.is_visible = #{true}&quot;</span>)
+                                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">is_any_step_without_actual</span>.<span class="ruby-identifier">present?</span>
+                                              <span class="ruby-identifier">is_l2_completed</span> = <span class="ruby-keyword">false</span>
+                                              <span class="ruby-identifier">l2_object</span>.<span class="ruby-identifier">completed_actual</span> = <span class="ruby-keyword">nil</span>
+                                        <span class="ruby-keyword">else</span>
+                                               <span class="ruby-identifier">l2_max_actual_date</span> = <span class="ruby-constant">WorkflowLiveStep</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">object_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">l2_object</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">object_type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;L2&#39;</span>).<span class="ruby-identifier">maximum</span>(<span class="ruby-value">:actual_confirmation</span>)
+                                              <span class="ruby-identifier">l2_object</span>.<span class="ruby-identifier">completed_actual</span> = <span class="ruby-identifier">l2_max_actual_date</span>
+                                <span class="ruby-identifier">maximum_l3s_completed_actual_date</span> = <span class="ruby-constant">L3</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">l2_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">l2_object</span>.<span class="ruby-identifier">id</span>).<span class="ruby-identifier">maximum</span>(<span class="ruby-value">:completed_actual</span>)
+                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">maximum_l3s_completed_actual_date</span>.<span class="ruby-identifier">presence</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">l2_max_actual_date</span>.<span class="ruby-identifier">presence</span>
+                                                      <span class="ruby-keyword">if</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">maximum_l3s_completed_actual_date</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">l2_max_actual_date</span>.<span class="ruby-identifier">to_s</span>)
+                                                              <span class="ruby-identifier">l2_object</span>.<span class="ruby-identifier">completed_actual</span> = <span class="ruby-identifier">maximum_l3s_completed_actual_date</span>
+                                                      <span class="ruby-keyword">end</span>       
+                                               <span class="ruby-keyword">end</span>
+                                       <span class="ruby-keyword">end</span>
+                                  <span class="ruby-keyword">else</span>
+                                       <span class="ruby-identifier">is_l2_completed</span> = <span class="ruby-keyword">false</span>
+                                       <span class="ruby-identifier">maximum_l3s_completed_estimate_date</span> = <span class="ruby-constant">L3</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">l2_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">l2_object</span>.<span class="ruby-identifier">id</span>).<span class="ruby-identifier">maximum</span>(<span class="ruby-value">:completed_estimate</span>)
+                                       <span class="ruby-keyword">if</span> <span class="ruby-identifier">maximum_l3s_completed_estimate_date</span>.<span class="ruby-identifier">presence</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">max_l2_eta</span>.<span class="ruby-identifier">presence</span>
+                                               <span class="ruby-keyword">if</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">maximum_l3s_completed_estimate_date</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">max_l2_eta</span>.<span class="ruby-identifier">to_s</span>)
+                                                       <span class="ruby-identifier">l2_object</span>.<span class="ruby-identifier">completed_estimate</span> = <span class="ruby-identifier">maximum_l3s_completed_estimate_date</span>
+                                               <span class="ruby-keyword">end</span>
+                                        <span class="ruby-keyword">end</span>
+                                         <span class="ruby-identifier">l2_object</span>.<span class="ruby-identifier">completed_actual</span> = <span class="ruby-keyword">nil</span>
+                                  <span class="ruby-keyword">end</span>
+                                <span class="ruby-identifier">l2_object</span>.<span class="ruby-identifier">save!</span>
+                        <span class="ruby-keyword">end</span>     
+           <span class="ruby-keyword">end</span>
+   <span class="ruby-keyword">end</span>
+
+   <span class="ruby-keyword">if</span> <span class="ruby-identifier">l1_object</span>.<span class="ruby-identifier">present?</span>
+           <span class="ruby-identifier">max_l1_eta</span> = <span class="ruby-constant">WorkflowLiveStep</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">object_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">l1_object</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">object_type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;L1&#39;</span>).<span class="ruby-identifier">maximum</span>(<span class="ruby-value">:eta</span>)
+            <span class="ruby-identifier">l1_object</span>.<span class="ruby-identifier">completed_estimate</span> = <span class="ruby-identifier">max_l1_eta</span>
+
+            <span class="ruby-identifier">maximum_l2_completed_estimate_date</span> = <span class="ruby-constant">L2</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">l1_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">l1_object</span>.<span class="ruby-identifier">id</span>).<span class="ruby-identifier">maximum</span>(<span class="ruby-value">:completed_estimate</span>)
+                    <span class="ruby-keyword">if</span> <span class="ruby-identifier">maximum_l2_completed_estimate_date</span>.<span class="ruby-identifier">presence</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">max_l1_eta</span>.<span class="ruby-identifier">presence</span>
+                 <span class="ruby-keyword">if</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">maximum_l2_completed_estimate_date</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">l1_eta_date</span>.<span class="ruby-identifier">to_s</span>)
+                                 <span class="ruby-identifier">l1_object</span>.<span class="ruby-identifier">completed_estimate</span> = <span class="ruby-identifier">maximum_l2_completed_estimate_date</span>
+                         <span class="ruby-keyword">end</span>   
+                  <span class="ruby-keyword">else</span>
+                        <span class="ruby-identifier">l1_object</span>.<span class="ruby-identifier">completed_estimate</span> = <span class="ruby-identifier">maximum_l2_completed_estimate_date</span>       
+                    <span class="ruby-keyword">end</span>
+
+                  <span class="ruby-keyword">if</span> <span class="ruby-identifier">is_l2_completed</span>
+                            <span class="ruby-identifier">is_any_step_without_actual</span> = <span class="ruby-constant">WorkflowLiveStep</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:station_step</span>).<span class="ruby-identifier">where</span>(<span class="ruby-node">&quot;workflow_live_steps.is_active= #{true} and workflow_live_steps.object_id= #{l1_object.id} and workflow_live_steps.object_type = &#39;L1&#39; and workflow_live_steps.actual_confirmation IS NULL and station_steps.is_visible = #{true}&quot;</span>)
+                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">is_any_step_without_actual</span>.<span class="ruby-identifier">present?</span>
+                                <span class="ruby-identifier">l1_object</span>.<span class="ruby-identifier">completed_actual</span> = <span class="ruby-keyword">nil</span>
+                        <span class="ruby-keyword">else</span>
+                                <span class="ruby-identifier">l1_max_actual_date</span> = <span class="ruby-constant">WorkflowLiveStep</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">object_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">l1_object</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">object_type</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;L1&#39;</span>).<span class="ruby-identifier">maximum</span>(<span class="ruby-value">:actual_confirmation</span>)
+                                <span class="ruby-identifier">l1_object</span>.<span class="ruby-identifier">completed_actual</span> = <span class="ruby-identifier">l1_max_actual_date</span>
+                            
+                            <span class="ruby-identifier">maximum_l2_completed_actual_date</span> = <span class="ruby-constant">L2</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">l1_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">l1_object</span>.<span class="ruby-identifier">id</span>).<span class="ruby-identifier">maximum</span>(<span class="ruby-value">:completed_actual</span>)
+                                <span class="ruby-keyword">if</span> <span class="ruby-identifier">maximum_l2_completed_actual_date</span>.<span class="ruby-identifier">presence</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">l1_max_actual_date</span>.<span class="ruby-identifier">presence</span>
+                         <span class="ruby-keyword">if</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">maximum_l2_completed_actual_date</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">l1_max_actual_date</span>.<span class="ruby-identifier">to_s</span>)
+                                               <span class="ruby-identifier">l1_object</span>.<span class="ruby-identifier">completed_actual</span> = <span class="ruby-identifier">maximum_l2_completed_actual_date</span>
+                                       <span class="ruby-keyword">end</span>
+                                <span class="ruby-keyword">else</span>
+                                  <span class="ruby-identifier">l1_object</span>.<span class="ruby-identifier">completed_actual</span> = <span class="ruby-identifier">maximum_l2_completed_actual_date</span>        
+                                <span class="ruby-keyword">end</span>
+                         <span class="ruby-keyword">end</span>
+                  <span class="ruby-keyword">end</span>
+          <span class="ruby-identifier">l1_object</span>.<span class="ruby-identifier">save!</span>          
+   <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-get_latest_timestamp_log" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_latest_timestamp_log</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>It return a collection containing a timestamp for station_step and a string</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It calculates latest timestamp_log and checks whether its belated or not.</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_latest_timestamp_log-source">
+            <pre><span class="ruby-comment"># File app/models/workflow_live_step.rb, line 12</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_latest_timestamp_log</span>
+    <span class="ruby-identifier">step_timestamp</span> = <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-identifier">table_td_class</span> = <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">is_active?</span>
+           <span class="ruby-identifier">timestampLog</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">timestamp_logs</span>.<span class="ruby-identifier">order</span>(<span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-value">:desc</span>).<span class="ruby-identifier">first</span>
+           <span class="ruby-keyword">if</span> <span class="ruby-identifier">timestampLog</span>.<span class="ruby-identifier">present?</span>
+                   <span class="ruby-identifier">step_timestamp</span> = <span class="ruby-identifier">timestampLog</span>.<span class="ruby-identifier">actual_confirmation</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%m/%d/%y %I:%M %p&quot;</span>)
+                   <span class="ruby-identifier">table_td_class</span> = <span class="ruby-string">&#39;report_actual_confirmation&#39;</span>
+           <span class="ruby-keyword">else</span>
+                   <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">eta</span>.<span class="ruby-identifier">present?</span>
+                           <span class="ruby-identifier">step_timestamp</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">eta</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%m/%d/%y %I:%M %p&quot;</span>)
+                           <span class="ruby-identifier">step_timestamp</span> = <span class="ruby-string">&#39;ETA &#39;</span><span class="ruby-operator">+</span><span class="ruby-identifier">step_timestamp</span>
+                           <span class="ruby-keyword">if</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">eta</span>.<span class="ruby-identifier">to_s</span>)
+                                            <span class="ruby-identifier">table_td_class</span> = <span class="ruby-string">&#39;report_eta_light_red&#39;</span>
+                                    <span class="ruby-keyword">end</span>
+                   <span class="ruby-keyword">end</span>
+           <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">else</span>
+           <span class="ruby-identifier">step_timestamp</span> = <span class="ruby-string">&#39;N/A&#39;</span>
+        <span class="ruby-keyword">end</span>        
+
+    <span class="ruby-keyword">return</span> [<span class="ruby-identifier">step_timestamp</span>, <span class="ruby-identifier">table_td_class</span>]    
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

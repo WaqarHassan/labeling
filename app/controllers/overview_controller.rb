@@ -12,6 +12,8 @@ class OverviewController < ApplicationController
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
     @include_canceled = session[:include_canceled]
     @include_completed = session[:include_completed]
+    @oops_mode = session[:oops_mode]
+    session.delete(:oops_mode)
 
     if request.post? and params[:object_id].present?
       if params[:object_type] == 'L1'
@@ -110,6 +112,7 @@ class OverviewController < ApplicationController
   #   - It finds information for l1s Addditional Information and renders pop-up via open_info_modal_l1.js.erb
   #
   def open_info_modal_l1
+    session.delete(:oops_mode)
     @report_info = params[:report_info]
     @type = 'L1' 
     @l1 = L1.find(params[:l1_id])
@@ -182,6 +185,7 @@ class OverviewController < ApplicationController
   #   - It finds information for l12s Addditional Information and renders pop-up via open_info_modal_l2.js.erb
   #
    def open_info_modal_l2
+    session.delete(:oops_mode)
     @report_info = params[:report_info]
     @type = 'L2'
     @l2 = L2.find(params[:l2_id])
@@ -204,6 +208,7 @@ class OverviewController < ApplicationController
   #   - It finds information for l3s Addditional Information and renders pop-up via open_info_modal_l3.js.erb
   #
    def open_info_modal_l3
+    session.delete(:oops_mode)
     @report_info = params[:report_info]
     @type = 'L3'
     @l3 = L3.find(params[:l3_id])
@@ -796,6 +801,7 @@ class OverviewController < ApplicationController
 
     redirect_to root_path, notice: 'Partial Merged Back successfully.'
   end
+
     #  
     #
     # * *Description* :
@@ -822,6 +828,7 @@ class OverviewController < ApplicationController
       format.js
     end
   end
+
     #
     # * *Description* :
     #   - It finds information for Task Confirmation of a Station Step and renders a pop-up it via open_confirm_modal.js.erb
@@ -1099,6 +1106,16 @@ class OverviewController < ApplicationController
     end
     
     redirect_to root_path, notice: 'Step confirmation done'
+  end
+
+   # 
+    # * *Description* :
+    #   - It turns on Oops mode to update confirmation date.
+    #
+
+  def oops_mode
+    session[:oops_mode] = 'oops_mode'
+    redirect_to root_path, notice: 'Oops mode is turned on.'
   end
 
   private

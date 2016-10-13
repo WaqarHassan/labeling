@@ -120,14 +120,18 @@ function show_waiting_bar_l3(){
 	if ($("#add_l3_modal #add_edit_ecr_form").valid() == true){
 		$('#myPleaseWait').modal('show');
 	}
-console.log('new');
 }
 
 function show_waiting_bar_l3_update(){
 	if ($("#l3_update_popup #add_edit_ecr_form").valid() == true){
 		$('#myPleaseWait').modal('show');
 	}
-console.log('update');
+}
+
+function show_waiting_bar_confirmation(){
+  if ($("#confirm_modal_popup #task_confirmation").valid() == true){
+    $('#myPleaseWait').modal('show');
+  }
 }
 
 function show_waiting_bar(){

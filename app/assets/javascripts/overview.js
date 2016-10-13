@@ -228,3 +228,10 @@ function toggleAdmin(chkbox, usr_id){
 	console.log(chkbox);
 }
 
+function turn_off_oops_mode(){
+	$('.actual_confirmation a').each(function() {
+        href_id = $(this).attr('id');
+        href_value = $(this).attr('href');
+    });
+}
+

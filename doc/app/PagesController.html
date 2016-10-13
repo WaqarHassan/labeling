@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class PagesController - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-email">#email</a>
+    
+    <li ><a href="#method-i-error">#error</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-PagesController">
+  <h1 id="class-PagesController" class="class">
+    class PagesController
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-email" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">email</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Preview html email template</p>
+          
+          
+
+          
+          <div class="method-source-code" id="email-source">
+            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 6</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">email</span>
+  <span class="ruby-identifier">tpl</span> = (<span class="ruby-identifier">params</span>[<span class="ruby-value">:layout</span>] <span class="ruby-operator">||</span> <span class="ruby-string">&#39;hero&#39;</span>).<span class="ruby-identifier">to_sym</span>
+  <span class="ruby-identifier">tpl</span> = <span class="ruby-value">:hero</span> <span class="ruby-keyword">unless</span> [<span class="ruby-value">:email</span>, <span class="ruby-value">:hero</span>, <span class="ruby-value">:simple</span>].<span class="ruby-identifier">include?</span> <span class="ruby-identifier">tpl</span>
+  <span class="ruby-identifier">file</span> = <span class="ruby-string">&#39;user_mailer/welcome_email&#39;</span>
+  <span class="ruby-ivar">@user</span> = (<span class="ruby-keyword">defined?</span>(<span class="ruby-constant">FactoryGirl</span>)        <span class="ruby-operator">?</span> <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>( <span class="ruby-constant">FactoryGirl</span>.<span class="ruby-identifier">attributes_for</span> <span class="ruby-value">:user</span> )
+    <span class="ruby-operator">:</span> <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>( <span class="ruby-identifier">email</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;test@example.com&#39;</span>, <span class="ruby-identifier">first_name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;John&#39;</span>, <span class="ruby-identifier">last_name</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;Smith&#39;</span> ))
+  <span class="ruby-identifier">render</span> <span class="ruby-identifier">file</span>, <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;emails/#{tpl}&quot;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:premail</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;true&#39;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;\n!!! USING PREMAILER !!!\n\n&quot;</span>
+    <span class="ruby-identifier">pre</span> = <span class="ruby-constant">Premailer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">response_body</span>[<span class="ruby-value">0</span>],  <span class="ruby-identifier">warn_level</span><span class="ruby-operator">:</span> <span class="ruby-constant">Premailer</span><span class="ruby-operator">::</span><span class="ruby-constant">Warnings</span><span class="ruby-operator">::</span><span class="ruby-constant">SAFE</span>, <span class="ruby-identifier">with_html_string</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>)
+    <span class="ruby-identifier">reset_response</span>
+    <span class="ruby-comment"># pre.warnings</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-identifier">pre</span>.<span class="ruby-identifier">to_inline_css</span>, <span class="ruby-identifier">layout</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-error" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">error</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="error-source">
+            <pre><span class="ruby-comment"># File app/controllers/pages_controller.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">error</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_path</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">empty?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

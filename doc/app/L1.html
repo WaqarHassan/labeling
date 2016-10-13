@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class L1 - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">ActiveRecord::Base
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-set_db_date_format">::set_db_date_format</a>
+    
+    <li ><a href="#method-c-set_db_datetime_format">::set_db_datetime_format</a>
+    
+    <li ><a href="#method-i-get_comp_type">#get_comp_type</a>
+    
+    <li ><a href="#method-i-get_horw">#get_horw</a>
+    
+    <li ><a href="#method-i-get_l2s_objects">#get_l2s_objects</a>
+    
+    <li ><a href="#method-i-get_num_lang">#get_num_lang</a>
+    
+    <li ><a href="#method-i-get_searched_l2_objects">#get_searched_l2_objects</a>
+    
+    <li ><a href="#method-i-get_workflow_live_steps">#get_workflow_live_steps</a>
+    
+    <li ><a href="#method-i-uniqueness_of_name">#uniqueness_of_name</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-L1">
+  <h1 id="class-L1" class="class">
+    class L1
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-set_db_date_format" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_db_date_format</span><span
+            class="method-args">(date)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>It accepts data as parameter</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>It return database formated Date</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It change the date format to match database date format</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="set_db_date_format-source">
+            <pre><span class="ruby-comment"># File app/models/l1.rb, line 124</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_db_date_format</span>(<span class="ruby-identifier">date</span>)
+
+  <span class="ruby-identifier">date_value_split</span> = <span class="ruby-identifier">date</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;/&#39;</span>)
+  <span class="ruby-identifier">date_value_ordered</span> = <span class="ruby-identifier">date_value_split</span>[<span class="ruby-value">2</span>]<span class="ruby-operator">+</span><span class="ruby-string">&#39;-&#39;</span><span class="ruby-operator">+</span><span class="ruby-identifier">date_value_split</span>[<span class="ruby-value">0</span>]<span class="ruby-operator">+</span><span class="ruby-string">&#39;-&#39;</span><span class="ruby-operator">+</span><span class="ruby-identifier">date_value_split</span>[<span class="ruby-value">1</span>]
+
+  <span class="ruby-identifier">date_obj</span> = <span class="ruby-identifier">date_value_ordered</span>.<span class="ruby-identifier">to_datetime</span>
+
+  <span class="ruby-identifier">date_formated</span> = <span class="ruby-identifier">date_obj</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%Y-%m-%d&#39;</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">date_formated</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-set_db_datetime_format" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_db_datetime_format</span><span
+            class="method-args">(date_time)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>It accepts Datatime as parameter</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>It return database formated Datetime</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It change current datetime format to match database datetime format</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="set_db_datetime_format-source">
+            <pre><span class="ruby-comment"># File app/models/l1.rb, line 101</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_db_datetime_format</span>(<span class="ruby-identifier">date_time</span>)
+    <span class="ruby-identifier">date_time_split</span> = <span class="ruby-identifier">date_time</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39; &#39;</span>)
+
+    <span class="ruby-identifier">date_value</span> = <span class="ruby-identifier">date_time_split</span>[<span class="ruby-value">0</span>]
+    <span class="ruby-identifier">time_value</span> = <span class="ruby-identifier">date_time_split</span>[<span class="ruby-value">1</span>]<span class="ruby-operator">+</span><span class="ruby-string">&#39; &#39;</span><span class="ruby-operator">+</span><span class="ruby-identifier">date_time_split</span>[<span class="ruby-value">2</span>]
+
+    <span class="ruby-identifier">date_value_split</span> = <span class="ruby-identifier">date_value</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;/&#39;</span>)
+    <span class="ruby-identifier">date_value_ordered</span> = <span class="ruby-identifier">date_value_split</span>[<span class="ruby-value">2</span>]<span class="ruby-operator">+</span><span class="ruby-string">&#39;-&#39;</span><span class="ruby-operator">+</span><span class="ruby-identifier">date_value_split</span>[<span class="ruby-value">0</span>]<span class="ruby-operator">+</span><span class="ruby-string">&#39;-&#39;</span><span class="ruby-operator">+</span><span class="ruby-identifier">date_value_split</span>[<span class="ruby-value">1</span>]
+
+    <span class="ruby-identifier">datetime_ordered</span> = <span class="ruby-identifier">date_value_ordered</span><span class="ruby-operator">+</span><span class="ruby-string">&#39; &#39;</span><span class="ruby-operator">+</span><span class="ruby-identifier">time_value</span>
+    <span class="ruby-identifier">datetime_obj</span> = <span class="ruby-identifier">datetime_ordered</span>.<span class="ruby-identifier">to_datetime</span>
+
+    <span class="ruby-identifier">datetime_formated</span> = <span class="ruby-identifier">datetime_obj</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%Y-%m-%d %H:%M&#39;</span>)
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">datetime_formated</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-get_comp_type" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_comp_type</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It returns Component type of current object</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_comp_type-source">
+            <pre><span class="ruby-comment"># File app/models/l1.rb, line 71</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_comp_type</span>
+  <span class="ruby-identifier">comp_type_value</span> = <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-identifier">comp_type</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">attribute_values</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:label_attribute</span>).<span class="ruby-identifier">where</span>(<span class="ruby-string">&quot;label_attributes.short_label like &#39;%Comp Type%&#39;&quot;</span>).<span class="ruby-identifier">first</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">comp_type</span>.<span class="ruby-identifier">present?</span>
+    <span class="ruby-identifier">comp_type_value</span> = <span class="ruby-identifier">comp_type</span>.<span class="ruby-identifier">value</span>
+  <span class="ruby-keyword">end</span> 
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">comp_type_value</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_horw" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_horw</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It returns HORW value of current object</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_horw-source">
+            <pre><span class="ruby-comment"># File app/models/l1.rb, line 83</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_horw</span>
+  <span class="ruby-identifier">horw_value</span> = <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-identifier">horw</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">attribute_values</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:label_attribute</span>).<span class="ruby-identifier">where</span>(<span class="ruby-string">&quot;label_attributes.short_label=&#39;Horw&#39;&quot;</span>).<span class="ruby-identifier">first</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">horw</span>.<span class="ruby-identifier">present?</span>
+    <span class="ruby-identifier">horw_value</span> = <span class="ruby-identifier">horw</span>.<span class="ruby-identifier">value</span>
+  <span class="ruby-keyword">end</span> 
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">horw_value</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_l2s_objects" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_l2s_objects</span><span
+            class="method-args">(include_canceled, include_completed)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_l2s_objects-source">
+            <pre><span class="ruby-comment"># File app/models/l1.rb, line 34</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_l2s_objects</span>(<span class="ruby-identifier">include_canceled</span>, <span class="ruby-identifier">include_completed</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">include_canceled</span> <span class="ruby-operator">==</span><span class="ruby-string">&#39;include_canceled&#39;</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">include_completed</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;include_completed&#39;</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">l2s</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">include_canceled</span> <span class="ruby-operator">==</span><span class="ruby-string">&#39;include_canceled&#39;</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">l2s</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">completed_actual</span><span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">include_completed</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;include_completed&#39;</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">l2s</span>.<span class="ruby-identifier">where</span>.<span class="ruby-identifier">not</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;cancel&#39;</span>)           
+  <span class="ruby-keyword">else</span> 
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">l2s</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">completed_actual</span><span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>).<span class="ruby-identifier">where</span>.<span class="ruby-identifier">not</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;cancel&#39;</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_num_lang" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_num_lang</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It returns number of Languages of current Object</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_num_lang-source">
+            <pre><span class="ruby-comment"># File app/models/l1.rb, line 59</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_num_lang</span>
+  <span class="ruby-identifier">num_lang_value</span> = <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-identifier">num_lang</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">attribute_values</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:label_attribute</span>).<span class="ruby-identifier">where</span>(<span class="ruby-node">&quot;label_attributes.short_label=&#39;#Lang&#39;&quot;</span>).<span class="ruby-identifier">first</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">num_lang</span>.<span class="ruby-identifier">present?</span>
+    <span class="ruby-identifier">num_lang_value</span> = <span class="ruby-identifier">num_lang</span>.<span class="ruby-identifier">value</span>
+  <span class="ruby-keyword">end</span> 
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">num_lang_value</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_searched_l2_objects" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_searched_l2_objects</span><span
+            class="method-args">(l2_list)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>It accepts a collection of l2s Object ids</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It Gets a list of l2s Object ids and returns complete Objects</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_searched_l2_objects-source">
+            <pre><span class="ruby-comment"># File app/models/l1.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_searched_l2_objects</span>(<span class="ruby-identifier">l2_list</span>)
+  <span class="ruby-constant">L2</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">id</span><span class="ruby-operator">:</span> [<span class="ruby-identifier">l2_list</span>], <span class="ruby-identifier">l1_id</span><span class="ruby-operator">:</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">id</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_workflow_live_steps" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_workflow_live_steps</span><span
+            class="method-args">(filter_stations)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Arguments</strong> :</p>
+<ul><li>
+<p>It accepts a collection of Station Steps Object ids</p>
+</li></ul>
+</li><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>It Gets a list of Station Steps object ids and return Workflow Live Step
+objects for current l2s Object after quering from database</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_workflow_live_steps-source">
+            <pre><span class="ruby-comment"># File app/models/l1.rb, line 52</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_workflow_live_steps</span>(<span class="ruby-identifier">filter_stations</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">workflow_live_steps</span>.<span class="ruby-identifier">where</span>(<span class="ruby-node">&quot;station_step_id in (#{filter_stations})&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-uniqueness_of_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">uniqueness_of_name</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <ul><li>
+<p><strong>Description</strong> :</p>
+<ul><li>
+<p>validate :uniqueness_of_name</p>
+</li><li>
+<p>validates :name, uniqueness: {:message =&gt; “must be unique!” }</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="uniqueness_of_name-source">
+            <pre><span class="ruby-comment"># File app/models/l1.rb, line 18</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">uniqueness_of_name</span>
+ <span class="ruby-identifier">existing_record</span> = <span class="ruby-constant">L1</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-identifier">name</span>)
+ <span class="ruby-keyword">unless</span> <span class="ruby-identifier">existing_record</span>.<span class="ruby-identifier">nil?</span>
+   <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-node">&quot;Record #{existing_record.id} already has the name #{name}&quot;</span>)
+ <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

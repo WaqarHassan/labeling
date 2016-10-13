@@ -3,8 +3,9 @@ $(document).ready(function() {
 	var handoff_report_data = $('.data-main').width() - 250 ;
   console.log($('.data-main').width());
   
-	$('#handoff_report_data').width(handoff_report_data);
 
+	$('#handoff_report_data').width(handoff_report_data);
+//Following Lines of code applys Jquery DataTable plugin to the reports 
 	 if($("#current_status_report").length){
   		$('#current_status_report').DataTable({
     		"order": [[ 5, "asc" ]],

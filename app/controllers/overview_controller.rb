@@ -410,7 +410,7 @@ class OverviewController < ApplicationController
   #
   def get_reasons
     @reasons = ReasonCode.where(status: params[:additional_info][:status],
-     recording_level: params[:l_type] )
+     recording_level: params[:l_type] ).order(:sequence)
 
       respond_to do |format|
         format.html

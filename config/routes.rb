@@ -83,6 +83,7 @@ Rails.application.routes.draw do
   
   get '/overview/open_rework_modal(/:wf_step_id)(/:l2_id)' => 'overview#open_rework_modal', as: 'open_rework_modal'
   get '/overview/open_confirm_modal(/:wf_step_id)' => 'overview#open_confirm_modal', as: 'open_confirm_modal'
+  get '/overview/open_oops_modal(/:wf_step_id)' => 'overview#open_oops_modal', as: 'open_oops_modal'
   get '/overview/open_modal4' => 'overview#open_modal4', as: 'open_modal4'
   get '/overview/add_project_modal' => 'overview#add_project_modal', as: 'add_project_modal' 
   get '/overview/add_ecr_modal/:id' => 'overview#add_ecr_modal', as: 'add_ecr_modal'
@@ -103,6 +104,7 @@ Rails.application.routes.draw do
   post '/overview/workflow_update' => 'overview#workflow_update', as: 'workflow_update'
   get '/overview/merge_back/:wls_id' => 'overview#merge_back', as:'merge_back'
   post '/overview' => 'overview#index', as:'reports_to_overview'
+  get '/overview/oops_mode' => 'overview#oops_mode', as:'oops_mode'
 
  
   post '/overview/update_task_confirmation' =>  'overview#update_task_confirmation', as: 'update_task_confirmation'

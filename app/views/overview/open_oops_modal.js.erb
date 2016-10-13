@@ -1,4 +1,4 @@
-$("#confirm_modal_popup").html("<%= escape_javascript(render 'overview/confirm_modal') %>");
+$("#oops_modal_popup").html("<%= escape_javascript(render 'overview/confirm_modal') %>");
 
 $('.actual_confirmation a').each(function() {
     href_id = $(this).attr('id');
@@ -9,8 +9,6 @@ $('.actual_confirmation a').each(function() {
 	    	$(this).removeAttr('data-remote');
 	    	$(this).removeAttr('data-target');
 	    	$(this).removeAttr('data-toggle');
-	    }else{
-	    	$(this).attr('data-target', '#rework_modal_popup');
 	    }
 	    $(this).removeAttr('id');
 	}

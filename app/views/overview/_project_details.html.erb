@@ -263,10 +263,18 @@
 										<% if workflow_live_step.actual_confirmation.blank? and workflow_live_step.eta.blank? %>
 											<%= link_to 'Not Started' , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 										<% elsif workflow_live_step.actual_confirmation.present? %>
-											<%= link_to 'javascript:void(0)' do %>
-												<%= workflow_live_step.actual_confirmation.strftime("%m/%d/%y") %>
-												<br />
-												<%= workflow_live_step.actual_confirmation.strftime("%I:%M %p") %>
+											<% if @oops_mode == 'oops_mode' %>
+												<%= link_to open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup', id: 'javascript:void(0)'} do %>
+													<%= workflow_live_step.actual_confirmation.strftime("%m/%d/%y") %>
+													<br />
+													<%= workflow_live_step.actual_confirmation.strftime("%I:%M %p") %>
+												<% end %>
+											<% else %>	
+												<%= link_to 'javascript:void(0)' do %>
+													<%= workflow_live_step.actual_confirmation.strftime("%m/%d/%y") %>
+													<br />
+													<%= workflow_live_step.actual_confirmation.strftime("%I:%M %p") %>
+												<% end %>
 											<% end %>
 										<% elsif workflow_live_step.eta.present? %>
 											<%= link_to open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} do %>
@@ -309,10 +317,18 @@
 											<% if workflow_live_step.actual_confirmation.blank? and workflow_live_step.eta.blank? %>
 												<%= link_to 'Not Started' , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 											<% elsif workflow_live_step.actual_confirmation.present? %>
-												<%= link_to 'javascript:void(0)' do %>
-													<%= workflow_live_step.actual_confirmation.strftime("%m/%d/%y") %>
-													<br />
-													<%= workflow_live_step.actual_confirmation.strftime("%I:%M %p") %>
+												<% if @oops_mode == 'oops_mode' %>
+													<%= link_to open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup', id: 'javascript:void(0)'} do %>
+														<%= workflow_live_step.actual_confirmation.strftime("%m/%d/%y") %>
+														<br />
+														<%= workflow_live_step.actual_confirmation.strftime("%I:%M %p") %>
+													<% end %>
+												<% else %>	
+													<%= link_to 'javascript:void(0)' do %>
+														<%= workflow_live_step.actual_confirmation.strftime("%m/%d/%y") %>
+														<br />
+														<%= workflow_live_step.actual_confirmation.strftime("%I:%M %p") %>
+													<% end %>
 												<% end %>
 											<% elsif workflow_live_step.eta.present? %>
 												<%= link_to open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} do %>
@@ -357,7 +373,19 @@
 												<% if workflow_live_step.actual_confirmation.blank? and workflow_live_step.eta.blank? %>
 													<%= link_to 'Not Started' , open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup'} %>
 												<% elsif workflow_live_step.actual_confirmation.present? %>
-													<% if workflow_live_step.object.is_closed? %>
+													<% if @oops_mode == 'oops_mode' %>
+														<% if workflow_live_step.object.is_closed? 
+															link_id = 'javascript:void(0)'
+														   else
+															link_id = open_rework_modal_path(workflow_live_step.id, l2.id)
+														   end
+														%>
+														<%= link_to open_confirm_modal_path(workflow_live_step.id),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#confirm_modal_popup', id: link_id} do %>
+															<%= workflow_live_step.actual_confirmation.strftime("%m/%d/%y") %>
+															<br />
+															<%= workflow_live_step.actual_confirmation.strftime("%I:%M %p") %>
+														<% end %>
+													<% elsif workflow_live_step.object.is_closed? %>
 														<%= link_to 'javascript:void(0)' do %>
 															<%= workflow_live_step.actual_confirmation.strftime("%m/%d/%y") %>
 															<br />

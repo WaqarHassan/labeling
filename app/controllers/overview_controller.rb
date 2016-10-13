@@ -321,9 +321,13 @@ class OverviewController < ApplicationController
                   l3.status = 'cancel'
                   if l3.rework_parent_id.present? and !l3.is_main_record
                     num_component_rework = l3.num_component
-                    parent_l3 = L3.find_by_id(l3.rework_parent_id)
+                    parent_l3 = L3.where(id: l3.rework_parent_id).where.not(status: 'Closed').first
+                    if !parent_l3.present?
+                      parent_l3 = L3.where(id: l3.merge_back_with_id).where.not(status: 'Closed').first
+                    end
                     parent_l3.num_component_in_rework = parent_l3.num_component_in_rework.to_i - num_component_rework.to_i
                     parent_l3.save!
+                    l3.merge_back_with_id = nil
                   end
                   l3.save!
                   AdditionalInfo.create(status: add_info.status, object_id: l3.id, object_type: 'L3', info_timestamp: add_info.info_timestamp,
@@ -347,9 +351,13 @@ class OverviewController < ApplicationController
                   l3.status = 'cancel'
                   if l3.rework_parent_id.present? and !l3.is_main_record
                     num_component_rework = l3.num_component
-                    parent_l3 = L3.find_by_id(l3.rework_parent_id)
+                    parent_l3 = L3.where(id: l3.rework_parent_id).where.not(status: 'Closed').first
+                    if !parent_l3.present?
+                      parent_l3 = L3.where(id: l3.merge_back_with_id).where.not(status: 'Closed').first
+                    end
                     parent_l3.num_component_in_rework = parent_l3.num_component_in_rework.to_i - num_component_rework.to_i
                     parent_l3.save!
+                    l3.merge_back_with_id = nil
                   end
                   l3.save!
                   AdditionalInfo.create(status: add_info.status, object_id: l3.id, object_type: 'L3', info_timestamp: add_info.info_timestamp,
@@ -367,9 +375,14 @@ class OverviewController < ApplicationController
            if l3.status.downcase == 'cancel'
               if l3.rework_parent_id.present? and !l3.is_main_record
                 num_component_rework = l3.num_component
-                parent_l3 = L3.find_by_id(l3.rework_parent_id)
+                parent_l3 = L3.where(id: l3.rework_parent_id).where.not(status: 'Closed').first
+                if !parent_l3.present?
+                  parent_l3 = L3.where(id: l3.merge_back_with_id).where.not(status: 'Closed').first
+                end
                 parent_l3.num_component_in_rework = parent_l3.num_component_in_rework.to_i - num_component_rework.to_i
                 parent_l3.save!
+                l3.merge_back_with_id = nil
+                l3.save!
 
                 workflowLiveStep = WorkflowLiveStep.find_by_object_type_and_object_id('L3', l3.id)
                 if workflowLiveStep.present?
@@ -429,22 +442,22 @@ class OverviewController < ApplicationController
     @can_merge_back = can_merge_back_with_parent(@object)
 
     rework_components = 0
-      if @object.class.name == 'L3'
-        reworks = L3.where(rework_parent_id: @object.id, is_closed: false)
-        reworks.each do |rework|
-          rework_components += rework.num_component
-        end
-        closed_reworks = L3.where(rework_parent_id: @object.id, is_closed: true)
-        closed_reworks.each do |clos_rework|
-          closed_reworks_partial = L3.where(rework_parent_id: clos_rework.id, is_closed: false)
-          closed_reworks_partial.each do |closedreworkspartial|
-            rework_components += closedreworkspartial.num_component
-          end
-        end
-    end
-    @rework_components = rework_components
+    #   if @object.class.name == 'L3'
+    #     reworks = L3.where(rework_parent_id: @object.id, is_closed: false)
+    #     reworks.each do |rework|
+    #       rework_components += rework.num_component
+    #     end
+    #     closed_reworks = L3.where(rework_parent_id: @object.id, is_closed: true)
+    #     closed_reworks.each do |clos_rework|
+    #       closed_reworks_partial = L3.where(rework_parent_id: clos_rework.id, is_closed: false)
+    #       closed_reworks_partial.each do |closedreworkspartial|
+    #         rework_components += closedreworkspartial.num_component
+    #       end
+    #     end
+    # end
+    @rework_components = @object.num_component_in_rework.to_i
     @object_num_component = @object.num_component.present? ? @object.num_component : 1
-    @object_num_component = @object_num_component.to_i - rework_components.to_i
+    @object_num_component = @object_num_component.to_i - @object.num_component_in_rework.to_i
 
     @object_live_steps = @object.workflow_live_steps
     @object_type = workflow_live_step.object_type

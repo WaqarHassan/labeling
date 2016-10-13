@@ -385,7 +385,7 @@
 															<br />
 															<%= workflow_live_step.actual_confirmation.strftime("%I:%M %p") %>
 														<% end %>
-													<% elsif workflow_live_step.object.is_closed? %>
+													<% elsif workflow_live_step.object.is_closed? or workflow_live_step.object.status.downcase == 'cancel' %>
 														<%= link_to 'javascript:void(0)' do %>
 															<%= workflow_live_step.actual_confirmation.strftime("%m/%d/%y") %>
 															<br />

@@ -10,10 +10,10 @@
 	end	%>	
     <div class="row">
       <div class="col-lg-7">
-      	<%= link_to 'Show all serached result', project_deatils_l1_path(l1_list), :remote => true, :onclick => 'return show_waiting_bar_search_side();' %>
+      	<%= link_to 'Show all serached result', project_deatils_l1_path(l1_list), :remote => true %>
       </div>
       <div class="col-lg-5">
-      	<%= link_to 'Show all from DB', show_all_db_path, :remote => true, :onclick => 'return show_waiting_bar_search_side();'  %>
+      	<%= link_to 'Show all from DB', show_all_db_path, :onclick => 'return show_waiting_bar();'  %>
      </div>
     </div> 
 <% end %>     
@@ -27,20 +27,20 @@
 	  	<% if l1_name != result['l1_name']
 	  		l1_name = result['l1_name'] %>	
 	  		<li class= "l1_class">
-	  			<%= link_to result['l1_name'], project_deatils_l1_path(result['l1_id']), :remote => true, :onclick => 'return show_waiting_bar_search_side();'  %>
+	  			<%= link_to result['l1_name'], project_deatils_l1_path(result['l1_id']), :remote => true %>
 	  		</li>
 	  	<% end %>
 
 	  	<% if l2_name != result['l2_name'] && result['l2_id'].presence
 	  		l2_name = result['l2_name'] %>	
 	  		<li class= "l2_class">
-	  			<%= link_to result['l2_name'], project_deatils_l2_path(result['l2_id']), :remote => true, :onclick => 'return show_waiting_bar_search_side();'  %>
+	  			<%= link_to result['l2_name'], project_deatils_l2_path(result['l2_id']), :remote => true %>
 	  		</li>
 	  	<% end %>
 
 	    <li class= "l3_class">
 	    	<% if result['l3_id'].presence %>
-	    		<%=  link_to result['l3_name'], project_deatils_l3_path(result['l3_id']), :remote => true, :onclick => 'return show_waiting_bar_search_side();'  %></li>
+	    		<%=  link_to result['l3_name'], project_deatils_l3_path(result['l3_id']), :remote => true %></li>
 	    	<% end %>
 	  <% end 
 	  else %>

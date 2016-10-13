@@ -12,8 +12,10 @@ class OverviewController < ApplicationController
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
     @include_canceled = session[:include_canceled]
     @include_completed = session[:include_completed]
+    show_all_db = session[:show_all_db]
     @oops_mode = session[:oops_mode]
     session.delete(:oops_mode)
+    session.delete(:show_all_db)
 
     if request.post? and params[:object_id].present?
       if params[:object_type] == 'L1'
@@ -83,7 +85,9 @@ class OverviewController < ApplicationController
         @l3_records = L3.where(id: l3.id).where.not(status: 'cancel')
         @l2_records = L2.where(id: @l3_records.first.l2_id).where.not(status: 'cancel')
         @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel')        
-      end  
+      end
+    elsif show_all_db == 'show_all_db'
+      @l1s = @workflow.l1s.where(completed_actual: nil).where.not(status: 'cancel').order(:id)
     else
       @l1s = [] #@workflow.l1s.where(completed_actual: nil).where.not(status: 'cancel').order(:id)
     end
@@ -1068,14 +1072,16 @@ class OverviewController < ApplicationController
     session.delete(:new_object_added)
     session.delete(:include_canceled)
     session.delete(:include_completed)
-    @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
-    @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
-    @workflows = WorkFlow.where(is_active: true, is_in_use: false)
-    @l1s = @workflow.l1s.where(status: 'Active').order(:id)
-    respond_to do |format|
-      format.html
-      format.js
-    end 
+    session[:show_all_db] = 'show_all_db'
+    redirect_to root_path
+    # @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
+    # @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
+    # @workflows = WorkFlow.where(is_active: true, is_in_use: false)
+    # @l1s = @workflow.l1s.where(status: 'Active').order(:id)
+    # respond_to do |format|
+    #   format.html
+    #   format.js
+    # end 
     
   end
    # 

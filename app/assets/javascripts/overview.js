@@ -161,10 +161,11 @@ function toggle_lang(comp_type_value, workflow_name){
 		$('#lang').show();
 	}	
 }
-//Dummy Function
-function show_waiting_bar_search_side(){
-	//$('#myPleaseWait').modal('show');
+//This Function displays progress bar pop-up
+function show_waiting_bar(){
+	$('#myPleaseWait').modal('show');
 }
+
 //This Function displays progress bar pop-up
 function show_waiting_bar_addInfo(){
 	$('#myPleaseWait').modal('show');

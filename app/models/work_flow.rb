@@ -241,15 +241,20 @@ class WorkFlow < ActiveRecord::Base
 											work_flow_id = station_Step_to_calculate.work_flow_id
 											parent_l2s_of_l3 = L3.where(l2_id: parent_l2_id)
 											bk_frm_collab_workflowLiveStep = []
+											bk_frm_collab_workflowLiveStep_eta = []
 											object_ids = ''
 											parent_l2s_of_l3.each do |parent_l2_of_l3|
 												object_ids = object_ids+','+parent_l2_of_l3.id.to_s
 												bk_frm_collab_workflowLiveStep_result = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.object_type='L3' and workflow_live_steps.object_id=#{parent_l2_of_l3.id} and station_steps.step_name='Back from Collab.' and is_active=#{true} and actual_confirmation IS NOT NULL")
+												bk_frm_collab_workflowLiveStep_eta_result = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.object_type='L3' and workflow_live_steps.object_id=#{parent_l2_of_l3.id} and station_steps.step_name='Back from Collab.' and is_active=#{true} and actual_confirmation IS NULL")
 												if bk_frm_collab_workflowLiveStep_result.present?
 													bk_frm_collab_workflowLiveStep << bk_frm_collab_workflowLiveStep_result.first
 												end
+												if bk_frm_collab_workflowLiveStep_eta_result.present?
+													bk_frm_collab_workflowLiveStep_eta << bk_frm_collab_workflowLiveStep_eta_result.first
+												end
 											end
-											if bk_frm_collab_workflowLiveStep.present?
+											if bk_frm_collab_workflowLiveStep.present? and bk_frm_collab_workflowLiveStep_eta.count == 0
 												habdoff_report_actual = habdoff_report_serach_unique_l3_with_partials.select{|report| report['actual_confirmation'] == nil }
 												if bk_frm_collab_workflowLiveStep.first.actual_confirmation.present? # and !habdoff_report_actual.present?
 													object_ids = object_ids.split(",").map { |s| s.to_i }

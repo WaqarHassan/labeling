@@ -219,8 +219,9 @@ class ReportsController < ApplicationController
 	def handoff
 		@task_confirmation = true
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
-	    @report_include_canceled = '' #session[:report_include_canceled]
-    	@report_include_completed = '' #session[:report_include_completed]
+	    @report_include_canceled = session[:report_include_canceled]
+    	@report_include_completed = session[:report_include_completed]
+    	#@report_include_closed = session[:report_include_closed]
 
 	    if session[:report_wildcard].present?
 	      @wildcard = session[:report_wildcard]
@@ -246,6 +247,12 @@ class ReportsController < ApplicationController
 			    else
 			      session.delete(:report_include_completed)
 			    end
+			    # if params[:report_include_closed].presence
+			    #   @report_include_closed = params[:report_include_closed]
+			    #   session[:report_include_closed] = @report_include_closed
+			    # else
+			    #   session.delete(:report_include_closed)
+			    # end
 
 				search_hand_off = handoff_search
 				@serach_result = search_hand_off[0]

@@ -21,7 +21,7 @@ class WorkFlow < ActiveRecord::Base
 						l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
           				from l1s 
           				left join l2s on l1s.id = l2s.l1_id
-          				left join l3s on l2s.id = l3s.l2_id and is_main_record = true
+          				left join l3s on l2s.id = l3s.l2_id and rework_parent_id IS NULL
        					where #{q_string} order by l1s.name"		
 				serach_result = ActiveRecord::Base.connection.select_all sql_query
                 return serach_result
@@ -38,7 +38,7 @@ class WorkFlow < ActiveRecord::Base
 						l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
           				from l1s 
           				left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL 
-          				left join l3s on l2s.id = l3s.l2_id and l3s.completed_actual IS NULL and is_main_record = true
+          				left join l3s on l2s.id = l3s.l2_id and l3s.completed_actual IS NULL and rework_parent_id IS NULL
        					where #{q_string} and l1s.completed_actual IS NULL order by l1s.name"		
 				serach_result = ActiveRecord::Base.connection.select_all sql_query
                 return serach_result
@@ -55,7 +55,7 @@ class WorkFlow < ActiveRecord::Base
 						l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
           				from l1s 
           				left join l2s on l1s.id = l2s.l1_id and l2s.status != 'Cancel' 
-          				left join l3s on l2s.id = l3s.l2_id and l3s.status != 'Cancel' and is_main_record = true
+          				left join l3s on l2s.id = l3s.l2_id and l3s.status != 'Cancel' and rework_parent_id IS NULL
        					where #{q_string} and l1s.status != 'Cancel' order by l1s.name"		
 				serach_result = ActiveRecord::Base.connection.select_all sql_query
                 return serach_result
@@ -72,7 +72,7 @@ class WorkFlow < ActiveRecord::Base
 						l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
           				from l1s 
           				left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL and l2s.status != 'Cancel' 
-          				left join l3s on l2s.id = l3s.l2_id and l2s.completed_actual IS NULL and l3s.status != 'Cancel' and is_main_record = true
+          				left join l3s on l2s.id = l3s.l2_id and l2s.completed_actual IS NULL and l3s.status != 'Cancel' and rework_parent_id IS NULL
        					where #{q_string} and l1s.completed_actual IS NULL and l1s.status != 'Cancel' order by l1s.name"		
 				serach_result = ActiveRecord::Base.connection.select_all sql_query
                 return serach_result
@@ -227,27 +227,33 @@ class WorkFlow < ActiveRecord::Base
 				time_stamp = ""
 				table_td_class = ""
 				habdoff_report_serach_unique = report_serach_result.select{|report| report['object_type'] == object_type and report[ll_id] == object_id and report['station_step_id'] == station_step_id }
-				
 				if habdoff_report_serach_unique.present?
-					if habdoff_report_serach_unique[0]['is_active'] == 0
-						time_stamp = 'N/A'
-					else
 						if object_type == 'L3'
 							habdoff_report_serach_unique_l3_with_partials = report_serach_result.select{|report| report['object_type'] == object_type and report['l3_name'].split('-R')[0] == habdoff_report_serach_unique[0]['l3_name'] and report['station_step_id'] == station_step_id }
 							if habdoff_report_serach_unique_l3_with_partials.present?
 								
 								habdoff_report_serach_unique_l3_active = habdoff_report_serach_unique_l3_with_partials.select{|report| report['is_active'] == 1 }
 								if habdoff_report_serach_unique_l3_active.present?
-									habdoff_report_serach_unique_l3_blank = habdoff_report_serach_unique_l3_with_partials.select{|report| report['l3_status'].downcase != 'closed' and report['actual_confirmation'] == nil }
+									habdoff_report_serach_unique_l3_blank = habdoff_report_serach_unique_l3_with_partials.select{|report| report['l3_status'].downcase != 'closed' and  report['actual_confirmation'] == nil }
 									if habdoff_report_serach_unique_l3_blank.present?
 										station_Step_to_calculate = filtered_station_steps.find_by_station_step_id(station_step_id)
-										if station_Step_to_calculate.station_step.step_name.downcase == 'crb started'	
+										if station_Step_to_calculate.station_step.step_name.downcase == 'crb started'
 											work_flow_id = station_Step_to_calculate.work_flow_id
-											bk_frm_collab_workflowLiveStep = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.object_type='L3' and workflow_live_steps.object_id=#{object_id} and station_steps.step_name='Back from Collab.'")
+											parent_l2s_of_l3 = L3.where(l2_id: parent_l2_id)
+											bk_frm_collab_workflowLiveStep = []
+											object_ids = ''
+											parent_l2s_of_l3.each do |parent_l2_of_l3|
+												object_ids = object_ids+','+parent_l2_of_l3.id.to_s
+												bk_frm_collab_workflowLiveStep_result = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.object_type='L3' and workflow_live_steps.object_id=#{parent_l2_of_l3.id} and station_steps.step_name='Back from Collab.' and is_active=#{true} and actual_confirmation IS NOT NULL")
+												if bk_frm_collab_workflowLiveStep_result.present?
+													bk_frm_collab_workflowLiveStep << bk_frm_collab_workflowLiveStep_result.first
+												end
+											end
 											if bk_frm_collab_workflowLiveStep.present?
 												habdoff_report_actual = habdoff_report_serach_unique_l3_with_partials.select{|report| report['actual_confirmation'] == nil }
-												if bk_frm_collab_workflowLiveStep.first.actual_confirmation.present? and !habdoff_report_actual.present?
-													crd_started_workflowLiveStep = WorkflowLiveStep.where(object_type: 'L3', object_id: object_id, station_step_id: station_step_id)
+												if bk_frm_collab_workflowLiveStep.first.actual_confirmation.present? # and !habdoff_report_actual.present?
+													object_ids = object_ids.split(",").map { |s| s.to_i }
+													crd_started_workflowLiveStep = WorkflowLiveStep.where(object_type: 'L3', object_id: object_ids, station_step_id: station_step_id, is_active: true).maximum(:eta)
 													if crd_started_workflowLiveStep.present?
 														# Covnert minutes to hours and minutes
 														workflow = WorkFlow.find_by_id(work_flow_id)
@@ -258,7 +264,7 @@ class WorkFlow < ActiveRecord::Base
 													       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
 													    end
 														number_days = 1
-														actual_confirmation = crd_started_workflowLiveStep.first.eta.to_time.strftime('%Y-%m-%d %H:%M')
+														actual_confirmation = crd_started_workflowLiveStep.to_time.strftime('%Y-%m-%d %H:%M')
 														eta_datetime = Time.parse(actual_confirmation)
 														if number_days > 0
 															eta_datetime =  number_days.business_days.after(eta_datetime)
@@ -274,6 +280,10 @@ class WorkFlow < ActiveRecord::Base
 													time_stamp = calculated_eta[0]
 													table_td_class = calculated_eta[1]
 												end
+											else
+												calculated_eta = do_calculate_eta_for_l3(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
+												time_stamp = calculated_eta[0]
+												table_td_class = calculated_eta[1]
 											end	
 										else
 											calculated_eta = do_calculate_eta_for_l3(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
@@ -281,7 +291,8 @@ class WorkFlow < ActiveRecord::Base
 											table_td_class = calculated_eta[1]
 										end
 									else
-										habdoff_report_actual_sorted = habdoff_report_serach_unique_l3_with_partials.sort_by { |h| h[:actual_confirmation] }
+										habdoff_report_serach_unique_l3_with_partials = habdoff_report_serach_unique_l3_with_partials.select{|actual| actual['actual_confirmation'] != nil }
+										habdoff_report_actual_sorted = habdoff_report_serach_unique_l3_with_partials.sort_by { |h| h['actual_confirmation'] }.reverse!
 										time_stamp = habdoff_report_actual_sorted[0]['actual_confirmation'].strftime("%m/%d/%y")
 										table_td_class = 'report_actual_confirmation'
 									end
@@ -290,18 +301,22 @@ class WorkFlow < ActiveRecord::Base
 								end
 							end
 						else
-							habdoff_report_actual = habdoff_report_serach_unique.select{|report| report['actual_confirmation'] != nil }
-							if habdoff_report_actual.present?
-								habdoff_report_actual_sorted = habdoff_report_actual.sort_by { |h| h[:log_id] }.reverse!
-								time_stamp = habdoff_report_actual_sorted[0]['actual_confirmation'].strftime("%m/%d/%y")
-								table_td_class = 'report_actual_confirmation'
+							if habdoff_report_serach_unique[0]['is_active'] == 0
+								time_stamp = 'N/A'
 							else
-								calculated_eta = do_calculate_eta(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
-								time_stamp = calculated_eta[0]
-								table_td_class = calculated_eta[1]
-							end
+								habdoff_report_actual = habdoff_report_serach_unique.select{|report| report['actual_confirmation'] != nil }
+								if habdoff_report_actual.present?
+									habdoff_report_actual_sorted = habdoff_report_actual.sort_by { |h| h['log_id'] }.reverse!
+									time_stamp = habdoff_report_actual_sorted[0]['actual_confirmation'].strftime("%m/%d/%y")
+									table_td_class = 'report_actual_confirmation'
+								else
+									calculated_eta = do_calculate_eta(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
+									time_stamp = calculated_eta[0]
+									table_td_class = calculated_eta[1]
+								end
+							end	
 						end	
-					end	
+					#end	
 				end
 				return [time_stamp, table_td_class]
 			end
@@ -361,7 +376,8 @@ class WorkFlow < ActiveRecord::Base
 						
 							habdoff_report_serach_unique_l3_blank = pred_habdoff_report_serach_unique.select{|report| report['l3_status'].downcase != 'closed' and report['actual_confirmation'] == nil }
 							if !habdoff_report_serach_unique_l3_blank.present?
-								habdoff_report_actual_sorted = pred_habdoff_report_serach_unique.sort_by { |h| h[:actual_confirmation] }
+								pred_habdoff_report_serach_unique = pred_habdoff_report_serach_unique.select{|actual| actual['actual_confirmation'] != nil }
+								habdoff_report_actual_sorted = pred_habdoff_report_serach_unique.sort_by { |h| h['actual_confirmation'] }.reverse
 								actual_confirmation = habdoff_report_actual_sorted[0]['actual_confirmation']
 									# Covnert minutes to hours and minutes
 							  	BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
@@ -702,7 +718,7 @@ class WorkFlow < ActiveRecord::Base
 
 							pred_habdoff_report_actual = pred_habdoff_report_serach_unique.select{|report| report['actual_confirmation'] != nil }
 							if pred_habdoff_report_actual.present?
-								pred_habdoff_report_actual_sorted = pred_habdoff_report_actual.sort_by { |h| h[:log_id] }.reverse!
+								pred_habdoff_report_actual_sorted = pred_habdoff_report_actual.sort_by { |h| h['log_id'] }.reverse!
 								actual_confirmation = pred_habdoff_report_actual_sorted[0]['actual_confirmation']
 
 									# Covnert minutes to hours and minutes
@@ -758,7 +774,7 @@ class WorkFlow < ActiveRecord::Base
 					else
 						habdoff_report_actual = habdoff_report_serach_unique.select{|report| report['actual_confirmation'] != nil }
 						if habdoff_report_actual.present?
-							habdoff_report_actual_sorted = habdoff_report_actual.sort_by { |h| h[:log_id] }.reverse!
+							habdoff_report_actual_sorted = habdoff_report_actual.sort_by { |h| h['log_id'] }.reverse!
 							time_stamp = habdoff_report_actual_sorted[0]['actual_confirmation'].strftime("%m/%d/%y")
 							time_stamp += "<br />"+habdoff_report_actual_sorted[0]['actual_confirmation'].strftime("%I:%M %p")
 							table_td_class = 'report_actual_confirmation'
@@ -782,7 +798,7 @@ class WorkFlow < ActiveRecord::Base
 
 										pred_habdoff_report_actual = pred_habdoff_report_serach_unique.select{|report| report['actual_confirmation'] != nil }
 										if pred_habdoff_report_actual.present?
-											pred_habdoff_report_actual_sorted = pred_habdoff_report_actual.sort_by { |h| h[:log_id] }.reverse!
+											pred_habdoff_report_actual_sorted = pred_habdoff_report_actual.sort_by { |h| h['log_id'] }.reverse!
 											actual_confirmation = pred_habdoff_report_actual_sorted[0]['actual_confirmation']
 
 												# Covnert minutes to hours and minutes

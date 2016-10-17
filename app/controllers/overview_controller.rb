@@ -591,8 +591,6 @@ class OverviewController < ApplicationController
           mew_rework_info_object.move_original_record_back_to_step = move_original_record_back_to_step
           mew_rework_info_object.reset_type = reset_type
         end
-        mew_rework_info_object.rework_start_step = start_workflow_live_step.id
-        mew_rework_info_object.save!
 
         # copy all parent attributes to new rewwork 
         parent_lang_attribute_values = l3_object.attribute_values
@@ -625,6 +623,8 @@ class OverviewController < ApplicationController
         end
 
         # copy parent live steps for new rework
+        is_first_active_rework_step_created = nil
+        isFirstActiveReworkStepCreated = nil
         live_steps_new_rework_object = nil
         rework_live_steps = WorkflowLiveStep.where(object_type: rework_object_type, object_id: rework_parent_id)
         rework_live_steps.each do |original_rework|
@@ -637,6 +637,10 @@ class OverviewController < ApplicationController
           live_steps_new_rework.eta = original_rework.eta
           if original_rework.id >= start_workflow_live_step.id
             live_steps_new_rework.is_active = true
+            if !isFirstActiveReworkStepCreated.present?
+              isFirstActiveReworkStepCreated = true
+              is_first_active_rework_step_created = true
+            end
           else
             live_steps_new_rework.is_active = false
           end
@@ -652,19 +656,12 @@ class OverviewController < ApplicationController
           end
 
           if live_steps_new_rework.save!
-            # save timestamp log
-            # numberOfLangComp = 0
-            # noOfLangComp = l3_rework.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
-            # if noOfLangComp.present?
-            #   numberOfLangComp = noOfLangComp.value
-            # end
-            # TimestampLog.create(workflow_live_step_id: live_steps_new_rework.id,
-            #                 actual_confirmation: live_steps_new_rework.actual_confirmation,
-            #                 user_id: current_user.id,
-            #                 work_flow_id: @workflow.id,
-            #                 no_of_comp: l3_rework.num_component,
-            #                 no_of_lang: numberOfLangComp)
-
+            if is_first_active_rework_step_created.present?
+              mew_rework_info_object.rework_start_step = live_steps_new_rework.id
+              is_first_active_rework_step_created = nil
+              mew_rework_info_object.save!
+            end
+              
             predecessor = live_steps_new_rework.predecessors
             step_predecessor = WorkflowLiveStep.where("id in (#{predecessor})")
             predecessor_list = ''

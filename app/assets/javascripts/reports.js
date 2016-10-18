@@ -1,6 +1,6 @@
 
 $(document).ready(function() {
-	var handoff_report_data = $('.data-main').width() - 250 ;
+	var handoff_report_data = $('.data-main').width() - 290 ;
   console.log($('.data-main').width());
   
 

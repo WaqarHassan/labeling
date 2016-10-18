@@ -148,9 +148,16 @@ function handoff_show_hide()
 }
 
 //This Function displays progress bar pop-up 
-function update_all_etas(){
-	$('#myPleaseWait').modal('show');
-	return true;
+function update_all_etas(e){
+	var confrm = confirm("You selected a time-consuming task that \n will consume significant server resources. \n Do you want to continue?");
+    if (confrm == true) {
+		$('#myPleaseWait').modal('show');
+		return true;
+    } else {
+    	e.preventDefault();
+    	return false;
+    }
+
 }
 // This function hides Lang component whenever worflwo is 'ldp' and com_type_value is = 'CGL' ans shows otherwise
 function toggle_lang(comp_type_value, workflow_name){

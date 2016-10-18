@@ -293,6 +293,8 @@ class WorkflowLiveStep < ActiveRecord::Base
 					      l1_object.completed_actual = maximum_l2_completed_actual_date	
 				      	end
 			      	end
+		      	else
+		      		l1_object.completed_actual = nil
 		      	end
 		    	l1_object.save!  	
 	      	end

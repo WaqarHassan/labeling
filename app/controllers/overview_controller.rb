@@ -24,7 +24,11 @@ class OverviewController < ApplicationController
       elsif params[:object_type] == 'L2'
         @show_search_result_l2 = 'filter_type_l2'
         @l2_records = L2.where(id: params[:object_id])
-        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+        if @l2_records.present?
+          @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+        else
+          @l1s = []
+        end
 
       elsif params[:object_type] == 'L3'
         @show_search_result_l2 = 'filter_type_l2'
@@ -32,8 +36,16 @@ class OverviewController < ApplicationController
         l3 = L3.find(params[:object_id])
         ll2 = l3.l2
         @l3_records = L3.where(id: l3.id)
-        @l2_records = L2.where(id: @l3_records.first.l2_id)
-        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+        if @l3_records.present?
+          @l2_records = L2.where(id: @l3_records.first.l2_id)
+          if @l2_records.present?
+            @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+          else
+            @l1s = []
+          end
+        else
+          @l2_records = []
+        end
       end
     elsif session[:filter_object_type] == 'L1'
       if @include_canceled == 'include_canceled' && @include_completed == 'include_completed'
@@ -50,16 +62,32 @@ class OverviewController < ApplicationController
       @show_search_result_l2 = 'filter_type_l2'
       if @include_canceled == 'include_canceled' && @include_completed == 'include_completed'
         @l2_records = L2.where(id: session[:filter_object_id])
-        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+        if @l2_records.present?
+          @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+        else
+          @l1s = []  
+        end
       elsif @include_canceled == 'include_canceled'
         @l2_records = L2.where(id: session[:filter_object_id], completed_actual: nil)
-        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id, completed_actual: nil)
+        if @l2_records.present?
+          @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id, completed_actual: nil)
+        else
+          @l1s = []
+        end
       elsif @include_completed == 'include_completed'
         @l2_records = L2.where(id: session[:filter_object_id]).where.not(status: 'cancel')
-        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel')
+        if @l2_records.present?
+          @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel')
+        else
+          @l1s = []
+        end
       else
         @l2_records = L2.where(id: session[:filter_object_id], completed_actual: nil).where.not(status: 'cancel')
-        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id, completed_actual: nil).where.not(status: 'cancel')
+        if @l2_records.present?
+          @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id, completed_actual: nil).where.not(status: 'cancel')
+        else
+          @l1s = []
+        end
       end
    
     elsif session[:filter_object_type] == 'L3'
@@ -71,20 +99,52 @@ class OverviewController < ApplicationController
       ll2 = l3.l2
       if @include_canceled == 'include_canceled' && @include_completed == 'include_completed'
         @l3_records = L3.where(id: l3.id)
-        @l2_records = L2.where(id: @l3_records.first.l2_id)
-        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+        if @l3_records.present?
+          @l2_records = L2.where(id: @l3_records.first.l2_id)
+          if @l2_records.present?
+            @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+          else
+            @l1s = []
+          end
+        else
+          @l2_records = []   
+        end
       elsif @include_canceled == 'include_canceled'
         @l3_records = L3.where(id: l3.id, completed_actual: nil)
-        @l2_records = L2.where(id: @l3_records.first.l2_id, completed_actual: nil)
-        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id, completed_actual: nil)
+        if @l3_records.present?
+          @l2_records = L2.where(id: @l3_records.first.l2_id, completed_actual: nil)
+          if @l2_records.present?
+            @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id, completed_actual: nil)
+          else
+            @l1s = []
+          end
+        else
+          @l2_records = []   
+        end
       elsif @include_completed == 'include_completed'
         @l3_records = L3.where(id: l3.id).where.not(status: 'cancel')
-        @l2_records = L2.where(id: @l3_records.first.l2_id).where.not(status: 'cancel')
-        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel')     
+        if @l3_records.present?
+          @l2_records = L2.where(id: @l3_records.first.l2_id).where.not(status: 'cancel')
+          if @l2_records.present?
+            @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel')
+          else
+            @l1s = []
+          end
+        else
+          @l2_records = []   
+        end     
       else
         @l3_records = L3.where(id: l3.id).where.not(status: 'cancel')
-        @l2_records = L2.where(id: @l3_records.first.l2_id).where.not(status: 'cancel')
-        @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel')        
+        if @l3_records.present?
+          @l2_records = L2.where(id: @l3_records.first.l2_id).where.not(status: 'cancel')
+          if @l2_records.present?
+            @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel')
+          else
+            @l1s = []
+          end
+        else
+          @l2_records = []  
+        end      
       end
     elsif show_all_db == 'show_all_db'
       @l1s = @workflow.l1s.where(completed_actual: nil).where.not(status: 'cancel').order(:id)
@@ -165,7 +225,7 @@ class OverviewController < ApplicationController
   #
    def recalculate_all_eta
     if current_user.is_admin
-      l1s = @workflow.l1s.where.not(status: 'cancel')
+      l1s = @workflow.l1s.where.not(status: 'cancel').order(:id)
       l1s.each do |l1_id|
           workflowLiveStep = WorkflowLiveStep.find_by_object_id_and_object_type(l1_id,'L1')
           if !workflowLiveStep.present?

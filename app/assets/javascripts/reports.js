@@ -30,7 +30,8 @@ if($("#daily_activity_report").length){
     		"bLengthChange": false
   	});
 }
+});
 
-
-});	
-
+$(document).ready(function() {
+  $('#myPleaseWait').modal('hide');	
+});

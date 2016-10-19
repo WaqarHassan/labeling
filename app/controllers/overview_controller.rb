@@ -348,10 +348,8 @@ class OverviewController < ApplicationController
       end
 
       if params[:save_note_only] == 'savenoteonly'
-        AdditionalInfo.create(additional_info_params_note_only)
-      
+        AdditionalInfo.create(additional_info_params_note_only)      
       else
-
         codes = params[:additional_info][:reason_code_id]
         if codes.present?
           ids  = ""
@@ -399,8 +397,6 @@ class OverviewController < ApplicationController
                 end
               end 
             end
-          else
-            WorkflowLiveStep.where(object_type: 'L1', object_id: l1.id, actual_confirmation: nil).update_all(is_active: true)
           end
         elsif params[:additional_info][:object_type] == 'L2'
            l2 = L2.find(params[:additional_info][:object_id])
@@ -454,8 +450,6 @@ class OverviewController < ApplicationController
                 end
               end
               WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
-           else
-              WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: true)
            end
         end
       end
@@ -1176,10 +1170,10 @@ class OverviewController < ApplicationController
     actual_confirmation = L1.set_db_datetime_format(actualConfirmation)
     workflow_live_step = WorkflowLiveStep.find(params[:id])
     calculate_eta_completion(actual_confirmation, workflow_live_step)
-    if workflow_live_step.object.status.downcase != 'active'
-      workflow_live_step.object.update(:status => 'Active')
-      AdditionalInfo.create(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type, status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
-    end
+    # if workflow_live_step.object.status.downcase != 'active'
+    #   workflow_live_step.object.update(:status => 'Active')
+    #   AdditionalInfo.create(object_id: workflow_live_step.object_id, object_type: workflow_live_step.object_type, status: 'Active', work_flow_id: @workflow.id, user_id: current_user.id)
+    # end
     
     redirect_to root_path, notice: 'Step confirmation done'
   end

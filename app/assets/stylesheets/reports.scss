@@ -67,3 +67,7 @@
 #report_search_result_div {
     overflow-x: scroll;
 }
+
+.table.table-bordered.handOffReportTable tr th {
+    min-width: 80px;
+}

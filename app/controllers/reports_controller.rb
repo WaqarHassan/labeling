@@ -221,6 +221,17 @@ class ReportsController < ApplicationController
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
 	    @report_include_canceled = session[:report_include_canceled]
     	@report_include_completed = session[:report_include_completed]
+    	@report_include_onhold = session[:report_include_onhold]
+    	if @report_include_onhold == 'report_include_onhold'
+    		@is_include_onhold = true
+    	else
+    		@is_include_onhold = false
+    	end
+		if @report_include_completed == 'report_include_completed'
+    		@is_include_completed = true
+    	else
+    		@is_include_completed = false
+    	end		
     	#@report_include_closed = session[:report_include_closed]
 
 	    if session[:report_wildcard].present?
@@ -244,8 +255,18 @@ class ReportsController < ApplicationController
 			    if params[:report_include_completed].presence
 			      @report_include_completed = params[:report_include_completed]
 			      session[:report_include_completed] = @report_include_completed
+			      @is_include_completed = true
 			    else
 			      session.delete(:report_include_completed)
+			      @is_include_completed = false
+			    end
+				if params[:report_include_onhold].presence
+			      @report_include_onhold = params[:report_include_onhold]
+			      @is_include_onhold = true
+			      session[:report_include_onhold] = @report_include_onhold
+			    else
+			      @is_include_onhold = false
+			      session.delete(:report_include_onhold)
 			    end
 			    # if params[:report_include_closed].presence
 			    #   @report_include_closed = params[:report_include_closed]

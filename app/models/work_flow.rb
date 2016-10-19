@@ -16,8 +16,8 @@ class WorkFlow < ActiveRecord::Base
 			#   - It is a backup function created by Developers.
 			#
 			def search_handoff_report(q_string)
-  				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
-						l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
+  				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l1s.completed_actual as l1_completed_actual, l2s.completed_actual as l2_completed_actual,
+  				 l3s.completed_actual as l3_completed_actual,l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
 						l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
           				from l1s 
           				left join l2s on l1s.id = l2s.l1_id
@@ -33,7 +33,7 @@ class WorkFlow < ActiveRecord::Base
 			#   - It searches Objetcs with any Status.
 			#     
 			def search_handoff_exclude_complete(q_string)
-  				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+  				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l1s.completed_actual as l1_completed_actual, l2s.completed_actual as l2_completed_actual, l3s.completed_actual as l3_completed_actual,
 						l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
 						l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
           				from l1s 
@@ -50,13 +50,13 @@ class WorkFlow < ActiveRecord::Base
 			#   - It searches in main Objetcs whose Status is not Canceled.
 			# 
 			def search_handoff_exclude_cancel(q_string)
-  				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+  				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name,l1s.completed_actual as l1_completed_actual, l2s.completed_actual as l2_completed_actual, l3s.completed_actual as l3_completed_actual,
 						l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
 						l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
           				from l1s 
-          				left join l2s on l1s.id = l2s.l1_id and l2s.status != 'Cancel' 
-          				left join l3s on l2s.id = l3s.l2_id and l3s.status != 'Cancel' and rework_parent_id IS NULL
-       					where #{q_string} and l1s.status != 'Cancel' order by l1s.name"		
+          				left join l2s on l1s.id = l2s.l1_id and LOWER(l2s.status) != 'cancel' 
+          				left join l3s on l2s.id = l3s.l2_id and LOWER(l3s.status) != 'cancel' and rework_parent_id IS NULL
+       					where #{q_string} and LOWER(l1s.status) != 'cancel' order by l1s.name"		
 				serach_result = ActiveRecord::Base.connection.select_all sql_query
                 return serach_result
 			end
@@ -67,13 +67,13 @@ class WorkFlow < ActiveRecord::Base
 			#   - It searches Objetcs whose Status is neither Complete nor Canceled.
 			# 
 			def search_handoff_exclude_cancel_and_complete(q_string)
-  				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
+  				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, l1s.completed_actual as l1_completed_actual, l2s.completed_actual as l2_completed_actual, l3s.completed_actual as l3_completed_actual,
 						l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
 						l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
           				from l1s 
-          				left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL and l2s.status != 'Cancel' 
-          				left join l3s on l2s.id = l3s.l2_id and l2s.completed_actual IS NULL and l3s.status != 'Cancel' and rework_parent_id IS NULL
-       					where #{q_string} and l1s.completed_actual IS NULL and l1s.status != 'Cancel' order by l1s.name"		
+          				left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL and LOWER(l2s.status) != 'cancel' 
+          				left join l3s on l2s.id = l3s.l2_id and l2s.completed_actual IS NULL and LOWER(l3s.status) != 'cancel' and rework_parent_id IS NULL
+       					where #{q_string} and l1s.completed_actual IS NULL and LOWER(l1s.status) != 'cancel' order by l1s.name"		
 				serach_result = ActiveRecord::Base.connection.select_all sql_query
                 return serach_result
 			end
@@ -117,8 +117,8 @@ class WorkFlow < ActiveRecord::Base
 								l1s.status as l1_status,l2s.status as l2_status,l3s.status as l3_status,wls.station_step_id, wls.is_active,
 								timestamp_logs.actual_confirmation,wls.eta, station_steps.step_name as step, workflow_stations.station_name as station, wls.id as wls_id, wls.object_type, timestamp_logs.id as log_id
 								from l1s
-								left join l2s on l1s.id = l2s.l1_id and l2s.status != 'Cancel'
-								left join l3s on l3s.l2_id=l2s.id and l3s.status != 'Cancel'
+								left join l2s on l1s.id = l2s.l1_id and LOWER(l2s.status) != 'cancel'
+								left join l3s on l3s.l2_id=l2s.id and LOWER(l3s.status) != 'cancel'
 								inner join workflow_live_steps as wls on (wls.object_id = l1s.id and wls.object_type = 'L1') 
 								                               or (wls.object_id = l2s.id  and wls.object_type = 'L2') 
 								                               or (wls.object_id = l3s.id  and wls.object_type = 'L3')
@@ -126,7 +126,7 @@ class WorkFlow < ActiveRecord::Base
 								inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
 								left join timestamp_logs on wls.id = timestamp_logs.workflow_live_step_id
 								where #{q_string}
-								and l1s.status != 'Cancel' and wls.station_step_id in (select station_step_id from report_filter_steps where work_flow_id = #{workflow})
+								and LOWER(l1s.status) != 'cancel' and wls.station_step_id in (select station_step_id from report_filter_steps where work_flow_id = #{workflow})
 								order by l1s.name, l2s.name, l3s.name"
 				handoff_report_serach_exclude_canceled_result = ActiveRecord::Base.connection.select_all handoff_report__exclude_canceled_sql_query
                 return handoff_report_serach_exclude_canceled_result
@@ -147,7 +147,7 @@ class WorkFlow < ActiveRecord::Base
 								timestamp_logs.actual_confirmation,wls.eta, station_steps.step_name as step, workflow_stations.station_name as station, wls.id as wls_id, wls.object_type, timestamp_logs.id as log_id
 								from l1s
 								left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL
-								left join l3s on l3s.l2_id=l2s.id and l3s.completed_actual IS NULL
+								left join l3s on l3s.l2_id=l2s.id and l3s.completed_actual IS NULL and LOWER(l3s.status) != 'closed' 
 								inner join workflow_live_steps as wls on (wls.object_id = l1s.id and wls.object_type = 'L1') 
 								                               or (wls.object_id = l2s.id  and wls.object_type = 'L2') 
 								                               or (wls.object_id = l3s.id  and wls.object_type = 'L3')
@@ -175,8 +175,8 @@ class WorkFlow < ActiveRecord::Base
 								l1s.status as l1_status,l2s.status as l2_status,l3s.status as l3_status,wls.station_step_id, wls.is_active,
 								timestamp_logs.actual_confirmation,wls.eta, station_steps.step_name as step, workflow_stations.station_name as station, wls.id as wls_id, wls.object_type, timestamp_logs.id as log_id
 								from l1s
-								left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL and l2s.status != 'Cancel'
-								left join l3s on l3s.l2_id=l2s.id and l3s.completed_actual IS NULL and l3s.status != 'Cancel'
+								left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL and LOWER(l2s.status) != 'cancel'
+								left join l3s on l3s.l2_id=l2s.id and l3s.completed_actual IS NULL and LOWER(l3s.status) != 'closed' and LOWER(l3s.status) != 'cancel'
 								inner join workflow_live_steps as wls on (wls.object_id = l1s.id and wls.object_type = 'L1') 
 								                               or (wls.object_id = l2s.id  and wls.object_type = 'L2') 
 								                               or (wls.object_id = l3s.id  and wls.object_type = 'L3')
@@ -184,7 +184,7 @@ class WorkFlow < ActiveRecord::Base
 								inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
 								left join timestamp_logs on wls.id = timestamp_logs.workflow_live_step_id
 								where #{q_string}
-								and l1s.completed_actual IS NULL and l1s.status != 'Cancel' and wls.station_step_id in (select station_step_id from report_filter_steps where work_flow_id = #{workflow})
+								and l1s.completed_actual IS NULL and LOWER(l1s.status) != 'cancel' and wls.station_step_id in (select station_step_id from report_filter_steps where work_flow_id = #{workflow})
 								order by l1s.name, l2s.name, l3s.name"
 				handoff_report_serach_exclude_canceled_result = ActiveRecord::Base.connection.select_all handoff_report__exclude_canceled_sql_query
                 return handoff_report_serach_exclude_canceled_result
@@ -201,9 +201,11 @@ class WorkFlow < ActiveRecord::Base
 				habdoff_report_serach_unique = report_serach_result.select{|report| report['object_type'] == object_type and report[ll_id] == object_id}
 				
 				if habdoff_report_serach_unique.present?
+					status = 'Active1'
 					status = habdoff_report_serach_unique[0]['l3_status']
-					habdoff_report_serach_unique_l3_with_partials = report_serach_result.select{|report| report['object_type'] == object_type and report['l2_id'].to_i == habdoff_report_serach_unique[0]['l2_id'].to_i}
+					habdoff_report_serach_unique_l3_with_partials = report_serach_result.select{|report| report['object_type'] == object_type and report['l3_name'].split('-R')[0] == habdoff_report_serach_unique[0]['l3_name']}
 					if habdoff_report_serach_unique_l3_with_partials.present?
+						status = 'Activeww'
 						habdoff_report_serach_unique_l3_active_status = habdoff_report_serach_unique_l3_with_partials.select{|report| report['l3_status'].downcase == 'active' }
 						if habdoff_report_serach_unique_l3_active_status.present?
 							status = 'Active'
@@ -298,7 +300,9 @@ class WorkFlow < ActiveRecord::Base
 									else
 										habdoff_report_serach_unique_l3_with_partials = habdoff_report_serach_unique_l3_with_partials.select{|actual| actual['actual_confirmation'] != nil }
 										habdoff_report_actual_sorted = habdoff_report_serach_unique_l3_with_partials.sort_by { |h| h['actual_confirmation'] }.reverse!
-										time_stamp = habdoff_report_actual_sorted[0]['actual_confirmation'].strftime("%m/%d/%y")
+										if habdoff_report_actual_sorted.present?
+											time_stamp = habdoff_report_actual_sorted[0]['actual_confirmation'].strftime("%m/%d/%y")
+										end
 										table_td_class = 'report_actual_confirmation'
 									end
 								else
@@ -498,15 +502,15 @@ class WorkFlow < ActiveRecord::Base
 							workflow_stations.station_name as station,workflow_live_steps.id as wls_id, 
 							workflow_live_steps.object_type, timestamp_logs.id as log_id
 							from l1s
-							left join l2s on l1s.id = l2s.l1_id and l2s.status != 'Cancel'
-							left join l3s on l3s.l2_id=l2s.id and l3s.status != 'Cancel'
+							left join l2s on l1s.id = l2s.l1_id and LOWER(l2s.status) != 'cancel'
+							left join l3s on l3s.l2_id=l2s.id and LOWER(l3s.status) != 'cancel'
 							inner join workflow_live_steps on (workflow_live_steps.object_id = l1s.id and workflow_live_steps.object_type = 'L1') 
 							                               or (workflow_live_steps.object_id = l2s.id  and workflow_live_steps.object_type = 'L2') 
 							                               or (workflow_live_steps.object_id = l3s.id  and workflow_live_steps.object_type = 'L3')
 							inner join station_steps on workflow_live_steps.station_step_id = station_steps.id
 							inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
 							inner join timestamp_logs on workflow_live_steps.id = timestamp_logs.workflow_live_step_id
-           					where #{q_string} and l1s.status != 'Cancel' 
+           					where #{q_string} and LOWER(l1s.status) != 'cancel' 
            					order by l1s.name, l2s.name, l3s.name"
 				report_serach_result = ActiveRecord::Base.connection.select_all report_sql_query
                 return report_serach_result
@@ -527,15 +531,15 @@ class WorkFlow < ActiveRecord::Base
 							workflow_stations.station_name as station,workflow_live_steps.id as wls_id, 
 							workflow_live_steps.object_type, timestamp_logs.id as log_id
 							from l1s
-							left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL and l2s.status != 'Cancel'
-							left join l3s on l3s.l2_id=l2s.id and l3s.completed_actual IS NULL and l3s.status != 'Cancel'
+							left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL and LOWER(l2s.status) != 'cancel'
+							left join l3s on l3s.l2_id=l2s.id and l3s.completed_actual IS NULL and LOWER(l3s.status) != 'cancel'
 							inner join workflow_live_steps on (workflow_live_steps.object_id = l1s.id and workflow_live_steps.object_type = 'L1') 
 							                               or (workflow_live_steps.object_id = l2s.id  and workflow_live_steps.object_type = 'L2') 
 							                               or (workflow_live_steps.object_id = l3s.id  and workflow_live_steps.object_type = 'L3')
 							inner join station_steps on workflow_live_steps.station_step_id = station_steps.id
 							inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
 							inner join timestamp_logs on workflow_live_steps.id = timestamp_logs.workflow_live_step_id
-           					where #{q_string} and l1s.completed_actual IS NULL and l1s.status != 'Cancel' 
+           					where #{q_string} and l1s.completed_actual IS NULL and LOWER(l1s.status) != 'cancel' 
            					order by l1s.name, l2s.name, l3s.name"
 				report_serach_result = ActiveRecord::Base.connection.select_all report_sql_query
                 return report_serach_result
@@ -628,15 +632,15 @@ class WorkFlow < ActiveRecord::Base
 									workflow_live_steps.actual_confirmation as actual_confirmation, workflow_live_steps.eta as eta, 
 									station_steps.step_name as step, workflow_stations.station_name as station, workflow_live_steps.id as wls_id, workflow_live_steps.object_type as object_type
 									from l1s
-									left join l2s on l1s.id = l2s.l1_id and l2s.status != 'Cancel'
-									left join l3s on l3s.l2_id=l2s.id and l3s.status != 'Cancel'
+									left join l2s on l1s.id = l2s.l1_id and LOWER(l2s.status) != 'cancel'
+									left join l3s on l3s.l2_id=l2s.id and LOWER(l3s.status) != 'cancel'
 									inner join workflow_live_steps 
 										on (workflow_live_steps.object_id = l1s.id and workflow_live_steps.object_type = 'L1') 
 							            or (workflow_live_steps.object_id = l2s.id  and workflow_live_steps.object_type = 'L2') 
 							            or (workflow_live_steps.object_id = l3s.id  and workflow_live_steps.object_type = 'L3')
 									inner join station_steps on workflow_live_steps.station_step_id = station_steps.id
 									inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
-           							where #{q_string} and l1s.status != 'Cancel' 
+           							where #{q_string} and LOWER(l1s.status) != 'cancel' 
            							order by l1s.name, l2s.name, l3s.name"
 
 				report_serach_result = ActiveRecord::Base.connection.select_all report_sql_query
@@ -656,15 +660,15 @@ class WorkFlow < ActiveRecord::Base
 									workflow_live_steps.actual_confirmation as actual_confirmation, workflow_live_steps.eta as eta, 
 									station_steps.step_name as step, workflow_stations.station_name as station, workflow_live_steps.id as wls_id, workflow_live_steps.object_type as object_type
 									from l1s
-									left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL and l2s.status != 'Cancel'
-									left join l3s on l3s.l2_id=l2s.id and l3s.completed_actual IS NULL and l3s.status != 'Cancel'
+									left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL and LOWER(l2s.status) != 'cancel'
+									left join l3s on l3s.l2_id=l2s.id and l3s.completed_actual IS NULL and LOWER(l3s.status) != 'cancel'
 									inner join workflow_live_steps 
 										on (workflow_live_steps.object_id = l1s.id and workflow_live_steps.object_type = 'L1') 
 							            or (workflow_live_steps.object_id = l2s.id  and workflow_live_steps.object_type = 'L2') 
 							            or (workflow_live_steps.object_id = l3s.id  and workflow_live_steps.object_type = 'L3')
 									inner join station_steps on workflow_live_steps.station_step_id = station_steps.id
 									inner join workflow_stations on station_steps.workflow_station_id = workflow_stations.id
-           							where #{q_string} and l1s.completed_actual IS NULL and l1s.status != 'Cancel' 
+           							where #{q_string} and l1s.completed_actual IS NULL and LOWER(l1s.status) != 'cancel' 
            							order by l1s.name, l2s.name, l3s.name"
 
 				report_serach_result = ActiveRecord::Base.connection.select_all report_sql_query
@@ -763,6 +767,20 @@ class WorkFlow < ActiveRecord::Base
 				end
 
 				return [time_stamp, table_td_class]
+			end
+
+			def hide_object(report_serach_result, result, is_include_onhold)
+				habdoff_report_l3_with_partials = report_serach_result.select{|report| report['l3_status'].downcase != "onhold" and report['l3_name'].split('-R')[0] == result['l3_name']}
+				if !habdoff_report_l3_with_partials.present? and !is_include_onhold and result['l3_status'].downcase == "onhold"
+					return true
+				end
+			end
+
+			def hide_completed_object(report_serach_result, result, is_include_completed)
+				habdoff_report_l3_with_partials = report_serach_result.select{|report| report['l3_status'].downcase != "closed" and report['l3_name'].split('-R')[0] == result['l3_name']}
+				if !habdoff_report_l3_with_partials.present? and !is_include_completed and result['l3_completed_actual'].present? 
+					return true
+				end
 			end
 			# 
 			# * *Description* :
@@ -947,9 +965,9 @@ class WorkFlow < ActiveRecord::Base
 				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
 						l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
 						l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
-          				from l1s left join l2s on l1s.id = l2s.l1_id and l2s.status != 'Cancel' 
-          				left join l3s on l2s.id = l3s.l2_id and l3s.status != 'Cancel'
-       					where #{q_string} and l1s.status != 'Cancel' order by l1s.name"
+          				from l1s left join l2s on l1s.id = l2s.l1_id and LOWER(l2s.status) != 'cancel' 
+          				left join l3s on l2s.id = l3s.l2_id and LOWER(l3s.status) != 'cancel'
+       					where #{q_string} and LOWER(l1s.status) != 'cancel' order by l1s.name"
 				serach_result = ActiveRecord::Base.connection.select_all sql_query
                 return serach_result
 			end
@@ -983,9 +1001,9 @@ class WorkFlow < ActiveRecord::Base
 				sql_query = "Select l1s.id as l1_id, l1s.name as l1_name, l2s.id as l2_id, l2s.name as l2_name, 
 						l3s.id as l3_id, l3s.name as l3_name, l1s.status as l1_status, l2s.status as l2_status, l3s.status as l3_status,
 						l1s.business_unit as l1_bu, l2s.business_unit as l2_bu, l3s.business_unit as l3_bu
-          				from l1s left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL and l2s.status != 'Cancel'
-          				left join l3s on l2s.id = l3s.l2_id and l3s.completed_actual IS NULL and l3s.status != 'Cancel'
-       					where #{q_string} and l1s.completed_actual IS NULL and l1s.status != 'Cancel' order by l1s.name"
+          				from l1s left join l2s on l1s.id = l2s.l1_id and l2s.completed_actual IS NULL and LOWER(l2s.status) != 'cancel'
+          				left join l3s on l2s.id = l3s.l2_id and l3s.completed_actual IS NULL and LOWER(l3s.status) != 'cancel'
+       					where #{q_string} and l1s.completed_actual IS NULL and LOWER(l1s.status) != 'cancel' order by l1s.name"
 				serach_result = ActiveRecord::Base.connection.select_all sql_query
                 return serach_result
 			end

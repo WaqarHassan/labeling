@@ -578,6 +578,15 @@ class OverviewController < ApplicationController
       merge_partial_with_parent(partial_to_merge_id, rework_object_type, rework_date_time)
     else  
      mew_rework_info_object = ReworkInfo.create(rework_info_params)
+     codes = params[:rework_info][:reason]
+        if codes.present?
+          ids  = ""
+          codes.each do |d|
+            ids += d + ','
+          end
+          ids  = ids.chop
+        end
+     mew_rework_info_object.update(:reason => ids)
      
      reset_type = params[:reset_type]
      move_original_record_back_to_step = params[:move_original_record_back_to_step]
@@ -1323,7 +1332,7 @@ class OverviewController < ApplicationController
         :work_flow_id, :info_timestamp, :note, :user_id)
     end
     def rework_info_params
-      params.require(:rework_info).permit(:object_id, :object_type, :reason, :note ,:user_id ,:step_initiating_rework ,
+      params.require(:rework_info).permit(:object_id, :object_type, :note ,:user_id ,:step_initiating_rework ,
         :rework_start_step)
     end
     def workflow_live_step_params

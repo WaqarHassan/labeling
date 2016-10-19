@@ -108,7 +108,7 @@ en:
   #           name:
   #             taken: 'must be unique test 3'
   errors:
-    unknown: 'Error occurs while saving data!'
+    unknown: 'Error occurs while processing data!'
 
   unauthorized:
     default: 'Sorry, you are not authorized to access the requested page.'

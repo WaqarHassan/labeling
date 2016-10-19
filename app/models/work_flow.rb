@@ -770,14 +770,16 @@ class WorkFlow < ActiveRecord::Base
 			end
 
 			def hide_object(report_serach_result, result, is_include_onhold)
-				habdoff_report_l3_with_partials = report_serach_result.select{|report| report['l3_status'].downcase != "onhold" and report['l3_name'].split('-R')[0] == result['l3_name']}
+				habdoff_report_l3_sttaus = report_serach_result.select{|report| report['l3_status'] != nil}
+				habdoff_report_l3_with_partials = habdoff_report_l3_sttaus.select{|report| report['l3_status'].downcase != "onhold" and report['l3_name'].split('-R')[0] == result['l3_name']}
 				if !habdoff_report_l3_with_partials.present? and !is_include_onhold and result['l3_status'].downcase == "onhold"
 					return true
 				end
 			end
 
 			def hide_completed_object(report_serach_result, result, is_include_completed)
-				habdoff_report_l3_with_partials = report_serach_result.select{|report| report['l3_status'].downcase != "closed" and report['l3_name'].split('-R')[0] == result['l3_name']}
+				habdoff_report_l3_sttaus = report_serach_result.select{|report| report['l3_status'] != nil}
+				habdoff_report_l3_with_partials = habdoff_report_l3_sttaus.select{|report| report['l3_status'].downcase != "closed" and report['l3_name'].split('-R')[0] == result['l3_name']}
 				if !habdoff_report_l3_with_partials.present? and !is_include_completed and result['l3_completed_actual'].present? 
 					return true
 				end

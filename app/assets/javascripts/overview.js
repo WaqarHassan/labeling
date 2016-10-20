@@ -74,6 +74,7 @@ function resetSearchResult(){
 	dataHtml += '</div>';
 	dataHtml += '</div>';
 	$('#search_result_div').html(dataHtml);
+	$('#search_ecr').focus();
 }
 //This Fiunction clears values in the form fields of search panel of Reports
 function resetReportSearch(){

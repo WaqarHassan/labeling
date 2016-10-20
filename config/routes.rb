@@ -57,6 +57,7 @@ Rails.application.routes.draw do
 
       match 'handoff', via: [:get, :post]
       match 'daily-activity', via: [:get, :post]
+      get 'download-handoff-report'
     end
   end
 

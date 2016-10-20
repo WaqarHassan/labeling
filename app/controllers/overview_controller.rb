@@ -1156,14 +1156,9 @@ class OverviewController < ApplicationController
     session.delete(:filter_object_type)
     session.delete(:include_canceled)
     session.delete(:include_completed)
-    @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
-    @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
-    @workflows = WorkFlow.where(is_active: true, is_in_use: false)
-    @l1s = @workflow.l1s.where(status: 'Active').order(:id)
     respond_to do |format|
-      format.html
-      format.js
-    end 
+      format.json { render json: {status: 'success', message: 'search cleared'}, status: 200 }
+    end
 
   end
 

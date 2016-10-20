@@ -303,6 +303,14 @@ class ReportsController < ApplicationController
   	# * *Description* :
   	#   - It is a backup function for HandOff 
   	#
+
+  	def download_handoff_report
+  		report_result = WorkFlow.handoff_report_stored_procedure 
+  		respond_to do |format|
+	      format.csv { render text: WorkFlow.to_csv(report_result) }
+	    end
+  	end
+  	
 	def handoff_aaa
 		@task_confirmation = true
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)

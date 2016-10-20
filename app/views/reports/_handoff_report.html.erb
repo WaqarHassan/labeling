@@ -47,6 +47,7 @@
               if l1_name != result['l1_name']
                 l1_name = result['l1_name'] 
                 if !@is_include_onhold and result['l1_status'].downcase == "onhold"
+                elsif !@is_include_onhold and result['l2_status'].downcase == "onhold"
                 else %>
                   <tr style="background-color:lightyellow">
                     <td colspan="3" title="<%= @workflow.L1 %>">
@@ -138,7 +139,7 @@
             <% end 
               end 
               if result['l3_id'].presence 
-                is_hide_object = WorkFlow.hide_object(@report_serach_result, result, @is_include_onhold)
+                is_hide_object = WorkFlow.hide_object(@report_serach_result, result, @is_include_onhold, @is_include_completed)
                 is_hide_completed_object = WorkFlow.hide_completed_object(@report_serach_result, result, @is_include_completed)
                 if is_hide_object 
                 elsif !@is_include_onhold and result['l1_status'].downcase == "onhold" 

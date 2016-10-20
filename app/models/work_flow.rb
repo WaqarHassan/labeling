@@ -1018,7 +1018,7 @@ class WorkFlow < ActiveRecord::Base
 
 
 			def handoff_report_stored_procedure (bu, l1, l2, l3, include_completed, include_cancel, include_onhold)
-				result = ActiveRecord::Base.connection.execute("call handoff_report('#{bu}', '#{l1}', '#{l2}', '#{l3}', #{include_cancel}, #{include_completed}, #{include_onhold})")
+				result = ActiveRecord::Base.connection.execute("call handoff_report('#{bu}', '#{l1}', '#{l2}', '#{l3}', #{include_completed}, #{include_cancel}, #{include_onhold})")
 				return result
 			end
 

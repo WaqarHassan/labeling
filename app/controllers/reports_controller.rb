@@ -313,6 +313,7 @@ class ReportsController < ApplicationController
 
   	def download_handoff_report
   		search_params = session[:search_csv]
+  		session.delete(:search_csv)
   		search_parm = search_csv(search_params)
   		bu = search_parm[0]
   		l1 = search_parm[1]

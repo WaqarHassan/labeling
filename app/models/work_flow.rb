@@ -1019,15 +1019,14 @@ class WorkFlow < ActiveRecord::Base
 
 			def handoff_report_stored_procedure
 				result = ActiveRecord::Base.connection.execute("call handoff_report('%', '%', 'IA-01446%', '%', #{true}, #{true}, #{true})")
-				puts "----------------#{result.inspect}"
 				return result
 			end
 
 			def to_csv(data_set)
 				CSV.generate do |csv|
 			      csv <<  ['Project', 'Proj-Status', 'Proj-Completed', 'IA', 'IA-Status', 'IA-Completed', 'BU', 'IA #Comp', 'ECR', 'ECR-Status', 'ECR-Completed', 'ECR #Comp', 'ParentId', 'Parent', 'IA Approved', 'ECR Inbox', 'Sent to Collab', 'Back from Collab', 'Station8 Sent', 'CRB Started - ETA', 'CRB Started', 'ECN Released', 'Horw', '#Lang', 'CompType', 'MainRecord', 'IA-HoldReason', 'IncludeCompleted']
-			      data_set.each do |product|
-			        csv <<  ["wwww", "sss", "ccc", "rrr"]
+			      data_set.each do |report|
+			        csv <<  [report[0], report[1], report[2], report[3], report[4], report[5], report[6], report[7], report[8], report[9], report[10], report[11], report[12], report[13], report[14], report[15], report[16], report[17], report[18], report[19], report[20], report[21], report[22], report[23], report[24], report[25], report[26], report[27], report[28]]
 			      end
 			    end
 			end

@@ -216,7 +216,79 @@ class ReportsController < ApplicationController
   	# * *Description* :
   	#   - It gets HandOff data of given Osbject
   	#
-	def handoff
+  	def handoff
+		@workflows = [] #WorkFlow.where(is_active: true, is_in_use: false)
+		workflows = WorkFlow.where(is_active: true, is_in_use: false)
+		workflows.each do |wk|
+			@workflows << wk
+		end
+		@filtered_station_steps = []
+	    filtered_station_steps = @workflow.report_filter_steps.eager_load(:station_step => [:workflow_station]).order(:sequence)
+		filtered_station_steps.each do |fss|
+			@filtered_station_steps << fss
+		end
+		@stationSteps = []
+		station_steps = StationStep.eager_load(:workflow_station)
+		station_steps.each do |stp|
+			@stationSteps << stp
+		end
+
+    	if request.post?
+    		params_list = params
+    		session[:report_wildcard] = params[:wildcard]
+		    session[:report_exact] = params[:exact]
+
+    		session[:params_search] = params_list 
+  			search_parm = search_csv(params_list)
+  		else
+  			params_list = session[:params_search]
+		    if session[:report_wildcard].present?
+		      @wildcard = session[:report_wildcard]
+		    end
+		    if session[:report_exact].present?
+		      @exact = session[:report_exact]
+		    end
+
+		    if params_list.present?
+  				search_parm = search_csv(params_list)
+  			end
+  		end	
+
+  		if params_list.present?
+	  		bu = search_parm[0]
+	  		l1 = search_parm[1]
+	  		l2 = search_parm[2]
+	  		l3 = search_parm[3]
+			
+			if params_list[:report_include_canceled].presence
+	    		include_cancel = true
+	    		@report_include_canceled = 'report_include_canceled'
+	    	else
+	    		include_cancel = false
+	    	end
+	    	if params_list[:report_include_onhold].presence
+	    		include_onhold = true
+	    		@report_include_onhold = 'report_include_onhold'
+	    	else
+	    		include_onhold = false
+	    	end
+			if params_list[:report_include_completed].presence
+	    		include_completed = true
+	    		@report_include_completed = 'report_include_completed'
+	    	else
+	    		include_completed = false
+	    	end	
+
+			puts "----:#{bu}---: #{l1}---:#{l2}---:#{l3}----:#{include_cancel}----:#{include_onhold}----:#{include_completed}"
+	  		@serach_result = []
+	  		serach_result = WorkFlow.handoff_report_stored_procedure(bu, l1, l2, l3, include_completed, include_cancel, include_onhold)
+  			serach_result.each do |result|
+  				@serach_result << result
+  			end
+
+  		end
+  	end
+	def handoff_my_query
 		@task_confirmation = true
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
 	    @report_include_canceled = session[:report_include_canceled]
@@ -313,6 +385,7 @@ class ReportsController < ApplicationController
 
   	def download_handoff_report
   		search_params = session[:search_csv]
+  		session.delete(:search_csv)
   		search_parm = search_csv(search_params)
   		bu = search_parm[0]
   		l1 = search_parm[1]

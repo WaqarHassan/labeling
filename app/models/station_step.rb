@@ -94,13 +94,14 @@ class StationStep < ActiveRecord::Base
 	    # * *Description* :
 	    #   - It creates a string that is displayed as Station Step heading to show how ETA calculations are done.
 	    #
-		def get_step_predecessors(predecessors)
+		def get_step_predecessors(predecessors, stationSteps)
 			pred_name = "\n" 
 			if predecessors.present?
 				predecessors_list = predecessors.split(',')
 				if predecessors_list.presence
 					predecessors_list.each do |pred|
-						pred_station_step = StationStep.eager_load(:workflow_station).find_by_id(pred)
+						pred_station_step = stationSteps.select{|st| st.id == pred.to_i}
+						pred_station_step = pred_station_step.first
 						pred_name = pred_name+'*'+pred_station_step.workflow_station.station_name+' - '+pred_station_step.step_name
 						pred_name = pred_name+"\n"
 					end

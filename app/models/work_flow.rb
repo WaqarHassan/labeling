@@ -219,12 +219,105 @@ class WorkFlow < ActiveRecord::Base
 				end
 				return status			
 			end
+
+			def get_rollUp_l3_status(data_set)
+				statuses = []
+				status = 'Closed'
+				data_set.each do |data|
+					statuses << data[9].downcase
+				end
+
+				if statuses.include? 'active'
+					status = 'Active'
+				elsif  statuses.include? 'onhold'
+					status = 'onHold'
+				end	
+							
+				return status			
+			end
 			# 
 			# * *Arguments* :
 			#   - query string
 			# * *Description* :
 			#   - It recalculate ETAs for HandOff report roll up.
 			# 
+
+			def get_rollUp_l3_timestamps(dataSet, indx, ecr_inbox_date, workflow, number_days)
+				max_date = 'N/A'
+				max_date2 = ''
+				any_eta_step = dataSet.select{|eta| eta[indx].to_i==1}
+				if any_eta_step.present?
+					ecr_inbox_date = DateTime.parse(ecr_inbox_date.to_s) rescue nil
+					if ecr_inbox_date
+						# Covnert minutes to hours and minutes
+					  	BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
+					    BusinessTime::Config.end_of_workday = workflow.end_of_workday
+
+					    workflow.holidays.each do |holiday|
+					       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
+					    end
+						actual_confirmation = actual_confirmation.to_time.strftime('%Y-%m-%d %H:%M')
+						eta_datetime = Time.parse(actual_confirmation)
+						
+						if number_days > 0
+							eta_datetime =  number_days.business_days.after(eta_datetime)
+						end
+
+						eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
+						max_date = "ETA "+eta_date_stamp
+						if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
+							table_td_class = 'report_eta_light_red'
+						end
+					end
+				else
+					ind = 0
+					dataSet.each do |data|
+						date_parsed = DateTime.parse(data[indx].to_s) rescue nil
+						if date_parsed
+							ind +=1
+							if ind == 1
+								max_date = date_parsed.strftime("%m/%d/%y")
+								max_date2 = date_parsed
+							elsif DateTime.parse(max_date2.to_s) < DateTime.parse(date_parsed.to_s)
+								max_date = date_parsed.strftime("%m/%d/%y")
+							end
+
+							table_td_class = 'report_actual_confirmation'
+						end
+					end
+				end
+
+				return [max_date, table_td_class]
+			end
+			
+			def get_rollUp_l3_crb_started_timestamps(dataSet, eta_indx, actual_indx, sent_to_collab_actual,station8_sent_actual, 
+				workflow, days_at_collab, days_at_station8)
+				max_date = ''
+				max_date2 = ''
+				table_td_class = ''
+				any_eta_step = dataSet.select{|eta| eta[actual_indx].to_i==1}
+				if any_eta_step.present?
+				else
+					ind = 0
+					dataSet.each do |data|
+						date_parsed = DateTime.parse(data[actual_indx].to_s) rescue nil
+						if date_parsed
+							ind +=1
+							if ind == 1
+								max_date = date_parsed.strftime("%m/%d/%y")
+								max_date2 = date_parsed
+							elsif DateTime.parse(max_date2.to_s) < DateTime.parse(date_parsed.to_s)
+								max_date = date_parsed.strftime("%m/%d/%y")
+							end
+
+							table_td_class = 'report_actual_confirmation'
+						end
+					end
+				end
+
+				return [max_date, table_td_class]
+			end
+			
 			def get_time_stamp(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
 				time_stamp = ""
 				table_td_class = ""
@@ -1016,9 +1109,8 @@ class WorkFlow < ActiveRecord::Base
 
 			# -------------end general search--------------------
 
-
 			def handoff_report_stored_procedure (bu, l1, l2, l3, include_completed, include_cancel, include_onhold)
-				result = ActiveRecord::Base.connection.execute("call handoff_report('#{bu}', '#{l1}', '#{l2}', '#{l3}', #{include_cancel}, #{include_completed}, #{include_onhold})")
+				result = ActiveRecord::Base.connection.execute("call handoff_report('#{bu}', '#{l1}', '#{l2}', '#{l3}', #{include_completed}, #{include_cancel}, #{include_onhold})")
 				return result
 			end
 

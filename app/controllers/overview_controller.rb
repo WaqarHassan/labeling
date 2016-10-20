@@ -475,6 +475,16 @@ class OverviewController < ApplicationController
         format.js
       end
   end
+  def get_reasons_and_stations
+    @reasons = ReasonCode.where(status: params[:additional_info][:status],
+     recording_level: params[:l_type] ).order(:sequence)
+    @stations = @workflow.workflow_stations
+    @status = params[:additional_info][:status]
+      respond_to do |format|
+        format.html
+        format.js
+      end
+  end
  
   #
   # * *Description* :
@@ -1325,11 +1335,11 @@ class OverviewController < ApplicationController
     
     def additional_info_params
       params.require(:additional_info).permit(:object_id, :object_type, :status,
-       :workflow_station_id, :info_timestamp, :work_flow_id, :note, :user_id, :reason_code_id)
+       :workflow_station_id, :info_timestamp, :work_flow_id,   :note, :user_id, :reason_code_id)
     end
     def additional_info_params_note_only
       params.require(:additional_info).permit(:object_id, :object_type,
-        :work_flow_id, :info_timestamp, :note, :user_id)
+        :work_flow_id, :info_timestamp, :note , :user_id)
     end
     def rework_info_params
       params.require(:rework_info).permit(:object_id, :object_type, :note ,:user_id ,:step_initiating_rework ,

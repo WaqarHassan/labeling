@@ -35,9 +35,10 @@ CREATE TABLE `additional_infos` (
   `user_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
+  `station` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_additional_infos_index` (`work_flow_id`,`object_id`,`object_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=1955 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1962 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,7 +75,7 @@ CREATE TABLE `attribute_values` (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `index_attribute_values_on_object_id_and_object_type` (`object_id`,`object_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=2440 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2447 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,7 +190,7 @@ CREATE TABLE `l1s` (
   KEY `index_l1s_on_business_unit` (`business_unit`(255)),
   KEY `index_l1s_on_name_and_business_unit` (`name`,`business_unit`(255)),
   KEY `index_l1s_on_name_and_business_unit_and_work_flow_id` (`name`,`business_unit`(255),`work_flow_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1227 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1228 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -221,7 +222,7 @@ CREATE TABLE `l2s` (
   KEY `index_l2s_on_name` (`name`),
   KEY `index_l2s_on_business_unit` (`business_unit`),
   KEY `index_l2s_on_name_and_business_unit` (`name`,`business_unit`)
-) ENGINE=InnoDB AUTO_INCREMENT=1238 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1239 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -255,7 +256,7 @@ CREATE TABLE `l3s` (
   KEY `index_l3s_on_name` (`name`),
   KEY `index_l3s_on_business_unit` (`business_unit`),
   KEY `index_l3s_on_name_and_business_unit` (`name`,`business_unit`)
-) ENGINE=InnoDB AUTO_INCREMENT=1602 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1604 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -378,7 +379,7 @@ CREATE TABLE `rework_infos` (
   `created_at` datetime NOT NULL,
   `note` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -458,7 +459,7 @@ CREATE TABLE `timestamp_logs` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11643 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12800 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -578,7 +579,7 @@ CREATE TABLE `workflow_live_steps` (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `index_workflow_live_steps_on_object_id_and_object_type` (`object_id`,`object_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=22004 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22045 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -610,7 +611,7 @@ CREATE TABLE `workflow_stations` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-10-19 12:10:32
+-- Dump completed on 2016-10-20 14:20:54
 INSERT INTO schema_migrations (version) VALUES ('20130909170542');
 
 INSERT INTO schema_migrations (version) VALUES ('20130909194719');
@@ -724,4 +725,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161013080148');
 INSERT INTO schema_migrations (version) VALUES ('20161013093312');
 
 INSERT INTO schema_migrations (version) VALUES ('20161019062502');
+
+INSERT INTO schema_migrations (version) VALUES ('20161020091815');
 

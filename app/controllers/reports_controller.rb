@@ -177,7 +177,7 @@ class ReportsController < ApplicationController
 			date = L1.set_db_date_format(@daily_report_date)
 			q_string = "STR_TO_DATE( '#{date}', '%Y-%m-%d') = STR_TO_DATE(timestamp_logs.created_at, '%Y-%m-%d')"
 			workflow = params[:work_flow]
-			if workflow.present?
+			if workflow.present?     
 				@searched_work_flow = workflow
 				q_string += "and timestamp_logs.work_flow_id = #{workflow}"
 			else

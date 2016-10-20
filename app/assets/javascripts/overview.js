@@ -74,6 +74,7 @@ function resetSearchResult(){
 	dataHtml += '</div>';
 	dataHtml += '</div>';
 	$('#search_result_div').html(dataHtml);
+	$('#search_ecr').focus();
 }
 //This Fiunction clears values in the form fields of search panel of Reports
 function resetReportSearch(){
@@ -248,5 +249,14 @@ function turn_off_oops_mode(){
         href_id = $(this).attr('id');
         href_value = $(this).attr('href');
     });
+}
+
+function download_search_csv(){
+	new_hrf = '/reports/download-handoff-report-data';
+	curr_url = $('#search_form').attr('action')
+	$('#search_form').attr('action',new_hrf);
+	$('#search_form').submit();
+	$('#search_form').attr('action',curr_url);
+	return true;
 }
 

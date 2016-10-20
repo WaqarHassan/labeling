@@ -113,14 +113,21 @@
 								<div class="row">
 									<div class="col-lg-2">
 									</div>
-										<div class="col-lg-5">
+										    <div class="col-lg-5">
 												<input type="submit" value="Search" class="btn save-print-update-edit-btn" onclick="show_waiting_bar();">
 											</div>
 											<div class="col-lg-5">
 												<a href="/overview/clear_search" data-remote="true" 
 												onclick="resetSearchResult();" class="btn btn-danger">Clear</a>
 											</div>
+								</div>
+								<div class="row">
+								<div class="col-lg-2">
+								</div>
+									<div class="col-lg-6">
+										<a href="/reports/download-handoff-report.csv" value="Download CSV" onclick="return download_search_csv();" class="btn save-print-update-edit-btn">Download CSV</a>
 									</div>
+							</div>
 							</div>
 				</div>
 			<% end %>  

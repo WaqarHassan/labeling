@@ -769,11 +769,15 @@ class WorkFlow < ActiveRecord::Base
 				return [time_stamp, table_td_class]
 			end
 
-			def hide_object(report_serach_result, result, is_include_onhold)
+			def hide_object(report_serach_result, result, is_include_onhold, is_include_completed)
 				habdoff_report_l3_sttaus = report_serach_result.select{|report| report['l3_status'] != nil}
 				habdoff_report_l3_with_partials = habdoff_report_l3_sttaus.select{|report| report['l3_status'].downcase != "onhold" and report['l3_name'].split('-R')[0] == result['l3_name']}
 				if !habdoff_report_l3_with_partials.present? and !is_include_onhold and result['l3_status'].downcase == "onhold"
 					return true
+				elsif !is_include_onhold and !is_include_completed
+					if !habdoff_report_l3_with_partials.present? and result['l3_status'].downcase == "closedvqdfgd"
+						return true
+					end
 				end
 			end
 
@@ -1011,6 +1015,25 @@ class WorkFlow < ActiveRecord::Base
 			end
 
 			# -------------end general search--------------------
+
+
+			def handoff_report_stored_procedure (bu, l1, l2, l3, include_completed, include_cancel, include_onhold)
+				result = ActiveRecord::Base.connection.execute("call handoff_report('#{bu}', '#{l1}', '#{l2}', '#{l3}', #{include_cancel}, #{include_completed}, #{include_onhold})")
+				return result
+			end
+
+			def to_csv(data_set)
+				CSV.generate do |csv|
+			      csv <<  ['Project', 'Proj-Status', 'Proj-Completed', 'IA', 'IA-Status', 'IA-Completed',
+			      		 'BU', 'IA #Comp', 'ECR', 'ECR-Status', 'ECR-Completed', 'ECR #Comp', 'ParentId',
+			      		  'Parent', 'IA Approved', 'ECR Inbox', 'Sent to Collab', 'Back from Collab', 
+			      		  'Station8 Sent', 'CRB Started - ETA', 'CRB Started', 'ECN Released', 'Horw', 
+			      		  '#Lang', 'CompType', 'MainRecord', 'IA-HoldReason','ECR-HoldReason', 'IncludeCompleted']
+			      data_set.each do |report|
+			        csv <<  [report[0], report[1], report[2], report[3], report[4], report[5], report[6], report[7], report[8], report[9], report[10], report[11], report[12], report[13], report[14], report[15], report[16], report[17], report[18], report[19], report[20], report[21], report[22], report[23], report[24], report[25], report[26], report[27], report[28]]
+			      end
+			    end
+			end
 
 		end
 end

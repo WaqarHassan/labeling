@@ -1,0 +1,16 @@
+
+<%if @status == 'OnHold'%>
+	<div class="form-group">
+		<label class="col-lg-4 control-label">Reason</label>
+		<div class="col-lg-6">
+			<%= select_tag "additional_info[reason_code_id]", options_from_collection_for_select(@reasons, 'id', 'reason'),prompt: 'please select Reason', :class=>'form-control pnd-reqst pull-left', :required => true, :multiple => true, :size => 8%> 
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-lg-4 control-label">Station</label>
+		<div class = "col-lg-6">
+			<%= select_tag "additional_info[workflow_station_id]", options_from_collection_for_select(@stations, 'id', 'station_name'),prompt: 'please select station', :class=>'form-control pnd-reqst pull-left' , :required => true %> 
+		</div>
+	</div>
+<%else%>
+<%end%>

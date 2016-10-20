@@ -304,13 +304,44 @@ class ReportsController < ApplicationController
   	#   - It is a backup function for HandOff 
   	#
 
+  	def download_handoff_report_data
+  		session[:search_csv] = params
+	  	respond_to do |format|
+	      format.json { render json: {status: 'success', message: 'search cleared'}, status: 200 }
+	    end
+  	end
+
   	def download_handoff_report
-  		report_result = WorkFlow.handoff_report_stored_procedure 
+  		search_params = session[:search_csv]
+  		search_parm = search_csv(search_params)
+  		bu = search_parm[0]
+  		l1 = search_parm[1]
+  		l2 = search_parm[2]
+  		l3 = search_parm[3]
+		
+		if search_params[:report_include_canceled].presence
+    		include_cancel = true
+    	else
+    		include_cancel = false
+    	end
+    	if search_params[:report_include_onhold].presence
+    		include_onhold = true
+    	else
+    		include_onhold = false
+    	end
+		if search_params[:report_include_completed].presence
+    		include_completed = true
+    	else
+    		include_completed = false
+    	end	
+
+		puts "----:#{bu}---: #{l1}---:#{l2}---:#{l3}----:#{include_cancel}----:#{include_onhold}----:#{include_completed}"
+  		report_result = WorkFlow.handoff_report_stored_procedure(bu, l1, l2, l3, include_completed, include_cancel, include_onhold)
   		respond_to do |format|
 	      format.csv { render text: WorkFlow.to_csv(report_result) }
 	    end
   	end
-  	
+
 	def handoff_aaa
 		@task_confirmation = true
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
@@ -587,6 +618,50 @@ class ReportsController < ApplicationController
 		    end
 
 		    return [serach_result, q_string_return]
+		end	
+
+		def search_csv(params_list)
+		    wildcard_bu = params_list[:wildcard][:business_unit]
+		    if wildcard_bu.presence
+		      bu = "%#{wildcard_bu}%"
+		    else
+		      bu =  '%'
+		    end
+		    wildcard_l1 = params_list[:wildcard][:l1]
+		    if wildcard_l1.presence
+		    	l1 = "%#{wildcard_l1}%"
+		    else
+		    	l1 = '%'
+		    end
+		    wildcard_l2 = params_list[:wildcard][:l2]
+		    if wildcard_l2.presence
+		    	l2 = "%#{wildcard_l2}%"
+		    else
+		    	l2 = '%'
+		    end
+		    wildcard_l3 = params_list[:wildcard][:l3]
+		    if wildcard_l3.presence
+		    	l3 = "%#{wildcard_l3}%"
+		    else
+		    	l3 = '%'
+		    end
+
+		    exact_bu = params_list[:exact][:business_unit]
+		    if exact_bu.presence
+		      bu = "#{exact_bu}"
+		    end
+		  
+		    exact_l2 = params_list[:exact][:l2]
+		    if exact_l2.presence
+		    	l2 = "#{exact_l2}"
+		    end
+
+		    exact_l3 = params_list[:exact][:l3]
+		    if exact_l3.presence
+		    	l3 = "#{exact_l3}"
+		    end
+
+		    return [bu,l1,l2,l3]
 		end	
 
 end

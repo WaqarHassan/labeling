@@ -249,3 +249,12 @@ function turn_off_oops_mode(){
     });
 }
 
+function download_search_csv(){
+	new_hrf = '/reports/download-handoff-report-data';
+	curr_url = $('#search_form').attr('action')
+	$('#search_form').attr('action',new_hrf);
+	$('#search_form').submit();
+	$('#search_form').attr('action',curr_url);
+	return true;
+}
+

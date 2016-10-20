@@ -68,16 +68,23 @@
         <div class="form-group">
          <label class="col-lg-4 control-label">Status</label>
           <div class="col-lg-6">
-            <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status',@status_), {prompt: "please select status"},{:'data-remote' => 'true',:'data-url' => url_for(get_reasons_path(@type)),  :class=>'form-control pnd-reqst pull-left'}  %> 
+            <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status',@status_), {prompt: "please select status"},{:'data-remote' => 'true',:'data-url' => url_for(get_reasons_and_stations_path(@type)),  :class=>'form-control pnd-reqst pull-left'}  %> 
           </div>
+        </div> 
+        <div id = 'get_reasons_and_stations_div'>
+           <!-- <div class="form-group">
+              <label class="col-lg-4 control-label">Station </label>
+                <div class="col-lg-6" id= "get_reasons_div">
+                  <select size="8" multiple="multiple" class="form-control pnd-reqst pull-left" id="additional_info_reason_code_id" name="additional_info[reason_code_id][]"><option value="">please select Status to render reasons</option></select>
+                </div>
+            </div>
+           <div class="form-group">
+              <label class="col-lg-4 control-label">Reason </label>
+                <div class="col-lg-6" id= "get_reasons_div">
+                  <select size="8" multiple="multiple" class="form-control pnd-reqst pull-left" id="additional_info_reason_code_id" name="additional_info[reason_code_id][]" required><option value="">please select Status to render reasons</option></select>
+                </div>
+            </div> -->
         </div>
-
-     <div class="form-group">
-        <label class="col-lg-4 control-label">Reason </label>
-          <div class="col-lg-6" id= "get_reasons_div">
-            <select size="8" multiple="multiple" class="form-control pnd-reqst pull-left" id="additional_info_reason_code_id" name="additional_info[reason_code_id][]"><option value="">please select Status to render reasons</option></select>
-          </div>
-      </div>
      
 
     <div class="form-group">
@@ -121,7 +128,10 @@
                     <strong>Station:</strong> <%= add_info.workflow_station.station_name %>
                     <br>
                   <% end %>
+                  <%#if add_info.station.present? %>
+                   <!-- <strong> Station:</strong> -->
 
+                  <%#end%>
                   <% if add_info.reason_code_id.present? %>
                     <strong>Reason:</strong> 
                     <%= AdditionalInfo.get_reasons(add_info.reason_code_id).html_safe %>

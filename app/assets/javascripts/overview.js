@@ -176,7 +176,9 @@ function show_waiting_bar(){
 
 //This Function displays progress bar pop-up
 function show_waiting_bar_addInfo(){
-	$('#myPleaseWait').modal('show');
+	if ($("#info_modal_form").valid() == true){
+			$('#myPleaseWait').modal('show');
+		}
 }
 // Dummy Fucntion . Not works now
 function selectOnlyThis(thisBox){

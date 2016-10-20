@@ -29,36 +29,38 @@
                 @l1_results = WorkFlow.do_search_report(@report_serach_result, 'L1', result['l1_id'], 'l1_id')
                 if @l1_results.present? 
                   @l1_results.each do |l1_result| %>
-                    <tr>
-                      <td>
-                        <%= link_to l1_result['l1_name'], open_info_modal_l1_path(l1_result['l1_id'],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
-                        <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
-                        <%= hidden_field_tag 'object_type', 'L1' %>
-                        <%= hidden_field_tag 'object_id', l1_result['l1_id'] %>
-                        <%= button_tag(type: "submit", class: "btn report_main_link") do %>
-                            <span class="glyphicon glyphicon-new-window"></span>
+                    <%# if  l1_result['actual_confirmation'].present? %>
+                      <tr>
+                        <td>
+                          <%= link_to l1_result['l1_name'], open_info_modal_l1_path(l1_result['l1_id'],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                          <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                          <%= hidden_field_tag 'object_type', 'L1' %>
+                          <%= hidden_field_tag 'object_id', l1_result['l1_id'] %>
+                          <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                              <span class="glyphicon glyphicon-new-window"></span>
+                          <% end %>
                         <% end %>
-                      <% end %>
-                      </td>
-                      <td></td>
-                      <td></td>
-                      <td>
-                        <%= l1_result['updated_at'].strftime("%m/%d/%y") %>
-                        <br />
-                        <%= l1_result['updated_at'].strftime("%I:%M %p") %>
-                      </td>
-                      <td><%= l1_result['updated_by'] %></td>
-                      <td>
-                        <%= l1_result['actual_confirmation'].strftime("%m/%d/%y") %>
-                        <br />
-                        <%= l1_result['actual_confirmation'].strftime("%I:%M %p") %>
-                      </td>
-                      <td><%= l1_result['station'] %></td>
-                      <td><%= l1_result['step'] %></td>
-                    </tr>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          <%= l1_result['updated_at'].strftime("%m/%d/%y") %>
+                          <br />
+                          <%= l1_result['updated_at'].strftime("%I:%M %p") %>
+                        </td>
+                        <td><%= l1_result['updated_by'] %></td>
+                        <td>
+                          <%= l1_result['actual_confirmation'].strftime("%m/%d/%y") %>
+                          <br />
+                          <%= l1_result['actual_confirmation'].strftime("%I:%M %p") %>
+                        </td>
+                        <td><%= l1_result['station'] %></td>
+                        <td><%= l1_result['step'] %></td>
+                      </tr>
+                    <%#end%>
                   <% end %>
-                <% else %>
-                    <tr>
+                <%# else %>
+                    <!-- <tr>
                       <td>
                         <%= link_to result['l1_name'], open_info_modal_l1_path(result['l1_id'],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
                         <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
@@ -76,7 +78,7 @@
                       <td></td>
                       <td></td>
                       <td></td>
-                    </tr>
+                    </tr> -->
              <% end 
               end
 

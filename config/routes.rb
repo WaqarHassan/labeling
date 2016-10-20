@@ -102,6 +102,7 @@ Rails.application.routes.draw do
   post '/overview/save_reject_reason' => 'overview#save_reject_reason', as: 'save_reject_reason'
   get '/overview/get_steps' => 'overview#get_steps', as: 'get_steps'
   get '/overview/get_reasons/:l_type' => 'overview#get_reasons', as:'get_reasons'
+  get '/overview/get_reasons_and_stations/:l_type' => 'overview#get_reasons_and_stations', as:'get_reasons_and_stations'
   get '/overview/update_workflow/:object_type/:object_id' => 'overview#update_workflow', as: 'update_workflow'
   post '/overview/workflow_update' => 'overview#workflow_update', as: 'workflow_update'
   get '/overview/merge_back/:wls_id' => 'overview#merge_back', as:'merge_back'

@@ -476,10 +476,13 @@ class OverviewController < ApplicationController
       end
   end
   def get_reasons_and_stations
-    @reasons = ReasonCode.where(status: params[:additional_info][:status],
-     recording_level: params[:l_type] ).order(:sequence)
-    @stations = @workflow.workflow_stations
+    #@reasons = ReasonCode.where(status: params[:additional_info][:status],
+    # recording_level: params[:l_type] ).order(:sequence)
+    lx = params[:l_type]
     @status = params[:additional_info][:status]
+    @reasons = ReasonCode.where(" status = '#{@status}' AND ( recording_level = '#{lx}' OR recording_level IS NULL)").order(:sequence)
+
+    @stations = ReasonCode.where(" status = 'OnHold-Station' AND ( recording_level = '#{lx}' OR recording_level IS NULL)").order(:sequence)
       respond_to do |format|
         format.html
         format.js

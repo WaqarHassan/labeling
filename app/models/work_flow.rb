@@ -247,10 +247,15 @@ class WorkFlow < ActiveRecord::Base
 			#   - It recalculate ETAs for HandOff report roll up.
 			# 
 
-			def get_rollUp_l3_timestamps(dataSet, indx, pred_actual, workflow, number_days, holidays)
+			def get_rollUp_l3_timestamps(dataSet, indx, pred_actual, workflow, number_days, holidays, pred_numb_comp)
 				max_date = 'N/A'
 				max_date_for_succesr = ''
 				max_date2 = ''
+				
+				pred_numb_comp = pred_numb_comp == '' ? 0 : pred_numb_comp
+				add_extra_day = pred_numb_comp/17 
+				number_days = add_extra_day + number_days
+
 				any_active_step = dataSet.select{|eta| eta[indx].to_i != 0}
 				if any_active_step.present?
 					max_date = ''
@@ -305,7 +310,7 @@ class WorkFlow < ActiveRecord::Base
 			end
 			
 			def get_rollUp_l3_crb_started_timestamps(dataSet, eta_indx, actual_indx, sent_to_collab_actual,station8_sent_actual, 
-				workflow, days_at_collab, days_at_station8, holidays)
+				workflow, days_at_collab, days_at_station8, holidays,pred_numb_comp)
 
 			  	BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
 			    BusinessTime::Config.end_of_workday = workflow.end_of_workday
@@ -313,6 +318,10 @@ class WorkFlow < ActiveRecord::Base
 			    holidays.each do |holiday|
 			       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
 			    end
+			    pred_numb_comp = pred_numb_comp == '' ? 0 : pred_numb_comp
+			    add_extra_day = pred_numb_comp/17 
+			    days_at_collab = days_at_collab + add_extra_day
+			    days_at_station8 = days_at_station8 + add_extra_day
 
 				max_date = 'N/A'
 				max_date_for_succesr = ''

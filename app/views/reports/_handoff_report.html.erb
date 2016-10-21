@@ -142,7 +142,12 @@
 
                   all_l3s = @serach_result.select{|l3s| l3s[9].presence}
                   curr_l3_with_partials = all_l3s.select{|cur_l3| cur_l3[8].split('-R')[0] == l3_name}
-
+                  currentMainRecord = curr_l3_with_partials.select{|main_l3| main_l3[25] == 1}
+                  numb_comp_in_main_record = ''
+                  if currentMainRecord.present?
+                    current_main_record = currentMainRecord.first
+                    numb_comp_in_main_record = current_main_record[11]
+                  end
                   l3_status = WorkFlow.get_rollUp_l3_status(curr_l3_with_partials) %>
                   <tr>
                     <td title="<%= @workflow.L1 %>"></td>
@@ -159,10 +164,10 @@
                     </td>
                     <td title="Status"><%= l3_status[0] %></td>
                     <%
-                      sent_to_collab = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 16, ecr_inbox_date_for_succer, @workflow, 2, @holidays)
-                      station8_sent = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 18, ecr_inbox_date_for_succer, @workflow, 2, @holidays)
-                      crb_started = WorkFlow.get_rollUp_l3_crb_started_timestamps(curr_l3_with_partials, 19,20, sent_to_collab[2],station8_sent[2] , @workflow, 8, 3, @holidays)
-                      crb_released = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 21, crb_started[2], @workflow, 6, @holidays)
+                      sent_to_collab = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 16, ecr_inbox_date_for_succer, @workflow, 2, @holidays, result[7])
+                      station8_sent = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 18, ecr_inbox_date_for_succer, @workflow, 2, @holidays, result[7])
+                      crb_started = WorkFlow.get_rollUp_l3_crb_started_timestamps(curr_l3_with_partials, 19,20, sent_to_collab[2],station8_sent[2] , @workflow, 8, 3, @holidays, numb_comp_in_main_record)
+                      crb_released = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 21, crb_started[2], @workflow, 6, @holidays, numb_comp_in_main_record)
 
                     %>
 
@@ -173,7 +178,7 @@
                     <td title="CRB - CRB Started" class="<%= crb_started[1] %>"><%= crb_started[0] %></td>
                     <td title="CRB - ECR Released" class="<%= crb_released[1] %>"><%= crb_released[0] %></td>
 
-                    <td title="Number of Comp." ><%= result[11] %></td>
+                    <td title="Number of Comp." ><%= numb_comp_in_main_record %></td>
                     <td title="Component Type"><%= result[24] %></td>
                     <td title="Business Unit"></td>
                     <td title="Number of Lang."><%= result[23] %></td>

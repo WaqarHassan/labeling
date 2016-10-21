@@ -95,18 +95,31 @@
                     </td>
                     <td title="Status"><%= result[4] %></td>
                     <%
-                      table_td_class = ''
+                      table_td_class_ia = ''
                       ia_approved_date = ''
                       if result[14].presence
                         ia_approved_date_parsed = DateTime.parse(result[14].to_s) rescue nil
                         if ia_approved_date_parsed
                           ia_approved_date = ia_approved_date_parsed.strftime("%m/%d/%y")
-                          table_td_class = 'report_actual_confirmation'
+                          table_td_class_ia = 'report_actual_confirmation'
                         end
                       end
                     %>
-                    <td title="IA Approval - IA Approved" class="<%=table_td_class%>"><%= ia_approved_date %></td>
-                    <td title="ECR - INBOX"></td>
+                    <td title="IA Approval - IA Approved" class="<%=table_td_class_ia%>"><%= ia_approved_date %></td>
+
+                    <%
+                      table_td_class = ''
+                      ecr_inbox_date = ''
+                      ecr_inbox_date_for_succer = ''
+                      if result[15].presence
+                        ecr_inbox_date_parsed = DateTime.parse(result[15].to_s) rescue nil
+                        if ecr_inbox_date_parsed
+                          ecr_inbox_date = ecr_inbox_date_parsed.strftime("%m/%d/%y")
+                          table_td_class = 'report_actual_confirmation'
+                          ecr_inbox_date_for_succer = ecr_inbox_date_parsed
+                        end
+                      end %>
+                    <td title="ECR - INBOX" class="<%=table_td_class%>"><%= ecr_inbox_date %></td>
                     <td title="Collaboration - Sent to Collab."></td>
                     <td title="Station 8 - Sent"></td>
                     <td title="CRB - CRB Started"></td>
@@ -150,18 +163,6 @@
                     </td>
                     <td title="Status"><%= l3_status[0] %></td>
                     <%
-                      table_td_class = ''
-                      ecr_inbox_date = ''
-                      ecr_inbox_date_for_succer = ''
-                      if result[15].presence
-                        ecr_inbox_date_parsed = DateTime.parse(result[15].to_s) rescue nil
-                        if ecr_inbox_date_parsed
-                          ecr_inbox_date = ecr_inbox_date_parsed.strftime("%m/%d/%y")
-                          table_td_class = 'report_actual_confirmation'
-                          ecr_inbox_date_for_succer = ecr_inbox_date_parsed
-                        end
-                      end
-
                       sent_to_collab = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 16, ecr_inbox_date_for_succer, @workflow, 2, @holidays)
                       station8_sent = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 18, ecr_inbox_date_for_succer, @workflow, 2, @holidays)
                       crb_started = WorkFlow.get_rollUp_l3_crb_started_timestamps(curr_l3_with_partials, 19,20, sent_to_collab[2],station8_sent[2] , @workflow, 8, 3, @holidays)
@@ -170,7 +171,7 @@
                     %>
 
                     <td title="IA Approval - IA Approved"></td>
-                    <td title="ECR - INBOX" class="<%=table_td_class%>"><%= ecr_inbox_date %></td>
+                    <td title="ECR - INBOX"></td>
                     <td title="Collaboration - Sent to Collab." class="<%= sent_to_collab[1] %>"><%= sent_to_collab[0] %></td>
                     <td title="Station 8 - Sent" class="<%= station8_sent[1] %>"><%= station8_sent[0] %></td>
                     <td title="CRB - CRB Started" class="<%= crb_started[1] %>"><%= crb_started[0] %></td>

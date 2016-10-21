@@ -36,7 +36,7 @@
           <th>#Lang</th>
           <th>Horw</th>
           <th>IA Hold Reason</th>
-          <th>ECR Hold dReason</th>
+          <th>ECR Hold Reason</th>
         </tr>
       </thead>
 
@@ -105,12 +105,12 @@
                         end
                       end
                     %>
-                    <td class="<%=table_td_class%>"><%= ia_approved_date %></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td title="IA Approval - IA Approved" class="<%=table_td_class%>"><%= ia_approved_date %></td>
+                    <td title="ECR - INBOX"></td>
+                    <td title="Collaboration - Sent to Collab."></td>
+                    <td title="Station 8 - Sent"></td>
+                    <td title="CRB - CRB Started"></td>
+                    <td title="CRB - ECR Released"></td>
 
                     <td title="Number of Comp." ><%= result[7] %></td>
                     <td title="Component Type"></td>
@@ -169,12 +169,12 @@
 
                     %>
 
-                    <td></td>
-                    <td class="<%=table_td_class%>"><%= ecr_inbox_date %></td>
-                    <td class="<%= sent_to_collab[1] %>"><%= sent_to_collab[0] %></td>
-                    <td class="<%= station8_sent[1] %>"><%= station8_sent[0] %></td>
-                    <td class="<%= crb_started[1] %>"><%= crb_started[0] %></td>
-                    <td class="<%= crb_released[1] %>"><%= crb_released[0] %></td>
+                    <td title="IA Approval - IA Approved"></td>
+                    <td title="ECR - INBOX" class="<%=table_td_class%>"><%= ecr_inbox_date %></td>
+                    <td title="Collaboration - Sent to Collab." class="<%= sent_to_collab[1] %>"><%= sent_to_collab[0] %></td>
+                    <td title="Station 8 - Sent" class="<%= station8_sent[1] %>"><%= station8_sent[0] %></td>
+                    <td title="CRB - CRB Started" class="<%= crb_started[1] %>"><%= crb_started[0] %></td>
+                    <td title="CRB - ECR Released" class="<%= crb_released[1] %>"><%= crb_released[0] %></td>
 
                     <td title="Number of Comp." ><%= result[11] %></td>
                     <td title="Component Type"><%= result[24] %></td>

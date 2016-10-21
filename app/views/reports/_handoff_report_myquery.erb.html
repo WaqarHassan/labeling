@@ -186,7 +186,7 @@
                   <td title="Number of Lang."><%= l3_nm_lang %></td>
                   <td title="Horw"><%= l3_horw %></td>
                 </tr>
-                <% end end
+              <% end end
             end
         end %>  
       </tbody>
@@ -196,6 +196,13 @@
   <% end %>
 </div>
 
+<script type="text/javascript">
+if (window.jQuery) {  
+  $(document).ready(function() {
+    $('#myPleaseWait').modal('hide'); 
+  });
+});
+</script>
   <style type="text/css">
     .container{
         background-color: #fff;    

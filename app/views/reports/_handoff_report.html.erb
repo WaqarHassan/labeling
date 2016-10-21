@@ -138,18 +138,20 @@
                     <%
                       table_td_class = ''
                       ecr_inbox_date = ''
+                      ecr_inbox_date_for_succer = ''
                       if result[15].presence
                         ecr_inbox_date_parsed = DateTime.parse(result[15].to_s) rescue nil
                         if ecr_inbox_date_parsed
                           ecr_inbox_date = ecr_inbox_date_parsed.strftime("%m/%d/%y")
                           table_td_class = 'report_actual_confirmation'
+                          ecr_inbox_date_for_succer = ecr_inbox_date_parsed
                         end
                       end
 
-                      sent_to_collab = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 16, ecr_inbox_date, @workflow, 2)
-                      station8_sent = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 18, ecr_inbox_date, @workflow, 2)
-                      crb_started = WorkFlow.get_rollUp_l3_crb_started_timestamps(curr_l3_with_partials, 19,20, sent_to_collab[0],station8_sent[0] , @workflow, 8, 3)
-                      crb_released = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 21, crb_started[0], @workflow, 6)
+                      sent_to_collab = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 16, ecr_inbox_date_for_succer, @workflow, 2, @holidays)
+                      station8_sent = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 18, ecr_inbox_date_for_succer, @workflow, 2, @holidays)
+                      crb_started = WorkFlow.get_rollUp_l3_crb_started_timestamps(curr_l3_with_partials, 19,20, sent_to_collab[2],station8_sent[2] , @workflow, 8, 3, @holidays)
+                      crb_released = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 21, crb_started[2], @workflow, 6, @holidays)
 
                     %>
 

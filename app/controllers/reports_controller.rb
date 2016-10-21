@@ -218,6 +218,11 @@ class ReportsController < ApplicationController
   	#
   	def handoff
 		@workflows = [] #WorkFlow.where(is_active: true, is_in_use: false)
+		@holidays = []
+		@workflow.holidays.each do |holiday|
+	       @holidays << holiday
+	    end
+
 		workflows = WorkFlow.where(is_active: true, is_in_use: false)
 		workflows.each do |wk|
 			@workflows << wk

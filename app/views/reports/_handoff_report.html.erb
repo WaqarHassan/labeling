@@ -15,6 +15,8 @@
           <th></th>
           <th></th>
           <th></th>
+          <th></th>
+          <th></th>
         </tr>
 
         <tr class="sub_heading">
@@ -33,6 +35,8 @@
           <th>BU</th>
           <th>#Lang</th>
           <th>Horw</th>
+          <th>IA Hold Reason</th>
+          <th>ECR Hold dReason</th>
         </tr>
       </thead>
 
@@ -71,6 +75,8 @@
                     <td title="Business Unit"></td>
                     <td title="Number of Lang."></td>
                     <td title="Horw"></td>
+                    <td></td>
+                    <td></td>
                   </tr>
              <% end
              if l2_name != result[3] && result[30].presence
@@ -111,6 +117,14 @@
                     <td title="Business Unit"><%= result[6] %></td>
                     <td title="Number of Lang."></td>
                     <td title="Horw"><%= result[22] %></td>
+                    <%  onHoldReason = ''
+                       if result[4].presence
+                          if  result[4].downcase == 'onhold'
+                           onHoldReason =  WorkFlow.getOnHoldReason(@reason_codes, result[26])
+                          end 
+                        end %>
+                    <td><%=onHoldReason%></td>
+                    <td></td>
                   </tr>
             <% end 
               if result[31].presence
@@ -134,7 +148,7 @@
                       <% end %>
                     <% end %>
                     </td>
-                    <td title="Status"><%= l3_status %></td>
+                    <td title="Status"><%= l3_status[0] %></td>
                     <%
                       table_td_class = ''
                       ecr_inbox_date = ''
@@ -167,6 +181,14 @@
                     <td title="Business Unit"></td>
                     <td title="Number of Lang."><%= result[23] %></td>
                     <td title="Horw"></td>
+                    <%  l3onHoldReason = ''
+                       if l3_status[0].presence
+                          if  l3_status[0].downcase == 'onhold'
+                           l3onHoldReason =  WorkFlow.getL3OnHoldReason(@reason_codes, l3_status[1])
+                          end 
+                        end %>
+                    <td></td>
+                    <td><%=l3onHoldReason%></td>
                   </tr>
 
             <%  end

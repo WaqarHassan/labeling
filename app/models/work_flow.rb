@@ -222,9 +222,14 @@ class WorkFlow < ActiveRecord::Base
 
 			def get_rollUp_l3_status(data_set)
 				statuses = []
+				onHoldReasonids = []
 				status = 'Closed'
 				data_set.each do |data|
-					statuses << data[9].downcase
+					l3_sttaus = data[9].downcase
+					statuses << l3_sttaus
+					if l3_sttaus == 'onhold'
+						onHoldReasonids << data[27]
+					end
 				end
 
 				if statuses.include? 'active'
@@ -233,7 +238,7 @@ class WorkFlow < ActiveRecord::Base
 					status = 'onHold'
 				end	
 							
-				return status			
+				return [status, onHoldReasonids]			
 			end
 			# 
 			# * *Arguments* :
@@ -398,6 +403,42 @@ class WorkFlow < ActiveRecord::Base
 				return [max_date, table_td_class, max_date_for_succesr]
 			end
 			
+
+			def getOnHoldReason(reason_codes, reason_ids)
+				reason_values = ''
+				reason_ids_array = reason_ids.split('|')
+				reason_ids_array.each do |resons|
+					reason_selected = reason_codes.select{|res| res.id == resons.to_i}
+					if reason_selected.present?
+						reason_values = reason_values+reason_selected.first.reason+','
+					end
+				end
+				return reason_values
+			end
+
+			def getL3OnHoldReason(reason_codes, l3_reason_ids)
+				reason_values = ''
+				reason_values_array = []
+				l3_reason_ids.each do |l3_reason|
+					if l3_reason.presence
+						reason_ids_array = l3_reason.split('|')
+						reason_ids_array.each do |resons|
+							reason_selected = reason_codes.select{|res| res.id == resons.to_i}
+
+							if reason_selected.present?
+								hold_reason = reason_selected.first.reason
+								if reason_values_array.include? hold_reason
+								else
+									reason_values = reason_values+hold_reason+','
+									reason_values_array << reason_selected.first.reason
+								end
+							end
+						end
+					end	
+				end	
+				return reason_values
+			end
+
 			def get_time_stamp(report_serach_result, object_type, object_id, parent_l2_id, parent_l1_id, ll_id, station_step_id, filtered_station_steps)
 				time_stamp = ""
 				table_td_class = ""

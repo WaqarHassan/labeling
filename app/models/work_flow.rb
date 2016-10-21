@@ -413,6 +413,9 @@ class WorkFlow < ActiveRecord::Base
 						reason_values = reason_values+reason_selected.first.reason+','
 					end
 				end
+				if reason_values != ''
+					reason_values = reason_values.chomp(",")
+				end
 				return reason_values
 			end
 
@@ -436,6 +439,11 @@ class WorkFlow < ActiveRecord::Base
 						end
 					end	
 				end	
+	
+				if reason_values != ''
+					reason_values = reason_values.chomp(",")
+				end
+
 				return reason_values
 			end
 

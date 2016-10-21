@@ -16,7 +16,6 @@
           <th></th>
           <th></th>
           <th></th>
-          <th></th>
         </tr>
 
         <tr class="sub_heading">
@@ -35,8 +34,7 @@
           <th>BU</th>
           <th>#Lang</th>
           <th>Horw</th>
-          <th>IA Hold Reason</th>
-          <th>ECR Hold Reason</th>
+          <th>Hold Reason</th>
         </tr>
       </thead>
 
@@ -75,8 +73,7 @@
                     <td title="Business Unit"></td>
                     <td title="Number of Lang."></td>
                     <td title="Horw"></td>
-                    <td></td>
-                    <td></td>
+                    <td title="Hold Reason"></td>
                   </tr>
              <% end
              if l2_name != result[3] && result[30].presence
@@ -136,8 +133,7 @@
                            onHoldReason =  WorkFlow.getOnHoldReason(@reason_codes, result[26])
                           end 
                         end %>
-                    <td><%=onHoldReason%></td>
-                    <td></td>
+                    <td title="Hold Reason"><%=onHoldReason%></td>
                   </tr>
             <% end 
               if result[31].presence
@@ -152,7 +148,7 @@
                     <td title="<%= @workflow.L1 %>"></td>
                     <td title="<%= @workflow.L2 %>">
                     <td title="<%= @workflow.L3 %>">
-                      <%= link_to result[8].split('-R')[0], open_info_modal_l2_path(result[31],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                      <%= link_to result[8].split('-R')[0], open_info_modal_l3_path(result[31],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
                       <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
                       <%= hidden_field_tag 'object_type', 'L2' %>
                       <%= hidden_field_tag 'object_id', result[31] %>
@@ -188,8 +184,7 @@
                            l3onHoldReason =  WorkFlow.getL3OnHoldReason(@reason_codes, l3_status[1])
                           end 
                         end %>
-                    <td></td>
-                    <td><%=l3onHoldReason%></td>
+                    <td title="Hold Reason"><%=l3onHoldReason%></td>
                   </tr>
 
             <%  end

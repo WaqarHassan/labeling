@@ -23,7 +23,7 @@ class AdditionalInfo < ActiveRecord::Base
 				reason.each do |t|
 					data +=  t.reason + ',<br/>'
 				end
-				return data.chomp('<br/>')				#data.chop.chop.chop.chop.chop :) 
+				return data.chomp(',<br/>')				#data.chop.chop.chop.chop.chop :) 
 			end
 
 			def get_status(additional_info_data, indx)

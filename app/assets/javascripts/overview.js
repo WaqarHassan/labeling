@@ -162,7 +162,7 @@ function update_all_etas(e){
 }
 // This function hides Lang component whenever worflwo is 'ldp' and com_type_value is = 'CGL' ans shows otherwise
 function toggle_lang(comp_type_value, workflow_name){
-	if (comp_type_value=='CGL' && workflow_name=='ldp' ){
+	if (comp_type_value!='Multi-Lingual IFUs' && workflow_name=='ldp' ){
 		$('#lang').hide();
 		$('#lang input').removeAttr("value");
 	}else{

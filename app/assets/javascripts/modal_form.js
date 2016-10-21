@@ -6,6 +6,11 @@ $(document).ready(function() {
 	$('.modal-dialog').draggable({
     	handle: ".modal-header"
 	});
+  var v = $('#comp_type').val();
+  if (  v != 'Multi-Lingual IFUs' ) 
+  {
+    $('#lang').hide(); 
+ }
 
   //Following three lines focus on the fields with given id (for Lx Pop'ups)    
 	$('#project_name').focus();

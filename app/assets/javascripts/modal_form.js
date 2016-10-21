@@ -9,7 +9,6 @@ $(document).ready(function() {
   var v = $('#comp_type').val();
   if (  v != 'Multi-Lingual IFUs' ) 
   {
-    console.log("===================================================================================");
     $('#lang').hide(); 
  }
 

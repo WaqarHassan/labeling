@@ -28,11 +28,11 @@
 										BU:
 									</div>
 										<div class="col-lg-5">
-											<input type="text" name="wildcard[business_unit]" class="form-control" 
+											<input type="text" name="wildcard[business_unit]" id="ho_wildcard_bu_web" class="form-control" 
 											value= "<%= @wildcard.present? ? @wildcard['business_unit'] : '' %>" >
 										</div>
 										<div class="col-lg-5">
-											<input type="text" name="exact[business_unit]" class="form-control"
+											<input type="text" name="exact[business_unit]" id="ho_exact_bu_web" class="form-control"
 											value= "<%= @exact.present? ? @exact['business_unit'] : '' %>"  >
 										</div>
 									</div>
@@ -43,7 +43,7 @@
 										<%= @workflow.L1 %>
 									</div>
 										<div class="col-lg-10">
-												<input type="text" name="wildcard[l1]" class="form-control"
+												<input type="text" name="wildcard[l1]" id="ho_wildcard_l1_web" class="form-control"
 												value= "<%= @wildcard.present? ? @wildcard['l1'] : '' %>" >
 											</div>
 									</div>
@@ -54,11 +54,11 @@
 										<%= @workflow.L2 %>
 									</div>
 										<div class="col-lg-5">
-												<input type="text" name="wildcard[l2]" class="form-control"
+												<input type="text" name="wildcard[l2]" id="ho_wildcard_l2_web" class="form-control"
 												value= "<%= @wildcard.present? ? @wildcard['l2'] : '' %>" >
 											</div>
 											<div class="col-lg-5">
-												<input type="text" name="exact[l2]" class="form-control"
+												<input type="text" name="exact[l2]" id="ho_exact_l2_web" class="form-control"
 												value= "<%= @exact.present? ? @exact['l2'] : '' %>" >
 											</div>
 									</div>
@@ -69,11 +69,11 @@
 										<%= @workflow.L3 %>
 									</div>
 										<div class="col-lg-5">
-												<input type="text" name="wildcard[l3]" class="form-control"
+												<input type="text" name="wildcard[l3]" id="ho_wildcard_l3_web" class="form-control"
 												value= "<%= @wildcard.present? ? @wildcard['l3'] : '' %>" >
 											</div>
 											<div class="col-lg-5">
-												<input type="text" name="exact[l3]" class="form-control"
+												<input type="text" name="exact[l3]"  id="ho_exact_l3_web" class="form-control"
 												value= "<%= @exact.present? ? @exact['l3'] : '' %>" >
 											</div>
 									</div>
@@ -121,16 +121,34 @@
 												onclick="resetSearchResult();" class="btn btn-danger">Clear</a>
 											</div>
 								</div>
-								<div class="row">
-								<div class="col-lg-2">
-								</div>
-									<div class="col-lg-6">
-										<a href="/reports/download-handoff-report.csv" value="Download CSV" onclick="return download_search_csv();" class="btn save-print-update-edit-btn">Download CSV</a>
-									</div>
-							</div>
 							</div>
 				</div>
-			<% end %>  
+			<% end %> 
+
+			<%= form_tag download_handoff_report_reports_path, :id => 'download_handoff_csv_search_form' do %>
+				<div style="display:none">
+					<input type="text" name="wildcard[business_unit]" id="ho_wildcard_bu">
+					<input type="text" name="exact[business_unit]" id="ho_exact_bu">
+					<input type="text" name="wildcard[l1]" id="ho_wildcard_l1">
+					<input type="text" name="wildcard[l2]" id="ho_wildcard_l2">
+					<input type="text" name="exact[l2]" id="ho_exact_l2">
+					<input type="text" name="wildcard[l3]" id="ho_wildcard_l3">
+					<input type="text" name="exact[l3]" id="ho_exact_l3">
+								
+					<input type="text" id="ho_report_include_completed" name="report_include_completed" />
+					<input type="text" id="ho_report_include_canceled" name="report_include_canceled" />
+					<input type="text" id="ho_report_include_onhold" name="report_include_onhold" />
+				</div>
+
+					<div class="row">
+					<div class="col-lg-2">
+					</div>
+						<div class="col-lg-6">
+							<input type="submit" value="Download CSV" onclick="return download_handoff_report_csv();" class="btn save-print-update-edit-btn">
+						</div>
+					</div>					
+			<% end %> 
+
 		</div>
 	</div>
 

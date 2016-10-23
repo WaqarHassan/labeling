@@ -14,8 +14,13 @@ class OverviewController < ApplicationController
     @include_completed = session[:include_completed]
     show_all_db = session[:show_all_db]
     @oops_mode = session[:oops_mode]
+    @show_all_include_completed = session[:show_all_include_completed]
+    @show_all_include_canceled = session[:show_all_include_canceled]
+
     session.delete(:oops_mode)
     session.delete(:show_all_db)
+    session.delete(:show_all_include_completed)
+    session.delete(:show_all_include_canceled)
 
     if request.post? and params[:object_id].present?
       if params[:object_type] == 'L1'
@@ -147,7 +152,24 @@ class OverviewController < ApplicationController
         end      
       end
     elsif show_all_db == 'show_all_db'
-      @l1s = @workflow.l1s.where(completed_actual: nil).where.not(status: 'cancel').order(:id)
+      if @show_all_include_completed == "show_all_include_completed" and @show_all_include_canceled == "show_all_include_canceled"
+        @l1s = @workflow.l1s.order(:id)
+        @include_completed = 'include_completed' 
+        @include_canceled = 'include_canceled'
+
+      elsif @show_all_include_canceled == "show_all_include_canceled"
+        @include_completed = '' 
+        @include_canceled = 'include_canceled'
+        @l1s = @workflow.l1s.where(completed_actual: nil).order(:id)
+
+      elsif @show_all_include_completed == "show_all_include_completed"
+        @include_completed = 'include_completed' 
+        @include_canceled = ''
+        @l1s = @workflow.l1s.where.not(status: 'cancel').order(:id)
+
+      else
+        @l1s = @workflow.l1s.where(completed_actual: nil).where.not(status: 'cancel').order(:id)
+      end
     else
       @l1s = [] #@workflow.l1s.where(completed_actual: nil).where.not(status: 'cancel').order(:id)
     end
@@ -1146,16 +1168,18 @@ class OverviewController < ApplicationController
     session.delete(:include_canceled)
     session.delete(:include_completed)
     session[:show_all_db] = 'show_all_db'
+    if params[:show_all_include_completed] == "show_all_include_completed"
+      session[:show_all_include_completed] = 'show_all_include_completed'
+    else
+      session.delete(:show_all_include_completed)
+    end
+    if params[:show_all_include_canceled] == "show_all_include_canceled"
+      session[:show_all_include_canceled] = 'show_all_include_canceled'
+    else
+      session.delete(:show_all_include_canceled)
+    end
+
     redirect_to root_path
-    # @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
-    # @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
-    # @workflows = WorkFlow.where(is_active: true, is_in_use: false)
-    # @l1s = @workflow.l1s.where(status: 'Active').order(:id)
-    # respond_to do |format|
-    #   format.html
-    #   format.js
-    # end 
-    
   end
    # 
     # * *Description* :

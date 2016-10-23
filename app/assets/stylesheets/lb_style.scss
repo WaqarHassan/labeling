@@ -787,3 +787,14 @@ label.string, label.integer {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.show_all {
+     background:none!important;
+     border:none; 
+     padding:0!important;
+     font: inherit;
+     /*border is optional*/
+     border-bottom:1px solid #fff; 
+     cursor: pointer;
+     color: #337ab7;
+}

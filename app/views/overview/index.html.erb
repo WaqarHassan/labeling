@@ -3,7 +3,7 @@
 
 	<div class="project-data" id="projectform">
 	 <a href="#" class="collapsed-icon" title="Search form show/hide" onclick="overview_serach_box(); return false;"></a>
-		<div style="overflow:hidden;">
+		<div style="overflow:hidden;">			
 		<%= form_tag overview_search_path, remote: true, :id => 'search_form', :class => 'form-horizontal'  do %>
 			<div class="project-form">
 					<div class="project-fields">
@@ -109,16 +109,26 @@
 			</div>
 		<% end %>  
 				<div class="project-btmcnt">
+					<%= form_tag show_all_db_path, :id => 'show_all_form_db' do %>
+						<div style="display:none">								
+							<input type="text" id="show_all_include_completed" name="show_all_include_completed" />
+							<input type="text" id="show_all_include_canceled" name="show_all_include_canceled" />
+						</div>
+
+						<div class="row">
+							<div class="col-lg-6">
+								<input type="submit" class="show_all" value="Show all from DB" onclick="return show_all_data_form_db();">
+							</div>
+						</div>					
+					<% end %> 
+
 					<div class="project-data-list" id="search_result_div">
 						<% if @serach_result.present? %>
 							<%= render 'overview/search_result' %>
 						<% else %>	
 						<div class="row">
-					      <div class="col-lg-7">
+					      <div class="col-lg-12">
 					      </div>
-					      <div class="col-lg-5">
-					      	<%= link_to 'Show all from DB', show_all_db_path, :onclick => 'return show_waiting_bar();' %>
-					     </div>
 					    </div>
 							<ul class="ia-list">
 								<span style="color:green">Search results will be displayed here: </span>
@@ -127,7 +137,7 @@
 					</div>
 				</div>
 		</div>
-	</div>
+	</div>	
 	<div id="overview_detail">
 		<%= render 'overview/project_details' %>
 	<div>

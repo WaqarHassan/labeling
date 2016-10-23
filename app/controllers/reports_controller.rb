@@ -220,6 +220,13 @@ class ReportsController < ApplicationController
 		@workflows = [] #WorkFlow.where(is_active: true, is_in_use: false)
 		@holidays = []
 		@reason_codes = []
+		@days_at_ia_approved = 0
+		@days_at_ecr_inbox = 0
+		@days_at_sent_to_collab = 0
+		@days_at_station8_sent = 0
+		@days_at_crb_started = 0
+		@days_at_ecn_released = 0
+
 		@workflow.holidays.each do |holiday|
 	       @holidays << holiday
 	    end
@@ -238,6 +245,22 @@ class ReportsController < ApplicationController
 	    filtered_station_steps = @workflow.report_filter_steps.eager_load(:station_step => [:workflow_station]).order(:sequence)
 		filtered_station_steps.each do |fss|
 			@filtered_station_steps << fss
+			if fss.station_step_id == 1
+				@days_at_ia_approved = fss.duration_days
+			end
+			if fss.station_step_id == 7
+				@days_at_ecr_inbox = fss.duration_days
+			end
+			if fss.station_step_id == 5
+				@days_at_sent_to_collab = fss.duration_days
+			end
+			if fss.station_step_id == 15
+				@days_at_station8_sent = fss.duration_days
+			end
+			if fss.station_step_id == 17
+				@days_at_crb_started = fss.duration_days
+			end
+
 		end
 		@stationSteps = []
 		station_steps = StationStep.eager_load(:workflow_station)
@@ -316,7 +339,6 @@ class ReportsController < ApplicationController
     	else
     		@is_include_completed = false
     	end		
-    	#@report_include_closed = session[:report_include_closed]
 
 	    if session[:report_wildcard].present?
 	      @wildcard = session[:report_wildcard]
@@ -352,12 +374,6 @@ class ReportsController < ApplicationController
 			      @is_include_onhold = false
 			      session.delete(:report_include_onhold)
 			    end
-			    # if params[:report_include_closed].presence
-			    #   @report_include_closed = params[:report_include_closed]
-			    #   session[:report_include_closed] = @report_include_closed
-			    # else
-			    #   session.delete(:report_include_closed)
-			    # end
 
 				search_hand_off = handoff_search
 				@serach_result = search_hand_off[0]
@@ -388,43 +404,35 @@ class ReportsController < ApplicationController
   	#   - It is a backup function for HandOff 
   	#
 
-  	def download_handoff_report_data
-  		session[:search_csv] = params
-	  	respond_to do |format|
-	      format.json { render json: {status: 'success', message: 'search cleared'}, status: 200 }
-	    end
-  	end
-
   	def download_handoff_report
-  		search_params = session[:search_csv]
-  		session.delete(:search_csv)
-  		search_parm = search_csv(search_params)
+  		search_parm = search_csv(params)
   		bu = search_parm[0]
   		l1 = search_parm[1]
   		l2 = search_parm[2]
   		l3 = search_parm[3]
 		
-		if search_params[:report_include_canceled].presence
+		if params[:report_include_canceled] == "report_include_canceled"
     		include_cancel = true
     	else
     		include_cancel = false
     	end
-    	if search_params[:report_include_onhold].presence
+    	if params[:report_include_onhold] == "report_include_onhold"
     		include_onhold = true
     	else
     		include_onhold = false
     	end
-		if search_params[:report_include_completed].presence
+		if params[:report_include_completed] == "report_include_completed"
     		include_completed = true
     	else
     		include_completed = false
     	end	
 
-		puts "----:#{bu}---: #{l1}---:#{l2}---:#{l3}----:#{include_cancel}----:#{include_onhold}----:#{include_completed}"
+		puts "----:#{bu}---: #{l1}---:#{l2}---:#{l3}----can: #{include_cancel}----on: :#{include_onhold}----comp: #{include_completed}"
   		report_result = WorkFlow.handoff_report_stored_procedure(bu, l1, l2, l3, include_completed, include_cancel, include_onhold)
-  		respond_to do |format|
-	      format.csv { render text: WorkFlow.to_csv(report_result) }
-	    end
+  		csv_file = WorkFlow.to_csv(report_result)
+
+  		send_data csv_file, :filename => 'HAND-OFF-Report.csv'
+
   	end
 
 	def handoff_aaa

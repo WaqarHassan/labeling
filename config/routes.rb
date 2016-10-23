@@ -58,7 +58,7 @@ Rails.application.routes.draw do
       match 'handoff', via: [:get, :post]
       match 'daily-activity', via: [:get, :post]
       get 'download-handoff-report'
-      match 'download-handoff-report-data', via: [:get, :post]
+      match 'download-handoff-report', via: [:get, :post]
     end
   end
 
@@ -96,7 +96,7 @@ Rails.application.routes.draw do
   get '/overview/project_deatils_l2/:l2_id' => 'overview#project_deatils_l2', as: 'project_deatils_l2'
   get '/overview/project_deatils_l3/:l3_id' => 'overview#project_deatils_l3', as: 'project_deatils_l3'
   get '/overview/clear_search' => 'overview#clear_search', as: 'clear_search'
-  get '/overview/show_all_db' => 'overview#show_all_db', as: 'show_all_db' 
+  post '/overview/show_all_db' => 'overview#show_all_db', as: 'show_all_db' 
   post '/overview/add_additional_info' => 'overview#add_additional_info', as: 'add_additional_info'
   get '/overview/reject_reason_modal/:id' => 'overview#reject_reason_modal', as: 'reject_reason_modal'
   post '/overview/save_reject_reason' => 'overview#save_reject_reason', as: 'save_reject_reason'

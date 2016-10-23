@@ -69,9 +69,6 @@ function resetSearchResult(){
 	dataHtml += '<div class="row">';
 	dataHtml +=	'<div class="col-lg-7">';
 	dataHtml += '</div>';
-	dataHtml += '<div class="col-lg-5">';
- 	dataHtml += '<a href="/overview/show_all_db" data-remote="true">Show all from DB</a>';
-	dataHtml += '</div>';
 	dataHtml += '</div>';
 	$('#search_result_div').html(dataHtml);
 	$('#search_ecr').focus();
@@ -251,12 +248,50 @@ function turn_off_oops_mode(){
     });
 }
 
-function download_search_csv(){
-	new_hrf = '/reports/download-handoff-report-data';
-	curr_url = $('#search_form').attr('action')
-	$('#search_form').attr('action',new_hrf);
-	$('#search_form').submit();
-	$('#search_form').attr('action',curr_url);
+function download_handoff_report_csv(){
+	$("#ho_wildcard_bu").val($("#ho_wildcard_bu_web").val());
+	$("#ho_exact_bu").val($("#ho_exact_bu_web").val());
+	$("#ho_wildcard_l1").val($("#ho_wildcard_l1_web").val());
+	$("#ho_wildcard_l2").val($("#ho_wildcard_l2_web").val());
+	$("#ho_exact_l2").val($("#ho_exact_l2_web").val());
+	$("#ho_wildcard_l3").val($("#ho_wildcard_l3_web").val());
+	$("#ho_exact_l3").val($("#ho_exact_l3_web").val());
+
+	if ($("#report_include_completed").is(':checked')) {
+		$("#ho_report_include_completed").val("report_include_completed");
+	}else{
+		$("#ho_report_include_completed").val('');
+	}
+
+	if ($("#report_include_canceled").is(':checked')) {
+		$("#ho_report_include_canceled").val("report_include_canceled");
+	}else{
+		$("#ho_report_include_canceled").val('');
+	}
+
+	if ($("#report_include_onhold").is(':checked')) {
+		$("#ho_report_include_onhold").val("report_include_onhold");
+	}else{
+		$("#ho_report_include_onhold").val('');
+	}
+
+	return true;
+}
+
+function show_all_data_form_db(){
+	if ($("#include_completed").is(':checked')) {
+		$("#show_all_include_completed").val("show_all_include_completed");
+	}else{
+		$("#show_all_include_completed").val('');
+	}
+
+	if ($("#include_canceled").is(':checked')) {
+		$("#show_all_include_canceled").val("show_all_include_canceled");
+	}else{
+		$("#show_all_include_canceled").val('');
+	}
+	
+	$('#myPleaseWait').modal('show');
 	return true;
 }
 

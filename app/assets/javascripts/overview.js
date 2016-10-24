@@ -172,6 +172,8 @@ function show_waiting_bar(){
 }
 
 function show_waiting_bar_search_all(){
+	detail_data_width = $('#detail_data').width();
+	Cookies.set('show_all_detail_data_width', detail_data_width, { expires: 7 });
 	$('#myPleaseWait_search_all').modal('show');
 }
 

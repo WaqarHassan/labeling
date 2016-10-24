@@ -432,7 +432,8 @@
 if (window.jQuery) {  
 	$(document).ready(function() {
 		$('#myPleaseWait_search_all').on('hidden.bs.modal', function () {
-		    $('#detail_data').width($('#detail_data').width() - 20);
+			show_all_detail_data_width = Cookies.get('show_all_detail_data_width');
+		    $('#detail_data').width(show_all_detail_data_width);
 		});
 	});
 };

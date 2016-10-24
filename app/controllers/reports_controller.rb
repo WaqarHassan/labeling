@@ -592,7 +592,6 @@ class ReportsController < ApplicationController
   		respond_to do |format|
   			format.csv { send_data csv_file, :filename => 'DATA-FEED.csv' }
   		end
-  		#send_file csv_file, :filename => 'DATA-FEED.csv'
 	end
   	private
 

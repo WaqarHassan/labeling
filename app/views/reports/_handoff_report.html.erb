@@ -2,33 +2,39 @@
   <% if @serach_result.present? %>
     <table class="table table-bordered handOffReportTable">
       <thead>
-          <tr class="main_heading">
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <% @filtered_station_steps.each do |filtered_station_step| %>
-            <th style="width: 110px;" ><%= filtered_station_step.station_step.workflow_station.station_name %></th>
-          <% end %>
-          <th><%=@days_at_ia_approved%></th>
-          <th><%=@days_at_ecr_inbox%></th>
-          <th><%=@days_at_sent_to_collab%></th>
-          <th><%=@days_at_station8_sent%></th>
-          <th><%=@days_at_crb_started%></th>
-          <th><%=@days_at_ecn_released%></th>
-        </tr>
-
         <tr class="sub_heading">
           <th><%= @workflow.L1 %></th>
           <th><%= @workflow.L2 %></th>
           <th><%= @workflow.L3 %></th>
           <th>Status</th>
-          <% @filtered_station_steps.each do |filtered_station_step| 
-            pred_name = StationStep.get_step_predecessors(filtered_station_step.predecessors, @stationSteps) %>
-            <th style="width: 110px;" 
-            title="Days: <%=filtered_station_step.duration_days.present? ? filtered_station_step.duration_days : 0 %>&#013;&#013;Predecessors: <%=pred_name%>">
-              <%= filtered_station_step.station_step.step_name %></th>
-          <% end %>
+
+ <%
+  ia_pred_name = '' #StationStep.get_step_predecessors(@pred_of_ia_approved, @stationSteps)
+  ecr_pred_name = '' #StationStep.get_step_predecessors(@pred_of_ecr_inbox, @stationSteps)
+  collab_pred_name = "\n*ECR Inbox" #StationStep.get_step_predecessors(@pred_of_sent_to_collab, @stationSteps)
+  sent8_pred_name = "\n*ECR Inbox" #StationStep.get_step_predecessors(@pred_of_station8_sent, @stationSteps)
+  crb_pred_name = "\n*To Collab. \n*To Horw" #StationStep.get_step_predecessors(@pred_of_crb_started, @stationSteps)
+  ecn_pred_name = "\n*To CRB" #StationStep.get_step_predecessors(@pred_of_ecn_released, @stationSteps)
+ %>   
+
+<th style="width: 110px;" title="Days: <%=@days_at_ia_approved %>&#013;&#013;Predecessors: <%=ia_pred_name%>">
+  IA Approved
+</th>
+<th style="width: 110px;" title="Days: <%=@days_at_ecr_inbox %>&#013;&#013;Predecessors: <%=ecr_pred_name%>">
+  ECR Inbox
+</th>
+<th style="width: 110px;" title="Days: <%=@days_at_sent_to_collab %>&#013;&#013;Predecessors: <%=collab_pred_name%>">
+  To Collab.
+</th>
+<th style="width: 110px;" title="Days: <%=@days_at_station8_sent %>&#013;&#013;Predecessors: <%=sent8_pred_name%>">
+  To Horw
+</th>
+<th style="width: 110px;" title="Days: <%=@days_at_crb_started %>&#013;&#013;Predecessors: <%=crb_pred_name%>">
+  To CRB
+</th>
+<th style="width: 110px;" title="Days: <%=@days_at_ecn_released %>&#013;&#013;Predecessors: <%=ecn_pred_name%>">
+  ECN Release
+</th>
           <th>#Comp</th>
           <th>Comp. Type</th>
           <th>BU</th>

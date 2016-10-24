@@ -227,6 +227,14 @@ class ReportsController < ApplicationController
 		@days_at_crb_started = 0
 		@days_at_ecn_released = 0
 
+		@pred_of_ia_approved = ''
+		@pred_of_ecr_inbox = ''
+		@pred_of_sent_to_collab = ''
+		@pred_of_station8_sent = ''
+		@pred_of_crb_started = ''
+		@pred_of_ecn_released = ''
+
+
 		@workflow.holidays.each do |holiday|
 	       @holidays << holiday
 	    end
@@ -247,18 +255,26 @@ class ReportsController < ApplicationController
 			@filtered_station_steps << fss
 			if fss.station_step_id == 1
 				@days_at_ia_approved = fss.duration_days
+				@pred_of_ia_approved = fss.predecessors
 			end
 			if fss.station_step_id == 7
 				@days_at_ecr_inbox = fss.duration_days
+				@pred_of_ecr_inbox = fss.predecessors
 			end
 			if fss.station_step_id == 5
 				@days_at_sent_to_collab = fss.duration_days
+				@pred_of_sent_to_collab = fss.predecessors
 			end
 			if fss.station_step_id == 15
 				@days_at_station8_sent = fss.duration_days
+				@pred_of_station8_sent = fss.predecessors
 			end
 			if fss.station_step_id == 17
 				@days_at_crb_started = fss.duration_days
+				@pred_of_crb_started = fss.predecessors
+			end
+			if fss.station_step_id == 19
+				@pred_of_ecn_released = fss.predecessors
 			end
 
 		end

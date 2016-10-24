@@ -24,13 +24,13 @@ class OverviewController < ApplicationController
 
     if request.post? and params[:object_id].present?
       if params[:object_type] == 'L1'
-        @l1s = @workflow.l1s.where(id: [params[:object_id]])
+        @l1s = @workflow.l1s.where(id: [params[:object_id]]).order(:id)
 
       elsif params[:object_type] == 'L2'
         @show_search_result_l2 = 'filter_type_l2'
-        @l2_records = L2.where(id: params[:object_id])
+        @l2_records = L2.where(id: params[:object_id]).order(:id)
         if @l2_records.present?
-          @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+          @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).order(:id)
         else
           @l1s = []
         end
@@ -40,11 +40,11 @@ class OverviewController < ApplicationController
         @show_search_result_l3 = 'filter_type_l3'
         l3 = L3.find(params[:object_id])
         ll2 = l3.l2
-        @l3_records = L3.where(id: l3.id)
+        @l3_records = L3.where(id: l3.id).order(:name)
         if @l3_records.present?
-          @l2_records = L2.where(id: @l3_records.first.l2_id)
+          @l2_records = L2.where(id: @l3_records.first.l2_id).order(:id)
           if @l2_records.present?
-            @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+            @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).order(:id)
           else
             @l1s = []
           end
@@ -66,30 +66,30 @@ class OverviewController < ApplicationController
     elsif session[:filter_object_type] == 'L2'
       @show_search_result_l2 = 'filter_type_l2'
       if @include_canceled == 'include_canceled' && @include_completed == 'include_completed'
-        @l2_records = L2.where(id: session[:filter_object_id])
+        @l2_records = L2.where(id: session[:filter_object_id]).order(:id)
         if @l2_records.present?
-          @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+          @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).order(:id)
         else
           @l1s = []  
         end
       elsif @include_canceled == 'include_canceled'
-        @l2_records = L2.where(id: session[:filter_object_id], completed_actual: nil)
+        @l2_records = L2.where(id: session[:filter_object_id], completed_actual: nil).order(:id)
         if @l2_records.present?
-          @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id, completed_actual: nil)
+          @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id, completed_actual: nil).order(:id)
         else
           @l1s = []
         end
       elsif @include_completed == 'include_completed'
-        @l2_records = L2.where(id: session[:filter_object_id]).where.not(status: 'cancel')
+        @l2_records = L2.where(id: session[:filter_object_id]).where.not(status: 'cancel').order(:id)
         if @l2_records.present?
-          @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel')
+          @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel').order(:id)
         else
           @l1s = []
         end
       else
-        @l2_records = L2.where(id: session[:filter_object_id], completed_actual: nil).where.not(status: 'cancel')
+        @l2_records = L2.where(id: session[:filter_object_id], completed_actual: nil).where.not(status: 'cancel').order(:id)
         if @l2_records.present?
-          @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id, completed_actual: nil).where.not(status: 'cancel')
+          @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id, completed_actual: nil).where.not(status: 'cancel').order(:id)
         else
           @l1s = []
         end
@@ -103,11 +103,11 @@ class OverviewController < ApplicationController
       l3 = L3.find(session[:filter_object_id])
       ll2 = l3.l2
       if @include_canceled == 'include_canceled' && @include_completed == 'include_completed'
-        @l3_records = L3.where(id: l3.id)
+        @l3_records = L3.where(id: l3.id).order(:name)
         if @l3_records.present?
-          @l2_records = L2.where(id: @l3_records.first.l2_id)
+          @l2_records = L2.where(id: @l3_records.first.l2_id).order(:id)
           if @l2_records.present?
-            @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id)
+            @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).order(:id)
           else
             @l1s = []
           end
@@ -115,11 +115,11 @@ class OverviewController < ApplicationController
           @l2_records = []   
         end
       elsif @include_canceled == 'include_canceled'
-        @l3_records = L3.where(id: l3.id, completed_actual: nil)
+        @l3_records = L3.where(id: l3.id, completed_actual: nil).order(:name)
         if @l3_records.present?
-          @l2_records = L2.where(id: @l3_records.first.l2_id, completed_actual: nil)
+          @l2_records = L2.where(id: @l3_records.first.l2_id, completed_actual: nil).order(:id)
           if @l2_records.present?
-            @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id, completed_actual: nil)
+            @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id, completed_actual: nil).order(:id)
           else
             @l1s = []
           end
@@ -127,11 +127,11 @@ class OverviewController < ApplicationController
           @l2_records = []   
         end
       elsif @include_completed == 'include_completed'
-        @l3_records = L3.where(id: l3.id).where.not(status: 'cancel')
+        @l3_records = L3.where(id: l3.id).where.not(status: 'cancel').order(:name)
         if @l3_records.present?
-          @l2_records = L2.where(id: @l3_records.first.l2_id).where.not(status: 'cancel')
+          @l2_records = L2.where(id: @l3_records.first.l2_id).where.not(status: 'cancel').order(:id)
           if @l2_records.present?
-            @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel')
+            @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel').order(:id)
           else
             @l1s = []
           end
@@ -139,11 +139,11 @@ class OverviewController < ApplicationController
           @l2_records = []   
         end     
       else
-        @l3_records = L3.where(id: l3.id).where.not(status: 'cancel')
+        @l3_records = L3.where(id: l3.id).where.not(status: 'cancel').order(:name)
         if @l3_records.present?
-          @l2_records = L2.where(id: @l3_records.first.l2_id).where.not(status: 'cancel')
+          @l2_records = L2.where(id: @l3_records.first.l2_id).where.not(status: 'cancel').order(:id)
           if @l2_records.present?
-            @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel')
+            @l1s = @workflow.l1s.where(id: @l2_records.first.l1_id).where.not(status: 'cancel').order(:id)
           else
             @l1s = []
           end

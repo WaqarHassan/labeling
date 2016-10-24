@@ -16,7 +16,7 @@ class L2 < ActiveRecord::Base
   #   - It gets a list of l3s Object ids and returns complete Objects after quering from database.
   #
   def get_searched_l3_objects(l3_list)
-  	L3.where(id: [l3_list], l2_id: self.id)
+  	L3.where(id: [l3_list], l2_id: self.id).order(:name)
   end
   # 
   # * *Arguments* :

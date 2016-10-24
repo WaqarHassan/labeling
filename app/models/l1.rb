@@ -28,7 +28,7 @@ class L1 < ActiveRecord::Base
   #   - It Gets a list of l2s Object ids and returns complete Objects
   #
   def get_searched_l2_objects(l2_list)
-    L2.where(id: [l2_list], l1_id: self.id)
+    L2.where(id: [l2_list], l1_id: self.id).order(:id)
   end
   
   def get_l2s_objects(include_canceled, include_completed)

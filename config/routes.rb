@@ -59,6 +59,7 @@ Rails.application.routes.draw do
       match 'daily-activity', via: [:get, :post]
       get 'download-handoff-report'
       match 'download-handoff-report', via: [:get, :post]
+      get 'data-feed'
     end
   end
 
@@ -117,6 +118,7 @@ Rails.application.routes.draw do
   post '/overview/search' => 'overview#search' , as: 'overview_search' 
   get '/overview/eta_refresh/:l1_id' => 'overview#eta_refresh', as:'eta_refresh'
   get '/overview/recalculate_all_eta' => 'overview#recalculate_all_eta', as: 'recalculate_all_eta'
+
 
 
   # Dummy preview pages for testing.

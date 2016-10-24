@@ -1251,7 +1251,10 @@ class WorkFlow < ActiveRecord::Base
 				result = ActiveRecord::Base.connection.execute("call handoff_report('#{bu}', '#{l1}', '#{l2}', '#{l3}', #{include_completed}, #{include_cancel}, #{include_onhold})")
 				return result
 			end
-
+			def data_feed_stored_procedure
+				result =  ActiveRecord::Base.connection.execute("call data_feed()")
+				return result
+			end
 			def to_csv(data_set)
 				CSV.generate do |csv|
 			      csv <<  ['Project', 'Proj-Status', 'Proj-Completed', 'IA', 'IA-Status', 'IA-Completed',
@@ -1264,6 +1267,22 @@ class WorkFlow < ActiveRecord::Base
 			      end
 			    end
 			end
+			def to_csv_data_feed(data_set)
+				CSV.generate do |csv|
+			      csv <<  ['IA', 'IA-Status', 'IA-Completed', 'BU', 'IA-#Comp', 'Translation',
+			      		 'HORW', 'RequestedBy', 'ECR', 'ECR-Status', 'ECR-Completed', 'Main', 'ECR-#Comp',
+			      		   'sIA Approved', 'Translation-Inbox', 'Translation-Start', 'Translation-End', 
+			      		  ' ECR-Start', 'Collab-Sent', 'Collab-Received', 'Design-Inbox', 'Station8-Inbox', 
+			      		  'Station8-Received', 'CRB-Started', 'CRB-Complete', 'ECR-Release','Group1',
+			      		   'Group2' , 'Group3' , 'Group4' , 'Group5' , 'ECR-Status' , 'Status-Timestamp' ,
+			      		    'Reason' , 'EcrId' , 'ParentId', 'ECR Inbox']
+			      data_set.each do |report|
+			        csv <<  [report[0], report[1], report[2], report[3], report[4], report[5], report[6], report[7], report[8], report[9], report[10], report[11], report[12], report[13], report[14], report[15], report[16], report[17], report[18], report[19], report[20],
+			         report[21], report[22], report[23], report[24], report[25], report[26], report[27], report[28], report[29] , report[30], report[31], report[32], report[33], report[34], report[35], report[36] ]
+			      end
+			    end
+			end
+
 
 		end
 end

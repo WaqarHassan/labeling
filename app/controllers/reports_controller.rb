@@ -585,6 +585,18 @@ class ReportsController < ApplicationController
 			end
 		end
 	end
+	def data_feed
+
+		#puts "----:#{bu}---: #{l1}---:#{l2}---:#{l3}----can: #{include_cancel}----on: :#{include_onhold}----comp: #{include_completed}"
+  		report_result = WorkFlow.data_feed_stored_procedure()
+  		#puts "=============================#{report_result.inspect}" 
+  		#abort()
+  		csv_file = WorkFlow.to_csv_data_feed(report_result)
+
+  		send_data csv_file, :filename => 'DATA-FEED.csv'
+	end
+	def to_csv_data_feed
+	end
   	private
 
 		def search 

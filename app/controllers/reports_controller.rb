@@ -585,14 +585,15 @@ class ReportsController < ApplicationController
 			end
 		end
 	end
-	def data_feed
 
+	def data_feed
 		report_result = WorkFlow.data_feed_stored_procedure()
   		csv_file = WorkFlow.to_csv_data_feed(report_result)
   		respond_to do |format|
-  			format.csv { send_data csv_file, :filename => 'DATA-FEED.csv' }
+  			format.csv { send_data csv_file, :filename => 'DataFeed.csv' }
   		end
 	end
+
   	private
 
 		def search 

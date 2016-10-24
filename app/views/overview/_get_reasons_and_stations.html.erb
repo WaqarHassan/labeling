@@ -9,7 +9,7 @@
 	<div class="form-group">
 		<label class="col-lg-4 control-label">Station</label>
 		<div class = "col-lg-6">
-			<%= select_tag "additional_info[workflow_station_id]", options_from_collection_for_select(@stations, 'id', 'reason'),prompt: 'please select station', :class=>'form-control pnd-reqst pull-left' , :required => true %> 
+			<%= select_tag "additional_info[station]", options_from_collection_for_select(@stations, 'reason', 'reason'),prompt: 'please select station', :class=>'form-control pnd-reqst pull-left' , :required => true %> 
 		</div>
 	</div>
 <%else%>

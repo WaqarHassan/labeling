@@ -124,8 +124,8 @@
                     <%= "By "+user_name+" on "+creation_time.strftime("%m/%d/%y %I:%M %p")  %>
                   <% end %> 
                     <br>
-                  <% if add_info.workflow_station.present? %>
-                    <strong>Station:</strong> <%= add_info.workflow_station.station_name %>
+                  <% if add_info.station.present? %>
+                    <strong>Station:</strong> <%= add_info.station %>
                     <br>
                   <% end %>
                   <%#if add_info.station.present? %>

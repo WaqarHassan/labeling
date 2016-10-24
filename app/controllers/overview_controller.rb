@@ -6,7 +6,7 @@ class OverviewController < ApplicationController
   #   - It is executed whenever main index page is requested.
   #   - It renders all information regarding Objects, their Attributes and Station Steps
   #
-	def index
+	def index 
     @label_attributes = @workflow.label_attributes.order(:sequence) #.where(is_visible: true)
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
@@ -1357,7 +1357,7 @@ class OverviewController < ApplicationController
     
     def additional_info_params
       params.require(:additional_info).permit(:object_id, :object_type, :status,
-       :workflow_station_id, :info_timestamp, :work_flow_id,   :note, :user_id, :reason_code_id)
+       :workflow_station_id, :info_timestamp, :work_flow_id,   :note, :user_id, :reason_code_id, :station)
     end
     def additional_info_params_note_only
       params.require(:additional_info).permit(:object_id, :object_type,

@@ -428,6 +428,16 @@
 		</div>
 	<% end %>
 
+<script type="text/javascript">
+if (window.jQuery) {  
+	$(document).ready(function() {
+		$('#myPleaseWait_search_all').on('hidden.bs.modal', function () {
+		    $('#detail_data').width($('#detail_data').width() - 20);
+		});
+	});
+};
+</script>
+
     <%= javascript_include_tag "js.cookie" %>
     <%= javascript_include_tag "labeling_cookie" %>
     

@@ -171,6 +171,10 @@ function show_waiting_bar(){
 	$('#myPleaseWait').modal('show');
 }
 
+function show_waiting_bar_search_all(){
+	$('#myPleaseWait_search_all').modal('show');
+}
+
 //This Function displays progress bar pop-up
 function show_waiting_bar_addInfo(){
 	if ($("#info_modal_form").valid() == true){

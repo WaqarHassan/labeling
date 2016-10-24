@@ -10,7 +10,7 @@
 	end	%>	
     <div class="row">
       <div class="col-lg-12">
-      	<%= link_to 'Show all search results', project_deatils_l1_path(l1_list), :remote => true %>
+      	<%= link_to 'Show all search results', project_deatils_l1_path(l1_list), :remote => true, onclick: 'show_waiting_bar_search_all(); return false;' %>
       </div>
     </div> 
 <% end %>     

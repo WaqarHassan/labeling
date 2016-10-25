@@ -68,7 +68,7 @@
         <div class="form-group">
          <label class="col-lg-4 control-label">Status</label>
           <div class="col-lg-6">
-            <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status',@status_), {prompt: "please select status"},{:'data-remote' => 'true',:'data-url' => url_for(get_reasons_and_stations_path(@type)),  :class=>'form-control pnd-reqst pull-left'}  %> 
+            <%= f.select :status, options_from_collection_for_select(@info_status, 'status', 'status',@status_), {prompt: "please select status"},{:'data-remote' => 'true',:'data-url' => url_for(get_reasons_and_stations_path(@type)),  :class=>'form-control pnd-reqst pull-left', required: true}  %> 
           </div>
         </div> 
         <div id = 'get_reasons_and_stations_div'>
@@ -118,7 +118,7 @@
                 end
                 %>
 
-                  <% if add_info.status.present? %>
+                <% if add_info.status.present? %>
                     <%= add_info.status+" by "+user_name+" on "+creation_time.strftime("%m/%d/%y %I:%M %p")  %>
                   <% else %> 
                     <%= "By "+user_name+" on "+creation_time.strftime("%m/%d/%y %I:%M %p")  %>
@@ -144,8 +144,21 @@
                   <%end%>
                   ----------------------
                   <br>
-                  
               <% end %>
+
+              <% if @rework_info.present? 
+                  user_name = @rework_info.user.first_name.present? ? @rework_info.user.first_name : ''  %>
+
+                <%= "Rework created by "+user_name+" on "+@rework_info.created_at.strftime("%m/%d/%y %I:%M %p")  %>
+                <br/>
+                <strong>Parent:</strong> <%= @reworked_l3_parent_name %>
+                <br>
+                <strong>Notes:</strong> <%= @rework_info.note %>
+                <br>
+                   ----------------------
+                  <br>
+              <% end %>
+
             </div>
         </div> 
    
@@ -162,8 +175,8 @@
       <%end%>
 
       <button class='btn btn-danger' data-dismiss='modal' type='button'>Close</button>
-      <button class='btn save-print-update-edit-btn' type='submit' onclick="return show_waiting_bar_addInfo();">Save</button>
-      <button class='btn save-print-update-edit-btn' type='submit' onclick="return onlySaveNote();">Save Note only</button>
+      <button class='btn save-print-update-edit-btn' type='submit' onclick="show_waiting_bar_addInfo(event);">Save</button>
+      <button class='btn save-print-update-edit-btn' type='submit' onclick="onlySaveNote(event);">Save Note only</button>
     </div>
     <% end %>
   </div>

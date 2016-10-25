@@ -212,6 +212,7 @@ class OverviewController < ApplicationController
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @info_status = @workflow.statuses.where(recording_level: 'L1')
     @additional_info_data = @workflow.additional_infos.where(object_id: @l1.id, object_type: 'L1').order(id: :desc)
+    @rework_info = []
     respond_to do |format|
       format.html
       format.js
@@ -284,6 +285,7 @@ class OverviewController < ApplicationController
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @info_status = @workflow.statuses.where(recording_level: 'L2')
     @additional_info_data = @workflow.additional_infos.where(object_id: @l2.id, object_type: 'L2').order(id: :desc)
+    @rework_info = []
     respond_to do |format|
       format.html
       format.js
@@ -307,6 +309,18 @@ class OverviewController < ApplicationController
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @info_status = @workflow.statuses.where(recording_level: 'L3')
     @additional_info_data = @workflow.additional_infos.where(object_id: @l3.id, object_type: 'L3').order(id: :desc)
+    @rework_info = ReworkInfo.find_by_object_type_and_new_rework_id('L3', params[:l3_id])
+    if @rework_info.present?
+      @reworked_l3 = L3.find_by_id(@rework_info.new_rework_id)
+      if @reworked_l3.present?
+        @reworked_l3_parent = L3.find_by_id(@reworked_l3.rework_parent_id)
+        if @reworked_l3_parent.present?
+          @reworked_l3_parent_name = @reworked_l3_parent.name
+        end
+      end 
+
+    end
+    @reworked_l3 =  
     respond_to do |format|
       format.html
       format.js
@@ -326,8 +340,22 @@ class OverviewController < ApplicationController
     elsif @object_type == 'L3' 
       @object = L3.find(@object_id)
     end
+
     #  @live_station_steps = WorkflowLiveStep.where(object_type: @object_type, object_id: @object_id)
-    @live_station_steps = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.object_type= '#{@object_type}' and workflow_live_steps.object_id = #{@object_id} and station_steps.can_be_turned_off = #{true} ")
+    live_station_steps = WorkflowLiveStep.joins(:station_step).where("workflow_live_steps.object_type= '#{@object_type}' and workflow_live_steps.object_id = #{@object_id} and station_steps.can_be_turned_off = #{true}").order("station_steps.workflow_station_id")
+    @live_station_steps = [] 
+
+    live_station_steps.each do |live_station_step|
+      name = live_station_step.station_step.workflow_station.station_name+'-'+live_station_step.station_step.step_name
+      sequence = live_station_step.station_step.sequence
+      workflow_station_sequence = live_station_step.station_step.workflow_station.sequence
+      is_active = live_station_step.is_active
+      actual_confirmation = live_station_step.actual_confirmation
+      live_step = {'id'=>live_station_step.id, 'name'=>name, 'station_sequence'=> workflow_station_sequence, 'sequence'=> sequence, 'is_active'=>is_active, 'actual_confirmation'=> actual_confirmation}
+      @live_station_steps << live_step
+    end
+    @live_station_steps = @live_station_steps.sort{|a, b| [a['station_sequence'], a['sequence']] <=> [b['station_sequence'], b['sequence']]}
+
     respond_to do |format|
       format.html
       format.js

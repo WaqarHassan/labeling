@@ -12,29 +12,29 @@
   ia_pred_name = '' #StationStep.get_step_predecessors(@pred_of_ia_approved, @stationSteps)
   ecr_pred_name = '' #StationStep.get_step_predecessors(@pred_of_ecr_inbox, @stationSteps)
   collab_pred_name = "\n*ECR Inbox" #StationStep.get_step_predecessors(@pred_of_sent_to_collab, @stationSteps)
-  sent8_pred_name = "\n*ECR Inbox" #StationStep.get_step_predecessors(@pred_of_station8_sent, @stationSteps)
+  sent8_pred_name = "\n*To Horw" #StationStep.get_step_predecessors(@pred_of_station8_sent, @stationSteps)
   crb_pred_name = "\n*To Collab. \n*To Horw" #StationStep.get_step_predecessors(@pred_of_crb_started, @stationSteps)
   ecn_pred_name = "\n*To CRB" #StationStep.get_step_predecessors(@pred_of_ecn_released, @stationSteps)
  %>   
 
-<th style="width: 110px;" title="Days: <%=@days_at_ia_approved %>&#013;&#013;Predecessors: <%=ia_pred_name%>">
-  IA Approved
-</th>
-<th style="width: 110px;" title="Days: <%=@days_at_ecr_inbox %>&#013;&#013;Predecessors: <%=ecr_pred_name%>">
-  ECR Inbox
-</th>
-<th style="width: 110px;" title="Days: <%=@days_at_sent_to_collab %>&#013;&#013;Predecessors: <%=collab_pred_name%>">
-  To Collab.
-</th>
-<th style="width: 110px;" title="Days: <%=@days_at_station8_sent %>&#013;&#013;Predecessors: <%=sent8_pred_name%>">
-  To Horw
-</th>
-<th style="width: 110px;" title="Days: <%=@days_at_crb_started %>&#013;&#013;Predecessors: <%=crb_pred_name%>">
-  To CRB
-</th>
-<th style="width: 110px;" title="Days: <%=@days_at_ecn_released %>&#013;&#013;Predecessors: <%=ecn_pred_name%>">
-  ECN Release
-</th>
+          <th style="width: 110px;" title="Days: <%=@days_at_ia_approved %>&#013;&#013;Predecessors: <%=ia_pred_name%>">
+            IA Approved
+          </th>
+          <th style="width: 110px;" title="Days: <%=@days_at_ecr_inbox %>&#013;&#013;Predecessors: <%=ecr_pred_name%>">
+            ECR Inbox
+          </th>
+          <th style="width: 110px;" title="Days: <%=@days_at_sent_to_collab %>&#013;&#013;Predecessors: <%=collab_pred_name%>">
+            To Collab.
+          </th>
+          <th style="width: 110px;" title="Days: <%=@days_at_station8_sent %>&#013;&#013;Predecessors: <%=sent8_pred_name%>">
+            To Horw
+          </th>
+          <th style="width: 110px;" title="Days: <%=@days_at_crb_started %>&#013;&#013;Predecessors: <%=crb_pred_name%>">
+            To CRB
+          </th>
+          <th style="width: 110px;" title="Days: <%=@days_at_ecn_released %>&#013;&#013;Predecessors: <%=ecn_pred_name%>">
+            ECN Release
+          </th>
           <th>#Comp</th>
           <th>Comp. Type</th>
           <th>BU</th>
@@ -172,7 +172,7 @@
                     <%
                       sent_to_collab = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 16, ecr_inbox_date_for_succer, @workflow, @days_at_ecr_inbox, @holidays, result[7])
 
-                      station8_sent = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 18, ecr_inbox_date_for_succer, @workflow, @days_at_ecr_inbox, @holidays, result[7])
+                      station8_sent = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 18, sent_to_collab[2], @workflow, @days_at_sent_to_collab, @holidays, result[7])
 
                       crb_started = WorkFlow.get_rollUp_l3_crb_started_timestamps(curr_l3_with_partials, 19,20, sent_to_collab[2],station8_sent[2] , @workflow, @days_at_sent_to_collab, @days_at_station8_sent, @holidays, numb_comp_in_main_record)
 
@@ -180,12 +180,12 @@
 
                     %>
 
-                    <td title="IA Approval - IA Approved"></td>
-                    <td title="ECR - INBOX"></td>
-                    <td title="Collaboration - Sent to Collab." class="<%= sent_to_collab[1] %>"><%= sent_to_collab[0] %></td>
-                    <td title="Station 8 - Sent" class="<%= station8_sent[1] %>"><%= station8_sent[0] %></td>
-                    <td title="CRB - CRB Started" class="<%= crb_started[1] %>"><%= crb_started[0] %></td>
-                    <td title="CRB - ECR Released" class="<%= crb_released[1] %>"><%= crb_released[0] %></td>
+                    <td title="IA Approved"></td>
+                    <td title="ECR INBOX"></td>
+                    <td title="To Collab. " class="<%= sent_to_collab[1] %>"><%= sent_to_collab[0] %></td>
+                    <td title="To Horw" class="<%= station8_sent[1] %>"><%= station8_sent[0] %></td>
+                    <td title="To CRB" class="<%= crb_started[1] %>"><%= crb_started[0] %></td>
+                    <td title="ECN Release" class="<%= crb_released[1] %>"><%= crb_released[0] %></td>
 
                     <td title="Number of Comp." ><%= numb_comp_in_main_record %></td>
                     <td title="Component Type"><%= result[24] %></td>

@@ -144,10 +144,40 @@ function show_waiting_bar_confirmation(){
 }
  // This function pops up progress whenever called
 function show_waiting_bar(){
-	$('#myPleaseWait').modal('show');
+  $('#save_note_only').val("");
+  additional_info_status = $('#additional_info_status').val();
+  if (additional_info_status == ""){
+    var confrm = confirm('Status settings will be lost');
+      if (confrm == true) {
+        $('#myPleaseWait').modal('show'); 
+        return true;
+      } else {
+        e.preventDefault();
+        return false;
+      }
+  }else{
+    $('#myPleaseWait').modal('show');
+    return true;
+  }
 }
 //This Function set value of hidden field with id = save_note_only 
 //on additional info pop-up when save note only button is clicked
-function onlySaveNote(){
-	$('#save_note_only').val("savenoteonly");
+function onlySaveNote(e){
+  $('#save_note_only').val("savenoteonly");
+  $('#additional_info_status').removeAttr('required');
+  additional_info_status = $('#additional_info_status').val();
+  if (additional_info_status != ""){
+    var confrm = confirm('Status settings will be lost');
+      if (confrm == true) {
+        return true;
+      } else {
+        e.preventDefault();
+        return false;
+      }
+  }else{
+    return true;
+  }
 }
+
+
+

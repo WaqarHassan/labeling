@@ -1261,9 +1261,9 @@ class WorkFlow < ActiveRecord::Base
 			      		 'BU', 'IA #Comp', 'ECR', 'ECR-Status', 'ECR-Completed', 'ECR #Comp', 'ParentId',
 			      		  'Parent', 'IA Approved', 'ECR Inbox', 'Sent to Collab', 'Back from Collab', 
 			      		  'Station8 Sent', 'CRB Started - ETA', 'CRB Started', 'ECN Released', 'Horw', 
-			      		  '#Lang', 'CompType', 'MainRecord', 'IA-HoldReason','ECR-HoldReason', 'IncludeCompleted']
+			      		  '#Lang', 'CompType', 'MainRecord', 'IA-HoldReason','ECR-HoldReason', 'IncludeCompleted', 'Station8 Sent - ETA']
 			      data_set.each do |report|
-			        csv <<  [report[0], report[1], report[2], report[3], report[4], report[5], report[6], report[7], report[8], report[9], report[10], report[11], report[12], report[13], report[14], report[15], report[16], report[17], report[18], report[19], report[20], report[21], report[22], report[23], report[24], report[25], report[26], report[27], report[28]]
+			        csv <<  [report[0], report[1], report[2], report[3], report[4], report[5], report[6], report[7], report[8], report[9], report[10], report[11], report[12], report[13], report[14], report[15], report[16], report[17], report[18], report[19], report[20], report[21], report[22], report[23], report[24], report[25], report[26], report[27], report[28], report[32]]
 			      end
 			    end
 			end
@@ -1317,6 +1317,10 @@ end
 # 26 = 'IA-HoldReason'
 # 27 = 'ECR-HoldReason'
 # 28 = 'IncludeCompleted'
+# 29 = 'Porject-Id'
+# 30 = 'IA-id'
+# 31 = 'ECR-id'
+# 32 = 'Station8 Sent - ETA'
 
 
 

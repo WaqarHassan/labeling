@@ -278,6 +278,7 @@ class ReportsController < ApplicationController
 			end
 
 		end
+		puts "-------------#{@pred_of_station8_sent}"
 		@stationSteps = []
 		station_steps = StationStep.eager_load(:workflow_station)
 		station_steps.each do |stp|

@@ -33,7 +33,7 @@
       checked = 'checked'
     end 
     if live_station_step['actual_confirmation'].present?
-      disabled = 'disabled'
+      disabled = onclick='return false;'
     end %>
 		<div class="form-group">
 	   	  <div class="col-lg-1"></div>
@@ -41,7 +41,11 @@
           <%= live_station_step['name']%>
         </div>
 	      <div class="col-lg-2"> 
-	      	<input type="checkbox" name="live_steps[]" value="<%=live_station_step['id'] %>" <%= checked %>  <%= disabled %>  />  
+          <% if live_station_step['actual_confirmation'].present? %>
+	      	    <input type="checkbox" name="live_steps[]" value="<%=live_station_step['id'] %>" onclick="return false;"  checked style="cursor:not-allowed;"/>  
+          <% else %>
+             <input type="checkbox" name="live_steps[]" value="<%=live_station_step['id'] %>" <%= checked %>  />  
+          <% end %>
 	      </div>
       	</div>	
     <% end %>

@@ -579,6 +579,7 @@ class OverviewController < ApplicationController
     @rework_components = @object.num_component_in_rework.to_i
     @object_num_component = @object.num_component.present? ? @object.num_component : 1
     @object_num_component = @object_num_component.to_i - @object.num_component_in_rework.to_i
+    @parent_total_components = @object.num_component
 
     @object_live_steps = @object.workflow_live_steps
     @object_type = workflow_live_step.object_type
@@ -661,13 +662,13 @@ class OverviewController < ApplicationController
      component_already_in_rework = component_already_in_rework.present? ? component_already_in_rework : 0
      remaining_parent_component = parent_total_num_component.to_i - num_component_in_rework.to_i
 
-     # find parent of rework
+     # find parent of  rework
      l3_object = L3.find(rework_parent_id)
      l3_rework_name = get_rework_name(l3_object.name)
      l3_object.num_component_in_rework = num_component_in_rework.to_i + component_already_in_rework.to_i
 
      # create new rework
-     l3_rework = L3.new
+     l3_rework = L3.new 
      l3_rework.user_id = current_user.id
      l3_rework.name = l3_rework_name
      l3_rework.status = 'Active'

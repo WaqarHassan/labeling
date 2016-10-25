@@ -283,7 +283,18 @@ function download_handoff_report_csv(){
 
 	return true;
 }
+function show_waiting_bar_daily_activity()
+{
+		if ($('#search_form').valid() == true){
+		$('#myPleaseWait').modal('show');
+	}
 
+}
+function show_waiting_bar_wip(){
+	if ($('#wip_form').valid() == true){
+		$('#myPleaseWait').modal('show');
+	}
+}
 function show_all_data_form_db(){
 	if ($("#include_completed").is(':checked')) {
 		$("#show_all_include_completed").val("show_all_include_completed");

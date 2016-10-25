@@ -594,6 +594,20 @@ class ReportsController < ApplicationController
   		end
 	end
 
+	def wip
+		puts "============================================"
+		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+		if request.post? or session[:daily_activity_report_date].present?
+			start_date = params[:wip_report_start_date]
+			end_date = params[:wip_report_end_date]
+			
+
+		end
+
+
+	
+	end
+
   	private
 
 		def search 

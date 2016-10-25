@@ -172,7 +172,7 @@
                     <%
                       sent_to_collab = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 16, ecr_inbox_date_for_succer, @workflow, @days_at_ecr_inbox, @holidays, result[7])
 
-                      station8_sent = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 18, sent_to_collab[2], @workflow, @days_at_sent_to_collab, @holidays, result[7])
+                      station8_sent = WorkFlow.get_rollUp_l3_station8_timestamps(curr_l3_with_partials, 18, sent_to_collab[2], @workflow, @days_at_sent_to_collab, @holidays, result[7], 32)
 
                       crb_started = WorkFlow.get_rollUp_l3_crb_started_timestamps(curr_l3_with_partials, 19,20, sent_to_collab[2],station8_sent[2] , @workflow, @days_at_sent_to_collab, @days_at_station8_sent, @holidays, numb_comp_in_main_record)
 

@@ -308,6 +308,100 @@ class WorkFlow < ActiveRecord::Base
 
 				return [max_date, table_td_class, max_date_for_succesr]
 			end
+
+			def get_rollUp_l3_station8_timestamps(dataSet, indx, pred_actual, workflow, number_days, holidays, pred_numb_comp, eta_indx)
+				max_date = 'N/A'
+				max_date_for_succesr = ''
+				max_date2 = ''
+				
+				pred_numb_comp = pred_numb_comp == '' ? 0 : pred_numb_comp
+				add_extra_day = pred_numb_comp/17 
+				number_days = add_extra_day + number_days
+
+				any_active_step = dataSet.select{|eta| eta[indx].to_i != 0}
+				if any_active_step.present?
+					max_date = ''
+				end
+
+				backFromCollab_has_any_unconfirm = dataSet.select{|eta| eta[17].to_i == 1}
+				backFromCollab_has_any_other_than_na = dataSet.select{|eta| eta[17].to_i != 0}
+
+				max_crb_with_etas_date = 0
+				if !backFromCollab_has_any_unconfirm.present?
+					crb_with_etas = dataSet.select{|eta| eta[eta_indx].to_i != 0 and eta[eta_indx].to_i != 1}
+					crb_with_etas_sorted = crb_with_etas.sort_by { |h| h[eta_indx] }.reverse
+					if crb_with_etas_sorted.present?
+						max_crb_with_etas = crb_with_etas_sorted.first
+						max_crb_with_etas_date = max_crb_with_etas[eta_indx]
+					end
+				end
+				if !backFromCollab_has_any_other_than_na.present?
+					crb_with_etas = dataSet.select{|eta| eta[eta_indx].to_i != 0 and eta[eta_indx].to_i != 1}
+					crb_with_etas_sorted = crb_with_etas.sort_by { |h| h[eta_indx] }.reverse
+					if crb_with_etas_sorted.present?
+						max_crb_with_etas = crb_with_etas_sorted.first
+						max_crb_with_etas_date = max_crb_with_etas[eta_indx]
+					end
+				end
+
+				any_eta_step = dataSet.select{|eta| eta[indx].to_i==1}
+				if any_eta_step.present?
+					max_crb_with_etas_date = DateTime.parse(max_crb_with_etas_date.to_s) rescue nil
+					if max_crb_with_etas_date
+						number_days = 1
+						eta_datetime =  number_days.business_days.after(max_crb_with_etas_date)
+						eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
+						max_date = "ETA "+eta_date_stamp
+						if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
+							table_td_class = 'report_eta_light_red'
+						end
+					else
+						pred_actual = DateTime.parse(pred_actual.to_s) rescue nil
+						if pred_actual
+							# Covnert minutes to hours and minutes
+						  	BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
+						    BusinessTime::Config.end_of_workday = workflow.end_of_workday
+
+						    holidays.each do |holiday|
+						       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
+						    end
+							actual_confirmation = pred_actual.to_time.strftime('%Y-%m-%d %H:%M')
+							eta_datetime = Time.parse(actual_confirmation)
+							
+							if number_days > 0
+								eta_datetime =  number_days.business_days.after(eta_datetime)
+							end
+
+							eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
+							max_date = "ETA "+eta_date_stamp
+							if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
+								table_td_class = 'report_eta_light_red'
+							end
+						end
+					end	
+				else
+					ind = 0
+					dataSet.each do |data|
+						date_parsed = DateTime.parse(data[indx].to_s) rescue nil
+						if date_parsed
+							ind +=1
+							if ind == 1
+								max_date = date_parsed.strftime("%m/%d/%y")
+								max_date2 = date_parsed
+								max_date_for_succesr = date_parsed
+							elsif DateTime.parse(max_date2.to_s) < DateTime.parse(date_parsed.to_s)
+								max_date = date_parsed.strftime("%m/%d/%y")
+								max_date_for_succesr = date_parsed
+								max_date2 = date_parsed
+							end
+
+							table_td_class = 'report_actual_confirmation'		
+						end
+					end
+				end
+
+				return [max_date, table_td_class, max_date_for_succesr]
+			end
 			
 			def get_rollUp_l3_crb_started_timestamps(dataSet, eta_indx, actual_indx, sent_to_collab_actual,station8_sent_actual, 
 				workflow, days_at_collab, days_at_station8, holidays,pred_numb_comp)
@@ -336,8 +430,18 @@ class WorkFlow < ActiveRecord::Base
 				end
 
 				backFromCollab_has_any_unconfirm = dataSet.select{|eta| eta[17].to_i == 1}
+				backFromCollab_has_any_other_than_na = dataSet.select{|eta| eta[17].to_i != 0}
+
 				max_crb_with_etas_date = 0
 				if !backFromCollab_has_any_unconfirm.present?
+					crb_with_etas = dataSet.select{|eta| eta[eta_indx].to_i != 0 and eta[eta_indx].to_i != 1}
+					crb_with_etas_sorted = crb_with_etas.sort_by { |h| h[eta_indx] }.reverse
+					if crb_with_etas_sorted.present?
+						max_crb_with_etas = crb_with_etas_sorted.first
+						max_crb_with_etas_date = max_crb_with_etas[eta_indx]
+					end
+				end
+				if !backFromCollab_has_any_other_than_na.present?
 					crb_with_etas = dataSet.select{|eta| eta[eta_indx].to_i != 0 and eta[eta_indx].to_i != 1}
 					crb_with_etas_sorted = crb_with_etas.sort_by { |h| h[eta_indx] }.reverse
 					if crb_with_etas_sorted.present?

@@ -187,7 +187,7 @@
 									<tr><!-- 
 										<td class="_data "><%# l3.status %></td>  -->
 										<td class="_data "><%= l3.business_unit %></td> 
-										<td class="_data "><%= componenets %></td> 
+										<td class="_data "><%= l3.num_component.to_i - l3.num_component_in_rework.to_i %> / <%=  l3.num_component %></td> 
 											<% attribute_values_l3_data = l3.attribute_values
 											attributes = []
 											@label_attributes.each do |label_attri| 

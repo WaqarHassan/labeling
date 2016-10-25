@@ -15,7 +15,7 @@
       <%= f.hidden_field :user_id , :value=> @user_id %>
       <%= f.hidden_field :step_initiating_rework , :value=> @wf_step_id %>
       <input type="hidden" name="rework_parent_id" value= "<%=@object.id%>" />
-      <input type="hidden" id ="total_num_component" name="num_component" value= "<%=@object_num_component%>" />
+      <input type="hidden" id ="total_num_component" name="num_component" value= "<%=@parent_total_components%>" />
       <input type="hidden" id ="component_already_in_rework" name="component_already_in_rework" value= "<%=@rework_components%>" />
       <input type="hidden" id="merge_back_partial_with_parent" name="merge_back_partial_with_parent" />
       <input type="hidden" name="partial_to_merge_id" value= "<%=@object.id%>" />

@@ -13,11 +13,11 @@ function can_be_full_rework(){
 	selected_num_comp = $('#selected_num_comp').val();
 	total_num_component = $('#total_num_component').val();
 	component_already_in_rework = $('#component_already_in_rework').val();
-	if (selected_num_comp <= 0)
+	if (selected_num_comp <= 0 || selected_num_comp > (total_num_component - component_already_in_rework))
 	{
 		dataHTMLREWORK = '<div class="alert-info alert alert-dismissable">';
 		dataHTMLREWORK += '<button aria-hidden class="close" data-dismiss="alert">&times;</button>';
-		dataHTMLREWORK += 'Full Rework is not allowed because It have no components';
+		dataHTMLREWORK += 'Rework is not allowed because components are out of range';
 		dataHTMLREWORK += '</div>';
 		$('#full_rework_not_possible').html(dataHTMLREWORK);
 		return false;

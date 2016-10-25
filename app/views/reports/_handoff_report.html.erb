@@ -8,14 +8,14 @@
           <th><%= @workflow.L3 %></th>
           <th>Status</th>
 
- <%
-  ia_pred_name = '' #StationStep.get_step_predecessors(@pred_of_ia_approved, @stationSteps)
-  ecr_pred_name = '' #StationStep.get_step_predecessors(@pred_of_ecr_inbox, @stationSteps)
-  collab_pred_name = "\n*ECR Inbox" #StationStep.get_step_predecessors(@pred_of_sent_to_collab, @stationSteps)
-  sent8_pred_name = "\n*To Collab." #StationStep.get_step_predecessors(@pred_of_station8_sent, @stationSteps)
-  crb_pred_name = "\n*To Collab. \n*To Horw" #StationStep.get_step_predecessors(@pred_of_crb_started, @stationSteps)
-  ecn_pred_name = "\n*To CRB" #StationStep.get_step_predecessors(@pred_of_ecn_released, @stationSteps)
- %>   
+           <%
+            ia_pred_name = '' #StationStep.get_step_predecessors(@pred_of_ia_approved, @stationSteps)
+            ecr_pred_name = '' #StationStep.get_step_predecessors(@pred_of_ecr_inbox, @stationSteps)
+            collab_pred_name = "\n*ECR Inbox" #StationStep.get_step_predecessors(@pred_of_sent_to_collab, @stationSteps)
+            sent8_pred_name = "\n*To Collab." #StationStep.get_step_predecessors(@pred_of_station8_sent, @stationSteps)
+            crb_pred_name = "\n*To Collab. \n*To Horw" 
+            ecn_pred_name = "\n*To CRB" #StationStep.get_step_predecessors(@pred_of_ecn_released, @stationSteps)
+           %>   
 
           <th style="width: 110px;" title="Days: <%=@days_at_ia_approved %>&#013;&#013;Predecessors: <%=ia_pred_name%>">
             IA Approved
@@ -170,7 +170,15 @@
                     </td>
                     <td title="Status"><%= l3_status[0] %></td>
                     <%
-                      sent_to_collab = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 16, ecr_inbox_date_for_succer, @workflow, @days_at_ecr_inbox, @holidays, result[7])
+                      ecr_inbox_date_for_succer2 = ''
+                      if result[15].presence
+                        ecr_inbox_date_parsed = DateTime.parse(result[15].to_s) rescue nil
+                        if ecr_inbox_date_parsed
+                          ecr_inbox_date_for_succer2 = ecr_inbox_date_parsed
+                        end
+                      end 
+
+                      sent_to_collab = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 16, ecr_inbox_date_for_succer2, @workflow, @days_at_ecr_inbox, @holidays, result[7])
 
                       station8_sent = WorkFlow.get_rollUp_l3_station8_timestamps(curr_l3_with_partials, 18, sent_to_collab[2], @workflow, @days_at_sent_to_collab, @holidays, result[7], 32)
 

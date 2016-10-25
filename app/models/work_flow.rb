@@ -336,6 +336,7 @@ class WorkFlow < ActiveRecord::Base
 				end
 
 				backFromCollab_has_any_unconfirm = dataSet.select{|eta| eta[17].to_i == 1}
+				backFromCollab_has_any_other_than_na = dataSet.select{|eta| eta[17].to_i != 1}
 				max_crb_with_etas_date = 0
 				if !backFromCollab_has_any_unconfirm.present?
 					crb_with_etas = dataSet.select{|eta| eta[eta_indx].to_i != 0 and eta[eta_indx].to_i != 1}

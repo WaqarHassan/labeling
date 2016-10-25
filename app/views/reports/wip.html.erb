@@ -1,0 +1,109 @@
+<div class="row">
+  <div class="col-lg-12 col-sm-12 report_heading"> 
+    <h4>WORK IN PROGRESS</h4>
+  </div>
+</div>
+
+<div class='clearfix'></div> 
+<div class='data-main'>
+
+  <%= form_tag wip_reports_path, remote: true, :id => 'wip_form', :class => 'form-horizontal'  do %>
+
+
+    <div class="row col-lg-12">
+        <!-- <div class="col-lg-4"> -->
+      <div class="col-lg-2 wip_refresh">
+        <button type="submit" class="btn btn-primary" onclick="show_waiting_bar_wip();">Refresh</button>
+      </div>
+
+    	<div class="row col-lg-3 wip_input">
+        <div class = "col-lg-4 wip_input">
+               <label class="">Start Date: </label>
+              <input id="datepicker_now" class="datepicker_only form-control" name="wip_report_start_date" placeholder="Please Select Start Date"                   required="" type="text">
+        </div>
+        <div class = "col-lg-4">
+          <label class="">Start Date: </label>
+          <input id="datepicker_now" class="datepicker_only form-control" name="wip_report_start_date" placeholder="Please Select Start Date"                   required="" type="text">
+         </div>
+        <div class = "col-lg-4">
+          <label class="">Start Date: </label>
+          <input id="datepicker_now" class="datepicker_only form-control" name="wip_report_start_date" placeholder="Please Select Start Date"                   required="" type="text">
+        </div>
+       
+      </div>
+      <div class="row col-lg-3 wip_input">
+        <div class = "col-lg-4">
+               <label class="">Start Date: </label>
+              <input id="datepicker_now" class="datepicker_only form-control" name="wip_report_start_date" placeholder="Please Select Start Date"                   required="" type="text">
+        </div>
+        <div class = "col-lg-4">
+          <label class="">Start Date: </label>
+          <input id="datepicker_now" class="datepicker_only form-control" name="wip_report_start_date" placeholder="Please Select Start Date"                   required="" type="text">
+         </div>
+        <div class = "col-lg-4">
+          <label class="">Start Date: </label>
+          <input id="datepicker_now" class="datepicker_only form-control" name="wip_report_start_date" placeholder="Please Select Start Date"                   required="" type="text">
+        </div>
+       
+      </div>
+
+      <!-- <div class = "col-lg-2">
+        <input type="text" class="datepicker_only form-control" id="datepicker_now" name = "wip_report_start_date" placeholder="Please Select Start Date" required>
+        <input type="text" class="datepicker_only form-control" id="datepicker_now" name = "wip_report_start_date" placeholder="Please Select Start Date" required>
+        <input type="text" class="datepicker_only form-control" id="datepicker_now" name = "wip_report_start_date" placeholder="Please Select Start Date" required>
+      </div> -->
+    
+       
+    </div>
+  <%end%>
+    <div id="wip_report_search_result_div">
+     
+          <div class="wip-report-data" id ="wip_report_data">
+            <table class="table table-bordered wipReportTable">
+              <thead >
+               <tr class="sub_heading">
+                <th> Checkpoint </th>
+                <th> Target Days</th>
+                <th> ThroughPut</th>
+                <th> WIP</th>
+                <th> WIP Days </th>
+                <th> ThroughPut</th>
+                <th> WIP</th>
+                <th> WIP Days </th>
+                <th> ThroughPut</th>
+                <th> WIP</th>
+                <th> WIP Days </th>
+                <th> ThroughPut</th>
+                <th> WIP</th>
+                <th> WIP Days </th>
+              </tr>
+              </thead>
+              <tbody>
+                
+
+              </tbody>
+
+
+            </table>
+          </div>
+ <style type="text/css">
+    .container{
+        background-color: #fff;    
+    }
+  </style>
+
+  <%= javascript_include_tag "reports" %> 
+    </div> 
+</div>
+  <style type="text/css">
+    .container{
+        background-color: #fff;    
+    }
+  </style>		
+  <script type="text/javascript">
+  if (window.jQuery) {  
+    $(document).ready(function() {
+        $('.datepicker_only').datepicker({format: 'mm/dd/yyyy' , autoclose: true });
+    })
+  };
+  </script>

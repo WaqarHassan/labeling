@@ -563,19 +563,7 @@ class OverviewController < ApplicationController
     @can_merge_back = can_merge_back_with_parent(@object)
 
     rework_components = 0
-    #   if @object.class.name == 'L3'
-    #     reworks = L3.where(rework_parent_id: @object.id, is_closed: false)
-    #     reworks.each do |rework|
-    #       rework_components += rework.num_component
-    #     end
-    #     closed_reworks = L3.where(rework_parent_id: @object.id, is_closed: true)
-    #     closed_reworks.each do |clos_rework|
-    #       closed_reworks_partial = L3.where(rework_parent_id: clos_rework.id, is_closed: false)
-    #       closed_reworks_partial.each do |closedreworkspartial|
-    #         rework_components += closedreworkspartial.num_component
-    #       end
-    #     end
-    # end
+
     @rework_components = @object.num_component_in_rework.to_i
     @object_num_component = @object.num_component.present? ? @object.num_component : 1
     @object_num_component = @object_num_component.to_i - @object.num_component_in_rework.to_i
@@ -587,6 +575,7 @@ class OverviewController < ApplicationController
     @current_step = workflow_live_step.station_step
     @current_station = workflow_live_step.station_step.workflow_station
     @reason_codes = @workflow.reason_codes.where(status: 'Rework', recording_level: workflow_live_step.object_type).order(:sequence)
+    @reason_codes_stations = @workflow.reason_codes.where(status: 'Rework-Station', recording_level: ['L3', nil]).order(:sequence)
     @level_workflow_stations = @workflow.workflow_stations.joins(:station_steps).where("station_steps.recording_level='#{workflow_live_step.object_type}' and workflow_stations.sequence <= #{@current_station.sequence} and workflow_stations.is_visible=true").order(:sequence).uniq
 
     @level_steps = []
@@ -1404,7 +1393,7 @@ class OverviewController < ApplicationController
     end
     def rework_info_params
       params.require(:rework_info).permit(:object_id, :object_type, :note ,:user_id ,:step_initiating_rework ,
-        :rework_start_step)
+        :rework_start_step, :station)
     end
     def workflow_live_step_params
       params.require(:workflow_live_step).permit(:actual_confirmation)

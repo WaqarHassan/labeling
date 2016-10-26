@@ -595,17 +595,22 @@ class ReportsController < ApplicationController
 	end
 
 	def wip
-		puts "============================================"
-		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+		#puts "============================================"
+		@workflows = WorkFlow.where(is_active: true, is_in_use: true)
 		if request.post? or session[:daily_activity_report_date].present?
 			start_date = params[:wip_report_start_date]
 			end_date = params[:wip_report_end_date]
-			
+			@all_data = WorkFlow.default_wip()
+			@target_days = @all_data[0][0..8]
+
+			respond_to do |format|
+				format.js
+				format.html
+			end
 
 		end
-
-
-	
+		@all_data = WorkFlow.default_wip()
+		@target_days = @all_data[0][0..8]
 	end
 
   	private

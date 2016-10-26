@@ -6,94 +6,173 @@
 
 <div class='clearfix'></div> 
 <div class='data-main'>
-
-  <%= form_tag wip_reports_path, remote: true, :id => 'wip_form', :class => 'form-horizontal'  do %>
-
-
-    <div class="row col-lg-12">
-        <!-- <div class="col-lg-4"> -->
+    <div class="row col-lg-12 form_div">
+      <%= form_tag wip_reports_path, remote: true, :id => 'wip_form', :class => 'form-horizontal'  do %>
       <div class="col-lg-2 wip_refresh">
         <button type="submit" class="btn btn-primary" onclick="show_waiting_bar_wip();">Refresh</button>
       </div>
+      <% 4.times do |i| %>
+        <div class = "col-lg-3 form_table">
+          <table class="table table-bordered wip_input" id = "table<%= i+1 %>">
+            <thead >
+              <tr class="sub_heading">
+                <th> Start Date </th>
+                <th> End Date </th>
+                <th> Day Capacity</th> 
+              </tr>
+            </thead>
+              <tbody>
+                <tr>
+                  <td><input id="datepicker_now" class="datepicker_only form-control" name="table<%= i+1 %>[start_date]" required="" type="text"></td>
+                  <td><input id="datepicker_now" class="datepicker_only form-control" name="table<%= i+1 %>[end_date]" required="" type="text"></td>
+                  <td><input type = 'text' class = 'form-control' name="table<%= i+1 %>[day_capacity]" value = <%= @workflows.first.day_capacity %> ></td>
+                </tr>
+              </tbody>
 
-    	<div class="row col-lg-3 wip_input">
-        <div class = "col-lg-4 wip_input">
-               <label class="">Start Date: </label>
-              <input id="datepicker_now" class="datepicker_only form-control" name="wip_report_start_date" placeholder="Please Select Start Date"                   required="" type="text">
-        </div>
-        <div class = "col-lg-4">
-          <label class="">Start Date: </label>
-          <input id="datepicker_now" class="datepicker_only form-control" name="wip_report_start_date" placeholder="Please Select Start Date"                   required="" type="text">
-         </div>
-        <div class = "col-lg-4">
-          <label class="">Start Date: </label>
-          <input id="datepicker_now" class="datepicker_only form-control" name="wip_report_start_date" placeholder="Please Select Start Date"                   required="" type="text">
-        </div>
-       
-      </div>
-      <div class="row col-lg-3 wip_input">
-        <div class = "col-lg-4">
-               <label class="">Start Date: </label>
-              <input id="datepicker_now" class="datepicker_only form-control" name="wip_report_start_date" placeholder="Please Select Start Date"                   required="" type="text">
-        </div>
-        <div class = "col-lg-4">
-          <label class="">Start Date: </label>
-          <input id="datepicker_now" class="datepicker_only form-control" name="wip_report_start_date" placeholder="Please Select Start Date"                   required="" type="text">
-         </div>
-        <div class = "col-lg-4">
-          <label class="">Start Date: </label>
-          <input id="datepicker_now" class="datepicker_only form-control" name="wip_report_start_date" placeholder="Please Select Start Date"                   required="" type="text">
-        </div>
-       
-      </div>
 
-      <!-- <div class = "col-lg-2">
-        <input type="text" class="datepicker_only form-control" id="datepicker_now" name = "wip_report_start_date" placeholder="Please Select Start Date" required>
-        <input type="text" class="datepicker_only form-control" id="datepicker_now" name = "wip_report_start_date" placeholder="Please Select Start Date" required>
-        <input type="text" class="datepicker_only form-control" id="datepicker_now" name = "wip_report_start_date" placeholder="Please Select Start Date" required>
-      </div> -->
-    
-       
-    </div>
+              </table>
+        </div>
+      <%end%>
   <%end%>
-    <div id="wip_report_search_result_div">
-     
-          <div class="wip-report-data" id ="wip_report_data">
-            <table class="table table-bordered wipReportTable">
-              <thead >
-               <tr class="sub_heading">
-                <th> Checkpoint </th>
-                <th> Target Days</th>
-                <th> ThroughPut</th>
-                <th> WIP</th>
-                <th> WIP Days </th>
-                <th> ThroughPut</th>
-                <th> WIP</th>
-                <th> WIP Days </th>
-                <th> ThroughPut</th>
-                <th> WIP</th>
-                <th> WIP Days </th>
+  </div>
+  <div class="row col-lg-12">
+    <div class = "col-lg-2 wip_refresh check_point">
+      <table class="table table-bordered wip_input" id = "table">
+        <thead >
+          <tr class="sub_heading">
+           <th>CheckPoint </th> 
+            <th> Target Days </th> 
+          </tr>
+        </thead>
+          <tbody>
+           <tr>
+                  <td>Approved to Start</td>
+                  <td><%= @target_days[0] %></td>
+                </tr>
+                <tr>
+                  <td>Translation</td>
+                   <td><%= @target_days[1] %></td>
+                </tr>
+                
+                <tr>
+                  <td>Station 4 Checkpoint</td>
+                  <td><%= @target_days[2] %></td>
+                </tr>
+                <tr>
+                  <td>From Collaboration</td>
+                   <td><%= @target_days[3] %></td>
+                </tr>
+                <tr>
+                  <td>Station 7 Checkpoint</td>
+                   <td><%= @target_days[4] %></td>
+                </tr>
+                <tr>
+                  <td>Station 8 iFace</td>
+                   <td><%= @target_days[5] %></td>
+                </tr>
+                 <tr>
+                  <td>To CRB</td>
+                   <td><%= @target_days[6] %></td>
+                </tr>
+                 <tr>
+                  <td>From CRB</td>
+                   <td><%= @target_days[7] %></td>
+                </tr>
+                <tr>
+                  <td>ECR Release</td>
+                   <td><%= @target_days[8] %></td>
+                </tr>
+          </tbody>
+
+
+          </table>
+    </div>
+    <%= puts "-----------------VIEWWRRRRRRRRRRRRRs----------------------------------'#{@all_data[0]}" %>
+    <% 4.times do |ind| %>
+    <div class = "col-lg-3 form_table">
+          <table class="table table-bordered wip_input" id = "table">
+            <thead >
+              <tr class="sub_heading">
                 <th> ThroughPut</th>
                 <th> WIP</th>
                 <th> WIP Days </th>
               </tr>
-              </thead>
+            </thead>
               <tbody>
-                
+                <% 9.times do |index| %>
+                  <tr>
+                    <td><%= @all_data[ind][9 + index] %></td>
+                    <td><%=  @all_data[ind][18 + index]%></td>
+                    <td><%=
+                        
+                       (@all_data[ind][18 + index].to_f / @workflows.first.day_capacity).round(2)   %></td>
+
+                  </tr>
+
+                <%end%>
 
               </tbody>
 
 
-            </table>
-          </div>
- <style type="text/css">
-    .container{
-        background-color: #fff;    
-    }
-  </style>
+              </table>
+        </div>
+        <% end%>
+        <!-- <div class = "col-lg-3 form_table">
+          <table class="table table-bordered wip_input" id = "table">
+            <thead >
+              <tr class="sub_heading">
+                <th> ThroughPut</th>
+                <th> WIP</th>
+                <th> WIP Days </th>
+              </tr>
+            </thead>
+              <tbody>
+                <tr>
+                  
+                </tr>
+              </tbody>
 
-  <%= javascript_include_tag "reports" %> 
-    </div> 
+
+              </table>
+        </div> -->
+        <!-- <div class = "col-lg-3 form_table">
+          <table class="table table-bordered wip_input" id = "table">
+            <thead >
+              <tr class="sub_heading">
+                <th> ThroughPut</th>
+                <th> WIP</th>
+                <th> WIP Days </th>
+              </tr>
+            </thead>
+              <tbody>
+                <tr>
+                  
+                </tr>
+              </tbody>
+
+
+              </table>
+        </div> -->
+        <!-- <div class = "col-lg-3 form_table">
+          <table class="table table-bordered wip_input" id = "table">
+            <thead >
+              <tr class="sub_heading">
+                <th> ThroughPut</th>
+                <th> WIP</th>
+                <th> WIP Days </th>
+              </tr>
+            </thead>
+              <tbody>
+                <tr>
+                  
+                </tr>
+              </tbody>
+
+
+              </table>
+        </div> -->
+  </div>
+    
 </div>
   <style type="text/css">
     .container{
@@ -107,3 +186,4 @@
     })
   };
   </script>
+  <%= javascript_include_tag "reports" %> 

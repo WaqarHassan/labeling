@@ -1282,7 +1282,53 @@ class WorkFlow < ActiveRecord::Base
 			      end
 			    end
 			end
+			def default_wip_query(start_date , end_date)\
+				result =  ActiveRecord::Base.connection.execute("call wip_report( '#{start_date}' , '#{end_date}' )")
+				ActiveRecord::Base.clear_active_connections!
+				if result.present?
+					#puts "==========-=-=-=-------------------------#{result.first}"
+				end
+				return result
+			end
+			def default_wip()
+				now = Date.parse(DateTime.now.to_s)
 
+				sunday = now - now.wday 
+				monday = sunday - 6
+				#puts "=====================================#{monday}, ====== , #{sunday}"
+				table4 = default_wip_query(monday,sunday)
+				sunday = monday -1
+				monday  = sunday - 6
+				#puts "=====================================#{monday}, ====== , #{sunday}"
+				table3 = default_wip_query(monday,sunday)
+				sunday = monday -1
+				monday  = sunday - 6
+				#puts "=====================================#{monday}, ====== , #{sunday}"
+				table2 = default_wip_query(monday,sunday)
+				sunday = monday -1
+				monday  = sunday - 6
+				#puts "=====================================#{monday}, ====== , #{sunday}"
+				table1 = default_wip_query(monday,sunday)
+				#result = wip_process( [table1.first ,table2.first , table3.first , table4.first]   )
+
+				return [table1.first ,table2.first , table3.first , table4.first]
+
+			end
+			def wip_process(tables)
+				data = [[],[],[]]
+				tables.each do |t|
+					t.each do |r|
+						target_days = r[0..8]
+						throughput = r[9..17]
+						wip = r[18..26]
+						#target_days.each do 
+
+					end
+				end
+
+
+
+			end
 
 		end
 end

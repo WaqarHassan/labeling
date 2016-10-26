@@ -33,13 +33,13 @@ class L1 < ActiveRecord::Base
   
   def get_l2s_objects(include_canceled, include_completed)
     if include_canceled =='include_canceled' and include_completed == 'include_completed'
-      return self.l2s
+      return self.l2s.order(:id)
     elsif include_canceled =='include_canceled'
-      return self.l2s.where(completed_actual: nil)
+      return self.l2s.where(completed_actual: nil).order(:id)
     elsif include_completed == 'include_completed'
-      return self.l2s.where.not(status: 'cancel')           
+      return self.l2s.where.not(status: 'cancel').order(:id)         
     else 
-      return self.l2s.where(completed_actual: nil).where.not(status: 'cancel')
+      return self.l2s.where(completed_actual: nil).where.not(status: 'cancel').order(:id)
     end
   end
   # 

@@ -678,6 +678,11 @@ class OverviewController < ApplicationController
      l3_rework.num_component = num_component_in_rework
      reason = ReasonCode.find_by_recording_level('ReworkParent')
      reason_id = reason.present? ? reason.id : nil
+     statuses = []
+     rework_live_steps = WorkflowLiveStep.where(object_type: rework_object_type, object_id: rework_parent_id)
+     rework_live_steps.each do |originalRework|
+      statuses << originalRework.is_active
+     end
 
      # -----------------if fulllllllllllllll Rework
      if parent_total_num_component.to_i == num_component_in_rework.to_i
@@ -753,8 +758,9 @@ class OverviewController < ApplicationController
         is_first_active_rework_step_created = nil
         isFirstActiveReworkStepCreated = nil
         live_steps_new_rework_object = nil
-        rework_live_steps = WorkflowLiveStep.where(object_type: rework_object_type, object_id: rework_parent_id)
-        rework_live_steps.each do |original_rework|
+        
+        #rework_live_steps = WorkflowLiveStep.where(object_type: rework_object_type, object_id: rework_parent_id)
+        rework_live_steps.each_with_index do |original_rework, indx|
           live_steps_new_rework = WorkflowLiveStep.new
           live_steps_new_rework.station_step_id = original_rework.station_step_id
           live_steps_new_rework.object_id = l3_rework.id
@@ -763,7 +769,11 @@ class OverviewController < ApplicationController
           live_steps_new_rework.step_completion = original_rework.step_completion
           live_steps_new_rework.eta = original_rework.eta
           if original_rework.id >= start_workflow_live_step.id
-            live_steps_new_rework.is_active = true
+            if original_rework.id == start_workflow_live_step.id
+              live_steps_new_rework.is_active = true
+            else
+              live_steps_new_rework.is_active = original_rework.is_active
+            end
             if !isFirstActiveReworkStepCreated.present?
               isFirstActiveReworkStepCreated = true
               is_first_active_rework_step_created = true

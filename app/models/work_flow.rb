@@ -247,7 +247,7 @@ class WorkFlow < ActiveRecord::Base
 			#   - It recalculate ETAs for HandOff report roll up.
 			# 
 
-			def get_rollUp_l3_timestamps(dataSet, indx, pred_actual, workflow, number_days, holidays, pred_numb_comp)
+			def get_rollUp_l3_timestamps(dataSet, indx, pred_actual, workflow, number_days, holidays, pred_numb_comp, l3_status)
 				max_date = 'N/A'
 				max_date_for_succesr = ''
 				max_date2 = ''
@@ -305,11 +305,16 @@ class WorkFlow < ActiveRecord::Base
 						end
 					end
 				end
+				
+				if l3_status.downcase == 'onhold' and max_date.include? 'ETA'
+					max_date = 'OnHold'
+					table_td_class = ''
+				end
 
 				return [max_date, table_td_class, max_date_for_succesr]
 			end
 
-			def get_rollUp_l3_station8_timestamps(dataSet, indx, pred_actual, workflow, number_days, holidays, pred_numb_comp, eta_indx)
+			def get_rollUp_l3_station8_timestamps(dataSet, indx, pred_actual, workflow, number_days, holidays, pred_numb_comp, eta_indx, l3_status)
 				max_date = 'N/A'
 				max_date_for_succesr = ''
 				max_date2 = ''
@@ -345,7 +350,8 @@ class WorkFlow < ActiveRecord::Base
 				end
 
 				any_eta_step = dataSet.select{|eta| eta[indx].to_i==1}
-				if any_eta_step.present?
+				pred_actual = DateTime.parse(pred_actual.to_s) rescue nil
+				if any_eta_step.present? and pred_actual
 					max_crb_with_etas_date = DateTime.parse(max_crb_with_etas_date.to_s) rescue nil
 					if max_crb_with_etas_date
 						number_days = 1
@@ -400,11 +406,15 @@ class WorkFlow < ActiveRecord::Base
 					end
 				end
 
+				if l3_status.downcase == 'onhold' and max_date.include? 'ETA'
+					max_date = 'OnHold'
+					table_td_class = ''
+				end
 				return [max_date, table_td_class, max_date_for_succesr]
 			end
 			
 			def get_rollUp_l3_crb_started_timestamps(dataSet, eta_indx, actual_indx, sent_to_collab_actual,station8_sent_actual, 
-				workflow, days_at_collab, days_at_station8, holidays,pred_numb_comp)
+				workflow, days_at_collab, days_at_station8, holidays,pred_numb_comp, l3_status)
 
 			  	BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
 			    BusinessTime::Config.end_of_workday = workflow.end_of_workday
@@ -451,7 +461,11 @@ class WorkFlow < ActiveRecord::Base
 				end
 
 				any_eta_step = dataSet.select{|eta| eta[actual_indx].to_i==1}
-				if any_eta_step.present?
+
+				collab_pred_actual = DateTime.parse(sent_to_collab_actual.to_s) rescue nil
+				sent_pred_actual = DateTime.parse(station8_sent_actual.to_s) rescue nil
+
+				if any_eta_step.present? and (collab_pred_actual or sent_pred_actual)
 					max_crb_with_etas_date = DateTime.parse(max_crb_with_etas_date.to_s) rescue nil
 					if max_crb_with_etas_date
 						number_days = 1
@@ -511,6 +525,11 @@ class WorkFlow < ActiveRecord::Base
 							table_td_class = 'report_actual_confirmation'
 						end
 					end
+				end
+				
+				if l3_status.downcase == 'onhold' and max_date.include? 'ETA'
+					max_date = 'OnHold'
+					table_td_class = ''
 				end
 
 				return [max_date, table_td_class, max_date_for_succesr]

@@ -1232,6 +1232,11 @@ class OverviewController < ApplicationController
     session.delete(:filter_object_type)
     session.delete(:include_canceled)
     session.delete(:include_completed)
+    session.delete(:report_wildcard)
+    session.delete(:report_exact)
+    session.delete(:report_q_string)
+    session.delete(:params_search)
+    
     respond_to do |format|
       format.json { render json: {status: 'success', message: 'search cleared'}, status: 200 }
     end

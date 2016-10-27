@@ -26,6 +26,7 @@ class ReportsController < ApplicationController
 			@task_confirmation = false
 			q_string = ''
 			if request.post?
+				session[:params_search] = params 
 			    if params[:report_include_canceled].presence
 			      @report_include_canceled = params[:report_include_canceled]
 			      session[:report_include_canceled] = @report_include_canceled
@@ -88,6 +89,7 @@ class ReportsController < ApplicationController
 	    if request.post? or session[:report_q_string].present?
 	    	q_string = ''
   			if request.post?
+  				session[:params_search] = params 
 			    if params[:report_include_canceled].presence
 			      @report_include_canceled = params[:report_include_canceled]
 			      session[:report_include_canceled] = @report_include_canceled
@@ -278,7 +280,7 @@ class ReportsController < ApplicationController
 			end
 
 		end
-		puts "-------------#{@pred_of_station8_sent}"
+
 		@stationSteps = []
 		station_steps = StationStep.eager_load(:workflow_station)
 		station_steps.each do |stp|
@@ -287,6 +289,7 @@ class ReportsController < ApplicationController
 
     	if request.post?
     		params_list = params
+    		search
     		session[:report_wildcard] = params[:wildcard]
 		    session[:report_exact] = params[:exact]
 

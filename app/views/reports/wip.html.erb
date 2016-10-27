@@ -29,12 +29,12 @@
                 <% if @request_type == 'post' %>
                   <td class = "wip_input_td"><input type="text" id="datepicker_now" class="datepicker_only form-control wip_input " name="table<%= i+1 %>[start_date]" required= "true"  value = <%= @default_values[i][0] %>></td>
                   <td class = "wip_input_td"><input id="datepicker_now" class="datepicker_only form-control wip_input" name="table<%= i+1 %>[end_date]" required type="text" value = <%= @default_values[i][1] %> ></td>
-                  <td class = "wip_input_td"><input type = 'text' class = 'form-control wip_input' name="table<%= i+1 %>[day_capacity]" value = <%= @day_capacity[i]  %> required ></td> 
+                  <td class = "wip_input_td"><input type = 'text' min="1" class = 'form-control wip_input' name="table<%= i+1 %>[day_capacity]" value = <%= @day_capacity[i]  %> required ></td> 
 
                 <%else%>
                   <td class = "wip_input_td"><input type="text" id="datepicker_now" class="datepicker_only form-control wip_input " name="table<%= i+1 %>[start_date]" required= "true"  value = <%= @default_values[i][0].strftime('%m/%d/%Y') %>></td>
                   <td class = "wip_input_td"><input id="datepicker_now" class="datepicker_only form-control wip_input" name="table<%= i+1 %>[end_date]" required type="text" value = <%= @default_values[i][1].strftime('%m/%d/%Y') %> ></td>
-                  <td class = "wip_input_td"><input type = 'text' class = 'form-control wip_input' name="table<%= i+1 %>[day_capacity]" value = <%= day_capacity %> required ></td>
+                  <td class = "wip_input_td"><input type = 'text' min="1" class = 'form-control wip_input' name="table<%= i+1 %>[day_capacity]" value = <%= day_capacity %> required ></td>
 
                 <%end%>
 
@@ -125,7 +125,7 @@
                     end
                      %>
                      <%     if @value > @target_days[index].to_f  %>
-                    <td style="background-color: lightgrey "><%= @value %></td>
+                    <td style="background-color: navajowhite "><%= @value %></td>
                     <%else%>
                     <%# 
                     puts 'Index == '

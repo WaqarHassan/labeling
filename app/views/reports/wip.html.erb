@@ -95,6 +95,29 @@
                   <td>ECR Release</td>
                    <td><%= @target_days[8] %></td>
                 </tr>
+                <tr>
+                  <td> </td>
+                  <td> </td>
+                </tr>
+                <tr>
+                  <td> </td>
+                  <td> <% @target_days_partial_sum = 0.to_f
+                          7.times do |i| 
+                            @target_days_partial_sum += @target_days[i+2].to_f
+                          end
+                           %>
+                           <%= @target_days_partial_sum.round(0) %> </td>
+                </tr>
+                <tr>
+                  <td> </td>
+                  <td> 
+                    <% @target_days_complete_sum = 0.to_f
+                            9.times do |i| 
+                              @target_days_complete_sum += @target_days[i].to_f
+                            end
+                             %>
+                             <%= @target_days_complete_sum.round(0) %></td>
+                </tr>
           </tbody>
 
 
@@ -127,23 +150,88 @@
                      <%     if @value > @target_days[index].to_f  %>
                     <td style="background-color: navajowhite "><%= @value %></td>
                     <%else%>
-                    <%# 
-                    puts 'Index == '
-                    puts ind
-                    puts 'ALL DATA[0][9] == '
-                    puts @all_data
-                    puts '==============/////////////=====' 
-                    puts @all_data[ind][18 + index].to_s
-                    puts ' / '
-                    puts day_capacity
-                    puts '===========' 
-                    puts @value %>
                      <td> <%= @value %></td>
                     <%end%>
 
                   </tr>
 
                 <%end%>
+                 <tr> 
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr> 
+                    <td></td> 
+                      <%
+                      partial_sum = 0.to_f
+                        7.times do |j|
+                          partial_sum += @all_data[ind][18 + j + 2].to_f
+                        end
+
+                       %>
+                    <td>
+                         <%= partial_sum %>
+                    </td>
+                    
+                      <%  
+                       partial_sum = 0.to_f
+                      7.times do |index|
+                        if @request_type == 'post'
+                          @value  = ( @all_data[ind][18 + index + 2].to_f / @day_capacity[ind].to_i ).round(2)
+                        else
+                           @value  = ( @all_data[ind][18 + index +2].to_f / day_capacity ).round(2)
+                        end
+                        partial_sum += @value.to_f
+
+                      end
+                     %>
+                     <%if partial_sum.round(2) > @target_days_partial_sum %>
+                        <td style="background-color: navajowhite" > 
+                           <%= partial_sum.round(2) %>
+                        </td>
+                      <%else%>
+                        <td > 
+                           <%= partial_sum.round(2) %>
+                        </td>
+                      <%end%>
+
+
+                  </tr>
+                  <tr> 
+                    <td></td>
+                    <%
+                    complete_sum = 0.to_f
+                      9.times do |j|
+                        complete_sum += @all_data[ind][18 + j].to_f
+                      end
+
+                     %>
+                     <td>
+                       <%= complete_sum %>
+                     </td>
+                      <%  
+                       complete_sum = 0.to_f
+                      9.times do |index|
+                        if @request_type == 'post'
+                          @value  = ( @all_data[ind][18 + index].to_f / @day_capacity[ind].to_i ).round(2)
+                        else
+                           @value  = ( @all_data[ind][18 + index].to_f / day_capacity ).round(2)
+                        end
+                        complete_sum += @value.to_f
+
+                      end
+                     %>
+                     <%if complete_sum.round(2) > @target_days_complete_sum %>
+                        <td style="background-color: navajowhite" > 
+                           <%= complete_sum.round(2) %>
+                        </td>
+                      <%else%>
+                        <td > 
+                           <%= complete_sum.round(2) %>
+                        </td>
+                      <%end%>
+                  </tr>
 
               </tbody>
 

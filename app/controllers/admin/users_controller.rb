@@ -1,6 +1,6 @@
 class Admin::UsersController < ApplicationController
   skip_authorization_check
-  before_action :set_user, only: [:show, :edit, :update, :delete, :set_admin, :unset_admin]
+  before_action :set_user, only: [:show, :edit, :update, :delete, :set_admin, :unset_adminm, :un_lock]
 
   # GET /admin/users
   def index
@@ -56,6 +56,13 @@ class Admin::UsersController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def un_lock
+    @user.failed_attempts = 0
+    @user.locked_at = nil
+    @user.save!
+    redirect_to admin_users_url, notice: 'User was successfully Un Locked.'
   end
 
   # DELETE /admin/users/1

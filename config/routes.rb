@@ -73,6 +73,7 @@ Rails.application.routes.draw do
         get 'delete'
         get 'set-admin'
         get 'unset-admin'
+        get 'un-lock'
       end
     end
   end  

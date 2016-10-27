@@ -1285,50 +1285,47 @@ class WorkFlow < ActiveRecord::Base
 			def default_wip_query(start_date , end_date)\
 				result =  ActiveRecord::Base.connection.execute("call wip_report( '#{start_date}' , '#{end_date}' )")
 				ActiveRecord::Base.clear_active_connections!
-				if result.present?
-					#puts "==========-=-=-=-------------------------#{result.first}"
-				end
 				return result
 			end
 			def default_wip()
 				now = Date.parse(DateTime.now.to_s)
-
+				default_values =[]
 				sunday = now - now.wday 
 				monday = sunday - 6
+				default_values << [monday,sunday]
 				#puts "=====================================#{monday}, ====== , #{sunday}"
 				table4 = default_wip_query(monday,sunday)
 				sunday = monday -1
 				monday  = sunday - 6
+				default_values << [monday,sunday]
 				#puts "=====================================#{monday}, ====== , #{sunday}"
 				table3 = default_wip_query(monday,sunday)
 				sunday = monday -1
 				monday  = sunday - 6
+				default_values << [monday,sunday]
 				#puts "=====================================#{monday}, ====== , #{sunday}"
 				table2 = default_wip_query(monday,sunday)
 				sunday = monday -1
 				monday  = sunday - 6
+				default_values << [monday,sunday]
 				#puts "=====================================#{monday}, ====== , #{sunday}"
 				table1 = default_wip_query(monday,sunday)
-				#result = wip_process( [table1.first ,table2.first , table3.first , table4.first]   )
-
-				return [table1.first ,table2.first , table3.first , table4.first]
-
-			end
-			def wip_process(tables)
-				data = [[],[],[]]
-				tables.each do |t|
-					t.each do |r|
-						target_days = r[0..8]
-						throughput = r[9..17]
-						wip = r[18..26]
-						#target_days.each do 
-
-					end
-				end
-
-
+				ret = [default_values.reverse,table1.first ,table2.first , table3.first , table4.first]
+				#puts "============----?????-RET-????------===========-----------#{ret[0]}"
+				return ret
 
 			end
+			# def set_db_date_format(date)
+
+		 #      date_value_split = date.split('/')
+
+		 #      date_value_ordered = date_value_split[2]+'-'+date_value_split[0]+'-'+date_value_split[1]
+		 #      # abort('oooooooooooooooooooooooooooooooooooooooooooooooooooooooooo')
+		 #      date_obj = date_value_ordered.to_datetime
+
+		 #      date_formated = date_obj.strftime('%Y-%m-%d')
+		 #      return date_formated
+   #  		end
 
 		end
 end

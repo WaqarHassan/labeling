@@ -595,12 +595,36 @@ class ReportsController < ApplicationController
 	end
 
 	def wip
-		#puts "============================================"
 		@workflows = WorkFlow.where(is_active: true, is_in_use: true)
-		if request.post? or session[:daily_activity_report_date].present?
-			start_date = params[:wip_report_start_date]
-			end_date = params[:wip_report_end_date]
-			@all_data = WorkFlow.default_wip()
+		if request.post?
+			@request_type = "post"
+			@default_values = [ [params[:table1][:start_date] , params[:table1][:end_date]],
+								[params[:table2][:start_date], params[:table2][:end_date]],
+								[params[:table3][:start_date], params[:table3][:end_date]],
+								[params[:table4][:start_date], params[:table4][:end_date]]
+							  ]
+
+			table1 = WorkFlow.default_wip_query(
+												L1.set_db_date_format( params[:table1][:start_date] ),
+												L1.set_db_date_format( params[:table1][:end_date] )
+												)
+			
+			table2 = WorkFlow.default_wip_query(
+												L1.set_db_date_format(params[:table2][:start_date]),
+												L1.set_db_date_format(params[:table2][:end_date])
+												)
+			table3 = WorkFlow.default_wip_query(
+												L1.set_db_date_format(params[:table3][:start_date]),
+												L1.set_db_date_format(params[:table3][:end_date])
+												)
+			table4 = WorkFlow.default_wip_query(
+												L1.set_db_date_format(params[:table4][:start_date]),
+												L1.set_db_date_format(params[:table4][:end_date])
+												)
+			@day_capacity = [params[:table1][:day_capacity],params[:table2][:day_capacity],
+							params[:table3][:day_capacity],params[:table4][:day_capacity]]
+			@all_data = [table1.first ,table2.first , table3.first , table4.first]
+
 			@target_days = @all_data[0][0..8]
 
 			respond_to do |format|
@@ -609,8 +633,11 @@ class ReportsController < ApplicationController
 			end
 
 		end
-		@all_data = WorkFlow.default_wip()
-		@target_days = @all_data[0][0..8]
+
+		@all_data = WorkFlow.default_wip()[0..4]	#quality check [0..4] need to done by waqar
+		@default_values = @all_data[0]
+		@target_days = @all_data[1][0..8]
+		@all_data = @all_data[1..4]
 	end
 
   	private

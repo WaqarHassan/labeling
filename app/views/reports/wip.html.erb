@@ -7,25 +7,37 @@
 <div class='clearfix'></div> 
 <div class='data-main'>
     <div class="row col-lg-12 form_div">
-      <%= form_tag wip_reports_path, remote: true, :id => 'wip_form', :class => 'form-horizontal'  do %>
+    <% day_capacity = @workflows.first.day_capacity %>
+      <%= form_tag wip_reports_path,  :id => 'wip_form', :class => 'form-horizontal'  do %>
       <div class="col-lg-2 wip_refresh">
-        <button type="submit" class="btn btn-primary" onclick="show_waiting_bar_wip();">Refresh</button>
+        <button type="submit" class="btn btn-primary" <%#onclick="show_waiting_bar_wip2();" %> >Refresh</button>
       </div>
+      
+      
       <% 4.times do |i| %>
         <div class = "col-lg-3 form_table">
-          <table class="table table-bordered wip_input" id = "table<%= i+1 %>">
+          <table class="table table-bordered " id = "table<%= i+1 %>">
             <thead >
               <tr class="sub_heading">
-                <th> Start Date </th>
-                <th> End Date </th>
-                <th> Day Capacity</th> 
+                <th class="wip_input_th"> Start Date </th>
+                <th class="wip_input_th"> End Date </th>
+                <th class="wip_input_th"> Day Capacity</th> 
               </tr>
             </thead>
               <tbody>
                 <tr>
-                  <td><input id="datepicker_now" class="datepicker_only form-control" name="table<%= i+1 %>[start_date]" required="" type="text"></td>
-                  <td><input id="datepicker_now" class="datepicker_only form-control" name="table<%= i+1 %>[end_date]" required="" type="text"></td>
-                  <td><input type = 'text' class = 'form-control' name="table<%= i+1 %>[day_capacity]" value = <%= @workflows.first.day_capacity %> ></td>
+                <% if @request_type == 'post' %>
+                  <td class = "wip_input_td"><input type="text" id="datepicker_now" class="datepicker_only form-control wip_input " name="table<%= i+1 %>[start_date]" required= "true"  value = <%= @default_values[i][0] %>></td>
+                  <td class = "wip_input_td"><input id="datepicker_now" class="datepicker_only form-control wip_input" name="table<%= i+1 %>[end_date]" required type="text" value = <%= @default_values[i][1] %> ></td>
+                  <td class = "wip_input_td"><input type = 'text' class = 'form-control wip_input' name="table<%= i+1 %>[day_capacity]" value = <%= @day_capacity[i]  %> required ></td> 
+
+                <%else%>
+                  <td class = "wip_input_td"><input type="text" id="datepicker_now" class="datepicker_only form-control wip_input " name="table<%= i+1 %>[start_date]" required= "true"  value = <%= @default_values[i][0].strftime('%m/%d/%Y') %>></td>
+                  <td class = "wip_input_td"><input id="datepicker_now" class="datepicker_only form-control wip_input" name="table<%= i+1 %>[end_date]" required type="text" value = <%= @default_values[i][1].strftime('%m/%d/%Y') %> ></td>
+                  <td class = "wip_input_td"><input type = 'text' class = 'form-control wip_input' name="table<%= i+1 %>[day_capacity]" value = <%= day_capacity %> required ></td>
+
+                <%end%>
+
                 </tr>
               </tbody>
 
@@ -35,13 +47,14 @@
       <%end%>
   <%end%>
   </div>
+
   <div class="row col-lg-12">
     <div class = "col-lg-2 wip_refresh check_point">
-      <table class="table table-bordered wip_input" id = "table">
+      <table class="table table-bordered " id = "table">
         <thead >
           <tr class="sub_heading">
-           <th>CheckPoint </th> 
-            <th> Target Days </th> 
+           <th class = "wip_data_th">CheckPoint </th> 
+            <th class = "wip_data_th"> Target Days </th> 
           </tr>
         </thead>
           <tbody>
@@ -87,15 +100,16 @@
 
           </table>
     </div>
-    <%= puts "-----------------VIEWWRRRRRRRRRRRRRs----------------------------------'#{@all_data[0]}" %>
+    <%# puts "-----------------VIEWs----------------------------------'#{@all_data[0]}" %>
+
     <% 4.times do |ind| %>
     <div class = "col-lg-3 form_table">
           <table class="table table-bordered wip_input" id = "table">
             <thead >
               <tr class="sub_heading">
-                <th> ThroughPut</th>
-                <th> WIP</th>
-                <th> WIP Days </th>
+                <th class = "wip_data_th"> ThroughPut</th>
+                <th class = "wip_data_th"> WIP</th>
+                <th class = "wip_data_th" > WIP Days </th>
               </tr>
             </thead>
               <tbody>
@@ -103,9 +117,29 @@
                   <tr>
                     <td><%= @all_data[ind][9 + index] %></td>
                     <td><%=  @all_data[ind][18 + index]%></td>
-                    <td><%=
-                        
-                       (@all_data[ind][18 + index].to_f / @workflows.first.day_capacity).round(2)   %></td>
+                    <%  
+                    if @request_type == 'post'
+                      @value  = ( @all_data[ind][18 + index].to_f / @day_capacity[ind].to_i ).round(2)
+                    else
+                       @value  = ( @all_data[ind][18 + index].to_f / day_capacity ).round(2)
+                    end
+                     %>
+                     <%     if @value > @target_days[index].to_f  %>
+                    <td style="background-color: lightgrey "><%= @value %></td>
+                    <%else%>
+                    <%# 
+                    puts 'Index == '
+                    puts ind
+                    puts 'ALL DATA[0][9] == '
+                    puts @all_data
+                    puts '==============/////////////=====' 
+                    puts @all_data[ind][18 + index].to_s
+                    puts ' / '
+                    puts day_capacity
+                    puts '===========' 
+                    puts @value %>
+                     <td> <%= @value %></td>
+                    <%end%>
 
                   </tr>
 
@@ -117,60 +151,6 @@
               </table>
         </div>
         <% end%>
-        <!-- <div class = "col-lg-3 form_table">
-          <table class="table table-bordered wip_input" id = "table">
-            <thead >
-              <tr class="sub_heading">
-                <th> ThroughPut</th>
-                <th> WIP</th>
-                <th> WIP Days </th>
-              </tr>
-            </thead>
-              <tbody>
-                <tr>
-                  
-                </tr>
-              </tbody>
-
-
-              </table>
-        </div> -->
-        <!-- <div class = "col-lg-3 form_table">
-          <table class="table table-bordered wip_input" id = "table">
-            <thead >
-              <tr class="sub_heading">
-                <th> ThroughPut</th>
-                <th> WIP</th>
-                <th> WIP Days </th>
-              </tr>
-            </thead>
-              <tbody>
-                <tr>
-                  
-                </tr>
-              </tbody>
-
-
-              </table>
-        </div> -->
-        <!-- <div class = "col-lg-3 form_table">
-          <table class="table table-bordered wip_input" id = "table">
-            <thead >
-              <tr class="sub_heading">
-                <th> ThroughPut</th>
-                <th> WIP</th>
-                <th> WIP Days </th>
-              </tr>
-            </thead>
-              <tbody>
-                <tr>
-                  
-                </tr>
-              </tbody>
-
-
-              </table>
-        </div> -->
   </div>
     
 </div>

@@ -563,19 +563,6 @@ class OverviewController < ApplicationController
     @can_merge_back = can_merge_back_with_parent(@object)
 
     rework_components = 0
-    #   if @object.class.name == 'L3'
-    #     reworks = L3.where(rework_parent_id: @object.id, is_closed: false)
-    #     reworks.each do |rework|
-    #       rework_components += rework.num_component
-    #     end
-    #     closed_reworks = L3.where(rework_parent_id: @object.id, is_closed: true)
-    #     closed_reworks.each do |clos_rework|
-    #       closed_reworks_partial = L3.where(rework_parent_id: clos_rework.id, is_closed: false)
-    #       closed_reworks_partial.each do |closedreworkspartial|
-    #         rework_components += closedreworkspartial.num_component
-    #       end
-    #     end
-    # end
     @rework_components = @object.num_component_in_rework.to_i
     @object_num_component = @object.num_component.present? ? @object.num_component : 1
     @object_num_component = @object_num_component.to_i - @object.num_component_in_rework.to_i
@@ -586,7 +573,16 @@ class OverviewController < ApplicationController
     @user_id = current_user.id
     @current_step = workflow_live_step.station_step
     @current_station = workflow_live_step.station_step.workflow_station
-    @reason_codes = @workflow.reason_codes.where(status: 'Rework', recording_level: workflow_live_step.object_type).order(:sequence)
+    @reason_codes = @workflow.new_reason_codes.where(object: 'Rework', recording_level: [workflow_live_step.object_type,nil], parent_id: nil).order(:sequence)
+    @sub_reason_codes = @workflow.new_reason_codes.where(object: 'Rework', recording_level: [workflow_live_step.object_type,nil]).where.not(parent_id: nil).order(:sequence)
+    
+    @sub_reasons_list = []
+    @reason_codes.each do |reason_code|
+        sub_reasons = @sub_reason_codes.select{|sub_reason_code| sub_reason_code.parent_id == reason_code.id}
+        @sub_reasons_list << {'child_mandatory'=> reason_code.child_mandatory, 'main_reason'=> reason_code.reason_code, 'sub_reasons_div_id'=> "sub_reasons_div_#{reason_code.id}", 'sub_list'=>sub_reasons}
+    end
+
+
     @level_workflow_stations = @workflow.workflow_stations.joins(:station_steps).where("station_steps.recording_level='#{workflow_live_step.object_type}' and workflow_stations.sequence <= #{@current_station.sequence} and workflow_stations.is_visible=true").order(:sequence).uniq
 
     @level_steps = []
@@ -642,15 +638,19 @@ class OverviewController < ApplicationController
       merge_partial_with_parent(partial_to_merge_id, rework_object_type, rework_date_time)
     else  
      mew_rework_info_object = ReworkInfo.create(rework_info_params)
-     codes = params[:rework_info][:reason]
-        if codes.present?
-          ids  = ""
-          codes.each do |d|
-            ids += d + ','
-          end
-          ids  = ids.chop
+     reasoncodes = params[:rework_info][:reason]
+      if reasoncodes.present?
+        reason_ids  = ""
+        reasoncodes.each do |code|
+          ReasonCodeValue.create(object_id: mew_rework_info_object.id,
+                                 object_type: 'ReworkInfo', 
+                                 new_reason_code_id: code)   
+
+          reason_ids += code + ','
         end
-     mew_rework_info_object.update(:reason => ids)
+        reason_ids  = reason_ids.chop
+      end
+     mew_rework_info_object.update(:reason => reason_ids)
      
      reset_type = params[:reset_type]
      move_original_record_back_to_step = params[:move_original_record_back_to_step]

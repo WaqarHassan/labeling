@@ -138,7 +138,7 @@ function show_waiting_bar_l3_update(){
 }
 //This Function validates and showa progress bar upon pop-up on Task Confirmation form submit
 function show_waiting_bar_confirmation(){
-  if ($("#confirm_modal_popup #task_confirmation").valid() == true){
+  if ($("#task_confirmation").valid() == true){
     $('#myPleaseWait').modal('show');
   }
 }
@@ -165,6 +165,17 @@ function onlySaveNote(e){
   }else{
     return true;
   }
+}
+
+function get_sub_reasons(reason){
+
+  var reasons = $(reason).val();
+  $('#sub_reason_list_div').empty();
+  jQuery.each( reasons, function( i, val ) {
+    sub_reasons_div = "sub_reasons_div_"+val;
+    $('#sub_reason_list_div').append($('#'+sub_reasons_div).html());
+  });
+
 }
 
 

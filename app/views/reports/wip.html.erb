@@ -1,0 +1,257 @@
+<div class="row">
+  <div class="col-lg-12 col-sm-12 report_heading"> 
+    <h4>WIP</h4>
+  </div>
+</div>
+
+<div class='clearfix'></div> 
+<div class='data-main'>
+    <div class="row col-lg-12 form_div">
+    <% day_capacity = @workflows.first.day_capacity %>
+      <%= form_tag wip_reports_path,  :id => 'wip_form', :class => 'form-horizontal'  do %>
+      <div class="col-lg-2 wip_refresh">
+        <button type="submit" class="btn btn-primary" <%#onclick="show_waiting_bar_wip2();" %> >Refresh</button>
+      </div>
+      
+      
+      <% 4.times do |i| %>
+        <div class = "col-lg-3 form_table">
+          <table class="table table-bordered " id = "table<%= i+1 %>">
+            <thead >
+              <tr class="sub_heading">
+                <th class="wip_input_th"> Start Date </th>
+                <th class="wip_input_th"> End Date </th>
+                <th class="wip_input_th"> Day Capacity</th> 
+              </tr>
+            </thead>
+              <tbody>
+                <tr>
+                <% if @request_type == 'post' %>
+                  <td class = "wip_input_td"><input type="text" id="datepicker_now" class="datepicker_only form-control wip_input " name="table<%= i+1 %>[start_date]" required= "true"  value = <%= @default_values[i][0] %>></td>
+                  <td class = "wip_input_td"><input id="datepicker_now" class="datepicker_only form-control wip_input" name="table<%= i+1 %>[end_date]" required type="text" value = <%= @default_values[i][1] %> ></td>
+                  <td class = "wip_input_td"><input type = 'text' min="1" class = 'form-control wip_input' name="table<%= i+1 %>[day_capacity]" value = <%= @day_capacity[i]  %> required ></td> 
+
+                <%else%>
+                  <td class = "wip_input_td"><input type="text" id="datepicker_now" class="datepicker_only form-control wip_input " name="table<%= i+1 %>[start_date]" required= "true"  value = <%= @default_values[i][0].strftime('%m/%d/%Y') %>></td>
+                  <td class = "wip_input_td"><input id="datepicker_now" class="datepicker_only form-control wip_input" name="table<%= i+1 %>[end_date]" required type="text" value = <%= @default_values[i][1].strftime('%m/%d/%Y') %> ></td>
+                  <td class = "wip_input_td"><input type = 'text' min="1" class = 'form-control wip_input' name="table<%= i+1 %>[day_capacity]" value = <%= day_capacity %> required ></td>
+
+                <%end%>
+
+                </tr>
+              </tbody>
+
+
+              </table>
+        </div>
+      <%end%>
+  <%end%>
+  </div>
+
+  <div class="row col-lg-12">
+    <div class = "col-lg-2 wip_refresh check_point">
+      <table class="table table-bordered " id = "table">
+        <thead >
+          <tr class="sub_heading">
+           <th class = "wip_data_th">CheckPoint </th> 
+            <th class = "wip_data_th"> Target Days </th> 
+          </tr>
+        </thead>
+          <tbody>
+           <tr>
+                  <td>Approved to Start</td>
+                  <td><%= @target_days[0] %></td>
+                </tr>
+                <tr>
+                  <td>Translation</td>
+                   <td><%= @target_days[1] %></td>
+                </tr>
+                
+                <tr>
+                  <td>Station 4 Checkpoint</td>
+                  <td><%= @target_days[2] %></td>
+                </tr>
+                <tr>
+                  <td>From Collaboration</td>
+                   <td><%= @target_days[3] %></td>
+                </tr>
+                <tr>
+                  <td>Station 7 Checkpoint</td>
+                   <td><%= @target_days[4] %></td>
+                </tr>
+                <tr>
+                  <td>Station 8 iFace</td>
+                   <td><%= @target_days[5] %></td>
+                </tr>
+                 <tr>
+                  <td>To CRB</td>
+                   <td><%= @target_days[6] %></td>
+                </tr>
+                 <tr>
+                  <td>From CRB</td>
+                   <td><%= @target_days[7] %></td>
+                </tr>
+                <tr>
+                  <td>ECR Release</td>
+                   <td><%= @target_days[8] %></td>
+                </tr>
+                <tr>
+                  <td> </td>
+                  <td> </td>
+                </tr>
+                <tr>
+                  <td> </td>
+                  <td> <% @target_days_partial_sum = 0.to_f
+                          7.times do |i| 
+                            @target_days_partial_sum += @target_days[i+2].to_f
+                          end
+                           %>
+                           <%= @target_days_partial_sum.round(0) %> </td>
+                </tr>
+                <tr>
+                  <td> </td>
+                  <td> 
+                    <% @target_days_complete_sum = 0.to_f
+                            9.times do |i| 
+                              @target_days_complete_sum += @target_days[i].to_f
+                            end
+                             %>
+                             <%= @target_days_complete_sum.round(0) %></td>
+                </tr>
+          </tbody>
+
+
+          </table>
+    </div>
+    <%# puts "-----------------VIEWs----------------------------------'#{@all_data[0]}" %>
+
+    <% 4.times do |ind| %>
+    <div class = "col-lg-3 form_table">
+          <table class="table table-bordered wip_input" id = "table">
+            <thead >
+              <tr class="sub_heading">
+                <th class = "wip_data_th"> ThroughPut</th>
+                <th class = "wip_data_th"> WIP</th>
+                <th class = "wip_data_th" > WIP Days </th>
+              </tr>
+            </thead>
+              <tbody>
+                <% 9.times do |index| %>
+                  <tr>
+                    <td><%= @all_data[ind][9 + index] %></td>
+                    <td><%=  @all_data[ind][18 + index]%></td>
+                    <%  
+                    if @request_type == 'post'
+                      @value  = ( @all_data[ind][18 + index].to_f / @day_capacity[ind].to_i ).round(2)
+                    else
+                       @value  = ( @all_data[ind][18 + index].to_f / day_capacity ).round(2)
+                    end
+                     %>
+                     <%     if @value > @target_days[index].to_f  %>
+                    <td style="background-color: navajowhite "><%= @value %></td>
+                    <%else%>
+                     <td> <%= @value %></td>
+                    <%end%>
+
+                  </tr>
+
+                <%end%>
+                 <tr> 
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr> 
+                    <td></td> 
+                      <%
+                      partial_sum = 0.to_f
+                        7.times do |j|
+                          partial_sum += @all_data[ind][18 + j + 2].to_f
+                        end
+
+                       %>
+                    <td>
+                         <%= partial_sum %>
+                    </td>
+                    
+                      <%  
+                       partial_sum = 0.to_f
+                      7.times do |index|
+                        if @request_type == 'post'
+                          @value  = ( @all_data[ind][18 + index + 2].to_f / @day_capacity[ind].to_i ).round(2)
+                        else
+                           @value  = ( @all_data[ind][18 + index +2].to_f / day_capacity ).round(2)
+                        end
+                        partial_sum += @value.to_f
+
+                      end
+                     %>
+                     <%if partial_sum.round(2) > @target_days_partial_sum %>
+                        <td style="background-color: navajowhite" > 
+                           <%= partial_sum.round(2) %>
+                        </td>
+                      <%else%>
+                        <td > 
+                           <%= partial_sum.round(2) %>
+                        </td>
+                      <%end%>
+
+
+                  </tr>
+                  <tr> 
+                    <td></td>
+                    <%
+                    complete_sum = 0.to_f
+                      9.times do |j|
+                        complete_sum += @all_data[ind][18 + j].to_f
+                      end
+
+                     %>
+                     <td>
+                       <%= complete_sum %>
+                     </td>
+                      <%  
+                       complete_sum = 0.to_f
+                      9.times do |index|
+                        if @request_type == 'post'
+                          @value  = ( @all_data[ind][18 + index].to_f / @day_capacity[ind].to_i ).round(2)
+                        else
+                           @value  = ( @all_data[ind][18 + index].to_f / day_capacity ).round(2)
+                        end
+                        complete_sum += @value.to_f
+
+                      end
+                     %>
+                     <%if complete_sum.round(2) > @target_days_complete_sum %>
+                        <td style="background-color: navajowhite" > 
+                           <%= complete_sum.round(2) %>
+                        </td>
+                      <%else%>
+                        <td > 
+                           <%= complete_sum.round(2) %>
+                        </td>
+                      <%end%>
+                  </tr>
+
+              </tbody>
+
+
+              </table>
+        </div>
+        <% end%>
+  </div>
+    
+</div>
+  <style type="text/css">
+    .container{
+        background-color: #fff;    
+    }
+  </style>		
+  <script type="text/javascript">
+  if (window.jQuery) {  
+    $(document).ready(function() {
+        $('.datepicker_only').datepicker({format: 'mm/dd/yyyy' , autoclose: true });
+    })
+  };
+  </script>
+  <%= javascript_include_tag "reports" %> 

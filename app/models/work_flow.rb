@@ -1405,7 +1405,38 @@ class WorkFlow < ActiveRecord::Base
 			      end
 			    end
 			end
+			def default_wip_query(start_date , end_date)\
+				result =  ActiveRecord::Base.connection.execute("call wip_report( '#{start_date}' , '#{end_date}' )")
+				ActiveRecord::Base.clear_active_connections!
+				return result
+			end
+			def default_wip()
+				now = Date.parse(DateTime.now.to_s)
+				default_values =[]
+				sunday = now - now.wday 
+				monday = sunday - 6
+				default_values << [monday,sunday]
 
+				table4 = default_wip_query(monday,sunday)
+				sunday = monday -1
+				monday  = sunday - 6
+				default_values << [monday,sunday]
+
+				table3 = default_wip_query(monday,sunday)
+				sunday = monday -1
+				monday  = sunday - 6
+				default_values << [monday,sunday]
+
+				table2 = default_wip_query(monday,sunday)
+				sunday = monday -1
+				monday  = sunday - 6
+				default_values << [monday,sunday]
+
+				table1 = default_wip_query(monday,sunday)
+				ret = [default_values.reverse,table1.first ,table2.first , table3.first , table4.first]
+				return ret
+
+			end
 
 		end
 end

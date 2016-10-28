@@ -19,7 +19,7 @@
           %li= link_to 'CURRENT STATUS ', current_status_reports_path, :class => 'add_links'
           %li= link_to 'HANDOFF ', handoff_reports_path, :class => 'add_links', :onclick => 'return show_waiting_bar();'
           %li= link_to 'DAILY ACTIVITY ', daily_activity_reports_path, :class => 'add_links'
-
+          %li= link_to 'WIP',  wip_reports_path , :class =>'add_links'
 
       - if current_user.is_admin    
         %li.dropdown

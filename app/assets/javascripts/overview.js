@@ -10,31 +10,53 @@ function set_partial_merger(){
 // This function checks whether L3-Rx can be merged back to its parent by comparing current no of components 
 //with parent's 
 function can_be_full_rework(){
-	selected_num_comp = $('#selected_num_comp').val();
-	total_num_component = $('#total_num_component').val();
-	component_already_in_rework = $('#component_already_in_rework').val();
-	if (selected_num_comp <= 0 || selected_num_comp > (total_num_component - component_already_in_rework))
-	{
-		dataHTMLREWORK = '<div class="alert-info alert alert-dismissable">';
-		dataHTMLREWORK += '<button aria-hidden class="close" data-dismiss="alert">&times;</button>';
-		dataHTMLREWORK += 'Rework is not allowed because components are out of range';
-		dataHTMLREWORK += '</div>';
-		$('#full_rework_not_possible').html(dataHTMLREWORK);
-		return false;
-	}
-	if (component_already_in_rework > 0 && selected_num_comp == total_num_component){
-		dataHTMLREWORK = '<div class="alert-info alert alert-dismissable">';
-		dataHTMLREWORK += '<button aria-hidden class="close" data-dismiss="alert">&times;</button>';
-		dataHTMLREWORK += 'Full Rework is not allowed because it has already open reworks';
-		dataHTMLREWORK += '</div>';
-		$('#full_rework_not_possible').html(dataHTMLREWORK);
-		return false;
-	}else{
-		if ($("#rework_modal_popup #rework_modal_from").valid() == true){
-			$('#myPleaseWait').modal('show');
+	sub_reason_valid = 'valid';
+	$('.sub_error').empty();
+	$('#sub_reason_list_div .child_mandatory').each(function(){
+		selected = $(this).val();
+		if (selected){
+			if (selected[0] != ''){
+		 		 sub_reason_valid = 'valid'
+			}else{
+				$( "<div style='color: red;' class='sub_error'>This field is required.</div>" ).insertAfter(this);
+				sub_reason_valid = '';
+				return false;
+			}
+		}else{
+		  	$( "<div style='color: red;' class='sub_error'>This field is required.</div>" ).insertAfter(this);
+		  	sub_reason_valid = '';
+		  	return false;
 		}
-		return true;
-	}
+
+	});
+
+	if (sub_reason_valid != ''){
+		selected_num_comp = $('#selected_num_comp').val();
+		total_num_component = $('#total_num_component').val();
+		component_already_in_rework = $('#component_already_in_rework').val();
+		if (selected_num_comp <= 0 || selected_num_comp > (total_num_component - component_already_in_rework))
+		{
+			dataHTMLREWORK = '<div class="alert-info alert alert-dismissable">';
+			dataHTMLREWORK += '<button aria-hidden class="close" data-dismiss="alert">&times;</button>';
+			dataHTMLREWORK += 'Rework is not allowed because components are out of range';
+			dataHTMLREWORK += '</div>';
+			$('#full_rework_not_possible').html(dataHTMLREWORK);
+			return false;
+		}
+		if (component_already_in_rework > 0 && selected_num_comp == total_num_component){
+			dataHTMLREWORK = '<div class="alert-info alert alert-dismissable">';
+			dataHTMLREWORK += '<button aria-hidden class="close" data-dismiss="alert">&times;</button>';
+			dataHTMLREWORK += 'Full Rework is not allowed because it has already open reworks';
+			dataHTMLREWORK += '</div>';
+			$('#full_rework_not_possible').html(dataHTMLREWORK);
+			return false;
+		}else{
+			if ($("#rework_modal_popup #rework_modal_from").valid() == true){
+				$('#myPleaseWait').modal('show');
+			}
+			return true;
+		}
+	}	
 } 
 //This function speaks for itself :) 
 function width3(){

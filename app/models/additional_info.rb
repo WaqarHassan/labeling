@@ -4,6 +4,7 @@ class AdditionalInfo < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :work_flow
 	belongs_to :reason_code
+	has_many :reason_code_values, as: :object 
 
 	class << self
 			# 

@@ -30,7 +30,8 @@ function can_be_full_rework(){
 
 	});
 
-	if (sub_reason_valid != ''){
+	if (sub_reason_valid == 'valid'){
+		console.log('true');
 		selected_num_comp = $('#selected_num_comp').val();
 		total_num_component = $('#total_num_component').val();
 		component_already_in_rework = $('#component_already_in_rework').val();
@@ -56,8 +57,15 @@ function can_be_full_rework(){
 			}
 			return true;
 		}
-	}	
+	}else{
+		console.log('false');
+		return false;
+	}
 } 
+
+function rework_validation(){
+
+}
 //This function speaks for itself :) 
 function width3(){
 	return 250 + 342 + 523 ;

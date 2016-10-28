@@ -5,6 +5,10 @@ class Users::SessionsController < Devise::SessionsController
   def new
     @failed = params[:failed]
     @provider = params[:provider]
+    user = User.find_by_email(params[:user][:email])
+    if user.locked_at.present? and user.failed_attempts >=3
+      flash[:alert] = "Your account is locked."
+    end
     return render 'failed' if @failed
     super
   end

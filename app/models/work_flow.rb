@@ -1293,39 +1293,27 @@ class WorkFlow < ActiveRecord::Base
 				sunday = now - now.wday 
 				monday = sunday - 6
 				default_values << [monday,sunday]
-				#puts "=====================================#{monday}, ====== , #{sunday}"
+
 				table4 = default_wip_query(monday,sunday)
 				sunday = monday -1
 				monday  = sunday - 6
 				default_values << [monday,sunday]
-				#puts "=====================================#{monday}, ====== , #{sunday}"
+
 				table3 = default_wip_query(monday,sunday)
 				sunday = monday -1
 				monday  = sunday - 6
 				default_values << [monday,sunday]
-				#puts "=====================================#{monday}, ====== , #{sunday}"
+
 				table2 = default_wip_query(monday,sunday)
 				sunday = monday -1
 				monday  = sunday - 6
 				default_values << [monday,sunday]
-				#puts "=====================================#{monday}, ====== , #{sunday}"
+
 				table1 = default_wip_query(monday,sunday)
 				ret = [default_values.reverse,table1.first ,table2.first , table3.first , table4.first]
-				#puts "============----?????-RET-????------===========-----------#{ret[0]}"
 				return ret
 
 			end
-			# def set_db_date_format(date)
-
-		 #      date_value_split = date.split('/')
-
-		 #      date_value_ordered = date_value_split[2]+'-'+date_value_split[0]+'-'+date_value_split[1]
-		 #      # abort('oooooooooooooooooooooooooooooooooooooooooooooooooooooooooo')
-		 #      date_obj = date_value_ordered.to_datetime
-
-		 #      date_formated = date_obj.strftime('%Y-%m-%d')
-		 #      return date_formated
-   #  		end
 
 		end
 end

@@ -71,7 +71,12 @@
          </div>
      </div>
 
-
+      <div class="form-group">
+        <label class="col-lg-4 control-label">Station</label>
+        <div class="col-lg-6">
+            <%= select_tag "rework_info[station]", options_from_collection_for_select(@reason_codes_stations, 'reason', 'reason'), prompt: "please select station", :class=>'form-control', required: true %>
+         </div>
+     </div> 
 
       <div class="form-group">
          <label class="col-lg-4 control-label">Reason</label>
@@ -82,12 +87,6 @@
 
       <div id="sub_reason_list_div">
       </div>
-      <div class="form-group">
-        <label class="col-lg-4 control-label">Station</label>
-        <div class="col-lg-6">
-            <%= select_tag "rework_info[station]", options_from_collection_for_select(@reason_codes_stations, 'reason', 'reason'), prompt: "please select station", :class=>'form-control', required: true %>
-         </div>
-     </div> 
      
       <div class="form-group">
         <label class="col-lg-4 control-label">Start rework at step</label>

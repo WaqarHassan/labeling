@@ -161,7 +161,7 @@
                     <td title="<%= @workflow.L3 %>">
                       <%= link_to result[8].split('-R')[0], open_info_modal_l3_path(result[31],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
                       <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
-                      <%= hidden_field_tag 'object_type', 'L2' %>
+                      <%= hidden_field_tag 'object_type', 'L3' %>
                       <%= hidden_field_tag 'object_id', result[31] %>
                       <%= button_tag(type: "submit", class: "btn report_main_link") do %>
                           <span class="glyphicon glyphicon-new-window"></span>

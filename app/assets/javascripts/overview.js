@@ -33,7 +33,6 @@ function can_be_full_rework(){
 	});
 
 	if (sub_reason_valid == 'valid'){
-		console.log('true');
 		selected_num_comp = $('#selected_num_comp').val();
 		total_num_component = $('#total_num_component').val();
 		component_already_in_rework = $('#component_already_in_rework').val();
@@ -350,5 +349,36 @@ function show_all_data_form_db(){
 	
 	$('#myPleaseWait').modal('show');
 	return true;
+}
+
+function validate_reject_reasons(){
+
+	sub_reason_valid = 'valid';
+	$('.sub_error').empty();
+	$('#sub_reason_list_div .child_mandatory').each(function(){
+		div_id = $(this).attr('id');
+		selected = $(this).val();
+		if ($('#sub_reasons_div_'+div_id).css('display') == 'block') {
+			if (selected){
+				if (selected[0] != ''){
+			 		 sub_reason_valid = 'valid'
+				}else{
+					$( "<div style='color: red;' class='sub_error'>This field is required.</div>" ).insertAfter(this);
+					sub_reason_valid = '';
+					return false;
+				}
+			}else{
+			  	$( "<div style='color: red;' class='sub_error'>This field is required.</div>" ).insertAfter(this);
+			  	sub_reason_valid = '';
+			  	return false;
+			}
+		}	
+	});
+	if (sub_reason_valid == 'valid'){
+		return true;
+	}else{
+		return false;
+	}	
+
 }
 

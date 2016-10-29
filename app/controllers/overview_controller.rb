@@ -286,6 +286,13 @@ class OverviewController < ApplicationController
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @info_status = @workflow.statuses.where(recording_level: 'L2')
     @additional_info_data = @workflow.additional_infos.where(object_id: @l2.id, object_type: 'L2').order(id: :desc)
+    if @additional_info_data.present?
+      @additional_info_data.each do |additional_info|
+        reason_codeValues = ReasonCodeValue.get_reason_code_values(additional_info.id, 'AdditionalInfo')
+        reason_code_values = format_reason_code_values(reason_codeValues)
+        additional_info.reason_code_value = reason_code_values
+      end
+    end
     @rework_info = []
     @reason_code_values = []
     respond_to do |format|
@@ -316,7 +323,6 @@ class OverviewController < ApplicationController
     if @rework_info.present?
       reason_codeValues = ReasonCodeValue.get_reason_code_values(@rework_info.id, 'ReworkInfo')
       @reason_code_values = format_reason_code_values(reason_codeValues)
-      puts "-------------------------------#{@reason_code_values}"
       @reworked_l3 = L3.find_by_id(@rework_info.new_rework_id)
       if @reworked_l3.present?
         @reworked_l3_parent = L3.find_by_id(@reworked_l3.rework_parent_id)
@@ -1101,7 +1107,18 @@ class OverviewController < ApplicationController
     l2_id = params[:id]
     @l2 = L2.find(l2_id)
 
-    @reason_codes = @workflow.reason_codes.where(status: 'Rejected', recording_level: 'L2').order(:sequence)
+    @reason_codes = @workflow.new_reason_codes.where(object: 'Rejected', recording_level: ['L2',nil], parent_id: nil).order(:sequence)
+    @sub_reason_codes = @workflow.new_reason_codes.where(object: 'Rejected', recording_level: ['L2',nil]).where.not(parent_id: nil).order(:sequence)
+    
+    @sub_reasons_list = []
+    @main_reasons_ids = []
+    @reason_codes.each do |reason_code|
+        sub_reasons = @sub_reason_codes.select{|sub_reason_code| sub_reason_code.parent_id == reason_code.id}
+        @sub_reasons_list << {'child_mandatory'=> reason_code.child_mandatory, 'main_reason'=> reason_code.reason_code, 'sub_reasons_div_id'=> "sub_reasons_div_#{reason_code.id}", 'reasons_id'=> reason_code.id, 'sub_list'=>sub_reasons}
+        @main_reasons_ids << reason_code.id
+    end
+    @main_reasons_ids = @main_reasons_ids.join(",")
+
     respond_to do |format|
       format.html { render :partial => "reject_reason_modal" }
       format.js
@@ -1114,16 +1131,14 @@ class OverviewController < ApplicationController
   def save_reject_reason
     additional_info_id = session[:additional_info_id]
     codes = params[:additional_info][:reason_code_id]
-    # if codes.present?
-    #   ids = ''
-    #   codes.each do |t|
-    #     ids += t + ','
-    #   end
-    #   ids = ids.chop
-    # end
+
     ids = ''
-    codes.each do |t|
-      ids += t + ','
+    codes.each do |code|
+      ids += code + ','
+      ReasonCodeValue.create(object_id: additional_info_id,
+                       object_type: 'AdditionalInfo', 
+                       new_reason_code_id: code)  
+
     end
     if ids.presence
       ids.slice!(-1)

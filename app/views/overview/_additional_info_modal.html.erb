@@ -128,13 +128,9 @@
                     <strong>Station:</strong> <%= add_info.station %>
                     <br>
                   <% end %>
-                  <%#if add_info.station.present? %>
-                   <!-- <strong> Station:</strong> -->
 
-                  <%#end%>
-                  <% if add_info.reason_code_id.present? %>
-                    <strong>Reason:</strong> 
-                    <%= AdditionalInfo.get_reasons(add_info.reason_code_id).html_safe %>
+                  <% if add_info.reason_code_value.present? %>
+                    <strong>Reason:</strong>  <%= add_info.reason_code_value %>
                     <br>
                   <%end%>
 

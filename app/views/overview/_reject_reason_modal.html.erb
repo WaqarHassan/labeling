@@ -10,7 +10,6 @@
        <h1 class="h1-heading-popup">Reject Reason</h1>
     </div>
       <div class='modal-body'>
-          <!-- <input type="hidden" id="additional_info_id" name="additional_info[id]" value="<%=@additional_info_id%>"> -->
           <input type="hidden" id="additional_info_object_id" name="additional_info[object_id]" value="<%=@l2.id%>">
           <input type="hidden" id="additional_info_object_type" name="additional_info[object_type]" value="L2">
           <input type="hidden" id="additional_info_user_id" name="additional_info[user_id]" value="<%=current_user.id%>">
@@ -20,9 +19,32 @@
          <div class="form-group">
 			     <label class="col-lg-3 control-label">Reason</label>
             <div class="col-lg-8">
-              <%= select_tag "additional_info[reason_code_id]", options_from_collection_for_select(@reason_codes, 'id', 'reason'),     :class=>'form-control pnd-reqst pull-left', :required => true, :multiple => true, :size => 10 %>
+              <%= select_tag "additional_info[reason_code_id]", options_from_collection_for_select(@reason_codes, 'id', 'reason_code'), :class=>'form-control pnd-reqst pull-left', :required => true, :multiple => true, :size => 10, onclick: 'get_sub_reasons(this); return false;' %>
             </div>
          </div> 
+
+          <div id="sub_reason_list_div">
+            <% @sub_reasons_list.each do |subReason| 
+              child_mandatory = subReason['child_mandatory'] 
+              child_required = child_mandatory ? 'required' : ''
+              child_required_class = child_mandatory ? 'child_mandatory' : '' %>
+              <% if subReason['sub_list'].present? %>
+                <div id="<%= subReason['sub_reasons_div_id'] %>" style="display:none">
+                  <div class="form-group" id="<%= subReason['sub_reasons_div_id'] %>_id">
+                    <label class="col-lg-4 control-label">Reason Details <%= subReason['main_reason'] %></label>
+                    <div class="col-lg-6">
+                      <select size="5" multiple="multiple" <%=child_required%> class="form-control valid <%=child_required_class%>" name="additional_info[reason_code_id][]" id="<%= subReason['reasons_id'] %>" >
+                        <option value="">please select reason</option>
+                        <% subReason['sub_list'].each do |list| %>
+                          <option value="<%=list['id']%>"><%=list['reason_code']%></option>
+                        <% end %>
+                      </select>  
+                    </div>
+                 </div>
+                </div>
+              <% end %>  
+            <% end %>
+          </div>
 
         <div class="form-group">
          <label class="col-lg-3 control-label">Note </label>
@@ -33,11 +55,15 @@
 
     </div>
     <div class='modal-footer'>
-      <button class='btn save-print-update-edit-btn' type='submit'>Save</button>
+      <button class='btn save-print-update-edit-btn' type='submit' onclick="return validate_reject_reasons();">Save</button>
     </div>
    <% end %> 
   </div>
 </div>
 
- <%= javascript_include_tag "modal_form" %>
+<div style="display:none">
+  <input id="main_reasons_ids" value="<%= @main_reasons_ids %>" />
+</div>
+
+<%= javascript_include_tag "modal_form" %>
 

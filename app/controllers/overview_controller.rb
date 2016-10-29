@@ -213,6 +213,7 @@ class OverviewController < ApplicationController
     @info_status = @workflow.statuses.where(recording_level: 'L1')
     @additional_info_data = @workflow.additional_infos.where(object_id: @l1.id, object_type: 'L1').order(id: :desc)
     @rework_info = []
+    @reason_code_values = []
     respond_to do |format|
       format.html
       format.js
@@ -286,6 +287,7 @@ class OverviewController < ApplicationController
     @info_status = @workflow.statuses.where(recording_level: 'L2')
     @additional_info_data = @workflow.additional_infos.where(object_id: @l2.id, object_type: 'L2').order(id: :desc)
     @rework_info = []
+    @reason_code_values = []
     respond_to do |format|
       format.html
       format.js
@@ -305,12 +307,16 @@ class OverviewController < ApplicationController
     @reasons = ReasonCode.where(status: @status_,
      recording_level: @type ).order(:sequence)
 
+    @reason_code_values = ''
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @info_status = @workflow.statuses.where(recording_level: 'L3')
     @additional_info_data = @workflow.additional_infos.where(object_id: @l3.id, object_type: 'L3').order(id: :desc)
     @rework_info = ReworkInfo.find_by_object_type_and_new_rework_id('L3', params[:l3_id])
     if @rework_info.present?
+      reason_codeValues = ReasonCodeValue.get_reason_code_values(@rework_info.id, 'ReworkInfo')
+      @reason_code_values = format_reason_code_values(reason_codeValues)
+      puts "-------------------------------#{@reason_code_values}"
       @reworked_l3 = L3.find_by_id(@rework_info.new_rework_id)
       if @reworked_l3.present?
         @reworked_l3_parent = L3.find_by_id(@reworked_l3.rework_parent_id)
@@ -1279,6 +1285,29 @@ class OverviewController < ApplicationController
   end
 
   private
+
+    def format_reason_code_values(data_set)
+      reasons_value = ''
+      if data_set.present?
+        main_reaons = data_set.select{|parent| parent['parent_id'] == nil}
+        if main_reaons.present?
+          main_reaons.each do |main_reaon|
+            sub_reaons = data_set.select{|parent| parent['parent_id'] == main_reaon['new_reason_code_id']}
+            if sub_reaons.present?
+              sub_reaons.each do |sub_reaon|
+                reasons_value = reasons_value+main_reaon['reason_code']+' - '+sub_reaon['reason_code']+', ' 
+              end
+            else
+              reasons_value = reasons_value+main_reaon['reason_code']+', ' 
+            end
+          end
+        end
+      end
+      if reasons_value != ''
+          reasons_value = reasons_value.chomp(", ")
+      end
+      return reasons_value
+    end
     #
     # * *Returns* :
     #   - it return boolean value based upon calculations

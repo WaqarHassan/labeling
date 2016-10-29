@@ -580,10 +580,13 @@ class OverviewController < ApplicationController
     @sub_reason_codes = @workflow.new_reason_codes.where(object: 'Rework', recording_level: [workflow_live_step.object_type,nil]).where.not(parent_id: nil).order(:sequence)
     
     @sub_reasons_list = []
+    @main_reasons_ids = []
     @reason_codes.each do |reason_code|
         sub_reasons = @sub_reason_codes.select{|sub_reason_code| sub_reason_code.parent_id == reason_code.id}
-        @sub_reasons_list << {'child_mandatory'=> reason_code.child_mandatory, 'main_reason'=> reason_code.reason_code, 'sub_reasons_div_id'=> "sub_reasons_div_#{reason_code.id}", 'sub_list'=>sub_reasons}
+        @sub_reasons_list << {'child_mandatory'=> reason_code.child_mandatory, 'main_reason'=> reason_code.reason_code, 'sub_reasons_div_id'=> "sub_reasons_div_#{reason_code.id}", 'reasons_id'=> reason_code.id, 'sub_list'=>sub_reasons}
+        @main_reasons_ids << reason_code.id
     end
+    @main_reasons_ids = @main_reasons_ids.join(",")
 
     @level_workflow_stations = @workflow.workflow_stations.joins(:station_steps).where("station_steps.recording_level='#{workflow_live_step.object_type}' and workflow_stations.sequence <= #{@current_station.sequence} and workflow_stations.is_visible=true").order(:sequence).uniq
 

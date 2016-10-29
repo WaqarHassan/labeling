@@ -86,6 +86,27 @@
       </div>
 
       <div id="sub_reason_list_div">
+        <% @sub_reasons_list.each do |subReason| 
+    child_mandatory = subReason['child_mandatory'] 
+    child_required = child_mandatory ? 'required' : ''
+    child_required_class = child_mandatory ? 'child_mandatory' : '' %>
+    <% if subReason['sub_list'].present? %>
+      <div id="<%= subReason['sub_reasons_div_id'] %>" style="display:none">
+        <div class="form-group" id="<%= subReason['sub_reasons_div_id'] %>_id">
+          <label class="col-lg-4 control-label">Reason Details <%= subReason['main_reason'] %></label>
+          <div class="col-lg-6">
+            <select size="5" multiple="multiple" <%=child_required%> class="form-control valid <%=child_required_class%>" name="rework_info[reason][]" id="<%= subReason['reasons_id'] %>" >
+              <option value="">please select reason</option>
+              <% subReason['sub_list'].each do |list| %>
+                <option value="<%=list['id']%>"><%=list['reason_code']%></option>
+              <% end %>
+            </select>  
+          </div>
+       </div>
+      </div>
+    <% end %>  
+  <% end %>
+
       </div>
      
       <div class="form-group">
@@ -154,26 +175,7 @@
 
 
 <div style="display:none">
-  <% @sub_reasons_list.each do |subReason| 
-    child_mandatory = subReason['child_mandatory'] 
-    child_required = child_mandatory ? 'required' : ''
-    child_required_class = child_mandatory ? 'child_mandatory' : '' %>
-    <% if subReason['sub_list'].present? %>
-      <div id="<%= subReason['sub_reasons_div_id'] %>" >
-        <div class="form-group">
-          <label class="col-lg-4 control-label">Reason Details <%= subReason['main_reason'] %></label>
-          <div class="col-lg-6">
-            <select size="5" multiple="multiple" <%=child_required%> class="form-control valid <%=child_required_class%>" name="rework_info[reason][]" id="<%= subReason['sub_reasons_div_id'] %>_id">
-              <option value="">please select reason</option>
-              <% subReason['sub_list'].each do |list| %>
-                <option value="<%=list['id']%>"><%=list['reason_code']%></option>
-              <% end %>
-            </select>  
-          </div>
-       </div>
-      </div>
-    <% end %>  
-  <% end %>
+  <input id="main_reasons_ids" value="<%= @main_reasons_ids %>" />
 </div>
 
  <%= javascript_include_tag "modal_form" %>

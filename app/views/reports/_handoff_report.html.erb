@@ -58,16 +58,15 @@
                  %>
                   <tr style="background-color:lightyellow">
                     <td colspan="3" title="<%= @workflow.L1 %>">
-                      <%= link_to open_info_modal_l1_path(result[29],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} do %>
-                        <%=result[0]%>
+                        <%= link_to result[0], open_info_modal_l1_path(result[29],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+
                         <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
                         <%= hidden_field_tag 'object_type', 'L1' %>
                         <%= hidden_field_tag 'object_id', result[29] %>
-                        <%= button_tag(type: "submit", class: "btn report_main_link") do %>
-                            <span class="glyphicon glyphicon-new-window"></span>
+                          <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                              <span class="glyphicon glyphicon-new-window"></span>
+                          <% end %>
                         <% end %>
-                      <% end %>
-                    <% end %>
                     </td>
 
                     <td title="Status"><%= result[1] %></td>

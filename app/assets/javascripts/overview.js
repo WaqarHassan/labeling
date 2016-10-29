@@ -13,21 +13,23 @@ function can_be_full_rework(){
 	sub_reason_valid = 'valid';
 	$('.sub_error').empty();
 	$('#sub_reason_list_div .child_mandatory').each(function(){
+		div_id = $(this).attr('id');
 		selected = $(this).val();
-		if (selected){
-			if (selected[0] != ''){
-		 		 sub_reason_valid = 'valid'
+		if ($('#sub_reasons_div_'+div_id).css('display') == 'block') {
+			if (selected){
+				if (selected[0] != ''){
+			 		 sub_reason_valid = 'valid'
+				}else{
+					$( "<div style='color: red;' class='sub_error'>This field is required.</div>" ).insertAfter(this);
+					sub_reason_valid = '';
+					return false;
+				}
 			}else{
-				$( "<div style='color: red;' class='sub_error'>This field is required.</div>" ).insertAfter(this);
-				sub_reason_valid = '';
-				return false;
+			  	$( "<div style='color: red;' class='sub_error'>This field is required.</div>" ).insertAfter(this);
+			  	sub_reason_valid = '';
+			  	return false;
 			}
-		}else{
-		  	$( "<div style='color: red;' class='sub_error'>This field is required.</div>" ).insertAfter(this);
-		  	sub_reason_valid = '';
-		  	return false;
-		}
-
+		}	
 	});
 
 	if (sub_reason_valid == 'valid'){

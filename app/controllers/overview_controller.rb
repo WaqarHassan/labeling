@@ -319,6 +319,15 @@ class OverviewController < ApplicationController
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
     @info_status = @workflow.statuses.where(recording_level: 'L3')
     @additional_info_data = @workflow.additional_infos.where(object_id: @l3.id, object_type: 'L3').order(id: :desc)
+    if @additional_info_data.present?
+      @additional_info_data.each do |additional_info|
+        reason_codeValues = ReasonCodeValue.get_reason_code_values(additional_info.id, 'AdditionalInfo')
+        reason_code_values = format_reason_code_values(reason_codeValues)
+        additional_info.reason_code_value = reason_code_values
+      end
+    end
+
+
     @rework_info = ReworkInfo.find_by_object_type_and_new_rework_id('L3', params[:l3_id])
     if @rework_info.present?
       reason_codeValues = ReasonCodeValue.get_reason_code_values(@rework_info.id, 'ReworkInfo')
@@ -412,15 +421,20 @@ class OverviewController < ApplicationController
       if params[:save_note_only] == 'savenoteonly'
         AdditionalInfo.create(additional_info_params_note_only)      
       else
+        add_info = AdditionalInfo.create(additional_info_params)
         codes = params[:additional_info][:reason_code_id]
         if codes.present?
           ids  = ""
-          codes.each do |d|
-            ids += d + ','
+          codes.each do |code|
+            ReasonCodeValue.create(object_id: add_info.id,
+                 object_type: 'AdditionalInfo', 
+                 new_reason_code_id: code)  
+            
+            ids += code + ','
           end
           ids  = ids.chop
         end
-        add_info = AdditionalInfo.create(additional_info_params)
+
         add_info.update(:reason_code_id => ids)
         if params[:additional_info][:object_type] == 'L1'
           l1 = L1.find(params[:additional_info][:object_id])
@@ -538,13 +552,22 @@ class OverviewController < ApplicationController
       end
   end
   def get_reasons_and_stations
-    #@reasons = ReasonCode.where(status: params[:additional_info][:status],
-    # recording_level: params[:l_type] ).order(:sequence)
-    lx = params[:l_type]
+    l_type = params[:l_type]
     @status = params[:additional_info][:status]
-    @reasons = ReasonCode.where(" status = '#{@status}' AND ( recording_level = '#{lx}' OR recording_level IS NULL)").order(:sequence)
+ 
+    @reason_codes = @workflow.new_reason_codes.where(object: 'OnHold', recording_level: [l_type,nil], parent_id: nil).order(:sequence)
+    @sub_reason_codes = @workflow.new_reason_codes.where(object: 'OnHold', recording_level: [l_type,nil]).where.not(parent_id: nil).order(:sequence)
 
-    @stations = ReasonCode.where(" status = 'OnHold-Station' AND ( recording_level = '#{lx}' OR recording_level IS NULL)").order(:sequence)
+    @sub_reasons_list = []
+    @main_reasons_ids = []
+    @reason_codes.each do |reason_code|
+        sub_reasons = @sub_reason_codes.select{|sub_reason_code| sub_reason_code.parent_id == reason_code.id}
+        @sub_reasons_list << {'child_mandatory'=> reason_code.child_mandatory, 'main_reason'=> reason_code.reason_code, 'sub_reasons_div_id'=> "sub_reasons_div_#{reason_code.id}", 'reasons_id'=> reason_code.id, 'sub_list'=>sub_reasons}
+        @main_reasons_ids << reason_code.id
+    end
+    @main_reasons_ids = @main_reasons_ids.join(",")
+
+    @stations = ReasonCode.where(" status = 'OnHold-Station' AND ( recording_level = '#{l_type}' OR recording_level IS NULL)").order(:sequence)
       respond_to do |format|
         format.html
         format.js

@@ -424,18 +424,13 @@ class OverviewController < ApplicationController
         add_info = AdditionalInfo.create(additional_info_params)
         codes = params[:additional_info][:reason_code_id]
         if codes.present?
-          ids  = ""
           codes.each do |code|
             ReasonCodeValue.create(object_id: add_info.id,
                  object_type: 'AdditionalInfo', 
-                 new_reason_code_id: code)  
-            
-            ids += code + ','
+                 new_reason_code_id: code)
           end
-          ids  = ids.chop
         end
 
-        add_info.update(:reason_code_id => ids)
         if params[:additional_info][:object_type] == 'L1'
           l1 = L1.find(params[:additional_info][:object_id])
           if params[:additional_info][:status] != ''
@@ -680,17 +675,12 @@ class OverviewController < ApplicationController
      mew_rework_info_object = ReworkInfo.create(rework_info_params)
      reasoncodes = params[:rework_info][:reason]
       if reasoncodes.present?
-        reason_ids  = ""
         reasoncodes.each do |code|
           ReasonCodeValue.create(object_id: mew_rework_info_object.id,
                                  object_type: 'ReworkInfo', 
-                                 new_reason_code_id: code)   
-
-          reason_ids += code + ','
+                                 new_reason_code_id: code)
         end
-        reason_ids  = reason_ids.chop
       end
-     mew_rework_info_object.update(:reason => reason_ids)
      
      reset_type = params[:reset_type]
      move_original_record_back_to_step = params[:move_original_record_back_to_step]
@@ -1155,18 +1145,14 @@ class OverviewController < ApplicationController
     additional_info_id = session[:additional_info_id]
     codes = params[:additional_info][:reason_code_id]
 
-    ids = ''
     codes.each do |code|
-      ids += code + ','
       ReasonCodeValue.create(object_id: additional_info_id,
                        object_type: 'AdditionalInfo', 
                        new_reason_code_id: code)  
 
     end
-    if ids.presence
-      ids.slice!(-1)
-    end
-    AdditionalInfo.update(additional_info_id, reason_code_id: ids, note: params[:additional_info][:note])
+
+    AdditionalInfo.update(additional_info_id, note: params[:additional_info][:note])
     session.delete(:additional_info_id)
     redirect_to root_path, notice: 'Reject reason saved'
   end

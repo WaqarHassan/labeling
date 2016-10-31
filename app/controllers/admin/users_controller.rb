@@ -5,7 +5,7 @@ class Admin::UsersController < ApplicationController
   # GET /admin/users
   def index
     @workflows = WorkFlow.where(is_active: true, is_in_use: false)
-    @users = User.all
+    @users = User.all.order(:first_name, :last_name)
   end
 
   # GET /admin/users

@@ -1399,10 +1399,10 @@ class WorkFlow < ActiveRecord::Base
 			      		  'Collab-Sent', 'Collab-Received', 'Design-Inbox', 'Station8-Inbox', 'Station8-Received', 'CRB-Started',
 			      		  'CRB-Complete', 'ECR-Release','Group1','Group2' , 'Group3' , 'Group4',
 			      		  'Group5' , 'ECR-Status' , 'Status-Timestamp' ,'Status Station', 'ecrid', 'ParentId',
-			      		  'ECR Inbox', 'Rework Reason', 'Rework Station' ,'Status Reason']
+			      		  'ECR Inbox', 'Rework Reason', 'Rework Station' ,'Status Reason' ,'CompType']
 			      data_set.each do |report|
 			        csv <<  [report[0], report[1], report[2], report[3], report[4], report[5], report[6], report[7], report[8], report[9], report[10], report[11], report[12], report[13], report[14], report[15], report[16], report[17], report[18], report[19], report[20],
-			         report[21], report[22], report[23], report[24], report[25], report[26], report[27], report[28], report[29] , report[30], report[31], report[32], report[33], report[34], report[35], report[36], report[37], report[38], report[39] ]
+			         report[21], report[22], report[23], report[24], report[25], report[26], report[27], report[28], report[29] , report[30], report[31], report[32], report[33], report[34], report[35], report[36], report[37], report[38], report[39], report[40] ]
 			      end
 			    end
 			end

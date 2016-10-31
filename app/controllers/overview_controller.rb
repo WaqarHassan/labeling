@@ -1333,7 +1333,7 @@ class OverviewController < ApplicationController
             sub_reaons = data_set.select{|parent| parent['parent_id'] == main_reaon['new_reason_code_id']}
             if sub_reaons.present?
               sub_reaons.each do |sub_reaon|
-                reasons_value = reasons_value+main_reaon['reason_code']+' - '+sub_reaon['reason_code']+', ' 
+                reasons_value = reasons_value+main_reaon['reason_code']+' > '+sub_reaon['reason_code']+', ' 
               end
             else
               reasons_value = reasons_value+main_reaon['reason_code']+', ' 

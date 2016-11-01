@@ -560,6 +560,49 @@ class WorkFlow < ActiveRecord::Base
 				return [max_date, table_td_class, max_date_for_succesr]
 			end
 			
+			def getOnHoldNewReason(reason_codes)
+				reason_string = ''
+				reasons_array = []
+				if reason_codes.present?
+					reasons_list = reason_codes.split('|')
+					reasons_list.each_slice(2) do |reason| 
+						if reason.count > 1
+							reasons_array << {'id' => reason[0], 'reason'=> reason[1], 'parent_id'=> nil}
+						else
+							reasons_array << {'id' => reason[0], 'reason'=> nil, 'parent_id'=> nil}
+						end
+					end  
+
+					reasons_array.each_with_index do |reason_code, indx|
+					ids_array = reason_code['id'].split('###')
+					if ids_array.count > 1 or indx > 0
+						parent_id = ids_array[0]
+							if parent_id != '-'
+							reasons_array[indx-1]['parent_id'] = parent_id
+							end
+						reason_code['id'] = ids_array[1]
+						end
+					end 
+					
+					main_reasons = reasons_array.select{|ra| ra['id']!=nil and ra['parent_id']==nil}
+					main_reasons.each do |main_res|
+						has_child = reasons_array.select{|ra| ra['id']!=nil and ra['parent_id']==main_res['id']}
+						if has_child.present?
+							has_child.each do |child|
+								reason_string = reason_string+main_res['reason']+' > '+child['reason']+', '
+							end
+						else
+							reason_string = reason_string+main_res['reason']+', '
+						end
+					end
+
+					if reason_string != ''
+						reason_string = reason_string.chomp(', ')
+					end
+				end
+				return reason_string
+
+			end
 
 			def getOnHoldReason(reason_codes, reason_ids)
 				reason_values = ''

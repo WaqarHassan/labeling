@@ -40,7 +40,7 @@
           <th>BU</th>
           <th>#Lang</th>
           <th>Horw</th>
-          <th>Hold Reason</th>
+          <th id="reason">Hold Reason</th>
         </tr>
       </thead>
 
@@ -135,7 +135,7 @@
                     <%  onHoldReason = ''
                        if result[4].presence
                           if  result[4].downcase == 'onhold'
-                           onHoldReason =  WorkFlow.getOnHoldReason(@reason_codes, result[26])
+                           onHoldReason =  WorkFlow.getOnHoldNewReason(result[26])
                           end 
                         end %>
                     <td title="Hold Reason"><%=onHoldReason%></td>
@@ -209,7 +209,7 @@
                     <%  l3onHoldReason = ''
                        if l3_status[0].presence
                           if  l3_status[0].downcase == 'onhold'
-                           l3onHoldReason =  WorkFlow.getL3OnHoldReason(@reason_codes, l3_status[1])
+                           l3onHoldReason =  WorkFlow.getOnHoldNewReason(l3_status[1][0])
                           end 
                         end %>
                     <td title="Hold Reason"><%=l3onHoldReason%></td>

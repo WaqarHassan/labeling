@@ -75,3 +75,7 @@
 .wip_input_td input {
     padding-left: 4px;
 }
+
+.table.table-bordered.handOffReportTable tr th#reason {
+    min-width: 300px;
+}

@@ -4,6 +4,7 @@ console.log('main js working........');
 function set_partial_merger(){
 	$('#rework_info_reason').removeAttr("required");
 	$('#rework_start_step').removeAttr("required");
+	$('#rework_info_station').removeAttr("required");
 	$('#merge_back_partial_with_parent').val('merge_back_partial_with_parent');
 	$('#myPleaseWait').modal('show');
 }

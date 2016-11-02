@@ -982,6 +982,59 @@ class OverviewController < ApplicationController
 
     redirect_to root_path, notice: 'Partial Merged Back successfully.'
   end
+  def remove_confirmation
+    wf_step_id = params[:wf_step_id]
+    workflow_live_step  = WorkflowLiveStep.find_by_id(wf_step_id)
+    workflow_live_step.actual_confirmation = nil
+    workflow_live_step.save 
+    WorkflowLiveStep.get_steps_calculate_eta(workflow_live_step, @workflow,current_user)
+    # l1s = []
+    # if workflow_live_step.object_type == 'L3'
+    #   l1s << workflow_live_step.object.l2.l1
+
+    # elsif workflow_live_step.object_type == 'L2'
+    #   l1s << workflow_live_step.object.l1
+
+    # else workflow_live_step.object_type == 'L1'
+    #   l1s << workflow_live_step.object
+    # end
+
+    # l1s.each do |l1_id|
+    #   workflowLiveStep = WorkflowLiveStep.find_by_object_id_and_object_type(l1_id,'L1')
+    #     if !workflowLiveStep.present?
+    #       l1 = L1.find(l1_id)
+    #       if l1.l2s.present?
+    #         l2 = l1.l2s.first
+    #         workflowLiveStep = WorkflowLiveStep.find_by_object_id_and_object_type(l2.id,'L2')
+    #       end
+    #     end
+    #     if workflowLiveStep.present?
+    #       WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
+    #     end
+    # end
+    redirect_to root_path, notice: 'Confirmation Removed SUCCESSFULLY'
+    
+
+    # l2 = ''
+    # if workflow_live_step.object_type == 'L3'
+    #   l2 = workflow_live_step.object.l2s.first
+
+    #   workflowLiveStep = WorkflowLiveStep.find_by_object_id_and_object_type(l2.id,'L2')
+
+    #   WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
+    #   redirect_to root_path, notice: 'Confirmation Removed Successfully'
+    #   #abort('###############################################################################################')
+    # elsif workflow_live_step.object_type == 'L2'
+    #   l2 = workflow_live_step.object
+    #   workflowLiveStep = WorkflowLiveStep.find_by_object_id_and_object_type(l2.id,'L2')
+    #   WorkflowLiveStep.get_steps_calculate_eta(workflowLiveStep, @workflow,current_user)
+    #   redirect_to root_path, notice: 'Confirmation Removed Successfully'
+    # else
+    #     redirect_to root_path, notice: 'Confirmation Removal FAILED'
+    # end
+  
+    
+  end
 
     #  
     #
@@ -994,8 +1047,12 @@ class OverviewController < ApplicationController
     workflow_live_tep = WorkflowLiveStep.find(@wf_step_id)
    
     @st_step = workflow_live_tep.station_step.step_name
-    @st_name = workflow_live_tep.station_step.workflow_station.station_name
-
+    @st_name = workflow_live_tep.station_step.workflow_station.station_name 
+        # @oops_mode =  'oops_mode'
+        if workflow_live_tep.actual_confirmation.present?
+           @remove = 'on'
+        end
+    
 
     if workflow_live_tep.object_type == 'L1'
       @l1 = L1.find(workflow_live_tep.object_id)

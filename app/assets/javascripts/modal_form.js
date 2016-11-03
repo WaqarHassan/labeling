@@ -117,6 +117,10 @@ function set_l2_status(status){
 		$('#myPleaseWait').modal('show');
 	}
 }
+function remove_confirmation_progress_bar() {
+    $('#myPleaseWait').modal('show');
+}
+
 // This function removes l2 status to the hidden field whenever Accept or Reject is clicked
 function remove_l2_status(){
 	$('#l2_status').remove();

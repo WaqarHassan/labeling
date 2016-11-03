@@ -982,6 +982,23 @@ class OverviewController < ApplicationController
 
     redirect_to root_path, notice: 'Partial Merged Back successfully.'
   end
+  def remove_confirmation
+    wf_step_id = params[:wf_step_id]
+    workflow_live_step  = WorkflowLiveStep.find_by_id(wf_step_id)
+    workflow_live_step.actual_confirmation = nil
+    workflow_live_step.save 
+    WorkflowLiveStep.get_steps_calculate_eta(workflow_live_step, @workflow,current_user)
+
+    ts_logs = TimestampLog.where(workflow_live_step_id: workflow_live_step.id)
+
+    TimestampLogArchive.create(ts_logs.as_json)
+    TimestampLog.destroy_all(workflow_live_step_id: workflow_live_step.id)
+
+    
+
+    redirect_to root_path, notice: 'Confirmation Removed SUCCESSFULLY'
+
+  end
 
     #  
     #
@@ -994,8 +1011,12 @@ class OverviewController < ApplicationController
     workflow_live_tep = WorkflowLiveStep.find(@wf_step_id)
    
     @st_step = workflow_live_tep.station_step.step_name
-    @st_name = workflow_live_tep.station_step.workflow_station.station_name
-
+    @st_name = workflow_live_tep.station_step.workflow_station.station_name 
+        # @oops_mode =  'oops_mode'
+        if workflow_live_tep.actual_confirmation.present?
+           @remove = 'on'
+        end
+    
 
     if workflow_live_tep.object_type == 'L1'
       @l1 = L1.find(workflow_live_tep.object_id)

@@ -63,6 +63,10 @@
           </div>
     </div>
     <div class='modal-footer'>
+    <% if  @remove == 'on'%>
+      <%=  link_to "remove confirmation", remove_confirmation_path(@wf_step_id), {:class => 'btn save-print-update-edit-btn pull-left',  :onclick => 'remove_confirmation_progress_bar()'} %>
+
+    <%end%>
       <button class='btn btn-danger' data-dismiss='modal' type='button'>Close</button>
       <button class='btn save-print-update-edit-btn' type='submit' onclick="return show_waiting_bar_confirmation();">Update</button>
     </div>

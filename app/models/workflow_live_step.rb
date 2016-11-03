@@ -61,7 +61,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 	        parent_l1 = workflow_live_step.object
 	      end
 
-	      l1_object = parent_l1
+	      l1_object = parent_l1	
 	      l2s_objects = []
 	      l3s_objects = {}
 

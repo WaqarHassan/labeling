@@ -171,27 +171,6 @@ function onlySaveNote(e){
   }
 }
 
-function get_sub_reasons(reason){
-  var all_main_reasonsids = $('#main_reasons_ids').val();
-  var reasons = $(reason).val();
-  all_main_reasons_ids = all_main_reasonsids.split(',');
-  // console.log(all_main_reasons_ids);
-
-  jQuery.each( all_main_reasons_ids, function( i, mval ) {
-    is_selected = jQuery.inArray( $.trim(mval), reasons );
-    // console.log(is_selected);
-    if (is_selected == -1){
-      $('#sub_reasons_div_'+mval).hide();
-      $('#sub_reasons_div_'+mval+'_id select option').removeAttr("selected");
-    }
-  });
-
-  jQuery.each( reasons, function( i, val ) {
-    console.log(val);
-    $('#sub_reasons_div_'+val).show();
-  });
-
-}
 
 
 

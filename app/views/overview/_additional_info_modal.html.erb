@@ -110,7 +110,11 @@
            <label class="col-lg-4 control-label">Archive </label>
             <div class="col-lg-6 add_note_div">
               <% @additional_info_data.each do |add_info| 
-                user_name = add_info.user.first_name.present? ? add_info.user.first_name : '' 
+                if add_info.user.present?
+                  user_name = add_info.user.first_name.present? ? add_info.user.first_name : ''
+                else
+                  user_name = ' - '  
+                end 
                 if add_info.info_timestamp.present?
                   creation_time = add_info.info_timestamp
                 else
@@ -143,7 +147,11 @@
               <% end %>
 
               <% if @rework_info.present? 
-                  user_name = @rework_info.user.first_name.present? ? @rework_info.user.first_name : ''  %>
+                if @rework_info.user.present?
+                  user_name = @rework_info.user.first_name.present? ? @rework_info.user.first_name : ''  
+                else
+                  user_name = ' - '
+                end  %>
 
                 <%= "Rework created by "+user_name+" on "+@rework_info.created_at.strftime("%m/%d/%y %I:%M %p")  %>
                 <br/>

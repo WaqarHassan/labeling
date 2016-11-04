@@ -436,6 +436,25 @@ class WorkFlow < ActiveRecord::Base
 				end
 				return 	['ETA ' + to_crb.strftime("%m/%d/%y"), table_td_class]
 
+			end 
+			def get_rollUp_l3_crb_started_timestamps_back_from_collab_NA(result19,workflow,holidays)
+				BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
+			    BusinessTime::Config.end_of_workday = workflow.end_of_workday
+
+			    holidays.each do |holiday|
+			       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
+			    end
+			    if result19 == nil #|| result == '0'
+					return ['N/A', ""]
+				end
+				to_crb =  Date.parse(result19) + 1.day
+				if Date.parse(Time.now.to_s) > Date.parse(to_crb.to_s)
+					table_td_class = 'report_eta_light_red'
+				else
+					table_td_class = ''
+				end
+				return ['ETA ' + to_crb.strftime("%m/%d/%y"),table_td_class]
+
 			end
 
 			def get_rollUp_l3_crb_started_timestamps(dataSet, eta_indx, actual_indx, sent_to_collab_actual,station8_sent_actual, 

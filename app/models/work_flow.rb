@@ -266,9 +266,6 @@ class WorkFlow < ActiveRecord::Base
 				if any_eta_step.present?
 					pred_actual = DateTime.parse(pred_actual.to_s) rescue nil
 					if pred_actual
-						# Covnert minutes to hours and minutes
-					  	BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
-					    BusinessTime::Config.end_of_workday = workflow.end_of_workday
 
 					    holidays.each do |holiday|
 					       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
@@ -330,19 +327,9 @@ class WorkFlow < ActiveRecord::Base
 				end
 
 				backFromCollab_has_any_unconfirm = dataSet.select{|eta| eta[17].to_i == 1}
-				backFromCollab_has_any_other_than_na = dataSet.select{|eta| eta[17].to_i != 0}
-
 				max_crb_with_etas_date = 0
 				if !backFromCollab_has_any_unconfirm.present?
-					crb_with_etas = dataSet.select{|eta| eta[eta_indx].to_i != 0 and eta[eta_indx].to_i != 1}
-					crb_with_etas_sorted = crb_with_etas.sort_by { |h| h[eta_indx] }.reverse
-					if crb_with_etas_sorted.present?
-						max_crb_with_etas = crb_with_etas_sorted.first
-						max_crb_with_etas_date = max_crb_with_etas[eta_indx]
-					end
-				end
-				if !backFromCollab_has_any_other_than_na.present?
-					crb_with_etas = dataSet.select{|eta| eta[eta_indx].to_i != 0 and eta[eta_indx].to_i != 1}
+					crb_with_etas = dataSet.select{|eta| eta[eta_indx].to_i != 0 and eta[eta_indx].to_i != 1 and eta[indx].to_i==1}
 					crb_with_etas_sorted = crb_with_etas.sort_by { |h| h[eta_indx] }.reverse
 					if crb_with_etas_sorted.present?
 						max_crb_with_etas = crb_with_etas_sorted.first
@@ -365,9 +352,6 @@ class WorkFlow < ActiveRecord::Base
 					else
 						pred_actual = DateTime.parse(pred_actual.to_s) rescue nil
 						if pred_actual
-							# Covnert minutes to hours and minutes
-						  	BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
-						    BusinessTime::Config.end_of_workday = workflow.end_of_workday
 
 						    holidays.each do |holiday|
 						       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
@@ -415,8 +399,6 @@ class WorkFlow < ActiveRecord::Base
 			end
 			def get_rollUp_l3_crb_started_timestamps_NA (ecr_inbox_date,actual_indx,workflow,holidays)
 				
-				BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
-			    BusinessTime::Config.end_of_workday = workflow.end_of_workday
 
 			    holidays.each do |holiday|
 			       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
@@ -438,8 +420,6 @@ class WorkFlow < ActiveRecord::Base
 
 			end 
 			def get_rollUp_l3_crb_started_timestamps_back_from_collab_NA(result19,workflow,holidays)
-				BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
-			    BusinessTime::Config.end_of_workday = workflow.end_of_workday
 
 			    holidays.each do |holiday|
 			       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
@@ -458,8 +438,6 @@ class WorkFlow < ActiveRecord::Base
 			end
 
 			def get_rollUp_l3_crb_started_timestamps_back_from_collab_NA(result19,workflow,holidays)
-				BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
-			    BusinessTime::Config.end_of_workday = workflow.end_of_workday
 
 			    holidays.each do |holiday|
 			       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
@@ -488,9 +466,6 @@ class WorkFlow < ActiveRecord::Base
 			def get_rollUp_l3_crb_started_timestamps(dataSet, eta_indx, actual_indx, sent_to_collab_actual,station8_sent_actual, 
 				workflow, days_at_collab, days_at_station8, holidays,pred_numb_comp, l3_status)
 
-			  	BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
-			    BusinessTime::Config.end_of_workday = workflow.end_of_workday
-
 			    holidays.each do |holiday|
 			       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
 			    end
@@ -512,19 +487,9 @@ class WorkFlow < ActiveRecord::Base
 				end
 
 				backFromCollab_has_any_unconfirm = dataSet.select{|eta| eta[17].to_i == 1}
-				backFromCollab_has_any_other_than_na = dataSet.select{|eta| eta[17].to_i != 0}
-
 				max_crb_with_etas_date = 0
 				if !backFromCollab_has_any_unconfirm.present?
-					crb_with_etas = dataSet.select{|eta| eta[eta_indx].to_i != 0 and eta[eta_indx].to_i != 1}
-					crb_with_etas_sorted = crb_with_etas.sort_by { |h| h[eta_indx] }.reverse
-					if crb_with_etas_sorted.present?
-						max_crb_with_etas = crb_with_etas_sorted.first
-						max_crb_with_etas_date = max_crb_with_etas[eta_indx]
-					end
-				end
-				if !backFromCollab_has_any_other_than_na.present?
-					crb_with_etas = dataSet.select{|eta| eta[eta_indx].to_i != 0 and eta[eta_indx].to_i != 1}
+					crb_with_etas = dataSet.select{|eta| eta[eta_indx].to_i != 0 and eta[eta_indx].to_i != 1 and eta[actual_indx].to_i == 1}
 					crb_with_etas_sorted = crb_with_etas.sort_by { |h| h[eta_indx] }.reverse
 					if crb_with_etas_sorted.present?
 						max_crb_with_etas = crb_with_etas_sorted.first

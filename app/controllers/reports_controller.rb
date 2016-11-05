@@ -246,11 +246,6 @@ class ReportsController < ApplicationController
 			@workflows << wk
 		end
 
-		# reason_codes = @workflow.new_reason_codes
-		# reason_codes.each do |rsc|
-		# 	@reason_codes << rsc
-		# end
-
 		@filtered_station_steps = []
 	    filtered_station_steps = @workflow.report_filter_steps.eager_load(:station_step => [:workflow_station]).order(:sequence)
 		filtered_station_steps.each do |fss|

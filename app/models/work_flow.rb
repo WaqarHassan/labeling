@@ -397,9 +397,8 @@ class WorkFlow < ActiveRecord::Base
 				end
 				return [max_date, table_td_class, max_date_for_succesr]
 			end
-			def get_rollUp_l3_crb_started_timestamps_NA (ecr_inbox_date,actual_indx,workflow,holidays)
-				
 
+			def get_rollUp_l3_crb_started_timestamps_NA (ecr_inbox_date,actual_indx,workflow,holidays)
 			    holidays.each do |holiday|
 			       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
 			    end
@@ -407,18 +406,23 @@ class WorkFlow < ActiveRecord::Base
 				if ecr_inbox_date == nil #|| result == '0'
 					return ['N/A', ""]
 				end
-				ecr_inbox_date_parsed =  Date.parse(ecr_inbox_date)
+				na_eta = '99999999999999999999'
+				table_td_class = ''
+				ecr_inbox_date_parsed = DateTime.parse(ecr_inbox_date.to_s) rescue nil
+				if ecr_inbox_date_parsed
+					to_crb = 2.business_days.after(ecr_inbox_date_parsed)
 
-				to_crb = 2.business_days.after(ecr_inbox_date_parsed)
-
-				if Date.parse(Time.now.to_s) > Date.parse(to_crb.to_s)
-							table_td_class = 'report_eta_light_red'
-						else
-							table_td_class = ''
-				end
-				return 	['ETA ' + to_crb.strftime("%m/%d/%y"), table_td_class]
+					if Date.parse(Time.now.to_s) > Date.parse(to_crb.to_s)
+								table_td_class = 'report_eta_light_red'
+							else
+								table_td_class = ''
+					end
+					na_eta = 'ETA ' + to_crb.strftime("%m/%d/%y")	
+				end	
+				return 	[na_eta, table_td_class]
 
 			end 
+
 			def get_rollUp_l3_crb_started_timestamps_back_from_collab_NA(result19,workflow,holidays)
 
 			    holidays.each do |holiday|

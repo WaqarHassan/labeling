@@ -406,7 +406,7 @@ class WorkFlow < ActiveRecord::Base
 				if ecr_inbox_date == nil #|| result == '0'
 					return ['N/A', ""]
 				end
-				na_eta = '99999999999999999999'
+				na_eta = ''
 				table_td_class = ''
 				ecr_inbox_date_parsed = DateTime.parse(ecr_inbox_date.to_s) rescue nil
 				if ecr_inbox_date_parsed
@@ -422,7 +422,7 @@ class WorkFlow < ActiveRecord::Base
 				return 	[na_eta, table_td_class]
 
 			end 
-
+			
 			def get_rollUp_l3_crb_started_timestamps_back_from_collab_NA(result19,workflow,holidays)
 
 			    holidays.each do |holiday|

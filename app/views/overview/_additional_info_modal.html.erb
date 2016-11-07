@@ -72,18 +72,6 @@
           </div>
         </div> 
         <div id = 'get_reasons_and_stations_div'>
-           <!-- <div class="form-group">
-              <label class="col-lg-4 control-label">Station </label>
-                <div class="col-lg-6" id= "get_reasons_div">
-                  <select size="8" multiple="multiple" class="form-control pnd-reqst pull-left" id="additional_info_reason_code_id" name="additional_info[reason_code_id][]"><option value="">please select Status to render reasons</option></select>
-                </div>
-            </div>
-           <div class="form-group">
-              <label class="col-lg-4 control-label">Reason </label>
-                <div class="col-lg-6" id= "get_reasons_div">
-                  <select size="8" multiple="multiple" class="form-control pnd-reqst pull-left" id="additional_info_reason_code_id" name="additional_info[reason_code_id][]" required><option value="">please select Status to render reasons</option></select>
-                </div>
-            </div> -->
         </div>
      
 
@@ -128,15 +116,16 @@
                     <%= "By "+user_name+" on "+creation_time.strftime("%m/%d/%y %I:%M %p")  %>
                   <% end %> 
                     <br>
-                  <% if add_info.station.present? %>
-                    <strong>Station:</strong> <%= add_info.station %>
-                    <br>
-                  <% end %>
 
                   <% if add_info.reason_code_value.present? %>
                     <strong>Reason:</strong>  <%= add_info.reason_code_value %>
                     <br>
                   <%end%>
+
+                  <% if add_info.station.present? %>
+                    <strong>Station:</strong> <%= add_info.station %>
+                    <br>
+                  <% end %>
 
                   <% if add_info.note.present? %>
                     <strong>Note:</strong> <%= add_info.note %>
@@ -156,6 +145,8 @@
                 <%= "Rework created by "+user_name+" on "+@rework_info.created_at.strftime("%m/%d/%y %I:%M %p")  %>
                 <br/>
                 <strong>Parent:</strong> <%= @reworked_l3_parent_name %>
+                <br>
+                <strong>Station:</strong> <%= @rework_info.station %>
                 <br>
                 <strong>Reason:</strong> <%= @reason_code_values %>
                 <br>

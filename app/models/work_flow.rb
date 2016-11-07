@@ -567,6 +567,20 @@ class WorkFlow < ActiveRecord::Base
 						end
 					end
 				end
+
+				if max_date == ''
+					max_crb_with_etas_date = DateTime.parse(max_crb_with_etas_date.to_s) rescue nil
+					if max_crb_with_etas_date
+						number_days = 1
+						eta_datetime =  number_days.business_days.after(max_crb_with_etas_date)
+						eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
+						max_date = "ETA "+eta_date_stamp
+						if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
+							table_td_class = 'report_eta_light_red'
+						end
+					end						
+				end
+
 				
 				if l3_status.downcase == 'onhold' and max_date.include? 'ETA'
 					max_date = 'OnHold'

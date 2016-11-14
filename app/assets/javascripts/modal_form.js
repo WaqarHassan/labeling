@@ -11,7 +11,23 @@ $(document).ready(function() {
   {
     $('#lang').hide(); 
  }
+ 
+ // var parents = $('#reason_codes_selected_values').val();
+ // console.log("****<>**<>**<>**<>**<>**<>**<>**<>******************OOPS MODE");
+ // console.log(parents);
+ // get_sub_reasons(' ', parents.split(' '));
+ // console.log(parents.split(' '))
 
+
+  // $('#oops_mode_reason_code_info').on('shown.bs.modal', function (e) {
+    
+  //   var parents = $('#reason_codes_selected_values').val();
+  //   console.log("Parents =============================================================");
+  //   console.log(parents);
+  //   console.log("===================================================================");
+  //     get_sub_reasons('',parents);
+  
+  // })
   //Following three lines focus on the fields with given id (for Lx Pop'ups)    
 	$('#project_name').focus();
 	$('#ia_list_name').focus();

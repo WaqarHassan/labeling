@@ -9,7 +9,10 @@ function set_partial_merger(){
 	$('#myPleaseWait').modal('show');
 }
 // This function checks whether L3-Rx can be merged back to its parent by comparing current no of components 
-//with parent's 
+//with parent's
+
+	
+
 function remove_reason_code_children(){
 
 	$('#sub_reason_list_div .child_mandatory').each(function(){
@@ -435,15 +438,19 @@ function validate_reject_reasons(){
 
 }
 
-function get_sub_reasons(reason){
+function get_sub_reasons(reason, all_parents = null){
   var all_main_reasonsids = $('#main_reasons_ids').val();
-  var reasons = $(reason).val();
+  var reasons = reason
+  if (all_parents != null)
+  {
+  	 reasons = $(reason).val();
+  }
+
   all_main_reasons_ids = all_main_reasonsids.split(',');
-  // console.log(all_main_reasons_ids);
 
   jQuery.each( all_main_reasons_ids, function( i, mval ) {
     is_selected = jQuery.inArray( $.trim(mval), reasons );
-    // console.log(is_selected);
+
     if (is_selected == -1){
       $('#sub_reasons_div_'+mval).hide();
       $('#sub_reasons_div_'+mval+'_id select option').removeAttr("selected");

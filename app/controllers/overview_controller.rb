@@ -1328,9 +1328,97 @@ class OverviewController < ApplicationController
     session[:oops_mode] = 'oops_mode'
     redirect_to root_path, notice: 'Oops mode is turned on.'
   end
+  def oops_mode_reason_code
+
+    respond_to do |format|
+      format.js
+      format.html
+    end
+
+  end
+  def add_oops_mode_reason_code
+    l3 = L3.where( :name => params[:ecr_name].to_s).first
+    @add_info = AdditionalInfo.where(:object_id => l3.id, :object_type =>'L3')
+    @rework_info = ReworkInfo.where(:new_rework_id => l3.id).first
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+  # GET Reason_code_update info pop up
+  def oops_mode_reason_code_info
+    info_id = params[:info_id]
+   
+    if params[:info_type].to_s == 'additional_info'
+      additional_info = AdditionalInfo.find_by_id(info_id)
+      @info_status = additional_info.status
+      @info_type = 'additional_info'
+      @info_id = additional_info.id
+      @reason_codes = @workflow.new_reason_codes.where(object: 'OnHold', recording_level: [additional_info.object_type,nil], parent_id: nil).order(:sequence)
+      @selected_reasons = additional_info.reason_code_values.pluck(:new_reason_code_id)
+
+
+    elsif params[:info_type].to_s == 'rework_info'
+      rework_info = ReworkInfo.find_by_id(info_id)
+      @info_type = 'rework_info'
+      @info_id = rework_info.id
+      @reason_codes = @workflow.new_reason_codes.where(object: 'Rework', recording_level: [rework_info.object_type,nil], parent_id: nil).order(:sequence)
+      @sub_reason_codes = @workflow.new_reason_codes.where(object: 'Rework', recording_level: [rework_info.object_type,nil]).where.not(parent_id: nil).order(:sequence)
+      @selected_reasons = rework_info.reason_code_values.pluck(:new_reason_code_id)
+      @sub_reasons_list = []
+      @main_reasons_ids = []
+      @reason_codes.each do |reason_code|
+        sub_reasons = @sub_reason_codes.select{|sub_reason_code| sub_reason_code.parent_id == reason_code.id}
+        @sub_reasons_list << {'child_mandatory'=> reason_code.child_mandatory, 'main_reason'=> reason_code.reason_code, 'sub_reasons_div_id'=> "sub_reasons_div_#{reason_code.id}", 'reasons_id'=> reason_code.id, 'sub_list'=>sub_reasons}
+        @main_reasons_ids << reason_code.id
+      end
+      @main_reasons_ids = @main_reasons_ids.join(",")
+    end
+   
+    respond_to do |format|
+      format.html
+      format.js
+    end
+
+
+  end
+  #POST reason_code_finally
+  def add_oops_mode_reason_code_info
+    info_type = params[:info][:type].to_s
+    message = "Reason_codes Updated succcessfully "
+    if info_type == 'additional_info'
+      message = message +  "[AdditionalInfo]"
+      ad_info_id = params[:info][:id]
+      codes = params[:additional_info][:reason_code_id]
+      ReasonCodeValue.where(object_id: ad_info_id).destroy_all
+      if codes.present?
+        codes.each do |code|
+          ReasonCodeValue.create(object_id: ad_info_id,
+               object_type: 'AdditionalInfo', 
+               new_reason_code_id: code)
+        end
+      end
+      
+    elsif info_type == 'rework_info'
+      message = message + "[ReworkInfo]"
+      rework_info_id = params[:info][:id]
+      codes = params[:rework_info][:reason_code_id]
+      ReasonCodeValue.where(object_id: rework_info_id).destroy_all
+      if codes.present?
+        codes.each do |code|
+          ReasonCodeValue.create(object_id: rework_info_id,
+                                 object_type: 'ReworkInfo', 
+                                 new_reason_code_id: code)
+        end
+      end
+    end
+
+    redirect_to root_path, notice: message
+
+  end
 
   private
-
     def format_reason_code_values(data_set)
       reasons_value = ''
       if data_set.present?

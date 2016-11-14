@@ -30,6 +30,7 @@
             %li= link_to '+ADD '+@workflow.L1, new_l1_path,  {:remote => true, 'data-toggle' =>  "modal",class: 'add_links', 'data-target' => '#add_l1_modal'}
             %li= link_to 'User Management' , admin_users_path,  {class: 'add_links'}
             %li= link_to 'Turn on Oops mode' , oops_mode_path,  {class: 'add_links'}
+            %li= link_to 'Oops mode reason codes ', oops_mode_reason_code_path, {:remote => true, 'data-toggle' =>  "modal",class: 'add_links', 'data-target' => '#oops_mode_reason_code'}
             %hr.menu_hr
             %li= link_to 'Data Feed' , data_feed_reports_path(:format => 'csv') , {class: 'add_links'}
             %hr.menu_hr

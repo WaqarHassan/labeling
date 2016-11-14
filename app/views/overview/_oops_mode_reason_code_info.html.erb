@@ -1,0 +1,81 @@
+<div class='modal-dialog'>
+  <div class='modal-content'>
+     <%= form_tag add_oops_mode_reason_code_info_path, remote: true, :id => 'add_oops_mode_reason_code_form', :class => 'form-horizontal'  do %>
+    
+
+      <div class = 'errors__container'>
+        <%= render 'layouts/messages' %>
+      </div>  
+      <div class='modal-header'>
+        <button class='close' data-dismiss='modal' type='button'>×</button>
+        <h1 class="h1-heading-popup">add oops mode reason code Info</h1>
+      </div>
+      <div class='modal-body'>
+        <input type="hidden" name="info[id]" value = "<%= @info_id %>">
+        <input type="hidden" name="info[type]" value="<%= @info_type %>">
+        <%if @info_type == 'additional_info'%>
+          <div class="form-group">
+             <label class="col-lg-4 control-label">Info Type:</label>
+              <div class="col-lg-6">
+                <span > <%=@info_type%></span>
+              </div>
+          </div>
+          <div class="form-group">
+             <label class="col-lg-4 control-label">Status:</label>
+              <div class="col-lg-6">
+                <span > <%=@info_status%></span>
+              </div>
+          </div>
+          <div class="form-group">
+             <label class="col-lg-4 control-label"> Reason </label>
+              <div class="col-lg-6">
+                <%= select_tag "additional_info[reason_code_id]", options_from_collection_for_select(@reason_codes, 'id', 'reason_code',@selected_reasons), :class=>'form-control pnd-reqst pull-left', :required => true, :multiple => true, :size => 8 %>
+              </div>
+          </div>
+        <%elsif @info_type =='rework_info'%>
+          <div class="form-group">
+            <label class="col-lg-4 control-label">Reason</label>
+            <div class="col-lg-6">
+              <%= select_tag "rework_info[reason_code_id]", options_from_collection_for_select(@reason_codes, 'id', 'reason_code'), prompt: "please select reason", :class=>'form-control', required: true, :multiple => true , :size => 10, onclick: 'get_sub_reasons(this); return false;' %>
+            </div>
+          </div>
+
+          <div id="sub_reason_list_div">
+            <% @sub_reasons_list.each do |subReason| 
+              child_mandatory = subReason['child_mandatory'] 
+              child_required = child_mandatory ? '' : ''
+              child_required_class = child_mandatory ? 'child_mandatory' : '' %>
+            <% if subReason['sub_list'].present? %>
+              <div id="<%= subReason['sub_reasons_div_id'] %>" style="display:none">
+                <div class="form-group" id="<%= subReason['sub_reasons_div_id'] %>_id">
+                 <label class="col-lg-4 control-label">Reason Details <%= subReason['main_reason'] %></label>
+                  <div class="col-lg-6">
+                   <select size="5" multiple="multiple" <%=child_required%> class="form-control valid <%=child_required_class%>" name="rework_info[reason][]" id="<%= subReason['reasons_id'] %>" >
+                      <option value="">please select reason</option>
+                      <% subReason['sub_list'].each do |list| %>
+                       <option value="<%=list['id']%>"><%=list['reason_code']%></option>
+                      <% end %>
+                    </select>  
+                 </div>
+                </div>
+              </div>
+            <% end %>  
+          <% end %>
+      </div>
+
+        <%end%>
+      </div>
+      <div class='modal-footer'>
+        <button class='btn btn-danger' data-dismiss='modal' type='button'>Close</button>
+        <button class='btn save-print-update-edit-btn' type='submit'  onclick="return remove_reason_code_children();" >Save</button>
+      </div>
+    <% end %>
+  </div>
+    
+  </div>
+</div>
+
+<div style="display:none">
+  <input id="main_reasons_ids" value="<%= @main_reasons_ids %>" />
+</div>
+ <%= javascript_include_tag "modal_form" %>

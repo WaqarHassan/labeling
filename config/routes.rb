@@ -120,9 +120,11 @@ Rails.application.routes.draw do
   post '/overview/search' => 'overview#search' , as: 'overview_search' 
   get '/overview/eta_refresh/:l1_id' => 'overview#eta_refresh', as:'eta_refresh'
   get '/overview/recalculate_all_eta' => 'overview#recalculate_all_eta', as: 'recalculate_all_eta'
-
-
-
+  get '/overview/oops_mode_reason_code' => 'overview#oops_mode_reason_code', as: 'oops_mode_reason_code'
+  post '/overview/add_oops_mode_reason_code' => 'overview#add_oops_mode_reason_code', as: 'add_oops_mode_reason_code'
+  get  '/overview/oops_mode_reason_code_info/:info_id/:info_type' => 'overview#oops_mode_reason_code_info', as: 'oops_mode_reason_code_info'
+  #get  '/overview/oops_mode_reason_code_rework_info' => 'overview#oops_mode_reason_code_rework_info', as: 'oops_mode_reason_code_rework_info'
+  post '/overview/add_oops_mode_reason_code_info' => 'overview#add_oops_mode_reason_code_info' , as: 'add_oops_mode_reason_code_info'
   # Dummy preview pages for testing.
   get '/p/test' => 'pages#test', as: 'test'
   get '/p/email' => 'pages#email' if ENV['ALLOW_EMAIL_PREVIEW'].present?

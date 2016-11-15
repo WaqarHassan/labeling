@@ -19,7 +19,7 @@
          <div class="form-group">
 			     <label class="col-lg-3 control-label">Reason</label>
             <div class="col-lg-8">
-              <%= select_tag "additional_info[reason_code_id]", options_from_collection_for_select(@reason_codes, 'id', 'reason_code'), :class=>'form-control pnd-reqst pull-left', :required => true, :multiple => true, :size => 10, onclick: 'get_sub_reasons(this, ''); return false;' %>
+              <%= select_tag "additional_info[reason_code_id]", options_from_collection_for_select(@reason_codes, 'id', 'reason_code'), :class=>'form-control pnd-reqst pull-left', :required => true, :multiple => true, :size => 10, onclick: 'get_sub_reasons(this, ""); return false;' %>
             </div>
          </div> 
 

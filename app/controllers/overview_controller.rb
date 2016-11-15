@@ -1374,6 +1374,7 @@ class OverviewController < ApplicationController
         @main_reasons_ids << reason_code.id
       end
       @main_reasons_ids = @main_reasons_ids.join(",")
+      puts "*************************************************************************#{@main_reasons_ids}"
     end
    
     respond_to do |format|
@@ -1403,7 +1404,7 @@ class OverviewController < ApplicationController
     elsif info_type == 'rework_info'
       message = message + "[ReworkInfo]"
       rework_info_id = params[:info][:id]
-      codes = params[:rework_info][:reason_code_id]
+      codes = params[:rework_info][:reason]
       ReasonCodeValue.where(object_id: rework_info_id).destroy_all
       if codes.present?
         codes.each do |code|

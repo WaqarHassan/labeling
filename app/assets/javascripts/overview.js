@@ -14,7 +14,8 @@ function set_partial_merger(){
 	
 
 function remove_reason_code_children(){
-
+	sub_reason_valid = 'valid';
+	$('.sub_error').empty();
 	$('#sub_reason_list_div .child_mandatory').each(function(){
 		div_id = $(this).attr('id');
 		selected = $(this).val();
@@ -34,6 +35,14 @@ function remove_reason_code_children(){
 			}
 		}	
 	});
+	if (sub_reason_valid == 'valid'){
+		return true;
+	}
+	else
+	{
+		console.log('submit false');
+		return false;
+	}
 }
 function can_be_full_rework(){
 	sub_reason_valid = 'valid';
@@ -441,9 +450,12 @@ function validate_reject_reasons(){
 function get_sub_reasons(reason, all_parents = null){
   var all_main_reasonsids = $('#main_reasons_ids').val();
   var reasons = reason
-  if (all_parents != null)
+  if (reasons == '')
   {
-  	 reasons = $(reason).val();
+  	 reasons = all_parents;
+  }else
+  {
+  	reasons = $(reason).val();
   }
 
   all_main_reasons_ids = all_main_reasonsids.split(',');

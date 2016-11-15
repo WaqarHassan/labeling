@@ -14,7 +14,7 @@
         <input type="hidden" name="info[id]" value = "<%= @info_id %>">
         <input type="hidden" name="info[type]" value="<%= @info_type %>">
         
-      <input type="hidden"  id = 'reason_codes_selected_values' value = "<%= @selected_reasons %>">
+      <input type="hidden"  id = 'reason_codes_selected_values' value = "<%= @selected_reasons.join(",") %>">
         <%if @info_type == 'additional_info'%>
           <div class="form-group">
              <label class="col-lg-4 control-label">Info Type:</label>
@@ -38,7 +38,7 @@
           <div class="form-group">
             <label class="col-lg-4 control-label">Reason</label>
             <div class="col-lg-6">
-              <%= select_tag "rework_info[reason_code_id]", options_from_collection_for_select(@reason_codes, 'id', 'reason_code',@selected_reasons), prompt: "please select reason", :class=>'form-control', required: true, :multiple => true , :size => 10, onclick: 'get_sub_reasons(this); return false;' %>
+              <%= select_tag "rework_info[reason]", options_from_collection_for_select(@reason_codes, 'id', 'reason_code',@selected_reasons), prompt: "please select reason", :class=>'form-control', required: true, :multiple => true , :size => 10, onclick: 'get_sub_reasons(this); return false;' %>
             </div>
           </div>
 
@@ -55,7 +55,9 @@
                    <select size="5" multiple="multiple" <%=child_required%> class="form-control valid <%=child_required_class%>" name="rework_info[reason][]" id="<%= subReason['reasons_id'] %>" >
                       <option value="">please select reason</option>
                       <% subReason['sub_list'].each do |list| %>
-                       <option value="<%=list['id']%>"><%=list['reason_code']%></option>
+                       <option value="<%=list['id']%>" 
+                       <%= @selected_reasons.include?(list['id'])? 'selected' : '' %> >
+                          <%=list['reason_code']%> </option>
                       <% end %>
                     </select>  
                  </div>
@@ -79,5 +81,6 @@
 
 <div style="display:none">
   <input id="main_reasons_ids" value="<%= @main_reasons_ids %>" />
+  <%# abort(@main_reasons_ids) %>
 </div>
- <%= javascript_include_tag "modal_form" %>
+  <%= javascript_include_tag "modal_form" %>

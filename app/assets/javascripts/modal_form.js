@@ -12,11 +12,16 @@ $(document).ready(function() {
     $('#lang').hide(); 
  }
  
- // var parents = $('#reason_codes_selected_values').val();
- // console.log("****<>**<>**<>**<>**<>**<>**<>**<>******************OOPS MODE");
- // console.log(parents);
- // get_sub_reasons(' ', parents.split(' '));
- // console.log(parents.split(' '))
+ if ($('#reason_codes_selected_values').val() != null)
+ {
+   var parents = $('#reason_codes_selected_values').val();
+   console.log("****<>**<>**<>**<>**<>**<>**<>**<>******************OOPS MODE");
+   console.log(parents);
+   get_sub_reasons('', parents.split(','));
+   console.log(parents.split(','))
+    $('#reason_codes_selected_values').val(null)
+ }
+
 
 
   // $('#oops_mode_reason_code_info').on('shown.bs.modal', function (e) {
@@ -43,6 +48,7 @@ $(document).ready(function() {
 	$("#add_l2_modal #task_confirmation").validate();
 	$("#reject_reason_modal #save_reject_reason").validate();
 	$("#rework_modal_popup #rework_modal_from").validate();
+  $('#oops_mode_reason_code_info #add_oops_mode_reason_code_form').validate();
 	//Following line hides errors container when user click on "x" on the container
 	$("#errors_container").hide();
 //Following lines hides #Language component whenever Component type is 'cgl' on L3s pop up

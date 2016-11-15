@@ -834,3 +834,12 @@ label.string, label.integer {
 .wip_data_th {
     background-color: lightsteelblue;
 }
+.oops_reasons {
+    display: list-item !important;
+    list-style-type: square;
+    margin-left: -20px !important;
+     
+}
+.oops_reasons a {
+    color: #337ab7;
+}

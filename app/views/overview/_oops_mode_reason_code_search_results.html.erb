@@ -1,13 +1,18 @@
+<%= content_tag :ul do %>
+	<%if @rework_info.present? %>
+	<%= content_tag :li , :class => 'oops_reasons' do %>
+		<%= link_to 'Rework -' + @rework_info.created_at.strftime("%d/%m/%Y %H:%M") , oops_mode_reason_code_info_path(@rework_info.id, 'rework_info'),{:remote => true, 'data-toggle' => "modal", 'data-target' => '#oops_mode_reason_code_info' , "data-dismiss" => "modal"} %>
+	<%end%>
+	<%end%>
+	<% if @add_info.present? %>
+		 <% @add_info.each do |info| %>
+			<% if info.status == 'OnHold'%>
+				<%= content_tag :li , :class => 'oops_reasons'  do %>
+					<%= link_to info.status+ ' - ' + info.created_at.strftime("%d/%m/%Y %H:%M"), oops_mode_reason_code_info_path(info.id, 'additional_info'),{:remote => true, 'data-toggle' => "modal", 'data-target' => '#oops_mode_reason_code_info' , "data-dismiss" => "modal"} %> 
+				<%end%>
 
-<%if @rework_info.present? %>
-<%= link_to 'Rework-' + @rework_info.created_at.strftime("%d/%m/%Y %H:%M") , oops_mode_reason_code_info_path(@rework_info.id, 'rework_info'),{:remote => true, 'data-toggle' => "modal", 'data-target' => '#oops_mode_reason_code_info' , "data-dismiss" => "modal"} %>
+			 <%end%>
+		 <% end %> 
+	<%end%>
+	
 <%end%>
-<% if @add_info.present? %>
-	 <% @add_info.each do |info| %>
-		<% if info.status == 'OnHold'%>
-			<%= link_to info.status+ '-' + info.created_at.strftime("%d/%m/%Y %H:%M"), oops_mode_reason_code_info_path(info.id, 'additional_info'),{:remote => true, 'data-toggle' => "modal", 'data-target' => '#oops_mode_reason_code_info' , "data-dismiss" => "modal"} %> 
-		 <%end%>
-	 <br>
-	 <% end %> 
-<%end%>
-

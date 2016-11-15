@@ -22,7 +22,7 @@ function remove_reason_code_children(){
 		if ($('#sub_reasons_div_'+div_id).css('display') == 'block') {
 			if (selected){
 				if (selected[0] != ''){
-			 		 sub_reason_valid = 'valid'
+			 		 sub_reason_valid = 'valid';
 				}else{
 					$( "<div style='color: red;' class='sub_error'>This field is required.</div>" ).insertAfter(this);
 					sub_reason_valid = '';
@@ -449,7 +449,7 @@ function validate_reject_reasons(){
 
 function get_sub_reasons(reason, all_parents = null){
   var all_main_reasonsids = $('#main_reasons_ids').val();
-  var reasons = reason
+  var reasons = reason;
   if (reasons == '')
   {
   	 reasons = all_parents;

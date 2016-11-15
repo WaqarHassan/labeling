@@ -1357,17 +1357,20 @@ class OverviewController < ApplicationController
       @info_id = additional_info.id
       @reason_codes = @workflow.new_reason_codes.where(object: 'OnHold', recording_level: [additional_info.object_type,nil], parent_id: nil).order(:sequence)
       @selected_reasons = additional_info.reason_code_values.pluck(:new_reason_code_id)
-
+      @l3 = additional_info.object
 
     elsif params[:info_type].to_s == 'rework_info'
-      rework_info = ReworkInfo.find_by_id(info_id)
+      @rework_info = ReworkInfo.find_by_id(info_id)
       @info_type = 'rework_info'
-      @info_id = rework_info.id
-      @reason_codes = @workflow.new_reason_codes.where(object: 'Rework', recording_level: [rework_info.object_type,nil], parent_id: nil).order(:sequence)
-      @sub_reason_codes = @workflow.new_reason_codes.where(object: 'Rework', recording_level: [rework_info.object_type,nil]).where.not(parent_id: nil).order(:sequence)
-      @selected_reasons = rework_info.reason_code_values.pluck(:new_reason_code_id)
+      @info_id = @rework_info.id
+      @reason_codes = @workflow.new_reason_codes.where(object: 'Rework', recording_level: [@rework_info.object_type,nil], parent_id: nil).order(:sequence)
+      @sub_reason_codes = @workflow.new_reason_codes.where(object: 'Rework', recording_level: [@rework_info.object_type,nil]).where.not(parent_id: nil).order(:sequence)
+      @selected_reasons = @rework_info.reason_code_values.pluck(:new_reason_code_id)
       @sub_reasons_list = []
       @main_reasons_ids = []
+      @l3 = @rework_info.object
+      @l2 = @l3.l2
+      @l1 = @l2.l1
       @reason_codes.each do |reason_code|
         sub_reasons = @sub_reason_codes.select{|sub_reason_code| sub_reason_code.parent_id == reason_code.id}
         @sub_reasons_list << {'child_mandatory'=> reason_code.child_mandatory, 'main_reason'=> reason_code.reason_code, 'sub_reasons_div_id'=> "sub_reasons_div_#{reason_code.id}", 'reasons_id'=> reason_code.id, 'sub_list'=>sub_reasons}

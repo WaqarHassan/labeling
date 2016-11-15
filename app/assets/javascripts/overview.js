@@ -447,8 +447,7 @@ function validate_reject_reasons(){
 
 }
 
-function get_sub_reasons(reason){
-	all_parents = '';
+function get_sub_reasons(reason, all_parents){
   var all_main_reasonsids = $('#main_reasons_ids').val();
   var reasons = reason;
   if (reasons == '')

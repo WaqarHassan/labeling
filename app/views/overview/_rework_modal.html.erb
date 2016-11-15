@@ -81,7 +81,7 @@
       <div class="form-group">
          <label class="col-lg-4 control-label">Reason</label>
           <div class="col-lg-6">
-            <%= select_tag "rework_info[reason]", options_from_collection_for_select(@reason_codes, 'id', 'reason_code'), prompt: "please select reason", :class=>'form-control', required: true, :multiple => true , :size => 5, onclick: 'get_sub_reasons(this); return false;' %>
+            <%= select_tag "rework_info[reason]", options_from_collection_for_select(@reason_codes, 'id', 'reason_code'), prompt: "please select reason", :class=>'form-control', required: true, :multiple => true , :size => 5, onclick: 'get_sub_reasons(this, ''); return false;' %>
            </div>
       </div>
 

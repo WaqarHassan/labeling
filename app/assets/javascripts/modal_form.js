@@ -16,8 +16,10 @@ $(document).ready(function() {
  {
    var parents = $('#reason_codes_selected_values').val();
    get_sub_reasons('', parents.split(','));
-  $('#reason_codes_selected_values').val(null);
+   console.log(parents.split(','));
+    $('#reason_codes_selected_values').val(null);
  }
+
 
   //Following three lines focus on the fields with given id (for Lx Pop'ups)    
 	$('#project_name').focus();

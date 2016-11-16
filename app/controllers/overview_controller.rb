@@ -1394,8 +1394,14 @@ class OverviewController < ApplicationController
     if info_type == 'additional_info'
       message = message +  "[AdditionalInfo]"
       ad_info_id = params[:info][:id]
-      codes = params[:additional_info][:reason_code_id]
-      ReasonCodeValue.where(object_id: ad_info_id).destroy_all
+      codes = params[:additional_info][:reason_code_id].map(&:to_i)
+      #puts "*********************************************************#{codes}"
+     
+      old_reason_code_values = ReasonCodeValue.where(object_id: ad_info_id)
+      archived_reasons = old_reason_code_values.pluck(:new_reason_code_id) - codes
+      codes = codes -  old_reason_code_values.pluck(:new_reason_code_id)
+      old_reason_code_values = old_reason_code_values.where('new_reason_code_id IN (?)',archived_reasons) 
+      old_reason_code_values.destroy_all
       if codes.present?
         codes.each do |code|
           ReasonCodeValue.create(object_id: ad_info_id,
@@ -1403,17 +1409,47 @@ class OverviewController < ApplicationController
                new_reason_code_id: code)
         end
       end
+      if archived_reasons.present?
+        archived_reasons.each do |reason|
+          ReasonCodeValueArchive.create(object_id: ad_info_id,
+                object_type: 'AdditionalInfo',
+                new_reason_code_id: reason)
+        end
+      end
       
     elsif info_type == 'rework_info'
       message = message + "[ReworkInfo]"
       rework_info_id = params[:info][:id]
-      codes = params[:rework_info][:reason]
-      ReasonCodeValue.where(object_id: rework_info_id).destroy_all
+      codes = params[:rework_info][:reason].map(&:to_i)
+       #abort("**************#{codes}")
+      old_reason_code_values = ReasonCodeValue.where(object_id: rework_info_id)
+      archived_reasons = old_reason_code_values.pluck(:new_reason_code_id) - codes
+      # puts "*******************************************************codes*"
+      # puts codes
+      # puts '******************************************************OLD VALUES*'
+      # puts old_reason_code_values.pluck(:new_reason_code_id)
+
+      codes = codes -  old_reason_code_values.pluck(:new_reason_code_id)
+      # puts "************************************CODES--**"
+      #  puts codes
+       
+      old_reason_code_values = old_reason_code_values.where('new_reason_code_id IN (?)',archived_reasons) 
+      # puts "***************************OLD destroy_all"
+      # puts old_reason_code_values.pluck(:new_reason_code_id)
+      #abort()
+      old_reason_code_values.destroy_all
       if codes.present?
         codes.each do |code|
           ReasonCodeValue.create(object_id: rework_info_id,
                                  object_type: 'ReworkInfo', 
                                  new_reason_code_id: code)
+        end
+      end
+      if archived_reasons.present?
+        archived_reasons.each do |reason|
+          ReasonCodeValueArchive.create(object_id: rework_info_id,
+                object_type: 'ReworkInfo',
+                new_reason_code_id: reason)
         end
       end
     end

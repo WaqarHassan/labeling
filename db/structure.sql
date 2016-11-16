@@ -352,8 +352,9 @@ CREATE TABLE `reason_code_value_archives` (
   `new_reason_code_id` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,7 +372,7 @@ CREATE TABLE `reason_code_values` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1013 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1041 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -711,7 +712,7 @@ CREATE TABLE `workflow_stations` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-16 10:26:09
+-- Dump completed on 2016-11-16 12:42:58
 INSERT INTO schema_migrations (version) VALUES ('20130909170542');
 
 INSERT INTO schema_migrations (version) VALUES ('20130909194719');
@@ -843,4 +844,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161116050200');
 INSERT INTO schema_migrations (version) VALUES ('20161116052040');
 
 INSERT INTO schema_migrations (version) VALUES ('20161116052521');
+
+INSERT INTO schema_migrations (version) VALUES ('20161116073825');
 

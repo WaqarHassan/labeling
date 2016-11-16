@@ -1395,8 +1395,6 @@ class OverviewController < ApplicationController
       message = message +  "[AdditionalInfo]"
       ad_info_id = params[:info][:id]
       codes = params[:additional_info][:reason_code_id].map(&:to_i)
-      #puts "*********************************************************#{codes}"
-     
       old_reason_code_values = ReasonCodeValue.where(object_id: ad_info_id)
       archived_reasons = old_reason_code_values.pluck(:new_reason_code_id) - codes
       codes = codes -  old_reason_code_values.pluck(:new_reason_code_id)
@@ -1413,7 +1411,8 @@ class OverviewController < ApplicationController
         archived_reasons.each do |reason|
           ReasonCodeValueArchive.create(object_id: ad_info_id,
                 object_type: 'AdditionalInfo',
-                new_reason_code_id: reason)
+                new_reason_code_id: reason,
+                user_id: current_user.id)
         end
       end
       
@@ -1421,22 +1420,10 @@ class OverviewController < ApplicationController
       message = message + "[ReworkInfo]"
       rework_info_id = params[:info][:id]
       codes = params[:rework_info][:reason].map(&:to_i)
-       #abort("**************#{codes}")
       old_reason_code_values = ReasonCodeValue.where(object_id: rework_info_id)
       archived_reasons = old_reason_code_values.pluck(:new_reason_code_id) - codes
-      # puts "*******************************************************codes*"
-      # puts codes
-      # puts '******************************************************OLD VALUES*'
-      # puts old_reason_code_values.pluck(:new_reason_code_id)
-
       codes = codes -  old_reason_code_values.pluck(:new_reason_code_id)
-      # puts "************************************CODES--**"
-      #  puts codes
-       
       old_reason_code_values = old_reason_code_values.where('new_reason_code_id IN (?)',archived_reasons) 
-      # puts "***************************OLD destroy_all"
-      # puts old_reason_code_values.pluck(:new_reason_code_id)
-      #abort()
       old_reason_code_values.destroy_all
       if codes.present?
         codes.each do |code|
@@ -1449,11 +1436,11 @@ class OverviewController < ApplicationController
         archived_reasons.each do |reason|
           ReasonCodeValueArchive.create(object_id: rework_info_id,
                 object_type: 'ReworkInfo',
-                new_reason_code_id: reason)
+                new_reason_code_id: reason,
+                user_id: current_user.id)
         end
       end
     end
-
     redirect_to root_path, notice: message
 
   end

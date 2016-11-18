@@ -154,64 +154,66 @@
                     numb_comp_in_main_record = current_main_record[11]
                   end
                   l3_status = WorkFlow.get_rollUp_l3_status(curr_l3_with_partials) %>
-                  <tr>
-                    <td title="<%= @workflow.L1 %>"></td>
-                    <td title="<%= @workflow.L2 %>">
-                    <td title="<%= @workflow.L3 %>">
-                      <%= link_to result[8].split('-R')[0], open_info_modal_l3_path(result[31],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
-                      <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
-                      <%= hidden_field_tag 'object_type', 'L3' %>
-                      <%= hidden_field_tag 'object_id', result[31] %>
-                      <%= button_tag(type: "submit", class: "btn report_main_link") do %>
-                          <span class="glyphicon glyphicon-new-window"></span>
+                  <%if @report_include_completed == 'report_include_completed' or (@report_include_completed != 'report_include_completed' &&  l3_status[0].to_s.downcase != 'closed') %>
+                    <tr>
+                      <td title="<%= @workflow.L1 %>"></td>
+                      <td title="<%= @workflow.L2 %>">
+                      <td title="<%= @workflow.L3 %>">
+                        <%= link_to result[8].split('-R')[0], open_info_modal_l3_path(result[31],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                        <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                        <%= hidden_field_tag 'object_type', 'L3' %>
+                        <%= hidden_field_tag 'object_id', result[31] %>
+                        <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                            <span class="glyphicon glyphicon-new-window"></span>
+                        <% end %>
                       <% end %>
-                    <% end %>
-                    </td>
-                    <td title="Status"><%= l3_status[0] %></td>
-                    <%
-                      ecr_inbox_date_for_succer2 = ''
-                      if result[15].presence
-                        ecr_inbox_date_parsed = DateTime.parse(result[15].to_s) rescue nil
-                        if ecr_inbox_date_parsed
-                          ecr_inbox_date_for_succer2 = ecr_inbox_date_parsed
+                      </td>
+                      <td title="Status"><%= l3_status[0] %></td>
+                      <%
+                        ecr_inbox_date_for_succer2 = ''
+                        if result[15].presence
+                          ecr_inbox_date_parsed = DateTime.parse(result[15].to_s) rescue nil
+                          if ecr_inbox_date_parsed
+                            ecr_inbox_date_for_succer2 = ecr_inbox_date_parsed
+                          end
+                        end 
+
+                        sent_to_collab = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 16, ecr_inbox_date_for_succer2, @workflow, @days_at_ecr_inbox, @holidays, result[7], l3_status[0])
+
+                        station8_sent = WorkFlow.get_rollUp_l3_station8_timestamps(curr_l3_with_partials, 18, sent_to_collab[2], @workflow, @days_at_sent_to_collab, @holidays, numb_comp_in_main_record, 32, l3_status[0])
+
+                        crb_started = WorkFlow.get_rollUp_l3_crb_started_timestamps(curr_l3_with_partials, 19,20,sent_to_collab[2],station8_sent[2] , @workflow, @days_at_sent_to_collab, @days_at_station8_sent, @holidays, numb_comp_in_main_record, l3_status[0])
+
+                        if sent_to_collab[0].to_s == 'N/A' && station8_sent[0].to_s == 'N/A' && result[20] != '0' and crb_started[0] == ''
+                          crb_started = WorkFlow.get_rollUp_l3_crb_started_timestamps_NA(ecr_inbox_date_parsed.to_s, 20,@workflow,@holidays) 
                         end
-                      end 
+                        
 
-                      sent_to_collab = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 16, ecr_inbox_date_for_succer2, @workflow, @days_at_ecr_inbox, @holidays, result[7], l3_status[0])
+                        crb_released = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 21, crb_started[2], @workflow, @days_at_crb_started, @holidays, numb_comp_in_main_record, l3_status[0])
 
-                      station8_sent = WorkFlow.get_rollUp_l3_station8_timestamps(curr_l3_with_partials, 18, sent_to_collab[2], @workflow, @days_at_sent_to_collab, @holidays, numb_comp_in_main_record, 32, l3_status[0])
+                      %>
 
-                      crb_started = WorkFlow.get_rollUp_l3_crb_started_timestamps(curr_l3_with_partials, 19,20,sent_to_collab[2],station8_sent[2] , @workflow, @days_at_sent_to_collab, @days_at_station8_sent, @holidays, numb_comp_in_main_record, l3_status[0])
+                      <td title="IA Approved"></td>
+                      <td title="ECR INBOX"></td>
+                      <td title="To Collab. " class="<%= sent_to_collab[1] %>"><%= sent_to_collab[0] %></td>
+                      <td title="To Horw" class="<%= station8_sent[1] %>"><%= station8_sent[0] %></td>
+                      <td title="To CRB" class="<%= crb_started[1] %>"><%= crb_started[0] %></td>
+                      <td title="ECN Release" class="<%= crb_released[1] %>"><%= crb_released[0] %></td>
 
-                      if sent_to_collab[0].to_s == 'N/A' && station8_sent[0].to_s == 'N/A' && result[20] != '0' and crb_started[0] == ''
-                        crb_started = WorkFlow.get_rollUp_l3_crb_started_timestamps_NA(ecr_inbox_date_parsed.to_s, 20,@workflow,@holidays) 
-                      end
-                      
-
-                      crb_released = WorkFlow.get_rollUp_l3_timestamps(curr_l3_with_partials, 21, crb_started[2], @workflow, @days_at_crb_started, @holidays, numb_comp_in_main_record, l3_status[0])
-
-                    %>
-
-                    <td title="IA Approved"></td>
-                    <td title="ECR INBOX"></td>
-                    <td title="To Collab. " class="<%= sent_to_collab[1] %>"><%= sent_to_collab[0] %></td>
-                    <td title="To Horw" class="<%= station8_sent[1] %>"><%= station8_sent[0] %></td>
-                    <td title="To CRB" class="<%= crb_started[1] %>"><%= crb_started[0] %></td>
-                    <td title="ECN Release" class="<%= crb_released[1] %>"><%= crb_released[0] %></td>
-
-                    <td title="Number of Comp." ><%= numb_comp_in_main_record %></td>
-                    <td title="Component Type"><%= result[24] %></td>
-                    <td title="Business Unit"></td>
-                    <td title="Number of Lang."><%= result[23] %></td>
-                    <td title="Horw"></td>
-                    <%  l3onHoldReason = ''
-                       if l3_status[0].presence
-                          if  l3_status[0].downcase == 'onhold'
-                           l3onHoldReason =  WorkFlow.getOnHoldNewReason(l3_status[1][0])
-                          end 
-                        end %>
-                    <td title="Hold Reason"><%=l3onHoldReason%></td>
-                  </tr>
+                      <td title="Number of Comp." ><%= numb_comp_in_main_record %></td>
+                      <td title="Component Type"><%= result[24] %></td>
+                      <td title="Business Unit"></td>
+                      <td title="Number of Lang."><%= result[23] %></td>
+                      <td title="Horw"></td>
+                      <%  l3onHoldReason = ''
+                         if l3_status[0].presence
+                            if  l3_status[0].downcase == 'onhold'
+                             l3onHoldReason =  WorkFlow.getOnHoldNewReason(l3_status[1][0])
+                            end 
+                          end %>
+                      <td title="Hold Reason"><%=l3onHoldReason%></td>
+                    </tr>
+                  <%end%>
 
             <%  end
               end 

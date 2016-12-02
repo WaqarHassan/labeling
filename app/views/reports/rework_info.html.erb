@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-lg-12 col-sm-12 report_heading"> 
+    <h4>REWORK INFO</h4>
+  </div>
+</div>
+
+<div class='clearfix'></div> 
+<div class='data-main'>
+
+  <%= form_tag rework_info_reports_path, remote: true, :id => 'rework_info_search_form', :class => 'form-horizontal'  do %>
+    <div class="row daily_activity_date">
+        <div class="col-lg-2">
+         <input type="text" class="datepicker_only form-control" id="datepicker_now" name = "start_date" placeholder="Select Start Date"  required  >
+        </div>
+      <div class="col-lg-2">
+        <input type="text" class="datepicker_only form-control" id="datepicker_now" name = "end_date" placeholder="Select End Date"  required  >
+      </div> 
+      <div class="col-lg-2">
+        <button type="submit" class="btn btn-primary" onclick="show_waiting_bar_daily_activity();">Search</button>
+      </div>
+    </div>
+  <%end%>
+    <div id="rework_info_report_search_result_div">
+      <% if @report_serach_result.present? %>
+        <%= render 'reports/rework_info_report' %>
+      <% else %>
+          <div class="alert daily-alert-report"> Do serach to view your report! </div>
+      <% end %>
+    </div> 
+</div>
+  <style type="text/css">
+    .container{
+        background-color: #fff;    
+    }
+  </style>		
+  <script type="text/javascript">
+  if (window.jQuery) {  
+    $(document).ready(function() {
+        $('.datepicker_only').datepicker({format: 'mm/dd/yyyy' , autoclose: true });
+    })
+  };
+  </script>

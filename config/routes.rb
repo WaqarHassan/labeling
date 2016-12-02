@@ -61,6 +61,7 @@ Rails.application.routes.draw do
       match 'download-handoff-report', via: [:get, :post]
       get 'data-feed'
       match 'wip', via: [:get, :post]
+      match 'rework-info', via: [:get, :post]
     end
   end
 

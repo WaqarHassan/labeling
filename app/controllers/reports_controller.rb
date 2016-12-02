@@ -638,7 +638,69 @@ class ReportsController < ApplicationController
 		@target_days = @all_data[1][0..8]
 		@all_data = @all_data[1..4]
 	end
+	def rework_info
+		@workflows = WorkFlow.where(is_active: true, is_in_use: true)
+		if request.post?
+			#abort( params[:start_date].to_s)
+			start_date = L1.set_db_date_format( params[:start_date] )
+			end_date = L1.set_db_date_format( params[:end_date] )
+			#abort(start_date.to_s)
+			@rework_infos_list = []
+			@actual_confirmations_list = []
+			@parent_l3s = []
+			@l3s = []
+			@l2s = []
+			@parent_reasons = []
+			@child_reasons = []
+			rework_infos = ReworkInfo.where.not(rework_start_step: nil)
+ 			rework_infos.each do |rework_info|
+				if rework_info.rework_start_step.present?
+					ts_log  = TimestampLog.where(workflow_live_step_id: rework_info.rework_start_step ).first
+					if ts_log.present?
+						if (ts_log.actual_confirmation.strftime('%Y-%m-%d') >= start_date && ts_log.actual_confirmation.strftime('%Y-%m-%d') <= end_date)
+							@rework_infos_list << rework_info
+							@actual_confirmations_list << ts_log.actual_confirmation
+							@parent_l3s << rework_info.object
+							@l2s << rework_info.object.l2
+							@l3s << L3.find_by_id(rework_info.new_rework_id)
+							
+							if rework_info.reason_code_values.present?
+								children_str = ''
+								parents_str = ''
+								codes = rework_info.reason_code_values.pluck(:new_reason_code_id)
+								codes.each do |code|
+									row = NewReasonCode.find_by_id(code)
+									if row.parent_id.present?
+										children_str += row.reason_code.to_s + ','
+									else
+										parents_str += row.reason_code.to_s + ','
+									end
+								end
+								@parent_reasons << parents_str.chop
+								@child_reasons << children_str.chop
+							else
+								if rework_info.reason.present?
+									parents_str = ''
+									codes = rework_info.reason.split(',')
+									codes.each do |code|
+										row = ReasonCode.find_by_id(code)
+										parents_str += row.reason+ ','
+									end
+									@child_reasons << ''
+									@parent_reasons << parents_str.chop
+								end
+							end
+						end
+					end
+				end
 
+			end
+		end
+		respond_to do |format|
+				format.js
+				format.html
+		end
+	end
   	private
 
 		def search 

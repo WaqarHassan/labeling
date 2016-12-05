@@ -126,6 +126,9 @@ Rails.application.routes.draw do
   get  '/overview/oops_mode_reason_code_info/:info_id/:info_type' => 'overview#oops_mode_reason_code_info', as: 'oops_mode_reason_code_info'
   #get  '/overview/oops_mode_reason_code_rework_info' => 'overview#oops_mode_reason_code_rework_info', as: 'oops_mode_reason_code_rework_info'
   post '/overview/add_oops_mode_reason_code_info' => 'overview#add_oops_mode_reason_code_info' , as: 'add_oops_mode_reason_code_info'
+  get '/overview/change_rework_station' => 'overview#change_rework_station', as: 'change_rework_station'
+  post '/overview/change_rework_station_form' => 'overview#change_rework_station_form', as: 'change_rework_station_form'
+
   # Dummy preview pages for testing.
   get '/p/test' => 'pages#test', as: 'test'
   get '/p/email' => 'pages#email' if ENV['ALLOW_EMAIL_PREVIEW'].present?

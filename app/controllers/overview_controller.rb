@@ -1444,7 +1444,34 @@ class OverviewController < ApplicationController
     redirect_to root_path, notice: message
 
   end
+  def change_rework_station
 
+    respond_to do |format|
+      format.js
+      format.html
+    end
+  end
+  def change_rework_station_form
+    ecr_name = params[:ecr_name]
+    station = params[:ecr_station]
+    l3 = L3.find_by_name(ecr_name)
+    if l3.present?
+      rework_info = ReworkInfo.where(new_rework_id: l3.id, new_rework_type: 'L3').first
+      if rework_info.present?
+        rework_info.update(station: station)
+        redirect_to root_path, notice: 'Rework Station Updated for' + ecr_name
+      else
+        respond_to do |format|
+        format.json { render json: {status: 'failed', message: 'Validation Error: L3 Not Found!', not_found_error: 'not_found', ecr: ecr_name }, status: 200 }
+        end
+      end
+    else
+       respond_to do |format|
+        format.json { render json: {status: 'failed', message: 'Validation Error: L3 Not Found!', not_found_error: 'not_found', ecr: ecr_name}, status: 200 }
+        end
+    end
+
+  end
   private
     def format_reason_code_values(data_set)
       reasons_value = ''

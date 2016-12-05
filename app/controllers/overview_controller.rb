@@ -1444,7 +1444,13 @@ class OverviewController < ApplicationController
     redirect_to root_path, notice: message
 
   end
+  def change_rework_station
 
+    respond_to do |format|
+      format.js
+      format.html
+    end
+  end
   private
     def format_reason_code_values(data_set)
       reasons_value = ''

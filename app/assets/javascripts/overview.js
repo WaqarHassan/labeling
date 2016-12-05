@@ -156,6 +156,30 @@ function resetReportSearch(){
 
 $(document).ready(function() {
 
+	$('.project-data2 td').each (function() {
+
+		var avg_width = 5.7; //5.3
+		var td_width = $(this).width();
+		//console.log("td_width = " + td_width);
+		var td_width2 = td_width*2;
+		//console.log("td_width2 = " + td_width2);
+
+		var text = $(this).text();
+		text = text.trim();
+		var text_length = text.length;
+		var text_length5 = text_length * avg_width;
+		
+		if (text_length5 > td_width2)
+		{
+			td_width2 = td_width2 / avg_width ;
+			text = text.slice(0,(td_width2 - 2));
+			text = text.concat('...');
+			$(this).children('a').text(text);
+		}
+	});
+
+	  
+
 	if (Cookies.get('project_ia') && Cookies.get('projectform') ){
 		project_ia_classes = Cookies.get('project_ia'); 	 
 		projectform_classes = Cookies.get('projectform'); 

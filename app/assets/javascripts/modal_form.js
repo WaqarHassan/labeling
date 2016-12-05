@@ -122,15 +122,18 @@ $("#l3_update_popup #add_edit_ecr_form").on('ajax:success', function(e, data, st
   console.log('error on save!');
 });
 
+
 $("#change_rework_station #change_rework_station_form").on('ajax:success', function(e, data, status, xhr){
+  console.log("AJAZ:SUCCESS!!!!!");
   successHTML = '<div class="alert alert-dismissable alert-info">';
   successHTML += '<button class="close" data-dismiss="alert" aria-hidden="">×</button>';
-  successHTML += 'No Record Found for';
+  successHTML += 'No Record Found for ';
   successHTML += data.ecr
   successHTML += '</div>';
   if (data.not_found_error == 'not_found'){
-    $("#change_rework_station #change_rework_station_form .errors__container").html(successHTML);
-    $("#change_rework_station #change_rework_station_form .errors__container").show();
+    console.log("APPENDINGGG......");
+    $("#change_rework_station #change_rework_station_form .errors_container").html(successHTML);
+    $("#change_rework_station #change_rework_station_form .errors_container").show();
   }
 }).on('ajax:error',function(e, xhr, status, error){
   console.log('error on save change reowrk station!');

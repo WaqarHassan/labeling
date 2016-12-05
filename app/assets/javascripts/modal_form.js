@@ -61,6 +61,7 @@ $("#add_l1_modal #add_l1_form").on('ajax:success', function(e, data, status, xhr
 }).on('ajax:error',function(e, xhr, status, error){
   console.log('error on save!');
 });
+
 // FOllowing Lines of code displays error message in error container if given L2 name is not unique
 
 $("#add_l2_modal #ia_modal_form").on('ajax:success', function(e, data, status, xhr){
@@ -120,6 +121,22 @@ $("#l3_update_popup #add_edit_ecr_form").on('ajax:success', function(e, data, st
 }).on('ajax:error',function(e, xhr, status, error){
   console.log('error on save!');
 });
+
+$("#change_rework_station #change_rework_station_form").on('ajax:success', function(e, data, status, xhr){
+  successHTML = '<div class="alert alert-dismissable alert-info">';
+  successHTML += '<button class="close" data-dismiss="alert" aria-hidden="">×</button>';
+  successHTML += 'No Record Found for';
+  successHTML += data.ecr
+  successHTML += '</div>';
+  if (data.not_found_error == 'not_found'){
+    $("#change_rework_station #change_rework_station_form .errors__container").html(successHTML);
+    $("#change_rework_station #change_rework_station_form .errors__container").show();
+  }
+}).on('ajax:error',function(e, xhr, status, error){
+  console.log('error on save change reowrk station!');
+});
+
+
 // This function sets l2 status to the hidden field whenever Accept or Reject is clicked
 function set_l2_status(status){
 	$('#l2_status').val(status);

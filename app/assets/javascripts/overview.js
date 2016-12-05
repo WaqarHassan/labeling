@@ -156,11 +156,11 @@ function resetReportSearch(){
 
 $(document).ready(function() {
 
-	$('.project-data2 td').each (function() {
-
+	$('.l3_td').each (function() {
+		console.log("****************************************************")
 		var avg_width = 5.7; //5.3
 		var td_width = $(this).width();
-		//console.log("td_width = " + td_width);
+		console.log("td_width = " + td_width);
 		var td_width2 = td_width*2;
 		//console.log("td_width2 = " + td_width2);
 

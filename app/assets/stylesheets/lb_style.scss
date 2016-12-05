@@ -843,3 +843,8 @@ label.string, label.integer {
 .oops_reasons a {
     color: #337ab7;
 }
+.l3_td {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: inherit !important;
+}

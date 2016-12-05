@@ -1535,6 +1535,11 @@ class WorkFlow < ActiveRecord::Base
 				return ret
 
 			end
+			def rework_info_report_query(start_date , end_date)\
+				result =  ActiveRecord::Base.connection.execute("call rework_report( '#{start_date}' , '#{end_date}' )")
+				ActiveRecord::Base.clear_active_connections!
+				return result
+			end
 
 		end
 end

@@ -641,6 +641,20 @@ class ReportsController < ApplicationController
 	def rework_info
 		@workflows = WorkFlow.where(is_active: true, is_in_use: true)
 		if request.post?
+			start_date = L1.set_db_date_format( params[:start_date] )
+			end_date = L1.set_db_date_format( params[:end_date] )
+			@rework_info_report_data = WorkFlow.rework_info_report_query(start_date,end_date)
+
+		end
+		respond_to do |format|
+				format.js
+				format.html
+		end
+
+	end
+	def rework_info_backup
+		@workflows = WorkFlow.where(is_active: true, is_in_use: true)
+		if request.post?
 			#abort( params[:start_date].to_s)
 			start_date = L1.set_db_date_format( params[:start_date] )
 			end_date = L1.set_db_date_format( params[:end_date] )

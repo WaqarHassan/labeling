@@ -1,50 +1,41 @@
-<% if @rework_infos_list.present? %>
+<%if  @rework_info_report_data.first.present? %>
   <div class="daily-report-data" id ="reworkinforeportdata">
     <table id = "daily_activity_report" class="table table-bordered">
       <thead>
         <tr>
-          <th>Time Frame</th>
-          <th>IA Name</th>
-          <th>ECR Name</th>
+          <th>Rework Start</th>
+          <th>BU</th>
+          <th>IA </th>
+          <th>ECR</th>
           
-          <th>Parent ECR</th>
-          <th>#Components in Rework</th>
+          <th>Component Type</th>
+          <th>#Comp</th>
           <th>Station</th>
-          <th>Rework-Reason-I</th>
-          <th>Rework-reason-II</th>
+          <th>Rework Level 1</th>
+          <th>Rework Level 2</th>
         </tr>
       </thead>
+      <%@rework_info_report_data.each do |row|%>
+        <tr>
+          <td><%= row[1].strftime('%m/%d/%Y') %></td>
+          <td><%= row[2] %></td>
+          <td><%= row[3] %></td>
+          <td><%= row[4] %></td>
+          <td><%= row[5] %></td>
+          <td><%= row[6] %></td>
+          <td><%= row[7] %></td>
+          <td><%= row[8] %></td>
+          <td><%= row[9] %></td>
+        </tr>
+
+      <%end%>
 
       <tbody>
-      <% if @rework_infos_list.present? %>
-        <% @rework_infos_list.each_with_index do |row, index| %>
-          <tr>
-            <td><%=@actual_confirmations_list[index].strftime("%m/%d/%y")  %></td>
-            <td><%=@l2s[index].name %></td>
-            <td><%=@l3s[index].name %></td>
 
-            <td><%=@parent_l3s[index].name  %></td>
-            <td><%=@parent_l3s[index].num_component %></td>
-            <td><%=row.station %></td>
-            <td><%=@parent_reasons[index] %></td>
-            <td><%=@child_reasons[index] %></td>
-
-
-          </tr>
-        <%end%>
-      <%end%>     
       </tbody>
-
     </table>
   </div>
-<% else %>
-  <div class="alert alert-info"> No Result Found! </a>
-<% end %>
-  <style type="text/css">
-    .container{
-        background-color: #fff;    
-    }
-  </style>  
+<%else%>
+ <div class="alert alert-info"> No Result Found! </a>
 
-   <%= javascript_include_tag "reports" %>   
-
+<%end%>

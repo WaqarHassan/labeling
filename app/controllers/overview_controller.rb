@@ -1338,12 +1338,19 @@ class OverviewController < ApplicationController
   end
   def add_oops_mode_reason_code
     l3 = L3.where( :name => params[:ecr_name].to_s).first
-    @add_info = AdditionalInfo.where(:object_id => l3.id, :object_type =>'L3')
-    @rework_info = ReworkInfo.where(:new_rework_id => l3.id).first
+    if l3.present?
 
-    respond_to do |format|
-      format.html
-      format.js
+      @add_info = AdditionalInfo.where(:object_id => l3.id, :object_type =>'L3')
+      @rework_info = ReworkInfo.where(:new_rework_id => l3.id).first
+
+      respond_to do |format|
+        format.html
+        format.js
+      end
+    else
+       respond_to do |format|
+        format.json { render json: {status: 'failed', message: 'Error 404: Project Not Found!', not_found_error: 'not_found', ecr: params[:ecr_name] }, status: 200 }
+      end
     end
   end
   # GET Reason_code_update info pop up

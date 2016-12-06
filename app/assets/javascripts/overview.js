@@ -268,7 +268,13 @@ function toggle_lang(comp_type_value, workflow_name){
 function show_waiting_bar(){
 	$('#myPleaseWait').modal('show');
 }
+function show_waiting_bar_rework_info()
+{
+		if ($('#rework_info_search_form').valid() == true){
+		$('#myPleaseWait').modal('show');
+	}
 
+}
 function show_waiting_bar_search_all(){
 	detail_data_width = $('#detail_data').width();
 	Cookies.set('show_all_detail_data_width', detail_data_width, { expires: 7 });

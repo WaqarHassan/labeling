@@ -138,7 +138,20 @@ $("#change_rework_station #change_rework_station_form").on('ajax:success', funct
 }).on('ajax:error',function(e, xhr, status, error){
   console.log('error on save change reowrk station!');
 });
-
+$("#oops_mode_reason_code_ecr_search #oops_mode_reason_code_form").on('ajax:success', function(e, data, status, xhr){
+  successHTML = '<div class="alert alert-dismissable alert-info">';
+  successHTML += '<button class="close" data-dismiss="alert" aria-hidden="">×</button>';
+  successHTML += 'No Record Found for ';
+  successHTML += data.ecr
+  successHTML += '</div>';
+  if (data.not_found_error == 'not_found'){
+    //$('#myPleaseWait').modal('hide');
+    $("#oops_mode_reason_code_ecr_search #oops_mode_reason_code_form .errors_container").html(successHTML);
+    $("#oops_mode_reason_code_ecr_search #oops_mode_reason_code_form .errors_container").show();
+  }
+}).on('ajax:error',function(e, xhr, status, error){
+  console.log('error on save change reowrk station!');
+});
 
 // This function sets l2 status to the hidden field whenever Accept or Reject is clicked
 function set_l2_status(status){

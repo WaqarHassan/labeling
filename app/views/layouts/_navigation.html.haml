@@ -31,11 +31,12 @@
             %li= link_to 'User Management' , admin_users_path,  {class: 'add_links'}
             %li= link_to 'Turn on Oops mode' , oops_mode_path,  {class: 'add_links'}
             %li= link_to 'Oops mode reason codes ', oops_mode_reason_code_path, {:remote => true, 'data-toggle' =>  "modal",class: 'add_links', 'data-target' => '#oops_mode_reason_code'}
+            %li= link_to 'Change Rework Station', change_rework_station_path, {:remote => true,'data-toggle' =>  "modal", class: 'add_links', 'data-target' => '#change_rework_station'}
             %hr.menu_hr
             %li= link_to 'Data Feed' , data_feed_reports_path(:format => 'csv') , {class: 'add_links'}
             %hr.menu_hr
             %li= link_to 'RECALCULATE ALL ETA' , recalculate_all_eta_path,  {class: 'add_links', onclick: 'update_all_etas(event);'}
-            %li= link_to 'Change Rework Station', change_rework_station_path, {:remote => true,'data-toggle' =>  "modal", class: 'add_links', 'data-target' => '#change_rework_station'}
+            
 
       %li.dropdown
         %a.dropdown-toggle{href: '#', data: {toggle: 'dropdown'}}

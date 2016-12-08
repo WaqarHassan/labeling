@@ -1,6 +1,6 @@
 class Admin::UsersController < ApplicationController
   skip_authorization_check
-  before_action :set_user, only: [:show, :edit, :update, :delete, :set_admin, :unset_adminm, :un_lock]
+  before_action :set_user, only: [:show, :edit, :update, :delete, :set_admin, :unset_admin, :un_lock]
 
   # GET /admin/users
   def index

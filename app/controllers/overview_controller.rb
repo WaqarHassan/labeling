@@ -985,19 +985,18 @@ class OverviewController < ApplicationController
   def remove_confirmation
     wf_step_id = params[:wf_step_id]
     workflow_live_step  = WorkflowLiveStep.find_by_id(wf_step_id)
-    workflow_live_step.actual_confirmation = nil
-    workflow_live_step.save 
-    WorkflowLiveStep.get_steps_calculate_eta(workflow_live_step, @workflow,current_user)
-
-    ts_logs = TimestampLog.where(workflow_live_step_id: workflow_live_step.id)
-
-    TimestampLogArchive.create(ts_logs.as_json)
-    TimestampLog.destroy_all(workflow_live_step_id: workflow_live_step.id)
-
-    
-
+    if workflow_live_step.object.status.downcase == 'cancel' or workflow_live_step.object.status.downcase == 'closed' or workflow_live_step.object.completed_actual.present?
+        workflow_live_step.is_active = false
+        workflow_live_step.save
+    else
+      workflow_live_step.actual_confirmation = nil
+      workflow_live_step.save 
+      WorkflowLiveStep.get_steps_calculate_eta(workflow_live_step, @workflow,current_user)
+    end 
+      ts_logs = TimestampLog.where(workflow_live_step_id: workflow_live_step.id)
+      TimestampLogArchive.create(ts_logs.as_json)
+      TimestampLog.destroy_all(workflow_live_step_id: workflow_live_step.id)
     redirect_to root_path, notice: 'Confirmation Removed SUCCESSFULLY'
-
   end
 
     #  

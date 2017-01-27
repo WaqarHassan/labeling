@@ -1476,6 +1476,18 @@ class WorkFlow < ActiveRecord::Base
 				result =  ActiveRecord::Base.connection.execute("call data_feed()")
 				return result
 			end
+
+			# 
+			# * *Returns* :
+			#   - search_result 
+			# * *Description* :
+			#   - Reject data report data
+			#
+			def reject_data_stored_procedure
+				result =  ActiveRecord::Base.connection.execute("call reject_report()")
+				return result
+			end
+
 			def to_csv(data_set)
 				CSV.generate do |csv|
 			      csv <<  ['Project', 'Proj-Status', 'Proj-Completed', 'IA', 'IA-Status', 'IA-Completed',
@@ -1503,6 +1515,17 @@ class WorkFlow < ActiveRecord::Base
 			      end
 			    end
 			end
+
+			def to_csv_reject_data(data_set)
+				CSV.generate do |csv|
+			      csv <<  ['name', 'business_unit', 'info_timestamp', 'Reasons', 'Reasons', 'note',
+			      			 '# Rejects', 'num_component', 'status']
+			      data_set.each do |report|
+			        csv <<  [report[0], report[1], report[2], report[3], report[4], report[5], report[6], report[7], report[8]]
+			      end
+			    end
+			end
+
 			def default_wip_query(start_date , end_date)\
 				result =  ActiveRecord::Base.connection.execute("call wip_report( '#{start_date}' , '#{end_date}' )")
 				ActiveRecord::Base.clear_active_connections!

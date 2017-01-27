@@ -593,6 +593,14 @@ class ReportsController < ApplicationController
   		end
 	end
 
+	def reject_data
+		report_result = WorkFlow.reject_data_stored_procedure()
+  		csv_file = WorkFlow.to_csv_reject_data(report_result)
+  		respond_to do |format|
+  			format.csv { send_data csv_file, :filename => 'RejectData.csv' }
+  		end
+	end
+
 	def wip
 		@workflows = WorkFlow.where(is_active: true, is_in_use: true)
 		if request.post?

@@ -147,10 +147,10 @@
 
                   all_l3s = @serach_result.select{|l3s| l3s[9].presence}
                   curr_l3_with_partials = all_l3s.select{|cur_l3| cur_l3[8].split('-R')[0] == l3_name}
-                  currentMainRecord = curr_l3_with_partials.select{|main_l3| main_l3[25] == 1}
+                  currentParentRecord = curr_l3_with_partials.select{|main_l3| main_l3[13] == nil}
                   numb_comp_in_main_record = ''
-                  if currentMainRecord.present?
-                    current_main_record = currentMainRecord.first
+                  if currentParentRecord.present?
+                    current_main_record = currentParentRecord.first
                     numb_comp_in_main_record = current_main_record[11]
                   end
                   l3_status = WorkFlow.get_rollUp_l3_status(curr_l3_with_partials) %>

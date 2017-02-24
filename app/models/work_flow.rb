@@ -389,6 +389,10 @@ class WorkFlow < ActiveRecord::Base
 							table_td_class = 'report_actual_confirmation'		
 						end
 					end
+
+					if ind == 0
+						max_date = 'ETA'
+					end
 				end
 
 				if l3_status.downcase == 'onhold' and max_date.include? 'ETA'

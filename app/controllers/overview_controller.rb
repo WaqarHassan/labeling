@@ -962,6 +962,8 @@ class OverviewController < ApplicationController
     @partial_ready_to_merge.num_component_in_rework = 0
     @partial_ready_to_merge.status = 'Closed'
     @partial_ready_to_merge.merge_back_with_id = nil
+    @partial_ready_to_merge.merged_back_by_user_id = current_user.id
+    @partial_ready_to_merge.merged_back_at = DateTime.now.strftime('%Y-%m-%d %H:%M:%S')
     if @partial_ready_to_merge.save
 
       # save log of rework done
@@ -982,6 +984,7 @@ class OverviewController < ApplicationController
 
     redirect_to root_path, notice: 'Partial Merged Back successfully.'
   end
+
   def remove_confirmation
     wf_step_id = params[:wf_step_id]
     workflow_live_step  = WorkflowLiveStep.find_by_id(wf_step_id)

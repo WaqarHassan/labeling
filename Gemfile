@@ -167,3 +167,6 @@ gem 'business_time'
 gem "paranoia", "~> 2.0"
 gem 'redis-namespace'
 
+#gem "aws-s3"
+gem 'aws-sdk'
+

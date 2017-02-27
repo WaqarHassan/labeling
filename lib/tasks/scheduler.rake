@@ -21,7 +21,7 @@ namespace :server_db do
   backup_file_name = "labeling-backup-#{Time.now.strftime('%Y%m%d')}.sql.gz"
 
   task :backup do
-    opts = '--skip-extended-insert --skip-dump-date --lock-tables=false'
+    opts = '--routines --skip-extended-insert --skip-dump-date --lock-tables=false'
     dump_status = system "mysqldump -h #{database['host']} -u #{database['username']} -p#{database['password']} #{opts} #{bd_name} | gzip> #{backup_file_name}"
     puts "---------------#{dump_status.inspect}"
 

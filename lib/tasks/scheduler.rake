@@ -22,8 +22,8 @@ namespace :server_db do
 
   task :backup do
     opts = '--skip-extended-insert --skip-dump-date --lock-tables=false'
-    ss = system "mysqldump -h #{database['host']} -u #{database['username']} -p#{database['password']} #{opts} #{bd_name} | gzip> #{backup_file_name}"
-    puts "---------------#{ss.inspect}"
+    dump_status = system "mysqldump -h #{database['host']} -u #{database['username']} -p#{database['password']} #{opts} #{bd_name} | gzip> #{backup_file_name}"
+    puts "---------------#{dump_status.inspect}"
 
     obj = s3_object.bucket('ew-labeling-db-backups').object("#{backup_file_name}")
     obj.upload_file("#{backup_file_name}")

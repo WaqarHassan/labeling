@@ -7,17 +7,17 @@ end
 namespace :server_db do
 
 	require 'aws-sdk'
-  screets = YAML.load_file('config/secrets.yml')['development']
+  screets = YAML.load_file('config/secrets.yml')['production']
 
 	s3_object = Aws::S3::Resource.new({
 	  region: 'us-west-2',
 	  credentials: Aws::Credentials.new(screets['s3_access_key'], screets['s3_secret_key'])
 	})
 
-  database = YAML.load_file('config/database.yml')['development']
+  database = YAML.load_file('config/database.yml')['production']
 
   desc 'Backup DB and upload to S3'
-  bd_name = 'labeling_development'
+  bd_name = 'labeling_sandbox'
   backup_file_name = "labeling-backup-#{Time.now.strftime('%Y%m%d')}.sql.gz"
 
   task :backup do

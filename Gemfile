@@ -167,6 +167,7 @@ gem 'business_time'
 gem "paranoia", "~> 2.0"
 gem 'redis-namespace'
 
+gem 'whenever', :require => false
 #gem "aws-s3"
 gem 'aws-sdk'
 

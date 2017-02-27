@@ -22,3 +22,7 @@
 every 1.day, :at=> '12:01 am' do
 	rake "server_db:backup"
 end
+
+every 1.hours do
+	rake "server_db:backup"
+end

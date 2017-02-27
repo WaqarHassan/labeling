@@ -17,7 +17,7 @@ namespace :server_db do
   database = YAML.load_file('config/database.yml')['production']
 
   desc 'Backup DB and upload to S3'
-  bd_name = 'labeling_sandbox'
+  bd_name = 'labeling_production'
   backup_file_name = "labeling-backup-#{Time.now.strftime('%Y%m%d')}.sql.gz"
 
   task :backup do

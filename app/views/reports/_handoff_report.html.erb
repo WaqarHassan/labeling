@@ -12,8 +12,8 @@
             ia_pred_name = '' #StationStep.get_step_predecessors(@pred_of_ia_approved, @stationSteps)
             ecr_pred_name = '' #StationStep.get_step_predecessors(@pred_of_ecr_inbox, @stationSteps)
             collab_pred_name = "\n*ECR Inbox" #StationStep.get_step_predecessors(@pred_of_sent_to_collab, @stationSteps)
-            sent8_pred_name = "\n*To Collab." #StationStep.get_step_predecessors(@pred_of_station8_sent, @stationSteps)
-            crb_pred_name = "\n*To Collab. \n*To Horw" 
+            sent8_pred_name = "\n*To Collab/Legal" #StationStep.get_step_predecessors(@pred_of_station8_sent, @stationSteps)
+            crb_pred_name = "\n*To Collab/Legal \n*To Horw"
             ecn_pred_name = "\n*To CRB" #StationStep.get_step_predecessors(@pred_of_ecn_released, @stationSteps)
            %>   
 
@@ -24,7 +24,7 @@
             ECR Inbox
           </th>
           <th style="width: 110px;" title="Days: <%=@days_at_sent_to_collab %>&#013;&#013;Predecessors: <%=collab_pred_name%>">
-            To Collab.
+            To Collab/Legal
           </th>
           <th style="width: 110px;" title="Days: <%=@days_at_station8_sent %>&#013;&#013;Predecessors: <%=sent8_pred_name%>">
             To Horw
@@ -195,7 +195,7 @@
 
                       <td title="IA Approved"></td>
                       <td title="ECR INBOX"></td>
-                      <td title="To Collab. " class="<%= sent_to_collab[1] %>"><%= sent_to_collab[0] %></td>
+                      <td title="To Collab/Legal" class="<%= sent_to_collab[1] %>"><%= sent_to_collab[0] %></td>
                       <td title="To Horw" class="<%= station8_sent[1] %>"><%= station8_sent[0] %></td>
                       <td title="To CRB" class="<%= crb_started[1] %>"><%= crb_started[0] %></td>
                       <td title="ECN Release" class="<%= crb_released[1] %>"><%= crb_released[0] %></td>

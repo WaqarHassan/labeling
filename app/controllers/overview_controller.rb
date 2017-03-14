@@ -203,14 +203,15 @@ class OverviewController < ApplicationController
     @type = 'L1' 
     @l1 = L1.find(params[:l1_id])
     @status_ = @l1.status
-
     @reasons = ReasonCode.where(status: @status_,
      recording_level: @type ).order(:sequence)
-
-
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
-    @info_status = @workflow.statuses.where(recording_level: 'L1')
+    if @l1.completed_actual.present?
+      @info_status = @workflow.statuses.where(recording_level: 'L1', status: 'active')
+    else
+      @info_status = @workflow.statuses.where(recording_level: 'L1')
+    end
     @additional_info_data = @workflow.additional_infos.where(object_id: @l1.id, object_type: 'L1').order(id: :desc)
     @rework_info = []
     @reason_code_values = []
@@ -278,13 +279,15 @@ class OverviewController < ApplicationController
     @type = 'L2'
     @l2 = L2.find(params[:l2_id])
     @status_ = @l2.status
-
     @reasons = ReasonCode.where(status: @status_,
      recording_level: @type ).order(:sequence)
-
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
-    @info_status = @workflow.statuses.where(recording_level: 'L2')
+    if @l2.completed_actual.present?
+      @info_status = @workflow.statuses.where(recording_level: 'L2', status: 'active')
+    else
+      @info_status = @workflow.statuses.where(recording_level: 'L2')
+    end
     @additional_info_data = @workflow.additional_infos.where(object_id: @l2.id, object_type: 'L2').order(id: :desc)
     if @additional_info_data.present?
       @additional_info_data.each do |additional_info|
@@ -310,14 +313,18 @@ class OverviewController < ApplicationController
     @type = 'L3'
     @l3 = L3.find(params[:l3_id])
     @status_ = @l3.status
-
     @reasons = ReasonCode.where(status: @status_,
      recording_level: @type ).order(:sequence)
-
     @reason_code_values = ''
     @additional_info = AdditionalInfo.new
     @workflow_stations = @workflow.workflow_stations.where(is_visible: true).order(:sequence)
-    @info_status = @workflow.statuses.where(recording_level: 'L3')
+    if @l3.completed_actual.present?
+      @info_status = @workflow.statuses.where(recording_level: 'L3', status: 'active')
+      # puts "-------------------------------------------------------------------------------------------------"
+      # puts @info_status.inspect
+    else
+      @info_status = @workflow.statuses.where(recording_level: 'L3')
+    end
     @additional_info_data = @workflow.additional_infos.where(object_id: @l3.id, object_type: 'L3').order(id: :desc)
     if @additional_info_data.present?
       @additional_info_data.each do |additional_info|
@@ -326,8 +333,6 @@ class OverviewController < ApplicationController
         additional_info.reason_code_value = reason_code_values
       end
     end
-
-
     @rework_info = ReworkInfo.find_by_object_type_and_new_rework_id('L3', params[:l3_id])
     if @rework_info.present?
       reason_codeValues = ReasonCodeValue.get_reason_code_values(@rework_info.id, 'ReworkInfo')
@@ -338,8 +343,7 @@ class OverviewController < ApplicationController
         if @reworked_l3_parent.present?
           @reworked_l3_parent_name = @reworked_l3_parent.name
         end
-      end 
-
+      end
     end
     @reworked_l3 =  
     respond_to do |format|
@@ -443,7 +447,9 @@ class OverviewController < ApplicationController
             l1.l2s.each do |l2|
               if l2.status.downcase != 'cancel'
                 WorkflowLiveStep.where(object_type: 'L2', object_id: l2.id, actual_confirmation: nil).update_all(is_active: false)
-                l2.status = 'cancel'
+                if !l2.completed_actual.present?
+                  l2.status = 'cancel'
+                end
                 l2.save!
                 AdditionalInfo.create(status: add_info.status, object_id: l2.id, object_type: 'L2', info_timestamp: add_info.info_timestamp,
                   work_flow_id: add_info.work_flow_id, note: add_info.note, user_id: add_info.user_id, reason_code_id: add_info.reason_code_id)
@@ -451,7 +457,9 @@ class OverviewController < ApplicationController
               l2.l3s.each do |l3|
                 if l3.status.downcase != 'cancel' and l3.status.downcase != 'closed'
                   WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
-                  l3.status = 'cancel'
+                  if !l3.completed_actual.present?
+                    l3.status = 'cancel'
+                  end
                   if l3.rework_parent_id.present? and !l3.is_main_record
                     num_component_rework = l3.num_component
                     parent_l3 = L3.where(id: l3.rework_parent_id).where.not(status: 'Closed').first
@@ -479,7 +487,9 @@ class OverviewController < ApplicationController
               l2.l3s.each do |l3|
                 if l3.status.downcase != 'cancel' and l3.status.downcase != 'closed'
                   WorkflowLiveStep.where(object_type: 'L3', object_id: l3.id, actual_confirmation: nil).update_all(is_active: false)
-                  l3.status = 'cancel'
+                  if !l3.completed_actual.present?
+                    l3.status = 'cancel'
+                  end
                   if l3.rework_parent_id.present? and !l3.is_main_record
                     num_component_rework = l3.num_component
                     parent_l3 = L3.where(id: l3.rework_parent_id).where.not(status: 'Closed').first

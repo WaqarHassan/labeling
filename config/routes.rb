@@ -56,9 +56,12 @@ Rails.application.routes.draw do
       match 'current-status', via: [:get, :post]
 
       match 'handoff', via: [:get, :post]
+      match 'handoff-new', via: [:get, :post]
       match 'daily-activity', via: [:get, :post]
       get 'download-handoff-report'
       match 'download-handoff-report', via: [:get, :post]
+      get 'download-handoff-report-new'
+      match 'download-handoff-report-new', via: [:get, :post]
       get 'data-feed'
       get 'reject-data'
       match 'wip', via: [:get, :post]

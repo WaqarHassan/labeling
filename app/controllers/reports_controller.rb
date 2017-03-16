@@ -338,6 +338,128 @@ class ReportsController < ApplicationController
 
   		end
   	end
+
+  	def handoff_new
+		@workflows = [] #WorkFlow.where(is_active: true, is_in_use: false)
+		@holidays = []
+		@reason_codes = []
+		@days_at_ia_approved = 0
+		@days_at_ecr_inbox = 0
+		@days_at_sent_to_collab = 0
+		@days_at_station8_sent = 0
+		@days_at_crb_started = 0
+		@days_at_ecn_released = 0
+
+		@pred_of_ia_approved = ''
+		@pred_of_ecr_inbox = ''
+		@pred_of_sent_to_collab = ''
+		@pred_of_station8_sent = ''
+		@pred_of_crb_started = ''
+		@pred_of_ecn_released = ''
+
+
+		@workflow.holidays.each do |holiday|
+	       @holidays << holiday
+	    end
+
+		workflows = WorkFlow.where(is_active: true, is_in_use: false)
+		workflows.each do |wk|
+			@workflows << wk
+		end
+
+		@filtered_station_steps = []
+	    filtered_station_steps = @workflow.report_filter_steps.eager_load(:station_step => [:workflow_station]).order(:sequence)
+		filtered_station_steps.each do |fss|
+			@filtered_station_steps << fss
+			if fss.station_step_id == 1
+				@days_at_ia_approved = fss.duration_days
+				@pred_of_ia_approved = fss.predecessors
+			end
+			if fss.station_step_id == 7
+				@days_at_ecr_inbox = fss.duration_days
+				@pred_of_ecr_inbox = fss.predecessors
+			end
+			if fss.station_step_id == 5
+				@days_at_sent_to_collab = fss.duration_days
+				@pred_of_sent_to_collab = fss.predecessors
+			end
+			if fss.station_step_id == 15
+				@days_at_station8_sent = fss.duration_days
+				@pred_of_station8_sent = fss.predecessors
+			end
+			if fss.station_step_id == 17
+				@days_at_crb_started = fss.duration_days
+				@pred_of_crb_started = fss.predecessors
+			end
+			if fss.station_step_id == 19
+				@pred_of_ecn_released = fss.predecessors
+			end
+
+		end
+
+		@stationSteps = []
+		station_steps = StationStep.eager_load(:workflow_station)
+		station_steps.each do |stp|
+			@stationSteps << stp
+		end
+
+    	if request.post?
+    		params_list = params
+    		search
+    		session[:report_wildcard] = params[:wildcard]
+		    session[:report_exact] = params[:exact]
+
+    		session[:params_search] = params_list 
+  			search_parm = search_csv(params_list)
+  		else
+  			params_list = session[:params_search]
+		    if session[:report_wildcard].present?
+		      @wildcard = session[:report_wildcard]
+		    end
+		    if session[:report_exact].present?
+		      @exact = session[:report_exact]
+		    end
+
+		    if params_list.present?
+  				search_parm = search_csv(params_list)
+  			end
+  		end	
+
+  		if params_list.present?
+	  		bu = search_parm[0]
+	  		l1 = search_parm[1]
+	  		l2 = search_parm[2]
+	  		l3 = search_parm[3]
+			
+			if params_list[:report_include_canceled].presence
+	    		include_cancel = true
+	    		@report_include_canceled = 'report_include_canceled'
+	    	else
+	    		include_cancel = false
+	    	end
+	    	if params_list[:report_include_onhold].presence
+	    		include_onhold = true
+	    		@report_include_onhold = 'report_include_onhold'
+	    	else
+	    		include_onhold = false
+	    	end
+			if params_list[:report_include_completed].presence
+	    		include_completed = true
+	    		@report_include_completed = 'report_include_completed'
+	    	else
+	    		include_completed = false
+	    	end	
+
+			puts "----:#{bu}---: #{l1}---:#{l2}---:#{l3}----:#{include_cancel}----:#{include_onhold}----:#{include_completed}"
+	  		@serach_result = []
+	  		serach_result = WorkFlow.handoff_report_stored_procedure_new(bu, l1, l2, l3, include_completed, include_cancel, include_onhold)
+  			serach_result.each do |result|
+  				@serach_result << result
+  			end
+
+  		end
+  	end
+
 	def handoff_my_query
 		@task_confirmation = true
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
@@ -447,6 +569,42 @@ class ReportsController < ApplicationController
   		csv_file = WorkFlow.to_csv(report_result)
 
   		send_data csv_file, :filename => 'HAND-OFF-Report.csv'
+
+  	end
+
+	# 
+  	# * *Description* :
+  	#   - It is a backup function for HandOff 
+  	#
+
+  	def download_handoff_report_new
+  		search_parm = search_csv(params)
+  		bu = search_parm[0]
+  		l1 = search_parm[1]
+  		l2 = search_parm[2]
+  		l3 = search_parm[3]
+		
+		if params[:report_include_canceled] == "report_include_canceled"
+    		include_cancel = true
+    	else
+    		include_cancel = false
+    	end
+    	if params[:report_include_onhold] == "report_include_onhold"
+    		include_onhold = true
+    	else
+    		include_onhold = false
+    	end
+		if params[:report_include_completed] == "report_include_completed"
+    		include_completed = true
+    	else
+    		include_completed = false
+    	end	
+
+		puts "----:#{bu}---: #{l1}---:#{l2}---:#{l3}----can: #{include_cancel}----on: :#{include_onhold}----comp: #{include_completed}"
+  		report_result = WorkFlow.handoff_report_stored_procedure_new(bu, l1, l2, l3, include_completed, include_cancel, include_onhold)
+  		csv_file = WorkFlow.to_csv_new(report_result)
+
+  		send_data csv_file, :filename => 'HAND-OFF-Report-New.csv'
 
   	end
 

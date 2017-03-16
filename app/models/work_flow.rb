@@ -384,7 +384,7 @@ class WorkFlow < ActiveRecord::Base
 						date_parsed = DateTime.parse(data[indx].to_s) rescue nil
 						legal_date_parsed = DateTime.parse(data[18].to_s) rescue nil
 						if date_parsed and legal_date_parsed
-							if DateTime.parse(legal_date_parsed.to_s) > DateTime.parse(date_parsed.to_s)
+							if DateTime.parse(legal_date_parsed.to_s) < DateTime.parse(date_parsed.to_s)
 								date_parsed = legal_date_parsed
 							end
 						elsif legal_date_parsed

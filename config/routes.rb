@@ -132,6 +132,8 @@ Rails.application.routes.draw do
   post '/overview/add_oops_mode_reason_code_info' => 'overview#add_oops_mode_reason_code_info' , as: 'add_oops_mode_reason_code_info'
   get '/overview/change_rework_station' => 'overview#change_rework_station', as: 'change_rework_station'
   post '/overview/change_rework_station_form' => 'overview#change_rework_station_form', as: 'change_rework_station_form'
+  get '/overview/manual_eta_modal/:wf_step_id' => 'overview#manual_eta_modal', as: 'manual_eta_modal'
+  post 'overview/add_manual_eta' => 'overview#add_manual_eta', as: 'add_manual_eta'
 
   # Dummy preview pages for testing.
   get '/p/test' => 'pages#test', as: 'test'

@@ -41,7 +41,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 	    #   - It creates a string that is displayed as station_step heading to show how ETA calculations are done.
 	    #
 		def get_steps_calculate_eta(workflow_live_step,workflow,current_user)
-
+				abort("testing--")
 	  	  BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
 	      BusinessTime::Config.end_of_workday = workflow.end_of_workday
 
@@ -142,7 +142,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 		def do_calculate_eta(wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
 	        pred_max_completion = ''
 	        max_step_completion = ''
-	        if wls.predecessors.present? && !wls.actual_confirmation.present? # && wls.is_active?
+	        if wls.predecessors.present? && !wls.actual_confirmation.present? && !wls.is_manual  # && wls.is_active?
 	          comp_attribute_value = wls.object
 	          lang_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
 	                                            #check successor---------------------
@@ -179,18 +179,16 @@ class WorkflowLiveStep < ActiveRecord::Base
 	            end
 	          end
 
-	          current_eta = wls.eta
+						current_eta = wls.eta
 	          wls.eta = pred_max_completion
 	          wls.step_completion = max_step_completion
 	          wls.save!
 	        elsif wls.predecessors.present? && wls.actual_confirmation.present?
 	          comp_attribute_value = wls.object
 	          lang_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
-	          
-			  station_step = wls.station_step
-		      step_completion = station_step.calculate_step_completion(wls, wls.actual_confirmation, comp_attribute_value, lang_attribute_value, hours_per_workday)
-
-		      wls.step_completion = step_completion
+			  		station_step = wls.station_step
+		      	step_completion = station_step.calculate_step_completion(wls, wls.actual_confirmation, comp_attribute_value, lang_attribute_value, hours_per_workday)
+		      	wls.step_completion = step_completion
       		  wls.save!
 	        end
 	    end

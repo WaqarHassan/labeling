@@ -380,17 +380,28 @@ class WorkFlow < ActiveRecord::Base
 					end
 				else
 					ind = 0
+					date_parsed_value = nil
+					legal_date_parsed_value = nil
+					max_date2 = nil
+
 					dataSet.each do |data|
 						date_parsed = DateTime.parse(data[indx].to_s) rescue nil
 						legal_date_parsed = DateTime.parse(data[18].to_s) rescue nil
-						if date_parsed and legal_date_parsed
-							if DateTime.parse(legal_date_parsed.to_s) < DateTime.parse(date_parsed.to_s)
-								date_parsed = legal_date_parsed
+						if date_parsed
+							max_date2 = date_parsed
+						end
+						if legal_date_parsed
+							legal_date_parsed_value = legal_date_parsed
+						end
+
+						if max_date2 and legal_date_parsed_value
+							if DateTime.parse(legal_date_parsed_value.to_s) < DateTime.parse(max_date2.to_s)
+								date_parsed = legal_date_parsed_value
 							end
 						elsif legal_date_parsed
 							date_parsed = legal_date_parsed
 						end
-						
+
 						if date_parsed
 							ind +=1
 							if ind == 1
@@ -412,7 +423,10 @@ class WorkFlow < ActiveRecord::Base
 					max_date = 'OnHold'
 					table_td_class = ''
 				end
+<<<<<<< HEAD
 
+=======
+>>>>>>> handOff021417
 				return [max_date, table_td_class, max_date_for_succesr]
 			end
 

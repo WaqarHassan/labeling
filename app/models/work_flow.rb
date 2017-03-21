@@ -423,10 +423,7 @@ class WorkFlow < ActiveRecord::Base
 					max_date = 'OnHold'
 					table_td_class = ''
 				end
-<<<<<<< HEAD
 
-=======
->>>>>>> handOff021417
 				return [max_date, table_td_class, max_date_for_succesr]
 			end
 

@@ -232,6 +232,26 @@ class WorkFlow < ActiveRecord::Base
 						onHoldReasonids << data[27]
 					end
 				end
+				if statuses.include? 'active'
+					status = 'Active'
+				elsif  statuses.include? 'onhold'
+					status = 'onHold'
+				end	
+							
+				return [status, onHoldReasonids]			
+			end
+
+			def get_rollUp_l3_status_new(data_set)
+				statuses = []
+				onHoldReasonids = []
+				status = 'Closed'
+				data_set.each do |data|
+					l3_sttaus = data[9].downcase
+					statuses << l3_sttaus
+					if l3_sttaus == 'onhold'
+						onHoldReasonids << data[29]
+					end
+				end
 
 				if statuses.include? 'active'
 					status = 'Active'
@@ -309,6 +329,100 @@ class WorkFlow < ActiveRecord::Base
 					table_td_class = ''
 				end
 
+				return [max_date, table_td_class, max_date_for_succesr]
+			end
+
+			# 
+			# * *Arguments* :
+			#   - query string
+			# * *Description* :
+			#   - It recalculate ETAs for HandOff report roll up.
+			# 
+			# index = 16
+			# 18 = 'Sent to Legal'
+			def get_rollUp_l3_timestamps_to_collab_legal(dataSet, indx, pred_actual, workflow, number_days, holidays, pred_numb_comp, l3_status)
+				max_date = 'N/A'
+				max_date_for_succesr = ''
+				max_date2 = ''
+				
+				pred_numb_comp = pred_numb_comp == '' ? 0 : pred_numb_comp
+				add_extra_day = pred_numb_comp/17
+				number_days = add_extra_day + number_days
+
+				any_active_step = dataSet.select{|eta| eta[indx].to_i != 0}
+				any_active_legal_step = dataSet.select{|eta| eta[18].to_i != 0}
+
+				if any_active_step.present? || any_active_legal_step.present?
+					max_date = ''
+				end
+
+				any_eta_step = dataSet.select{|eta| eta[indx].to_i==1}
+				any_eta_legal_step = dataSet.select{|eta| eta[18].to_i==1}
+				if any_eta_step.present? and any_eta_legal_step.present?
+					pred_actual = DateTime.parse(pred_actual.to_s) rescue nil
+					if pred_actual
+
+					    holidays.each do |holiday|
+					       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
+					    end
+						actual_confirmation = pred_actual.to_time.strftime('%Y-%m-%d %H:%M')
+						eta_datetime = Time.parse(actual_confirmation)
+						
+						if number_days > 0
+							eta_datetime =  number_days.business_days.after(eta_datetime)
+						end
+
+						eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
+						max_date = "ETA "+eta_date_stamp
+						if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
+							table_td_class = 'report_eta_light_red'
+						end
+					end
+				else
+					ind = 0
+					date_parsed_value = nil
+					legal_date_parsed_value = nil
+					max_date2 = nil
+
+					dataSet.each do |data|
+						date_parsed = DateTime.parse(data[indx].to_s) rescue nil
+						legal_date_parsed = DateTime.parse(data[18].to_s) rescue nil
+						if date_parsed
+							max_date2 = date_parsed
+						end
+						if legal_date_parsed
+							legal_date_parsed_value = legal_date_parsed
+						end
+
+						if max_date2 and legal_date_parsed_value
+							if DateTime.parse(legal_date_parsed_value.to_s) < DateTime.parse(max_date2.to_s)
+								date_parsed = legal_date_parsed_value
+							end
+						elsif legal_date_parsed
+							date_parsed = legal_date_parsed
+						end
+
+						if date_parsed
+							ind +=1
+							if ind == 1
+								max_date = date_parsed.strftime("%m/%d/%y")
+								max_date2 = date_parsed
+								max_date_for_succesr = date_parsed
+							elsif DateTime.parse(max_date2.to_s) < DateTime.parse(date_parsed.to_s)
+								max_date = date_parsed.strftime("%m/%d/%y")
+								max_date_for_succesr = date_parsed
+								max_date2 = date_parsed
+							end
+
+							table_td_class = 'report_actual_confirmation'		
+						end
+					end
+				end
+				
+				if l3_status.downcase == 'onhold' and max_date.include? 'ETA'
+					max_date = 'OnHold'
+					table_td_class = ''
+				end
 				return [max_date, table_td_class, max_date_for_succesr]
 			end
 
@@ -401,6 +515,99 @@ class WorkFlow < ActiveRecord::Base
 				end
 				return [max_date, table_td_class, max_date_for_succesr]
 			end
+
+			def get_rollUp_l3_station8_timestamps_new(dataSet, indx, pred_actual, workflow, number_days, holidays, pred_numb_comp, eta_indx, l3_status)
+				max_date = 'N/A'
+				max_date_for_succesr = ''
+				max_date2 = ''
+				
+				pred_numb_comp = pred_numb_comp == '' ? 0 : pred_numb_comp
+				add_extra_day = pred_numb_comp/17 
+				number_days = add_extra_day + number_days
+
+				any_active_step = dataSet.select{|eta| eta[indx].to_i != 0}
+				if any_active_step.present?
+					max_date = ''
+				end
+
+				backFromCollab_has_any_unconfirm = dataSet.select{|eta| eta[17].to_i == 1}
+				backFromLegal_has_any_unconfirm = dataSet.select{|eta| eta[19].to_i == 1}
+
+				max_crb_with_etas_date = 0
+				if !backFromCollab_has_any_unconfirm.present? || backFromLegal_has_any_unconfirm.present?
+					crb_with_etas = dataSet.select{|eta| eta[eta_indx].to_i != 0 and eta[eta_indx].to_i != 1 and eta[indx].to_i==1}
+
+					crb_with_etas_sorted = crb_with_etas.sort_by { |h| h[eta_indx] }.reverse
+					if crb_with_etas_sorted.present?
+						max_crb_with_etas = crb_with_etas_sorted.first
+						max_crb_with_etas_date = max_crb_with_etas[eta_indx]
+					end
+				end
+
+				any_eta_step = dataSet.select{|eta| eta[indx].to_i==1}
+				pred_actual = DateTime.parse(pred_actual.to_s) rescue nil
+				if any_eta_step.present? and pred_actual
+					max_crb_with_etas_date = DateTime.parse(max_crb_with_etas_date.to_s) rescue nil
+					if max_crb_with_etas_date
+						number_days = 1
+						eta_datetime =  number_days.business_days.after(max_crb_with_etas_date)
+						eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
+						max_date = "ETA "+eta_date_stamp
+						if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
+							table_td_class = 'report_eta_light_red'
+						end
+					else
+						pred_actual = DateTime.parse(pred_actual.to_s) rescue nil
+						if pred_actual
+
+						    holidays.each do |holiday|
+						       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
+						    end
+							actual_confirmation = pred_actual.to_time.strftime('%Y-%m-%d %H:%M')
+							eta_datetime = Time.parse(actual_confirmation)
+							
+							if number_days > 0
+								eta_datetime =  number_days.business_days.after(eta_datetime)
+							end
+
+							eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
+							max_date = "ETA "+eta_date_stamp
+							if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
+								table_td_class = 'report_eta_light_red'
+							end
+						end
+					end	
+				else
+					ind = 0
+					dataSet.each do |data|
+						date_parsed = DateTime.parse(data[indx].to_s) rescue nil
+						if date_parsed
+							ind +=1
+							if ind == 1
+								max_date = date_parsed.strftime("%m/%d/%y")
+								max_date2 = date_parsed
+								max_date_for_succesr = date_parsed
+							elsif DateTime.parse(max_date2.to_s) < DateTime.parse(date_parsed.to_s)
+								max_date = date_parsed.strftime("%m/%d/%y")
+								max_date_for_succesr = date_parsed
+								max_date2 = date_parsed
+							end
+
+							table_td_class = 'report_actual_confirmation'		
+						end
+					end
+
+					if ind == 0
+						max_date = 'ETA'
+					end
+				end
+
+				if l3_status.downcase == 'onhold' and max_date.include? 'ETA'
+					max_date = 'OnHold'
+					table_td_class = ''
+				end
+				return [max_date, table_td_class, max_date_for_succesr]
+			end			
 
 			def get_rollUp_l3_crb_started_timestamps_NA (ecr_inbox_date,actual_indx,workflow,holidays)
 			    holidays.each do |holiday|
@@ -593,7 +800,131 @@ class WorkFlow < ActiveRecord::Base
 
 				return [max_date, table_td_class, max_date_for_succesr]
 			end
-			
+
+			def get_rollUp_l3_crb_started_timestamps_new(dataSet, eta_indx, actual_indx, sent_to_collab_actual,station8_sent_actual, 
+				workflow, days_at_collab, days_at_station8, holidays,pred_numb_comp, l3_status)
+
+			    holidays.each do |holiday|
+			       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
+			    end
+			    pred_numb_comp = pred_numb_comp == '' ? 0 : pred_numb_comp
+			    add_extra_day = pred_numb_comp/17 
+			    days_at_collab = days_at_collab + add_extra_day
+			    days_at_station8 = days_at_station8 + add_extra_day
+
+				max_date = 'N/A'
+				max_date_for_succesr = ''
+				max_date2 = ''
+				table_td_class = ''
+				pred_actuals = [sent_to_collab_actual, station8_sent_actual]
+				pred_days = [days_at_collab, days_at_station8]
+
+				any_active_step = dataSet.select{|eta| eta[actual_indx].to_i != 0}
+				if any_active_step.present?
+					max_date = ''
+				end
+
+				backFromCollab_has_any_unconfirm = dataSet.select{|eta| eta[17].to_i == 1}
+				backFromLegal_has_any_unconfirm = dataSet.select{|eta| eta[19].to_i == 1}
+				max_crb_with_etas_date = 0
+				if !backFromCollab_has_any_unconfirm.present? || backFromLegal_has_any_unconfirm.present?
+					crb_with_etas = dataSet.select{|eta| eta[eta_indx].to_i != 0 and eta[eta_indx].to_i != 1 and eta[actual_indx].to_i == 1}
+					crb_with_etas_sorted = crb_with_etas.sort_by { |h| h[eta_indx] }.reverse
+					if crb_with_etas_sorted.present?
+						max_crb_with_etas = crb_with_etas_sorted.first
+						max_crb_with_etas_date = max_crb_with_etas[eta_indx]
+					end
+				end
+
+				any_eta_step = dataSet.select{|eta| eta[actual_indx].to_i==1}
+
+				collab_pred_actual = DateTime.parse(sent_to_collab_actual.to_s) rescue nil
+				sent_pred_actual = DateTime.parse(station8_sent_actual.to_s) rescue nil
+
+				if any_eta_step.present? and (collab_pred_actual or sent_pred_actual)
+					max_crb_with_etas_date = DateTime.parse(max_crb_with_etas_date.to_s) rescue nil
+					if max_crb_with_etas_date
+						number_days = 1
+						eta_datetime =  number_days.business_days.after(max_crb_with_etas_date)
+						eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
+						max_date = "ETA "+eta_date_stamp
+						if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
+							table_td_class = 'report_eta_light_red'
+						end
+					else
+						pred_actuals.each_with_index do |pred_actual, idx|
+							pred_actual = DateTime.parse(pred_actual.to_s) rescue nil
+							if pred_actual
+								# Covnert minutes to hours and minutes
+								actual_confirmation = pred_actual.to_time.strftime('%Y-%m-%d %H:%M')
+								eta_datetime = Time.parse(actual_confirmation)
+								number_days = pred_days[idx]
+								if number_days > 0
+									eta_datetime =  number_days.business_days.after(eta_datetime)
+								end
+
+								max_date2 = DateTime.parse(max_date2.to_s) rescue nil
+								if idx == 0 or !max_date2
+									eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
+									max_date = "ETA "+eta_date_stamp
+									if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
+										table_td_class = 'report_eta_light_red'
+									end
+									max_date2 = eta_datetime
+								elsif DateTime.parse(max_date2.to_s) < DateTime.parse(eta_datetime.to_s)
+									eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
+									max_date = "ETA "+eta_date_stamp
+									if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
+										table_td_class = 'report_eta_light_red'
+									end
+									max_date2 = eta_datetime
+								end
+							end
+						end
+					end		
+				else
+					ind = 0
+					dataSet.each do |data|
+						date_parsed = DateTime.parse(data[actual_indx].to_s) rescue nil
+						if date_parsed
+							ind +=1
+							if ind == 1
+								max_date = date_parsed.strftime("%m/%d/%y")
+								max_date2 = date_parsed
+								max_date_for_succesr = date_parsed
+							elsif DateTime.parse(max_date2.to_s) < DateTime.parse(date_parsed.to_s)
+								max_date = date_parsed.strftime("%m/%d/%y")
+								max_date_for_succesr = date_parsed
+								max_date2 = date_parsed
+							end
+
+							table_td_class = 'report_actual_confirmation'
+						end
+					end
+				end
+
+				if max_date == ''
+					max_crb_with_etas_date = DateTime.parse(max_crb_with_etas_date.to_s) rescue nil
+					if max_crb_with_etas_date
+						number_days = 1
+						eta_datetime =  number_days.business_days.after(max_crb_with_etas_date)
+						eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
+						max_date = "ETA "+eta_date_stamp
+						if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
+							table_td_class = 'report_eta_light_red'
+						end
+					end						
+				end
+
+				
+				if l3_status.downcase == 'onhold' and max_date.include? 'ETA'
+					max_date = 'OnHold'
+					table_td_class = ''
+				end
+
+				return [max_date, table_td_class, max_date_for_succesr]
+			end
+
 			def getOnHoldNewReason(reason_codes)
 				reason_string = ''
 				reasons_array = []
@@ -1476,6 +1807,11 @@ class WorkFlow < ActiveRecord::Base
 				result = ActiveRecord::Base.connection.execute("call handoff_report('#{bu}', '#{l1}', '#{l2}', '#{l3}', #{include_completed}, #{include_cancel}, #{include_onhold})")
 				return result
 			end
+			def handoff_report_stored_procedure_new (bu, l1, l2, l3, include_completed, include_cancel, include_onhold)
+				result = ActiveRecord::Base.connection.execute("call new_handoff_report('#{bu}', '#{l1}', '#{l2}', '#{l3}', #{include_completed}, #{include_cancel}, #{include_onhold})")
+				return result
+			end
+
 			def data_feed_stored_procedure
 				result =  ActiveRecord::Base.connection.execute("call data_feed()")
 				return result
@@ -1504,6 +1840,19 @@ class WorkFlow < ActiveRecord::Base
 			      end
 			    end
 			end
+			def to_csv_new(data_set)
+				CSV.generate do |csv|
+			      csv <<  ['Project', 'Proj-Status', 'Proj-Completed', 'IA', 'IA-Status', 'IA-Completed',
+			      		 'BU', 'IA #Comp', 'ECR', 'ECR-Status', 'ECR-Completed', 'ECR #Comp', 'ParentId',
+			      		  'Parent', 'IA Approved', 'ECR Inbox', 'Sent to Collab', 'Back from Collab', 'Sent to Legal', 'Back from Legal', 
+			      		  'Station8 Sent', 'CRB Started - ETA', 'CRB Started', 'ECN Released', 'Horw', 
+			      		  '#Lang', 'CompType', 'MainRecord', 'IA-HoldReason','ECR-HoldReason', 'IncludeCompleted','Project-id', 'IA-id', 'ECR-id', 'Station8 Sent - ETA']
+			      data_set.each do |report|
+			        csv <<  [report[0], report[1], report[2], report[3], report[4], report[5], report[6], report[7], report[8], report[9], report[10], report[11], report[12], report[13], report[14], report[15], report[16], report[17], report[18], report[19], report[20], report[21], report[22], report[23], report[24], report[25], report[26], report[27], report[28], report[29], report[30], report[31], report[32]]
+			      end
+			    end
+			end
+
 			def to_csv_data_feed(data_set)
 				CSV.generate do |csv|
 			      csv <<  ['IA', 'IA-Status', 'IA-Completed', 'BU', 'IA-#Comp', 'Translation',
@@ -1590,21 +1939,23 @@ end
 # 15 = 'ECR Inbox'
 # 16 = 'Sent to Collab'
 # 17 = 'Back from Collab'
-# 18 = 'Station8 Sent'
-# 19 = 'CRB Started - ETA'
-# 20 = 'CRB Started'
-# 21 = 'ECN Released'
-# 22 = 'Horw', 
-# 23 = '#Lang'
-# 24 = 'CompType'
-# 25 = 'MainRecord'
-# 26 = 'IA-HoldReason'
-# 27 = 'ECR-HoldReason'
-# 28 = 'IncludeCompleted'
-# 29 = 'Porject-Id'
-# 30 = 'IA-id'
-# 31 = 'ECR-id'
-# 32 = 'Station8 Sent - ETA'
+# 18 = 'Sent to Legal'
+# 19 = 'Back from Legal'
+# 20 = 'Station8 Sent'
+# 21 = 'CRB Started - ETA'
+# 22 = 'CRB Started'
+# 23 = 'ECN Released'
+# 24 = 'Horw', 
+# 25 = '#Lang'
+# 26 = 'CompType'
+# 27 = 'MainRecord'
+# 28 = 'IA-HoldReason'
+# 29 = 'ECR-HoldReason'
+# 30 = 'IncludeCompleted'
+# 31 = 'Porject-Id'
+# 32 = 'IA-id'
+# 33 = 'ECR-id'
+# 34 = 'Station8 Sent - ETA'
 
 
 

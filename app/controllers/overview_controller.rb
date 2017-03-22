@@ -1514,11 +1514,8 @@ class OverviewController < ApplicationController
     end
   end
   def add_manual_eta
-    puts "--------------------------------------------------"
-    puts params.inspect
-    # abort("inside_add_manual_eta")
-    live_step_id = params[:id]
 
+    live_step_id = params[:id]
     wf_live_step = WorkflowLiveStep.find_by_id(live_step_id)
     wf_live_step.is_manual = true
     wf_live_step.eta = L1.set_db_datetime_format(params[:workflow_live_step][:manual_eta])

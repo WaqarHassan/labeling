@@ -848,3 +848,8 @@ label.string, label.integer {
     text-overflow: ellipsis !important;
     white-space: inherit !important;
 }
+
+sup {
+    top: -0.5em;
+    font-size: 10px !important;
+}

@@ -117,6 +117,7 @@ Rails.application.routes.draw do
   post '/overview' => 'overview#index', as:'reports_to_overview'
   get '/overview/oops_mode' => 'overview#oops_mode', as:'oops_mode'
   get '/overview/remove_confirmation/:wf_step_id' => 'overview#remove_confirmation' , as: 'remove_confirmation'
+  get '/overview/remove_manual_eta/:wf_step_id' => 'overview#remove_manual_eta' , as: 'remove_manual_eta'
  
   post '/overview/update_task_confirmation' =>  'overview#update_task_confirmation', as: 'update_task_confirmation'
   post '/overview/create_rework_info' => 'overview#create_rework_info', as: 'create_rework_info'

@@ -65,9 +65,12 @@
     <div class='modal-footer'>
     <% if  @remove == 'on'%>
       <%=  link_to "remove confirmation", remove_confirmation_path(@wf_step_id), {:class => 'btn save-print-update-edit-btn pull-left',  :onclick => 'remove_confirmation_progress_bar()'} %>
+    <%elsif @workflow_live_tep.is_manual %>
+      <%=  link_to "Remove Manual ETA", remove_manual_eta_path(@wf_step_id), {:class => 'btn save-print-update-edit-btn pull-left',  :onclick => 'remove_confirmation_progress_bar()'}  %> 
     <%else%>
-      <%=  link_to "Manual ETA", manual_eta_modal_path(@wf_step_id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#manual_eta_modal',:class => 'btn save-print-update-edit-btn pull-left',  :onclick => "$('#confirm_modal_popup').modal('hide');"}  %>  
+      <%=  link_to "Manual ETA", manual_eta_modal_path(@wf_step_id), {:remote => true, 'data-toggle' => "modal", 'data-target' => '#manual_eta_modal',:class => 'btn save-print-update-edit-btn pull-left',  :onclick => "$('#confirm_modal_popup').modal('hide');"}  %> 
     <%end%>
+
        <button class='btn btn-danger' data-dismiss='modal' type='button'>Close</button>
       <button class='btn save-print-update-edit-btn' type='submit' onclick="return show_waiting_bar_confirmation();">Update</button>
     </div>

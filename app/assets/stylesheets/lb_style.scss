@@ -848,3 +848,16 @@ label.string, label.integer {
     text-overflow: ellipsis !important;
     white-space: inherit !important;
 }
+
+.wip_report_link {
+    background: none;
+    border: none;
+    text-decoration: underline;
+    color: #337ab7;
+}
+
+.wip_detail_th {
+    font-weight: bold !important;
+    color: #fff;
+    background-color: #5A9AD7;
+}

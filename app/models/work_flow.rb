@@ -1910,8 +1910,20 @@ class WorkFlow < ActiveRecord::Base
 				table1 = default_wip_query(monday,sunday)
 				ret = [default_values.reverse,table1.first ,table2.first , table3.first , table4.first]
 				return ret
-
 			end
+
+			def get_throughput_detail(start_date, end_date, check_point)
+				throughput_detail =  ActiveRecord::Base.connection.execute("call wip_throughputDetails( '#{check_point}', '#{start_date}' , '#{end_date}' )")
+				ActiveRecord::Base.clear_active_connections!
+				return throughput_detail
+			end
+
+			def get_wip_detail(end_date, check_point)
+				wip_detail =  ActiveRecord::Base.connection.execute("call wip_wipDetails( '#{check_point}' , '#{end_date}' )")
+				ActiveRecord::Base.clear_active_connections!
+				return wip_detail
+			end
+
 			def rework_info_report_query(start_date , end_date)\
 				result =  ActiveRecord::Base.connection.execute("call rework_report( '#{start_date}' , '#{end_date}' )")
 				ActiveRecord::Base.clear_active_connections!

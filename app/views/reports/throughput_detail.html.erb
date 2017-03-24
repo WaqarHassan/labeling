@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-lg-12 col-sm-12 report_heading">
+    <h4>ThroughPut Detail</h4>
+  </div>
+</div>
+
+<div class='clearfix'></div>
+<div class='data-main'>
+  <div class = "col-lg-3"></div>
+  <div class = "col-lg-6 wip_refresh check_point">
+    <table class="table table-striped table-bordered" id = "table">
+      <thead >
+      <tr class="sub_heading">
+        <th class = "wip_detail_th">IA/ECR </th>
+        <th class = "wip_detail_th"> # Comp </th>
+      </tr>
+      </thead>
+
+      <tbody>
+
+      <% if @throughput_details.present?
+           @throughput_details.each do |wpd|%>
+              <tr>
+                <td>
+                  <%= form_tag reports_to_overview_path do %>
+                      <%= hidden_field_tag 'object_type', @object_type %>
+                      <%= hidden_field_tag 'object_id', wpd[2] %>
+                      <%= button_tag(type: "submit", class: "wip_report_link") do %>
+                          <%=wpd[0]%>
+                      <% end %>
+                  <% end %>
+                </td>
+
+                <td><%=wpd[1]%></td>
+              </tr>
+          <%end%>
+      <%else%>
+          <tr><td colspan="2"><div class="alert alert-info"> <%= @alert_sms.present? ? @alert_sms : "No Result Found!" %> </div></tr></td>
+      <%end%>
+
+      </tbody>
+
+
+    </table>
+  </div>
+  <div class = "col-lg-3"></div>
+</div>
+
+<style type="text/css">
+    .container{
+        background-color: #fff;
+    }
+</style>
+
+<%= javascript_include_tag "reports" %>

@@ -804,6 +804,49 @@ class ReportsController < ApplicationController
 		@target_days = @all_data[1][0..8]
 		@all_data = @all_data[1..4]
 	end
+
+	def throughput_detail
+		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+		checkpoints = ['APPROVED','TRANSLATION','STATION4','FROMCOLLAB','STATION7','STATION8','TOCRB','FROMCRB','RELEASE']
+
+    if request.post?
+      start_date = params[:start_date]
+      end_date = params[:end_date]
+      check_point = checkpoints[params[:check_point_index].to_i]
+
+      @object_type = 'L3'
+      if check_point == 'APPROVED' or check_point == 'TRANSLATION'
+        @object_type = 'L2'
+      end
+
+      @throughput_details = WorkFlow.get_throughput_detail(start_date, end_date, check_point)
+    else
+      @throughput_details = nil
+      @alert_sms = "Please click on hyperlink from WIP report to send params and get detail"
+    end
+
+	end
+
+	def wip_detail
+		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
+		checkpoints = ['APPROVED','TRANSLATION','STATION4','FROMCOLLAB','STATION7','STATION8','TOCRB','FROMCRB','RELEASE']
+
+    if request.post?
+      end_date = params[:end_date]
+      check_point = checkpoints[params[:check_point_index].to_i]
+
+      @object_type = 'L3'
+      if check_point == 'APPROVED' or check_point == 'TRANSLATION'
+        @object_type = 'L2'
+      end
+
+      @wip_details = WorkFlow.get_wip_detail(end_date, check_point)
+    else
+      @wip_details = nil
+      @alert_sms = "Please click on hyperlink from WIP report to send params and get detail"
+    end
+	end
+
 	def rework_info
 		@workflows = WorkFlow.where(is_active: true, is_in_use: true)
 		if request.post?

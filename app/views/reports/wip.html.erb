@@ -138,8 +138,27 @@
               <tbody>
                 <% 9.times do |index| %>
                   <tr>
-                    <td><%= @all_data[ind][9 + index] %></td>
-                    <td><%=  @all_data[ind][18 + index]%></td>
+                    <td>
+                        <%= form_tag throughput_detail_reports_path, :target => '_blank' do %>
+                          <%= hidden_field_tag 'start_date', @default_values[ind][0] %>
+                          <%= hidden_field_tag 'end_date', @default_values[ind][1] %>
+                          <%= hidden_field_tag 'check_point_index', index %>
+                          <%= button_tag(type: "submit", class: "wip_report_link") do %>
+                              <%= @all_data[ind][9 + index] %>
+                          <% end %>
+                        <% end %>
+                    </td>
+
+                    <td>
+                        <%= form_tag wip_detail_reports_path, :target => '_blank' do %>
+                        <%= hidden_field_tag 'end_date', @default_values[ind][1] %>
+                        <%= hidden_field_tag 'check_point_index', index %>
+                          <%= button_tag(type: "submit", class: "wip_report_link") do %>
+                              <%= @all_data[ind][18 + index] %>
+                          <% end %>
+                        <% end %>
+                    </td>
+
                     <%  
                     if @request_type == 'post'
                       @value  = ( @all_data[ind][18 + index].to_f / @day_capacity[ind].to_i ).round(2)

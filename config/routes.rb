@@ -66,6 +66,8 @@ Rails.application.routes.draw do
       get 'reject-data'
       match 'wip', via: [:get, :post]
       match 'rework-info', via: [:get, :post]
+      match 'throughput-detail', via: [:get, :post]
+      match 'wip-detail', via: [:get, :post]
     end
   end
 

@@ -20,6 +20,8 @@
           <th style="width: 110px;" title="Days: <%=@days_at_ia_approved %>&#013;&#013;Predecessors: <%=ia_pred_name%>">
             IA Approved
           </th>
+          <th>To Translation</th>
+          <th>From Translation</th>
           <th style="width: 110px;" title="Days: <%=@days_at_ecr_inbox %>&#013;&#013;Predecessors: <%=ecr_pred_name%>">
             ECR Inbox
           </th>
@@ -41,8 +43,6 @@
           <th>#Lang</th>
           <th>Horw</th>
           <th id="reason">Hold Reason</th>
-          <th>To Translation</th>
-          <th>From Translation</th>
         </tr>
       </thead>
 
@@ -72,17 +72,21 @@
                     </td>
 
                     <td title="Status"><%= result[1] %></td>
-                    <% @filtered_station_steps.each do |filtered_station_step| %>
-                      <td></td>
-                    <% end %>
+                    <td></td>
+                    <td title="To Translation"></td>
+                    <td title="From Translation"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td title="Number of Comp."></td>
                     <td title="Component Type"></td>
                     <td title="Business Unit"></td>
                     <td title="Number of Lang."></td>
                     <td title="Horw"></td>
                     <td title="Hold Reason"></td>
-                    <td title="To Translation"></td>
-                    <td title="From Translation"></td>
                   </tr>
              <% end
              if l2_name != result[3] && result[32].presence
@@ -112,7 +116,42 @@
                       end
                     %>
                     <td title="IA Approval - IA Approved" class="<%=table_td_class_ia%>"><%= ia_approved_date %></td>
+                    <%
+                       to_translation = result[35]
+                       from_translation = result[36]
 
+                       to_translation_class = ''
+                       from_translation_class = ''
+
+                       if to_translation.downcase != 'n/a' and to_translation[0,3].downcase != 'eta'
+                         to_translation_parsed = DateTime.parse(to_translation.to_s)
+                         to_translation_date = to_translation_parsed.strftime("%m/%d/%y")
+                         to_translation_class = 'report_actual_confirmation'
+                       elsif to_translation.downcase != 'n/a' and to_translation[0,3].downcase == 'eta'
+                         to_translation_parsed = DateTime.parse(to_translation[4,30].downcase.to_s)
+                         to_translation_date = to_translation_parsed.strftime("%m/%d/%y")
+                         to_translation_date = 'ETA '+to_translation_date.to_s
+                         to_translation_class = 'report_eta_light_red'
+                       else
+                         to_translation_date = 'n/a'
+                       end
+
+                       if from_translation.downcase != 'n/a' and from_translation[0,3].downcase != 'eta'
+                         from_translation_parsed = DateTime.parse(from_translation.to_s)
+                         from_translation_date = from_translation_parsed.strftime("%m/%d/%y")
+                         from_translation_class = 'report_actual_confirmation'
+                       elsif from_translation.downcase != 'n/a' and from_translation[0,3].downcase == 'eta'
+                         from_translation_parsed = DateTime.parse(from_translation[4,30].downcase.to_s)
+                         from_translation_date = from_translation_parsed.strftime("%m/%d/%y")
+                         from_translation_date = 'ETA '+from_translation_date.to_s
+                         from_translation_class = 'report_eta_light_red'
+                       else
+                         from_translation_date = 'n/a'
+                       end
+
+                    %>
+                    <td title="To Translation" class="<%=to_translation_class%>"><%=to_translation_date%></td>
+                    <td title="From Translation" class="<%=from_translation_class%>"><%=from_translation_date%></td>
                     <%
                       table_td_class = ''
                       ecr_inbox_date = ''
@@ -143,42 +182,6 @@
                           end 
                         end %>
                     <td title="Hold Reason"><%=onHoldReason%></td>
-                    <%
-                      to_translation = result[35]
-                      from_translation = result[36]
-
-                      to_translation_class = ''
-                      from_translation_class = ''
-                      
-                      if to_translation.downcase != 'n/a' and to_translation[0,3].downcase != 'eta'
-                        to_translation_parsed = DateTime.parse(to_translation.to_s)
-                        to_translation_date = to_translation_parsed.strftime("%m/%d/%y")
-                        to_translation_class = 'report_actual_confirmation'
-                      elsif to_translation.downcase != 'n/a' and to_translation[0,3].downcase == 'eta'
-                        to_translation_parsed = DateTime.parse(to_translation[4,30].downcase.to_s)
-                        to_translation_date = to_translation_parsed.strftime("%m/%d/%y")
-                        to_translation_date = 'ETA '+to_translation_date.to_s
-                        to_translation_class = 'report_eta_light_red'
-                      else
-                         to_translation_date = 'n/a'
-                      end
-
-                      if from_translation.downcase != 'n/a' and from_translation[0,3].downcase != 'eta'
-                        from_translation_parsed = DateTime.parse(from_translation.to_s)
-                        from_translation_date = from_translation_parsed.strftime("%m/%d/%y")
-                        from_translation_class = 'report_actual_confirmation'
-                      elsif from_translation.downcase != 'n/a' and from_translation[0,3].downcase == 'eta'
-                        from_translation_parsed = DateTime.parse(from_translation[4,30].downcase.to_s)
-                        from_translation_date = from_translation_parsed.strftime("%m/%d/%y")
-                        from_translation_date = 'ETA '+from_translation_date.to_s
-                        from_translation_class = 'report_eta_light_red'
-                      else
-                        from_translation_date = 'n/a'
-                      end
-
-                    %>
-                    <td title="To Translation" class="<%=to_translation_class%>"><%=to_translation_date%></td>
-                    <td title="From Translation" class="<%=from_translation_class%>"><%=from_translation_date%></td>
                   </tr>
             <% end 
               if result[33].presence
@@ -234,6 +237,8 @@
                       %>
 
                       <td title="IA Approved"></td>
+                      <td title="To Translation"></td>
+                      <td title="From Translation"></td>
                       <td title="ECR INBOX"></td>
                       <td title="To Collab/Legal" class="<%= sent_to_collab[1] %>"><%= sent_to_collab[0] %></td>
                       <td title="To Horw" class="<%= station8_sent[1] %>"><%= station8_sent[0] %></td>
@@ -252,8 +257,6 @@
                             end 
                           end %>
                       <td title="Hold Reason"><%=l3onHoldReason%></td>
-                      <td title="To Translation"></td>
-                      <td title="From Translation"></td>
                     </tr>
                   <%end%>
             <%  end
@@ -281,17 +284,21 @@
                   </td>
 
                   <td title="Status"><%= ia_result[1] %></td>
-                  <% @filtered_station_steps.each do |filtered_station_step| %>
-                    <td></td>
-                  <% end %>
+                  <td></td>
+                  <td title="To Translation"></td>
+                  <td title="From Translation"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                   <td title="Number of Comp."></td>
                   <td title="Component Type"></td>
                   <td title="Business Unit"></td>
                   <td title="Number of Lang."></td>
                   <td title="Horw"></td>
                   <td title="Hold Reason"></td>
-                  <td title="To Translation"></td>
-                  <td title="From Translation"></td>
                 </tr>
             <%end%>
             <tr>
@@ -308,6 +315,42 @@
               </td>
               <td title="Status"><%= ia_result[4] %></td>
               <td title="IA Approval - IA Approved"></td>
+              <%
+                 to_translation = ia_result[8]
+                 from_translation = ia_result[9]
+
+                 to_translation_class = ''
+                 from_translation_class = ''
+
+                 if to_translation.downcase != 'n/a' and to_translation[0,3].downcase != 'eta'
+                   to_translation_parsed = DateTime.parse(to_translation.to_s)
+                   to_translation_date = to_translation_parsed.strftime("%m/%d/%y")
+                   to_translation_class = 'report_actual_confirmation'
+                 elsif to_translation.downcase != 'n/a' and to_translation[0,3].downcase == 'eta'
+                   to_translation_parsed = DateTime.parse(to_translation[4,30].downcase.to_s)
+                   to_translation_date = to_translation_parsed.strftime("%m/%d/%y")
+                   to_translation_date = 'ETA '+to_translation_date.to_s
+                   to_translation_class = 'report_eta_light_red'
+                 else
+                   to_translation_date = 'n/a'
+                 end
+
+                 if from_translation.downcase != 'n/a' and from_translation[0,3].downcase != 'eta'
+                   from_translation_parsed = DateTime.parse(from_translation.to_s)
+                   from_translation_date = from_translation_parsed.strftime("%m/%d/%y")
+                   from_translation_class = 'report_actual_confirmation'
+                 elsif from_translation.downcase != 'n/a' and from_translation[0,3].downcase == 'eta'
+                   from_translation_parsed = DateTime.parse(from_translation[4,30].downcase.to_s)
+                   from_translation_date = from_translation_parsed.strftime("%m/%d/%y")
+                   from_translation_date = 'ETA '+from_translation_date.to_s
+                   from_translation_class = 'report_eta_light_red'
+                 else
+                   from_translation_date = 'n/a'
+                 end
+
+              %>
+              <td title="To Translation" class="<%=to_translation_class%>"><%=to_translation_date%></td>
+              <td title="From Translation" class="<%=from_translation_class%>"><%=from_translation_date%></td>
               <td title="ECR - INBOX"></td>
               <td title="Collaboration - Sent to Collab."></td>
               <td title="Station 8 - Sent"></td>
@@ -320,42 +363,6 @@
               <td title="Number of Lang."></td>
               <td title="Horw"></td>
               <td title="Hold Reason"></td>
-              <%
-                to_translation = ia_result[8]
-                from_translation = ia_result[9]
-
-                to_translation_class = ''
-                from_translation_class = ''
-                
-                if to_translation.downcase != 'n/a' and to_translation[0,3].downcase != 'eta'
-                  to_translation_parsed = DateTime.parse(to_translation.to_s)
-                  to_translation_date = to_translation_parsed.strftime("%m/%d/%y")
-                  to_translation_class = 'report_actual_confirmation'
-                elsif to_translation.downcase != 'n/a' and to_translation[0,3].downcase == 'eta'
-                  to_translation_parsed = DateTime.parse(to_translation[4,30].downcase.to_s)
-                  to_translation_date = to_translation_parsed.strftime("%m/%d/%y")
-                  to_translation_date = 'ETA '+to_translation_date.to_s
-                  to_translation_class = 'report_eta_light_red'
-                else
-                   to_translation_date = 'n/a'
-                end
-
-                if from_translation.downcase != 'n/a' and from_translation[0,3].downcase != 'eta'
-                  from_translation_parsed = DateTime.parse(from_translation.to_s)
-                  from_translation_date = from_translation_parsed.strftime("%m/%d/%y")
-                  from_translation_class = 'report_actual_confirmation'
-                elsif from_translation.downcase != 'n/a' and from_translation[0,3].downcase == 'eta'
-                  from_translation_parsed = DateTime.parse(from_translation[4,30].downcase.to_s)
-                  from_translation_date = from_translation_parsed.strftime("%m/%d/%y")
-                  from_translation_date = 'ETA '+from_translation_date.to_s
-                  from_translation_class = 'report_eta_light_red'
-                else
-                  from_translation_date = 'n/a'
-                end
-
-              %>
-              <td title="To Translation" class="<%=to_translation_class%>"><%=to_translation_date%></td>
-              <td title="From Translation" class="<%=from_translation_class%>"><%=from_translation_date%></td>
             </tr>
             
           <% end %> 

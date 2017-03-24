@@ -505,7 +505,7 @@ class WorkFlow < ActiveRecord::Base
 						end
 					end
 
-					if ind == 0
+					if ind == 0 and any_active_step.present?
 						max_date = 'ETA'
 					end
 				end
@@ -598,7 +598,7 @@ class WorkFlow < ActiveRecord::Base
 						end
 					end
 
-					if ind == 0
+					if ind == 0 and any_active_step.present?
 						max_date = 'ETA'
 					end
 				end

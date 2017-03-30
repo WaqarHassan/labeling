@@ -452,14 +452,42 @@ class ReportsController < ApplicationController
 
 			puts "----:#{bu}---: #{l1}---:#{l2}---:#{l3}----:#{include_cancel}----:#{include_onhold}----:#{include_completed}"
 	  		@serach_result = []
+	  		@serach_result_ho_ia = []
+	  		@serach_result_ho_ia2 = []
+	  		@serach_result_matched = []
 	  		serach_result = WorkFlow.handoff_report_stored_procedure_new(bu, l1, l2, l3, include_completed, include_cancel, include_onhold)
+	  		serach_result_ho_ia = WorkFlow.handoff_report_ia_stored_procedure(bu, l1, l2, l3, include_completed, include_cancel, include_onhold)
+
+	  		serach_result_ho_ia.each do |ia_result|
+	  			@serach_result_ho_ia2 << ia_result
+	  		end
+
   			serach_result.each do |result|
+  				project_id = result[31]
+  				ia_id = result[32]
+  				ia_ho_l2s = @serach_result_ho_ia2.find{|l2s| l2s[10] == project_id and l2s[11] == ia_id}
+  				@serach_result_matched << ia_ho_l2s
+  				result << ia_ho_l2s[8]
+  				result << ia_ho_l2s[9]
   				@serach_result << result
   			end
 
+  			@serach_result_ho_ia2.each do |result_ia|
+  				matched_project_id = result_ia[10]
+  				matched_ia_id = result_ia[11]
+  				ia_ho_l2s = @serach_result_matched.find{|l2s| l2s[10] == matched_project_id and l2s[11] == matched_ia_id}
+  				if !ia_ho_l2s.present?
+  					to_translation = result_ia[8]
+  					if to_translation.downcase != 'n/a' and to_translation[0,3].downcase != 'eta'
+  						@serach_result_ho_ia << result_ia
+  					end
+  				end
+  			end
+  			  			
   		end
   	end
 
+	
 	def handoff_my_query
 		@task_confirmation = true
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
@@ -763,10 +791,10 @@ class ReportsController < ApplicationController
 		@workflows = WorkFlow.where(is_active: true, is_in_use: true)
 		if request.post?
 			@request_type = "post"
-			@default_values = [ [params[:table1][:start_date] , params[:table1][:end_date]],
-								[params[:table2][:start_date], params[:table2][:end_date]],
-								[params[:table3][:start_date], params[:table3][:end_date]],
-								[params[:table4][:start_date], params[:table4][:end_date]]
+			@default_values = [ [L1.set_db_date_format(params[:table1][:start_date]) , L1.set_db_date_format(params[:table1][:end_date])],
+								[L1.set_db_date_format(params[:table2][:start_date]), L1.set_db_date_format(params[:table2][:end_date])],
+								[L1.set_db_date_format(params[:table3][:start_date]), L1.set_db_date_format(params[:table3][:end_date])],
+								[L1.set_db_date_format(params[:table4][:start_date]), L1.set_db_date_format(params[:table4][:end_date])]
 							  ]
 
 			table1 = WorkFlow.default_wip_query(

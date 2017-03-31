@@ -791,10 +791,10 @@ class ReportsController < ApplicationController
 		@workflows = WorkFlow.where(is_active: true, is_in_use: true)
 		if request.post?
 			@request_type = "post"
-			@default_values = [ [params[:table1][:start_date] , params[:table1][:end_date]],
-								[params[:table2][:start_date], params[:table2][:end_date]],
-								[params[:table3][:start_date], params[:table3][:end_date]],
-								[params[:table4][:start_date], params[:table4][:end_date]]
+			@default_values = [ [L1.set_db_date_format(params[:table1][:start_date]) , L1.set_db_date_format(params[:table1][:end_date])],
+								[L1.set_db_date_format(params[:table2][:start_date]), L1.set_db_date_format(params[:table2][:end_date])],
+								[L1.set_db_date_format(params[:table3][:start_date]), L1.set_db_date_format(params[:table3][:end_date])],
+								[L1.set_db_date_format(params[:table4][:start_date]), L1.set_db_date_format(params[:table4][:end_date])]
 							  ]
 
 			table1 = WorkFlow.default_wip_query(

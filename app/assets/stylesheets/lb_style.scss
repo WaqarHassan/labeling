@@ -849,6 +849,7 @@ label.string, label.integer {
     white-space: inherit !important;
 }
 
+
 .wip_report_link {
     background: none;
     border: none;
@@ -860,4 +861,9 @@ label.string, label.integer {
     font-weight: bold !important;
     color: #fff;
     background-color: #5A9AD7;
+}
+
+sup {
+    top: -0.5em;
+    font-size: 10px !important;
 }

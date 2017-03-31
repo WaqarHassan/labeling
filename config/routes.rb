@@ -119,6 +119,7 @@ Rails.application.routes.draw do
   post '/overview' => 'overview#index', as:'reports_to_overview'
   get '/overview/oops_mode' => 'overview#oops_mode', as:'oops_mode'
   get '/overview/remove_confirmation/:wf_step_id' => 'overview#remove_confirmation' , as: 'remove_confirmation'
+  get '/overview/remove_manual_eta/:wf_step_id' => 'overview#remove_manual_eta' , as: 'remove_manual_eta'
  
   post '/overview/update_task_confirmation' =>  'overview#update_task_confirmation', as: 'update_task_confirmation'
   post '/overview/create_rework_info' => 'overview#create_rework_info', as: 'create_rework_info'
@@ -134,6 +135,8 @@ Rails.application.routes.draw do
   post '/overview/add_oops_mode_reason_code_info' => 'overview#add_oops_mode_reason_code_info' , as: 'add_oops_mode_reason_code_info'
   get '/overview/change_rework_station' => 'overview#change_rework_station', as: 'change_rework_station'
   post '/overview/change_rework_station_form' => 'overview#change_rework_station_form', as: 'change_rework_station_form'
+  get '/overview/manual_eta_modal/:wf_step_id' => 'overview#manual_eta_modal', as: 'manual_eta_modal'
+  post 'overview/add_manual_eta' => 'overview#add_manual_eta', as: 'add_manual_eta'
 
   # Dummy preview pages for testing.
   get '/p/test' => 'pages#test', as: 'test'

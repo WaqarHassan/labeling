@@ -1012,6 +1012,16 @@ class OverviewController < ApplicationController
     redirect_to root_path, notice: 'Confirmation Removed SUCCESSFULLY'
   end
 
+  def remove_manual_eta
+     wf_step_id = params[:wf_step_id]
+     workflow_live_step  = WorkflowLiveStep.find_by_id(wf_step_id)
+     workflow_live_step.is_manual = false
+     workflow_live_step.save!
+
+     WorkflowLiveStep.get_steps_calculate_eta(workflow_live_step, @workflow,current_user)
+     redirect_to root_path, notice: 'Manual ETA was Removed SUCCESSFULLY'
+  end
+
     #  
     #
     # * *Description* :
@@ -1020,23 +1030,23 @@ class OverviewController < ApplicationController
   def open_confirm_modal
     session.delete(:open_confirm_modal)
     @wf_step_id = params[:wf_step_id]
-    workflow_live_tep = WorkflowLiveStep.find(@wf_step_id)
-   
-    @st_step = workflow_live_tep.station_step.step_name
-    @st_name = workflow_live_tep.station_step.workflow_station.station_name 
+    @workflow_live_tep = WorkflowLiveStep.find(@wf_step_id)
+
+    @st_step = @workflow_live_tep.station_step.step_name
+    @st_name = @workflow_live_tep.station_step.workflow_station.station_name
         # @oops_mode =  'oops_mode'
-        if workflow_live_tep.actual_confirmation.present?
+        if @workflow_live_tep.actual_confirmation.present?
            @remove = 'on'
         end
-    
 
-    if workflow_live_tep.object_type == 'L1'
-      @l1 = L1.find(workflow_live_tep.object_id)
-    elsif workflow_live_tep.object_type == 'L2'
-      @l2 = L2.find(workflow_live_tep.object_id)
-    elsif workflow_live_tep.object_type == 'L3'
-      @l3 = L3.find(workflow_live_tep.object_id)
-    end  
+
+    if @workflow_live_tep.object_type == 'L1'
+      @l1 = L1.find(@workflow_live_tep.object_id)
+    elsif @workflow_live_tep.object_type == 'L2'
+      @l2 = L2.find(@workflow_live_tep.object_id)
+    elsif @workflow_live_tep.object_type == 'L3'
+      @l3 = L3.find(@workflow_live_tep.object_id)
+    end
     respond_to do |format|
       format.html { render :partial => "confirm_modal" }
       format.js
@@ -1490,6 +1500,39 @@ class OverviewController < ApplicationController
         end
     end
 
+  end
+  def manual_eta_modal
+    @wf_step_id = params[:wf_step_id]
+    workflow_live_tep = WorkflowLiveStep.find(@wf_step_id)
+    @current_eta_val = workflow_live_tep.eta.to_datetime.strftime("%m/%d/%Y %I:%M %p")
+    @st_step = workflow_live_tep.station_step.step_name
+    @st_name = workflow_live_tep.station_step.workflow_station.station_name
+    # @oops_mode =  'oops_mode'
+    # if workflow_live_tep.actual_confirmation.present?
+    #   @remove = 'on'
+    # end
+    if workflow_live_tep.object_type == 'L1'
+      @l1 = L1.find(workflow_live_tep.object_id)
+    elsif workflow_live_tep.object_type == 'L2'
+      @l2 = L2.find(workflow_live_tep.object_id)
+    elsif workflow_live_tep.object_type == 'L3'
+      @l3 = L3.find(workflow_live_tep.object_id)
+    end
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
+  def add_manual_eta
+
+    live_step_id = params[:id]
+    wf_live_step = WorkflowLiveStep.find_by_id(live_step_id)
+    wf_live_step.is_manual = true
+    wf_live_step.eta = L1.set_db_datetime_format(params[:workflow_live_step][:manual_eta])
+    wf_live_step.save!
+    WorkflowLiveStep.get_steps_calculate_eta(wf_live_step, @workflow,current_user)
+
+    redirect_to root_path, notice: "ETA is Set to Manual date"
   end
   private
     def format_reason_code_values(data_set)

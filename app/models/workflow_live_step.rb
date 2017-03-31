@@ -41,7 +41,6 @@ class WorkflowLiveStep < ActiveRecord::Base
 	    #   - It creates a string that is displayed as station_step heading to show how ETA calculations are done.
 	    #
 		def get_steps_calculate_eta(workflow_live_step,workflow,current_user)
-
 	  	  BusinessTime::Config.beginning_of_workday = workflow.beginning_of_workday
 	      BusinessTime::Config.end_of_workday = workflow.end_of_workday
 
@@ -102,11 +101,13 @@ class WorkflowLiveStep < ActiveRecord::Base
 	      and workflow_live_steps.id >= #{first_step.id} 
 	      and workflow_live_steps.id <= #{last_step.id} 
 	      order by workflow_stations.sequence, station_steps.sequence"
+
 		  live_steps_qry_result = ActiveRecord::Base.connection.select_all live_steps_qry
 
 	      #workflow_live_step_for_eta = workflow_live_step_for_eta.sort_by{|wls_sort| [wls_sort.station_step.workflow_station.sequence,wls_sort.station_step]}d
 	      calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user,workflow_live_step)
 	      # workflow completion
+
 	      if l1_object.status.downcase! != 'cancel'
 	     	 set_workflow_completion_datetime(l1_object, l2s_objects, l3s_objects)
 	  	  end
@@ -121,7 +122,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 		def calculate_eta(live_steps_qry_result, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
 	      live_steps_qry_result.each do |lsr|
 	      	wls = WorkflowLiveStep.find_by_id(lsr["id"])
-	      	if wls.object.present?
+	      	if wls.object.present? and !wls.is_manual
 		      	if wls.object_type == 'L3'
 		      		if wls.object.is_closed?
 		      		else
@@ -130,6 +131,8 @@ class WorkflowLiveStep < ActiveRecord::Base
 		      	else
 	      			do_calculate_eta(wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
 		      	end	
+		    elsif wls.is_manual and !wls.actual_confirmation.present?
+	      		do_calculate_manual_eta(wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
 		    end 	
 	      end
     	end
@@ -142,7 +145,7 @@ class WorkflowLiveStep < ActiveRecord::Base
 		def do_calculate_eta(wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
 	        pred_max_completion = ''
 	        max_step_completion = ''
-	        if wls.predecessors.present? && !wls.actual_confirmation.present? # && wls.is_active?
+	        if wls.predecessors.present? && !wls.actual_confirmation.present?  # && wls.is_active?
 	          comp_attribute_value = wls.object
 	          lang_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
 	                                            #check successor---------------------
@@ -179,19 +182,48 @@ class WorkflowLiveStep < ActiveRecord::Base
 	            end
 	          end
 
-	          current_eta = wls.eta
+			  current_eta = wls.eta
 	          wls.eta = pred_max_completion
 	          wls.step_completion = max_step_completion
 	          wls.save!
 	        elsif wls.predecessors.present? && wls.actual_confirmation.present?
 	          comp_attribute_value = wls.object
 	          lang_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
-	          
-			  station_step = wls.station_step
-		      step_completion = station_step.calculate_step_completion(wls, wls.actual_confirmation, comp_attribute_value, lang_attribute_value, hours_per_workday)
-
-		      wls.step_completion = step_completion
+			  		station_step = wls.station_step
+		      	step_completion = station_step.calculate_step_completion(wls, wls.actual_confirmation, comp_attribute_value, lang_attribute_value, hours_per_workday)
+		      	wls.step_completion = step_completion
       		  wls.save!
+	        end
+	    end
+		def do_calculate_manual_eta(wls, hours_per_workday,workflow,current_user,currentWorkflowLiveStepConfirm)
+
+	        pred_max_completion = ''
+	        max_step_completion = ''
+	        if wls.predecessors.present? && !wls.actual_confirmation.present?
+	          comp_attribute_value = wls.object
+	          lang_attribute_value = wls.object.attribute_values.joins(:label_attribute).where("label_attributes.short_label='#Lang'").first
+	                                            #check successor---------------------
+	          predecessors_steps = wls.predecessors.split(",")
+	          predecessors_step_ojbets = WorkflowLiveStep.where(id: predecessors_steps)
+	          
+	          predecessors_step_ojbets.each_with_index do |pso, indx|
+	            if indx == 0 and pso.eta.present?
+	              station_step = wls.station_step
+	              max_step_completion = station_step.calculate_step_completion(wls, wls.eta, comp_attribute_value, lang_attribute_value, hours_per_workday)
+	            elsif pso.step_completion.present?
+	              station_step = wls.station_step
+	              step_completion_other = station_step.calculate_step_completion(wls, wls.eta, comp_attribute_value, lang_attribute_value, hours_per_workday)
+	                if step_completion_other.present? and max_step_completion.present?
+		                if DateTime.parse(step_completion_other.to_s) > DateTime.parse(max_step_completion.to_s)
+		                  max_step_completion = step_completion_other 
+		                end
+	            	else
+	            		max_step_completion = step_completion_other 
+	            	end
+	            end
+	          end
+	          wls.step_completion = max_step_completion
+	          wls.save!
 	        end
 	    end
 	    #

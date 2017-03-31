@@ -1,5 +1,5 @@
 <div class="handoff-report-data" id ="handoff_report_data">
-  <% if @serach_result.present? %>
+  <% if @serach_result.present? or @serach_result_ho_ia.present? %>
     <table class="table table-bordered handOffReportTable">
       <thead>
         <tr class="sub_heading">
@@ -20,6 +20,8 @@
           <th style="width: 110px;" title="Days: <%=@days_at_ia_approved %>&#013;&#013;Predecessors: <%=ia_pred_name%>">
             IA Approved
           </th>
+          <th>To Translation</th>
+          <th>From Translation</th>
           <th style="width: 110px;" title="Days: <%=@days_at_ecr_inbox %>&#013;&#013;Predecessors: <%=ecr_pred_name%>">
             ECR Inbox
           </th>
@@ -70,9 +72,15 @@
                     </td>
 
                     <td title="Status"><%= result[1] %></td>
-                    <% @filtered_station_steps.each do |filtered_station_step| %>
-                      <td></td>
-                    <% end %>
+                    <td></td>
+                    <td title="To Translation"></td>
+                    <td title="From Translation"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td title="Number of Comp."></td>
                     <td title="Component Type"></td>
                     <td title="Business Unit"></td>
@@ -108,7 +116,42 @@
                       end
                     %>
                     <td title="IA Approval - IA Approved" class="<%=table_td_class_ia%>"><%= ia_approved_date %></td>
+                    <%
+                       to_translation = result[35]
+                       from_translation = result[36]
 
+                       to_translation_class = ''
+                       from_translation_class = ''
+
+                       if to_translation.downcase != 'n/a' and to_translation[0,3].downcase != 'eta'
+                         to_translation_parsed = DateTime.parse(to_translation.to_s)
+                         to_translation_date = to_translation_parsed.strftime("%m/%d/%y")
+                         to_translation_class = 'report_actual_confirmation'
+                       elsif to_translation.downcase != 'n/a' and to_translation[0,3].downcase == 'eta'
+                         to_translation_parsed = DateTime.parse(to_translation[4,30].downcase.to_s)
+                         to_translation_date = to_translation_parsed.strftime("%m/%d/%y")
+                         to_translation_date = 'ETA '+to_translation_date.to_s
+                         to_translation_class = 'report_eta_light_red'
+                       else
+                         to_translation_date = 'n/a'
+                       end
+
+                       if from_translation.downcase != 'n/a' and from_translation[0,3].downcase != 'eta'
+                         from_translation_parsed = DateTime.parse(from_translation.to_s)
+                         from_translation_date = from_translation_parsed.strftime("%m/%d/%y")
+                         from_translation_class = 'report_actual_confirmation'
+                       elsif from_translation.downcase != 'n/a' and from_translation[0,3].downcase == 'eta'
+                         from_translation_parsed = DateTime.parse(from_translation[4,30].downcase.to_s)
+                         from_translation_date = from_translation_parsed.strftime("%m/%d/%y")
+                         from_translation_date = 'ETA '+from_translation_date.to_s
+                         from_translation_class = 'report_eta_light_red'
+                       else
+                         from_translation_date = 'n/a'
+                       end
+
+                    %>
+                    <td title="To Translation" class="<%=to_translation_class%>"><%=to_translation_date%></td>
+                    <td title="From Translation" class="<%=from_translation_class%>"><%=from_translation_date%></td>
                     <%
                       table_td_class = ''
                       ecr_inbox_date = ''
@@ -194,6 +237,8 @@
                       %>
 
                       <td title="IA Approved"></td>
+                      <td title="To Translation"></td>
+                      <td title="From Translation"></td>
                       <td title="ECR INBOX"></td>
                       <td title="To Collab/Legal" class="<%= sent_to_collab[1] %>"><%= sent_to_collab[0] %></td>
                       <td title="To Horw" class="<%= station8_sent[1] %>"><%= station8_sent[0] %></td>
@@ -214,11 +259,115 @@
                       <td title="Hold Reason"><%=l3onHoldReason%></td>
                     </tr>
                   <%end%>
-
             <%  end
               end 
             end
-        end %>  
+        end %> 
+
+        <% if @serach_result_ho_ia.present?
+            ia_l1_name = ''
+            @serach_result_ho_ia.each do |ia_result|
+            if ia_l1_name != ia_result[0]
+              ia_l1_name = ia_result[0] 
+               %>
+                <tr style="background-color:lightyellow">
+                  <td colspan="3" title="<%= @workflow.L1 %>">
+                      <%= link_to ia_result[0], open_info_modal_l1_path(ia_result[10],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+
+                      <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                      <%= hidden_field_tag 'object_type', 'L1' %>
+                      <%= hidden_field_tag 'object_id', ia_result[10] %>
+                        <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                            <span class="glyphicon glyphicon-new-window"></span>
+                        <% end %>
+                      <% end %>
+                  </td>
+
+                  <td title="Status"><%= ia_result[1] %></td>
+                  <td></td>
+                  <td title="To Translation"></td>
+                  <td title="From Translation"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td title="Number of Comp."></td>
+                  <td title="Component Type"></td>
+                  <td title="Business Unit"></td>
+                  <td title="Number of Lang."></td>
+                  <td title="Horw"></td>
+                  <td title="Hold Reason"></td>
+                </tr>
+            <%end%>
+            <tr>
+              <td title="<%= @workflow.L1 %>"></td>
+              <td colspan="2" title="<%= @workflow.L2 %>">
+                <%= link_to ia_result[3], open_info_modal_l2_path(ia_result[11],'report_info'),  {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#info_modal_popup'} %>
+                <%= form_tag reports_to_overview_path, :class => 'link_to_main_page' do %>
+                <%= hidden_field_tag 'object_type', 'L2' %>
+                <%= hidden_field_tag 'object_id', ia_result[11] %>
+                <%= button_tag(type: "submit", class: "btn report_main_link") do %>
+                    <span class="glyphicon glyphicon-new-window"></span>
+                <% end %>
+              <% end %>
+              </td>
+              <td title="Status"><%= ia_result[4] %></td>
+              <td title="IA Approval - IA Approved"></td>
+              <%
+                 to_translation = ia_result[8]
+                 from_translation = ia_result[9]
+
+                 to_translation_class = ''
+                 from_translation_class = ''
+
+                 if to_translation.downcase != 'n/a' and to_translation[0,3].downcase != 'eta'
+                   to_translation_parsed = DateTime.parse(to_translation.to_s)
+                   to_translation_date = to_translation_parsed.strftime("%m/%d/%y")
+                   to_translation_class = 'report_actual_confirmation'
+                 elsif to_translation.downcase != 'n/a' and to_translation[0,3].downcase == 'eta'
+                   to_translation_parsed = DateTime.parse(to_translation[4,30].downcase.to_s)
+                   to_translation_date = to_translation_parsed.strftime("%m/%d/%y")
+                   to_translation_date = 'ETA '+to_translation_date.to_s
+                   to_translation_class = 'report_eta_light_red'
+                 else
+                   to_translation_date = 'n/a'
+                 end
+
+                 if from_translation.downcase != 'n/a' and from_translation[0,3].downcase != 'eta'
+                   from_translation_parsed = DateTime.parse(from_translation.to_s)
+                   from_translation_date = from_translation_parsed.strftime("%m/%d/%y")
+                   from_translation_class = 'report_actual_confirmation'
+                 elsif from_translation.downcase != 'n/a' and from_translation[0,3].downcase == 'eta'
+                   from_translation_parsed = DateTime.parse(from_translation[4,30].downcase.to_s)
+                   from_translation_date = from_translation_parsed.strftime("%m/%d/%y")
+                   from_translation_date = 'ETA '+from_translation_date.to_s
+                   from_translation_class = 'report_eta_light_red'
+                 else
+                   from_translation_date = 'n/a'
+                 end
+
+              %>
+              <td title="To Translation" class="<%=to_translation_class%>"><%=to_translation_date%></td>
+              <td title="From Translation" class="<%=from_translation_class%>"><%=from_translation_date%></td>
+              <td title="ECR - INBOX"></td>
+              <td title="Collaboration - Sent to Collab."></td>
+              <td title="Station 8 - Sent"></td>
+              <td title="CRB - CRB Started"></td>
+              <td title="CRB - ECR Released"></td>
+
+              <td title="Number of Comp." ><%= ia_result[7] %></td>
+              <td title="Component Type"></td>
+              <td title="Business Unit"><%= ia_result[6] %></td>
+              <td title="Number of Lang."></td>
+              <td title="Horw"></td>
+              <td title="Hold Reason"></td>
+            </tr>
+            
+          <% end %> 
+        <% end %>     
+                     
       </tbody>
     </table>
   <% else %>

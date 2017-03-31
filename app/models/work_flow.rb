@@ -1813,6 +1813,12 @@ class WorkFlow < ActiveRecord::Base
 				return result
 			end
 
+			def handoff_report_ia_stored_procedure (bu, l1, l2, l3, include_completed, include_cancel, include_onhold)
+				ActiveRecord::Base.clear_active_connections!
+				result = ActiveRecord::Base.connection.execute("call handoff_report_ia('#{bu}', '#{l1}', '#{l2}', '#{l3}', #{include_completed}, #{include_cancel}, #{include_onhold})")
+				return result
+			end
+
 			def data_feed_stored_procedure
 				result =  ActiveRecord::Base.connection.execute("call data_feed()")
 				return result

@@ -91,7 +91,6 @@ function can_be_full_rework(){
 			if ($("#rework_modal_popup #rework_modal_from").valid() == true){
 				$('#myPleaseWait').modal('show');
 			}
-            alert('dddd');
 			return true;
 		}
 	}else{

@@ -72,7 +72,7 @@ function can_be_full_rework(){
 		total_num_component = $('#total_num_component').val();
 		component_already_in_rework = $('#component_already_in_rework').val();
 
-		if (component_already_in_rework > 0 && selected_num_comp == (total_num_component - component_already_in_rework)){
+        if (component_already_in_rework > 0 && selected_num_comp == total_num_component){
 			dataHTMLREWORK = '<div class="alert-info alert alert-dismissable">';
 			dataHTMLREWORK += '<button aria-hidden class="close" data-dismiss="alert">&times;</button>';
 			dataHTMLREWORK += 'Full Rework is not allowed because it has already open reworks';
@@ -91,6 +91,7 @@ function can_be_full_rework(){
 			if ($("#rework_modal_popup #rework_modal_from").valid() == true){
 				$('#myPleaseWait').modal('show');
 			}
+            alert('dddd');
 			return true;
 		}
 	}else{

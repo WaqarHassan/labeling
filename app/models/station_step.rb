@@ -21,13 +21,18 @@ class StationStep < ActiveRecord::Base
 
 		if level_object.present?
 			rework_components = 0
-		    if level_object.class.name == 'L3'
-		    	if level_object.num_component.to_i > 0
-		    		comp = level_object.num_component.to_i - level_object.num_component_in_rework.to_i
-		    	end
+		  if level_object.class.name == 'L3'
+		    if level_object.num_component.to_i > 0
+		    	comp = level_object.num_component.to_i - level_object.num_component_in_rework.to_i
+		    end
 			else
 				comp = level_object.num_component.present? ? level_object.num_component : 1
-			end
+      end
+
+      if comp.to_i <= 0
+        comp = 1
+      end
+
 		end
 
 		if lang_attribute_value.present?

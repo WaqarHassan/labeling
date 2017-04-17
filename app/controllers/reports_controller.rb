@@ -852,8 +852,8 @@ class ReportsController < ApplicationController
       @check_point = checkpoints_label[params[:check_point_index].to_i]
       @start_date = DateTime.parse(@start_date.to_s)
       @end_date = DateTime.parse(@end_date.to_s)
-      @start_date = @start_date.strftime("%m/%d/%y")
-      @end_date = @end_date.strftime("%m/%d/%y")
+      @start_date = @start_date.strftime("%m/%d/%Y")
+      @end_date = @end_date.strftime("%m/%d/%Y")
     else
       @start_date = ''
       @end_date = ''
@@ -882,7 +882,7 @@ class ReportsController < ApplicationController
 
       @check_point = checkpoints_label[params[:check_point_index].to_i]
       @end_date = DateTime.parse(@end_date.to_s)
-      @end_date = @end_date.strftime("%m/%d/%y")
+      @end_date = @end_date.strftime("%m/%d/%Y")
     else
       @end_date = ''
       @check_point = ''

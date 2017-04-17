@@ -59,70 +59,77 @@
         </thead>
           <tbody>
            <tr>
-                  <td>Approved to Start</td>
-                  <td><%= @target_days[0] %></td>
-                </tr>
-                <tr>
-                  <td>Translation</td>
-                   <td><%= @target_days[1] %></td>
-                </tr>
+               <td>Approved to Start</td>
+               <td><%= @target_days[0] %></td>
+           </tr>
+           <tr>
+             <td>Translation</td>
+             <td><%= @target_days[1] %></td>
+           </tr>
                 
-                <tr>
-                  <td>Station 4 Checkpoint</td>
-                  <td><%= @target_days[2] %></td>
-                </tr>
-                <tr>
-                  <td>From Collaboration</td>
-                   <td><%= @target_days[3] %></td>
-                </tr>
-                <tr>
-                  <td>Station 7 Checkpoint</td>
-                   <td><%= @target_days[4] %></td>
-                </tr>
-                <tr>
-                  <td>Station 8 iFace</td>
-                   <td><%= @target_days[5] %></td>
-                </tr>
-                 <tr>
-                  <td>To CRB</td>
-                   <td><%= @target_days[6] %></td>
-                </tr>
-                 <tr>
-                  <td>From CRB</td>
-                   <td><%= @target_days[7] %></td>
-                </tr>
-                <tr>
-                  <td>ECR Release</td>
-                   <td><%= @target_days[8] %></td>
-                </tr>
-                <tr>
-                  <td> </td>
-                  <td> </td>
-                </tr>
-                <tr>
-                  <td> </td>
-                  <td> <% @target_days_partial_sum = 0.to_f
+           <tr>
+               <td>Station 4 Checkpoint</td>
+               <td><%= @target_days[2] %></td>
+           </tr>
+
+           <tr>
+               <td>From Collaboration</td>
+               <td><%= @target_days[3] %></td>
+           </tr>
+
+           <tr>
+              <td>Station 7 Checkpoint</td>
+              <td><%= @target_days[4] %></td>
+           </tr>
+
+           <tr>
+              <td>Station 8 iFace</td>
+              <td><%= @target_days[5] %></td>
+           </tr>
+           <tr>
+              <td>To CRB</td>
+              <td><%= @target_days[6] %></td>
+           </tr>
+           <tr>
+              <td>From CRB</td>
+              <td><%= @target_days[7] %></td>
+           </tr>
+
+           <tr>
+              <td>ECR Release</td>
+              <td><%= @target_days[8] %></td>
+           </tr>
+
+           <tr>
+              <td> </td>
+              <td> </td>
+            </tr>
+
+           <tr>
+             <td> </td>
+             <td> <% @target_days_partial_sum = 0.to_f
                           7.times do |i| 
                             @target_days_partial_sum += @target_days[i+2].to_f
                           end
                            %>
                            <%= @target_days_partial_sum.round(0) %> </td>
-                </tr>
-                <tr>
-                  <td> </td>
-                  <td> 
-                    <% @target_days_complete_sum = 0.to_f
+           </tr>
+
+           <tr>
+             <td> </td>
+             <td>
+              <% @target_days_complete_sum = 0.to_f
                             9.times do |i| 
                               @target_days_complete_sum += @target_days[i].to_f
                             end
                              %>
                              <%= @target_days_complete_sum.round(0) %></td>
-                </tr>
+           </tr>
           </tbody>
-
 
           </table>
     </div>
+
     <%# puts "-----------------VIEWs----------------------------------'#{@all_data[0]}" %>
 
     <% 4.times do |ind| %>
@@ -183,14 +190,16 @@
                   <tr> 
                     <td></td> 
                       <%
-                      partial_sum = 0.to_f
-                        7.times do |j|
-                          partial_sum += @all_data[ind][18 + j + 2].to_f
-                        end
-
+                         wip_16 = @all_data[ind][29]
                        %>
                     <td>
-                         <%= partial_sum %>
+                      <%= form_tag wip_detail_reports_path, :target => '_blank' do %>
+                          <%= hidden_field_tag 'end_date', @default_values[ind][1] %>
+                          <%= hidden_field_tag 'check_point_index', 9 %>
+                          <%= button_tag(type: "submit", class: "wip_report_link") do %>
+                              <%= wip_16 %>
+                          <% end %>
+                      <% end %>
                     </td>
                     
                       <%  
@@ -220,14 +229,16 @@
                   <tr> 
                     <td></td>
                     <%
-                    complete_sum = 0.to_f
-                      9.times do |j|
-                        complete_sum += @all_data[ind][18 + j].to_f
-                      end
-
+                        wip_21 = @all_data[ind][30]
                      %>
                      <td>
-                       <%= complete_sum %>
+                       <%= form_tag wip_detail_reports_path, :target => '_blank' do %>
+                           <%= hidden_field_tag 'end_date', @default_values[ind][1] %>
+                           <%= hidden_field_tag 'check_point_index', 10 %>
+                           <%= button_tag(type: "submit", class: "wip_report_link") do %>
+                               <%= wip_21 %>
+                           <% end %>
+                       <% end %>
                      </td>
                       <%  
                        complete_sum = 0.to_f

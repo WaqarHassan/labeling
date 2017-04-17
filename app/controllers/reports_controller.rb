@@ -838,17 +838,24 @@ class ReportsController < ApplicationController
 		checkpoints = ['APPROVED','TRANSLATION','STATION4','FROMCOLLAB','STATION7','STATION8','TOCRB','FROMCRB','RELEASE']
 
     if request.post?
-      start_date = params[:start_date]
-      end_date = params[:end_date]
-      check_point = checkpoints[params[:check_point_index].to_i]
+      @start_date = params[:start_date]
+      @end_date = params[:end_date]
+      @check_point = checkpoints[params[:check_point_index].to_i]
 
       @object_type = 'L3'
-      if check_point == 'APPROVED' or check_point == 'TRANSLATION'
+      if @check_point == 'APPROVED' or @check_point == 'TRANSLATION'
         @object_type = 'L2'
       end
+      @throughput_details = WorkFlow.get_throughput_detail(@start_date, @end_date, @check_point)
 
-      @throughput_details = WorkFlow.get_throughput_detail(start_date, end_date, check_point)
+      @start_date = DateTime.parse(@start_date.to_s)
+      @end_date = DateTime.parse(@end_date.to_s)
+      @start_date = @start_date.strftime("%m/%d/%y")
+      @end_date = @end_date.strftime("%m/%d/%y")
     else
+      @start_date = ''
+      @end_date = ''
+      @check_point = ''
       @throughput_details = nil
       @alert_sms = "Please click on hyperlink from WIP report to send params and get detail"
     end
@@ -857,19 +864,24 @@ class ReportsController < ApplicationController
 
 	def wip_detail
 		@workflows = WorkFlow.where(is_active: true, is_in_use: false)
-		checkpoints = ['APPROVED','TRANSLATION','STATION4','FROMCOLLAB','STATION7','STATION8','TOCRB','FROMCRB','RELEASE']
+		checkpoints = ['APPROVED','TRANSLATION','STATION4','FROMCOLLAB','STATION7','STATION8','TOCRB','FROMCRB','RELEASE', 'W16', 'W21']
 
     if request.post?
-      end_date = params[:end_date]
-      check_point = checkpoints[params[:check_point_index].to_i]
+      @end_date = params[:end_date]
+      @check_point = checkpoints[params[:check_point_index].to_i]
 
       @object_type = 'L3'
-      if check_point == 'APPROVED' or check_point == 'TRANSLATION'
+      if @check_point == 'APPROVED' or @check_point == 'TRANSLATION'
         @object_type = 'L2'
       end
 
-      @wip_details = WorkFlow.get_wip_detail(end_date, check_point)
+      @wip_details = WorkFlow.get_wip_detail(@end_date, @check_point)
+
+      @end_date = DateTime.parse(@end_date.to_s)
+      @end_date = @end_date.strftime("%m/%d/%y")
     else
+      @end_date = ''
+      @check_point = ''
       @wip_details = nil
       @alert_sms = "Please click on hyperlink from WIP report to send params and get detail"
     end

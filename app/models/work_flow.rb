@@ -358,10 +358,9 @@ class WorkFlow < ActiveRecord::Base
 
 				any_eta_step = dataSet.select{|eta| eta[indx].to_i==1}
 				any_eta_legal_step = dataSet.select{|eta| eta[18].to_i==1}
-				if any_eta_step.present? and any_eta_legal_step.present?
+				if any_eta_step.present? or any_eta_legal_step.present?
 					pred_actual = DateTime.parse(pred_actual.to_s) rescue nil
 					if pred_actual
-
 					    holidays.each do |holiday|
 					       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
 					    end
@@ -374,7 +373,9 @@ class WorkFlow < ActiveRecord::Base
 
 						eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
 						max_date = "ETA "+eta_date_stamp
-						if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
+            max_date_for_succesr = 'eta'
+
+            if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
 							table_td_class = 'report_eta_light_red'
 						end
 					end
@@ -422,6 +423,7 @@ class WorkFlow < ActiveRecord::Base
 				if l3_status.downcase == 'onhold' and max_date.include? 'ETA'
 					max_date = 'OnHold'
 					table_td_class = ''
+          max_date_for_succesr = 'onhold'
 				end
 
 				return [max_date, table_td_class, max_date_for_succesr]
@@ -517,11 +519,17 @@ class WorkFlow < ActiveRecord::Base
 				return [max_date, table_td_class, max_date_for_succesr]
 			end
 
-			def get_rollUp_l3_station8_timestamps_new(dataSet, indx, pred_actual, workflow, number_days, holidays, pred_numb_comp, eta_indx, l3_status)
+			def get_rollUp_l3_station8_timestamps_new(dataSet, indx, pred_actual, workflow, number_days, holidays, pred_numb_comp, eta_indx, l3_status, pred_value)
 				max_date = 'N/A'
 				max_date_for_succesr = ''
 				max_date2 = ''
-				
+
+        if pred_actual == 'eta'
+          max_date = ''
+          table_td_class = ''
+          return [max_date, table_td_class, max_date_for_succesr]
+        end
+
 				pred_numb_comp = pred_numb_comp == '' ? 0 : pred_numb_comp
 				add_extra_day = pred_numb_comp/17 
 				number_days = add_extra_day + number_days
@@ -533,34 +541,35 @@ class WorkFlow < ActiveRecord::Base
 
 				backFromCollab_has_any_unconfirm = dataSet.select{|eta| eta[17].to_i == 1}
 				backFromLegal_has_any_unconfirm = dataSet.select{|eta| eta[19].to_i == 1}
+        backFromCollab_is_na = dataSet.select{|eta| eta[17].to_i == 0}
+        backFromLegal_is_na = dataSet.select{|eta| eta[19].to_i == 0}
 
-				max_crb_with_etas_date = 0
-				if !backFromCollab_has_any_unconfirm.present? || backFromLegal_has_any_unconfirm.present?
-					crb_with_etas = dataSet.select{|eta| eta[eta_indx].to_i != 0 and eta[eta_indx].to_i != 1 and eta[indx].to_i==1}
+        max_station8_with_etas = 0
+        if !backFromCollab_has_any_unconfirm.present? || !backFromLegal_has_any_unconfirm.present? || pred_value.downcase == 'n/a'
+          station8_etas = dataSet.select{|eta| eta[eta_indx].to_i != 0 and eta[eta_indx].to_i != 1 and eta[indx].to_i==1}
 
-					crb_with_etas_sorted = crb_with_etas.sort_by { |h| h[eta_indx] }.reverse
-					if crb_with_etas_sorted.present?
-						max_crb_with_etas = crb_with_etas_sorted.first
-						max_crb_with_etas_date = max_crb_with_etas[eta_indx]
-					end
-				end
+          station8_etas_sorted = station8_etas.sort_by { |h| h[eta_indx] }.reverse
+          if station8_etas_sorted.present?
+            max_station8_etas = station8_etas_sorted.first
+            max_station8_with_etas = max_station8_etas[eta_indx]
+          end
+        end
 
 				any_eta_step = dataSet.select{|eta| eta[indx].to_i==1}
 				pred_actual = DateTime.parse(pred_actual.to_s) rescue nil
-				if any_eta_step.present? and pred_actual
-					max_crb_with_etas_date = DateTime.parse(max_crb_with_etas_date.to_s) rescue nil
-					if max_crb_with_etas_date
+				if any_eta_step.present? and (pred_actual or pred_value.downcase == 'n/a')
+          max_station8_with_etas = DateTime.parse(max_station8_with_etas.to_s) rescue nil
+					if max_station8_with_etas
 						number_days = 1
-						eta_datetime =  number_days.business_days.after(max_crb_with_etas_date)
+						eta_datetime =  number_days.business_days.after(max_station8_with_etas)
 						eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
 						max_date = "ETA "+eta_date_stamp
 						if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
 							table_td_class = 'report_eta_light_red'
 						end
-					else
+          else
 						pred_actual = DateTime.parse(pred_actual.to_s) rescue nil
-						if pred_actual
-
+						if pred_actual and !backFromCollab_is_na.present? and !backFromLegal_is_na.present?
 						    holidays.each do |holiday|
 						       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
 						    end
@@ -577,7 +586,7 @@ class WorkFlow < ActiveRecord::Base
 								table_td_class = 'report_eta_light_red'
 							end
 						end
-					end	
+          end
 				else
 					ind = 0
 					dataSet.each do |data|
@@ -598,15 +607,13 @@ class WorkFlow < ActiveRecord::Base
 						end
 					end
 
-					if ind == 0 and any_active_step.present?
-						max_date = 'ETA'
-					end
 				end
 
 				if l3_status.downcase == 'onhold' and max_date.include? 'ETA'
 					max_date = 'OnHold'
 					table_td_class = ''
-				end
+        end
+
 				return [max_date, table_td_class, max_date_for_succesr]
 			end			
 
@@ -803,15 +810,22 @@ class WorkFlow < ActiveRecord::Base
 			end
 
 			def get_rollUp_l3_crb_started_timestamps_new(dataSet, eta_indx, actual_indx, sent_to_collab_actual,station8_sent_actual, 
-				workflow, days_at_collab, days_at_station8, holidays,pred_numb_comp, l3_status)
+				workflow, days_at_collab, days_at_station8, holidays,pred_numb_comp, l3_status, pred_value)
 
-			    holidays.each do |holiday|
-			       BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
-			    end
-			    pred_numb_comp = pred_numb_comp == '' ? 0 : pred_numb_comp
-			    add_extra_day = pred_numb_comp/17 
-			    days_at_collab = days_at_collab + add_extra_day
-			    days_at_station8 = days_at_station8 + add_extra_day
+        if sent_to_collab_actual == 'eta'
+          max_date = ''
+          table_td_class = ''
+          max_date_for_succesr = ''
+          return [max_date, table_td_class, max_date_for_succesr]
+        end
+
+        holidays.each do |holiday|
+           BusinessTime::Config.holidays << Date.parse(holiday.holiday_date.to_s)
+        end
+        pred_numb_comp = pred_numb_comp == '' ? 0 : pred_numb_comp
+        add_extra_day = pred_numb_comp/17
+        days_at_collab = days_at_collab + add_extra_day
+        days_at_station8 = days_at_station8 + add_extra_day
 
 				max_date = 'N/A'
 				max_date_for_succesr = ''
@@ -827,8 +841,11 @@ class WorkFlow < ActiveRecord::Base
 
 				backFromCollab_has_any_unconfirm = dataSet.select{|eta| eta[17].to_i == 1}
 				backFromLegal_has_any_unconfirm = dataSet.select{|eta| eta[19].to_i == 1}
+        backFromCollab_is_na = dataSet.select{|eta| eta[17].to_i == 0}
+        backFromLegal_is_na = dataSet.select{|eta| eta[19].to_i == 0}
+
 				max_crb_with_etas_date = 0
-				if !backFromCollab_has_any_unconfirm.present? || backFromLegal_has_any_unconfirm.present?
+				if !backFromCollab_has_any_unconfirm.present? || backFromLegal_has_any_unconfirm.present? || pred_value.downcase == 'n/a'
 					crb_with_etas = dataSet.select{|eta| eta[eta_indx].to_i != 0 and eta[eta_indx].to_i != 1 and eta[actual_indx].to_i == 1}
 					crb_with_etas_sorted = crb_with_etas.sort_by { |h| h[eta_indx] }.reverse
 					if crb_with_etas_sorted.present?
@@ -842,7 +859,7 @@ class WorkFlow < ActiveRecord::Base
 				collab_pred_actual = DateTime.parse(sent_to_collab_actual.to_s) rescue nil
 				sent_pred_actual = DateTime.parse(station8_sent_actual.to_s) rescue nil
 
-				if any_eta_step.present? and (collab_pred_actual or sent_pred_actual)
+				if any_eta_step.present? and (collab_pred_actual or sent_pred_actual or pred_value.downcase == 'n/a')
 					max_crb_with_etas_date = DateTime.parse(max_crb_with_etas_date.to_s) rescue nil
 					if max_crb_with_etas_date
 						number_days = 1
@@ -851,7 +868,7 @@ class WorkFlow < ActiveRecord::Base
 						max_date = "ETA "+eta_date_stamp
 						if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
 							table_td_class = 'report_eta_light_red'
-						end
+            end
 					else
 						pred_actuals.each_with_index do |pred_actual, idx|
 							pred_actual = DateTime.parse(pred_actual.to_s) rescue nil
@@ -863,7 +880,6 @@ class WorkFlow < ActiveRecord::Base
 								if number_days > 0
 									eta_datetime =  number_days.business_days.after(eta_datetime)
 								end
-
 								max_date2 = DateTime.parse(max_date2.to_s) rescue nil
 								if idx == 0 or !max_date2
 									eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
@@ -904,18 +920,18 @@ class WorkFlow < ActiveRecord::Base
 					end
 				end
 
-				if max_date == ''
-					max_crb_with_etas_date = DateTime.parse(max_crb_with_etas_date.to_s) rescue nil
-					if max_crb_with_etas_date
-						number_days = 1
-						eta_datetime =  number_days.business_days.after(max_crb_with_etas_date)
-						eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
-						max_date = "ETA "+eta_date_stamp
-						if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
-							table_td_class = 'report_eta_light_red'
-						end
-					end						
-				end
+				# if max_date == ''
+				# 	max_crb_with_etas_date = DateTime.parse(max_crb_with_etas_date.to_s) rescue nil
+				# 	if max_crb_with_etas_date
+				# 		number_days = 1
+				# 		eta_datetime =  number_days.business_days.after(max_crb_with_etas_date)
+				# 		eta_date_stamp = eta_datetime.strftime("%m/%d/%y")
+				# 		max_date = "ETA "+eta_date_stamp
+				# 		if DateTime.parse(Time.now.to_s) > DateTime.parse(eta_datetime.to_s)
+				# 			table_td_class = 'report_eta_light_red'
+				# 		end
+				# 	end
+				# end
 
 				
 				if l3_status.downcase == 'onhold' and max_date.include? 'ETA'

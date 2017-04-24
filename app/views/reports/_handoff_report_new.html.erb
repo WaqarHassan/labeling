@@ -223,9 +223,9 @@
 
                         sent_to_collab = WorkFlow.get_rollUp_l3_timestamps_to_collab_legal(curr_l3_with_partials, 16, ecr_inbox_date_for_succer2, @workflow, @days_at_ecr_inbox, @holidays, result[7], l3_status[0])
 
-                        station8_sent = WorkFlow.get_rollUp_l3_station8_timestamps_new(curr_l3_with_partials, 20, sent_to_collab[2], @workflow, @days_at_sent_to_collab, @holidays, numb_comp_in_main_record, 34, l3_status[0])
+                        station8_sent = WorkFlow.get_rollUp_l3_station8_timestamps_new(curr_l3_with_partials, 20, sent_to_collab[2], @workflow, @days_at_sent_to_collab, @holidays, numb_comp_in_main_record, 34, l3_status[0], sent_to_collab[0])
 
-                        crb_started = WorkFlow.get_rollUp_l3_crb_started_timestamps_new(curr_l3_with_partials, 21,22,sent_to_collab[2],station8_sent[2] , @workflow, @days_at_sent_to_collab, @days_at_station8_sent, @holidays, numb_comp_in_main_record, l3_status[0])
+                        crb_started = WorkFlow.get_rollUp_l3_crb_started_timestamps_new(curr_l3_with_partials, 21,22,sent_to_collab[2],station8_sent[2] , @workflow, @days_at_sent_to_collab, @days_at_station8_sent, @holidays, numb_comp_in_main_record, l3_status[0], sent_to_collab[0])
 
                         if sent_to_collab[0].to_s == 'N/A' && station8_sent[0].to_s == 'N/A' && result[22] != '0' and crb_started[0] == ''
                           crb_started = WorkFlow.get_rollUp_l3_crb_started_timestamps_NA(ecr_inbox_date_parsed.to_s, 22,@workflow,@holidays) 

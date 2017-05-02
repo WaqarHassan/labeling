@@ -117,8 +117,8 @@
                     %>
                     <td title="IA Approval - IA Approved" class="<%=table_td_class_ia%>"><%= ia_approved_date %></td>
                     <%
-                       to_translation = result[35]
-                       from_translation = result[36]
+                       to_translation = result[36]
+                       from_translation = result[37]
 
                        to_translation_class = ''
                        from_translation_class = ''
@@ -131,7 +131,9 @@
                          to_translation_parsed = DateTime.parse(to_translation[4,30].downcase.to_s)
                          to_translation_date = to_translation_parsed.strftime("%m/%d/%y")
                          to_translation_date = 'ETA '+to_translation_date.to_s
-                         to_translation_class = 'report_eta_light_red'
+                         if DateTime.parse(Time.now.to_s) > DateTime.parse(to_translation_parsed.to_s)
+                          to_translation_class = 'report_eta_light_red'
+                         end
                        else
                          to_translation_date = 'N/A'
                        end
@@ -144,7 +146,9 @@
                          from_translation_parsed = DateTime.parse(from_translation[4,30].downcase.to_s)
                          from_translation_date = from_translation_parsed.strftime("%m/%d/%y")
                          from_translation_date = 'ETA '+from_translation_date.to_s
-                         from_translation_class = 'report_eta_light_red'
+                         if DateTime.parse(Time.now.to_s) > DateTime.parse(from_translation_parsed.to_s)
+                          from_translation_class = 'report_eta_light_red'
+                         end
                        else
                          from_translation_date = 'N/A'
                        end
@@ -330,7 +334,9 @@
                    to_translation_parsed = DateTime.parse(to_translation[4,30].downcase.to_s)
                    to_translation_date = to_translation_parsed.strftime("%m/%d/%y")
                    to_translation_date = 'ETA '+to_translation_date.to_s
-                   to_translation_class = 'report_eta_light_red'
+                   if DateTime.parse(Time.now.to_s) > DateTime.parse(to_translation_parsed.to_s)
+                    to_translation_class = 'report_eta_light_red'
+                   end
                  else
                    to_translation_date = 'N/A'
                  end
@@ -343,7 +349,9 @@
                    from_translation_parsed = DateTime.parse(from_translation[4,30].downcase.to_s)
                    from_translation_date = from_translation_parsed.strftime("%m/%d/%y")
                    from_translation_date = 'ETA '+from_translation_date.to_s
-                   from_translation_class = 'report_eta_light_red'
+                   if DateTime.parse(Time.now.to_s) > DateTime.parse(from_translation_parsed.to_s)
+                    from_translation_class = 'report_eta_light_red'
+                   end
                  else
                    from_translation_date = 'N/A'
                  end

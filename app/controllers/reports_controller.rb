@@ -356,6 +356,8 @@ class ReportsController < ApplicationController
 		@pred_of_station8_sent = ''
 		@pred_of_crb_started = ''
 		@pred_of_ecn_released = ''
+		@is_include_canceled = false
+		@is_include_completed = false
 
 
 		@workflow.holidays.each do |holiday|
@@ -434,8 +436,10 @@ class ReportsController < ApplicationController
 			if params_list[:report_include_canceled].presence
 	    		include_cancel = true
 	    		@report_include_canceled = 'report_include_canceled'
+	    		@is_include_canceled = true
 	    	else
 	    		include_cancel = false
+	    		@is_include_canceled = false
 	    	end
 	    	if params_list[:report_include_onhold].presence
 	    		include_onhold = true
@@ -445,9 +449,11 @@ class ReportsController < ApplicationController
 	    	end
 			if params_list[:report_include_completed].presence
 	    		include_completed = true
+	    		@is_include_completed = true
 	    		@report_include_completed = 'report_include_completed'
 	    	else
 	    		include_completed = false
+	    		@is_include_completed = false
 	    	end	
 
 			puts "----:#{bu}---: #{l1}---:#{l2}---:#{l3}----:#{include_cancel}----:#{include_onhold}----:#{include_completed}"
@@ -465,11 +471,13 @@ class ReportsController < ApplicationController
   			serach_result.each do |result|
   				project_id = result[31]
   				ia_id = result[32]
-  				ia_ho_l2s = @serach_result_ho_ia2.find{|l2s| l2s[10] == project_id and l2s[11] == ia_id}
-  				@serach_result_matched << ia_ho_l2s
-  				result << ia_ho_l2s[8]
-  				result << ia_ho_l2s[9]
-  				@serach_result << result
+  				if result[35].to_i != 0
+	  				ia_ho_l2s = @serach_result_ho_ia2.find{|l2s| l2s[10] == project_id and l2s[11] == ia_id}
+	  				@serach_result_matched << ia_ho_l2s
+	  				result << ia_ho_l2s[8]
+	  				result << ia_ho_l2s[9]
+	  				@serach_result << result
+  				end
   			end
 
   			@serach_result_ho_ia2.each do |result_ia|

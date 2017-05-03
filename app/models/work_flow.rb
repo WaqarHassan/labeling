@@ -241,10 +241,11 @@ class WorkFlow < ActiveRecord::Base
 				return [status, onHoldReasonids]			
 			end
 
-			def get_rollUp_l3_status_new(data_set)
+			def get_rollUp_l3_status_new(data_set, is_include_canceled = false, is_include_completed = false)
 				statuses = []
 				onHoldReasonids = []
 				status = 'Closed'
+				status_original = 'Closed'
 				data_set.each do |data|
 					l3_sttaus = data[9].downcase
 					statuses << l3_sttaus
@@ -255,11 +256,24 @@ class WorkFlow < ActiveRecord::Base
 
 				if statuses.include? 'active'
 					status = 'Active'
+					status_original = 'Active'	
 				elsif  statuses.include? 'onhold'
 					status = 'onHold'
-				end	
+					status_original = 'onHold'	
+				elsif  statuses.include? 'closed' or statuses.include? 'Closed'
+					status = 'Closed'
+					status_original = 'Closed'	
+				elsif  statuses.include? 'cancel'
+					status = 'Closed'
+					status_original = 'cancel'		
+				end
+
+				if is_include_canceled and !is_include_completed and statuses.include? 'cancel'
+					status = 'Closed'
+					status_original = 'cancel'	
+				end
 							
-				return [status, onHoldReasonids]			
+				return [status, onHoldReasonids, status_original]			
 			end
 			# 
 			# * *Arguments* :

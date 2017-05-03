@@ -49,12 +49,45 @@
       <tbody>
       <% if @serach_result.present?
           l3_name = ''
+          l3_name_closed = ''
           l2_name = ''
           l1_name = ''
           l1_list = ''
           l2_list = ''
           l3_list = ''
           @serach_result.each do |result|
+              curr_l3_with_partials_closed = []
+              curr_l3_with_partials_canceled = []
+              curr_l3_with_partials_canceled_closed = []
+              if result[33].presence
+               if l3_name_closed != result[8].split('-R')[0]
+                  l3_name_closed = result[8].split('-R')[0]
+                  all_l3s = @serach_result.select{|l3s| l3s[9].presence and l3s[9].to_s.downcase != 'closed'}
+                  curr_l3_with_partials_closed = all_l3s.select{|cur_l3| cur_l3[8].split('-R')[0] == l3_name_closed}
+                  all_l3s_cancel = @serach_result.select{|l3s| l3s[9].presence and l3s[9].to_s.downcase != 'cancel'}
+                  curr_l3_with_partials_canceled = all_l3s_cancel.select{|cur_l3| cur_l3[8].split('-R')[0] == l3_name_closed}
+                  all_l3s_cancel_closed = @serach_result.select{|l3s| l3s[9].presence and l3s[9].to_s.downcase != 'cancel' and l3s[9].to_s.downcase != 'closed'}
+                  curr_l3_with_partials_canceled_closed = all_l3s_cancel_closed.select{|cur_l3| cur_l3[8].split('-R')[0] == l3_name_closed}
+                end
+              end
+
+              if (result[1].downcase == 'closed' or result[1].downcase == 'cancel') and !@is_include_canceled
+                next
+              end
+              if (result[4].downcase == 'closed' or result[4].downcase == 'cancel') and !@is_include_canceled
+                next
+              end
+
+              if !curr_l3_with_partials_closed.present? and !@is_include_completed
+                next
+              end
+              if !curr_l3_with_partials_canceled.present? and !@is_include_canceled
+                next
+              end
+              if !curr_l3_with_partials_canceled_closed and !@is_include_completed and !@is_include_canceled
+                next
+              end
+
               if l1_name != result[0]
                 l1_name = result[0] 
                  %>
@@ -200,8 +233,8 @@
                     current_main_record = currentParentRecord.first
                     numb_comp_in_main_record = current_main_record[11]
                   end
-                  l3_status = WorkFlow.get_rollUp_l3_status_new(curr_l3_with_partials) %>
-                  <%if @report_include_completed == 'report_include_completed' or (@report_include_completed != 'report_include_completed' &&  l3_status[0].to_s.downcase != 'closed') %>
+                  l3_status = WorkFlow.get_rollUp_l3_status_new(curr_l3_with_partials, @is_include_canceled, @is_include_completed) %>
+                  <%if @report_include_completed == 'report_include_completed' or (@report_include_completed != 'report_include_completed' && l3_status[2].to_s.downcase != 'closed') %>
                     <tr>
                       <td title="<%= @workflow.L1 %>"></td>
                       <td title="<%= @workflow.L2 %>">

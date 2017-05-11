@@ -872,3 +872,11 @@ sup {
   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
   border: medium none;
 }
+
+.modal-dialog.modal-sm.cannotRework{
+  padding-top: 10%;
+}
+
+#cannot_rework_popup_body span {
+  font-size: 12px;
+}

@@ -41,7 +41,7 @@
           <%= live_station_step['name']%>
         </div>
 	      <div class="col-lg-2"> 
-          <% if live_station_step['actual_confirmation'].present? %>
+          <% if live_station_step['actual_confirmation'].present? and live_station_step['is_active'] %>
 	      	    <input type="checkbox" name="live_steps[]" value="<%=live_station_step['id'] %>" onclick="return false;"  checked style="cursor:not-allowed;"/>  
           <% else %>
              <input type="checkbox" name="live_steps[]" value="<%=live_station_step['id'] %>" <%= checked %>  />  

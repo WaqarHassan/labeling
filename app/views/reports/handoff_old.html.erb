@@ -9,7 +9,7 @@
 	<div class="handoff-project-data" id="handoff_projectform">
 	 <a href="#" class="collapsed-icon" title="Search form show/hide" onclick="handoff_show_hide(); return false;"></a>
 		<div style="overflow:hidden;">
-			<%= form_tag handoff_new_reports_path, remote: true, :id => 'search_form', :class => 'form-horizontal'  do %>
+			<%= form_tag handoff_old_reports_path, remote: true, :id => 'search_form', :class => 'form-horizontal'  do %>
 				<div class="project-form">
 						<div class="project-fields">
 								<div class="row">
@@ -125,7 +125,7 @@
 				</div>
 			<% end %> 
 
-			<%= form_tag download_handoff_report_new_reports_path, :id => 'download_handoff_csv_search_form' do %>
+			<%= form_tag download_handoff_report_old_reports_path, :id => 'download_handoff_csv_search_form' do %>
 				<div style="display:none">
 					<input type="text" name="wildcard[business_unit]" id="ho_wildcard_bu">
 					<input type="text" name="exact[business_unit]" id="ho_exact_bu">
@@ -153,8 +153,8 @@
 	</div>
 
 	<div id="report_search_result_div">
-		<% if @serach_result.present? or @serach_result_ho_ia.present? %>
-			<%= render 'reports/handoff_report_new' %>
+		<% if @serach_result.present? %>
+			<%= render 'reports/handoff_report_old' %>
 		<% else %>
 			<div class="alert alert-report"> Do search to view your report! </div>
 		<% end %>

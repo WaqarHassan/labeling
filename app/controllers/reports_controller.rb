@@ -218,7 +218,7 @@ class ReportsController < ApplicationController
   	# * *Description* :
   	#   - It gets HandOff data of given Osbject
   	#
-  	def handoff
+  	def handoff_old
 		@workflows = [] #WorkFlow.where(is_active: true, is_in_use: false)
 		@holidays = []
 		@reason_codes = []
@@ -339,7 +339,7 @@ class ReportsController < ApplicationController
   		end
   	end
 
-  	def handoff_new
+  	def handoff
 		@workflows = [] #WorkFlow.where(is_active: true, is_in_use: false)
 		@holidays = []
 		@reason_codes = []
@@ -577,7 +577,7 @@ class ReportsController < ApplicationController
   	#   - It is a backup function for HandOff 
   	#
 
-  	def download_handoff_report
+  	def download_handoff_report_old
   		search_parm = search_csv(params)
   		bu = search_parm[0]
   		l1 = search_parm[1]
@@ -613,7 +613,7 @@ class ReportsController < ApplicationController
   	#   - It is a backup function for HandOff 
   	#
 
-  	def download_handoff_report_new
+  	def download_handoff_report
   		search_parm = search_csv(params)
   		bu = search_parm[0]
   		l1 = search_parm[1]

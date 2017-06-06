@@ -719,7 +719,7 @@ class OverviewController < ApplicationController
      reason = ReasonCode.find_by_recording_level('ReworkParent')
      reason_id = reason.present? ? reason.id : nil
      statuses = []
-     rework_live_steps = WorkflowLiveStep.where(object_type: rework_object_type, object_id: rework_parent_id)
+     rework_live_steps = WorkflowLiveStep.where(object_type: rework_object_type, object_id: rework_parent_id).order(:id)
      rework_live_steps.each do |originalRework|
       statuses << originalRework.is_active
      end
@@ -847,6 +847,12 @@ class OverviewController < ApplicationController
               start_workflow_liveStep = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(station_stepID,l3_rework.id, rework_object_type)
               if start_workflow_liveStep.present?
                 predecessor_list = predecessor_list+','+start_workflow_liveStep.id.to_s
+              else
+                l2_of_rework_l3 = l3_rework.l2
+                start_workflow_liveStep = WorkflowLiveStep.find_by_station_step_id_and_object_id_and_object_type(station_stepID,l2_of_rework_l3.id, 'L2')
+                if start_workflow_liveStep.present?
+                  predecessor_list = predecessor_list+','+start_workflow_liveStep.id.to_s
+                end
               end
             end
             if predecessor_list != ''

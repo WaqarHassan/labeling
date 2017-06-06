@@ -65,7 +65,7 @@ class StationStep < ActiveRecord::Base
 		days_frm_hours, remaining_hours = hours_frm_minutes.divmod(hours_per_workday)
 		number_days = number_days + days_frm_hours
 
-		actual_confirmation = actual_confirmation.to_time.strftime('%Y-%m-%d %H:%M')
+		actual_confirmation = actual_confirmation.to_datetime.strftime('%Y-%m-%d %H:%M')
 		actual_confirmationTime = Time.parse(actual_confirmation)
 		actual_confirmation_time =  remaining_hours.business_hours.after(actual_confirmationTime)
 		

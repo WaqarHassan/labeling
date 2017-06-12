@@ -200,7 +200,7 @@ class L3sController < ApplicationController
         AdditionalInfo.create(work_flow_id: @workflow.id, object_id: @l3.id,object_type: 'L3', status: @l3.status, user_id: current_user.id)
 
         if @l3.workflow_live_steps.present?
-         workflow_step = @l3.workflow_live_steps.first
+         workflow_step = @l3.workflow_live_steps.order(:id).first
          if !workflow_step.actual_confirmation.present?
            session[:open_confirm_modal] = 'open_confirm_modal'
            session[:workflow_step_id] = workflow_step.id

@@ -156,7 +156,7 @@
                        to_translation_class = ''
                        from_translation_class = ''
 
-                       if to_translation.downcase != 'n/a' and to_translation[0,3].downcase != 'eta'
+                       if to_translation.present? and to_translation.downcase != 'n/a' and to_translation[0,3].downcase != 'eta'
                          to_translation_parsed = DateTime.parse(to_translation.to_s)
                          to_translation_date = to_translation_parsed.strftime("%m/%d/%y")
                          to_translation_class = 'report_actual_confirmation'
